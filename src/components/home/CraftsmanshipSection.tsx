@@ -55,7 +55,7 @@ export default function CraftsmanshipSection() {
       ref={sectionRef}
       id="craftsmanship"
       data-design-section="home-introduction"
-      className="w-full border-y border-[#262923]/8 bg-[#E8E0D5]/42 py-24 dark:border-[#F8F6F1]/8 dark:bg-[#20231D] lg:py-36"
+      className="w-full border-y border-[#262923]/8 bg-[#E8E0D5]/42 py-16 dark:border-[#F8F6F1]/8 dark:bg-[#20231D] sm:py-20 lg:py-28"
     >
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-14 px-4 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-14">
         {/* Left: Layered Editorial Loom & Weave Photography */}
@@ -106,7 +106,12 @@ export default function CraftsmanshipSection() {
                 data-preview-field-path="home.introEyebrow"
                 defaultValue={eyebrow}
                 fontFamily="body"
-                className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+                size="0.6875rem"
+                weight={500}
+                transform="uppercase"
+                letterSpacing="0.26em"
+                color="primary"
+                className="m-0"
               />
             </div>
 
@@ -115,7 +120,12 @@ export default function CraftsmanshipSection() {
               data-preview-field-path="home.introTitle"
               defaultValue={title}
               fontFamily="heading"
-              className="mt-4 font-serif text-4xl font-light leading-[1.04] tracking-tight text-[#262923] dark:text-[#F8F6F1] sm:text-5xl lg:text-[3.75rem]"
+              size="clamp(2.4rem, 4.4vw, 3.75rem)"
+              weight={300}
+              lineHeight={1.04}
+              letterSpacing="-0.02em"
+              color="heading"
+              className="mt-4 mb-0"
             />
 
             <EditableText
@@ -123,7 +133,10 @@ export default function CraftsmanshipSection() {
               data-preview-field-path="home.introBody"
               defaultValue={body}
               fontFamily="body"
-              className="mt-6 max-w-xl text-[15px] leading-[1.9] text-[#65685E] dark:text-[#B6B8AE]"
+              size="0.96875rem"
+              lineHeight={1.85}
+              color="muted"
+              className="mt-6 mb-0 max-w-xl"
             />
 
             {/* Provenance Pillars */}

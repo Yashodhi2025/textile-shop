@@ -267,8 +267,13 @@ export default function LoomeFooter() {
                 as="h3"
                 data-preview-field-path="common.footerExploreHeading"
                 defaultValue={contentText(common.footerExploreHeading) || 'Maison'}
-                className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#B59B79]"
                 fontFamily="body"
+                size="0.6875rem"
+                weight={500}
+                transform="uppercase"
+                letterSpacing="0.24em"
+                color="#B59B79"
+                className="m-0"
               />
               <ul className="mt-6 space-y-3.5 text-sm text-[#E8E0D5]/80">
                 {FOOTER_NAV.map((item) => {
@@ -334,8 +339,13 @@ export default function LoomeFooter() {
                 as="h3"
                 data-preview-field-path="common.footerContactHeading"
                 defaultValue={contentText(common.footerContactHeading) || 'Atelier & Care'}
-                className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#B59B79]"
                 fontFamily="body"
+                size="0.6875rem"
+                weight={500}
+                transform="uppercase"
+                letterSpacing="0.24em"
+                color="#B59B79"
+                className="m-0"
               />
               <div className="mt-6 space-y-4 text-sm text-[#E8E0D5]/80">
                 <div className="flex items-start gap-3">

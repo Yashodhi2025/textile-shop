@@ -16,7 +16,7 @@ export default function BrandBenefitsSection() {
     <section
       id="brand-benefits"
       data-design-section="home-features"
-      className="mx-auto max-w-[1440px] px-4 py-24 sm:px-8 lg:px-14 lg:py-32"
+      className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24"
     >
       <LuxuryReveal className="mx-auto max-w-2xl text-center">
         <EditableText
@@ -24,14 +24,26 @@ export default function BrandBenefitsSection() {
           data-preview-field-path="home.featuresEyebrow"
           defaultValue={contentText(home.featuresEyebrow) || 'THE LOOMÉ STANDARD'}
           fontFamily="body"
-          className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+          size="0.6875rem"
+          weight={500}
+          transform="uppercase"
+          letterSpacing="0.26em"
+          color="primary"
+          align="center"
+          className="m-0"
         />
         <EditableText
           as="h2"
           data-preview-field-path="home.featuresHeading"
           defaultValue={contentText(home.featuresHeading) || 'Crafted to Outlast Seasons'}
           fontFamily="heading"
-          className="mt-3 font-serif text-4xl font-light leading-[1.08] tracking-tight text-[#262923] dark:text-[#F8F6F1] sm:text-5xl"
+          size="clamp(2.35rem, 4vw, 3.25rem)"
+          weight={300}
+          lineHeight={1.08}
+          letterSpacing="-0.02em"
+          color="heading"
+          align="center"
+          className="mt-3 mb-0"
         />
       </LuxuryReveal>
 
@@ -70,7 +82,12 @@ export default function BrandBenefitsSection() {
                       data-preview-field-path={`home.features[${index}].title`}
                       defaultValue={contentText(feature.title)}
                       fontFamily="heading"
-                      className="mt-7 font-serif text-2xl font-normal tracking-wide text-[#262923] dark:text-[#F8F6F1] sm:text-[1.75rem]"
+                      size="1.65rem"
+                      weight={400}
+                      lineHeight={1.2}
+                      color="heading"
+                      align="center"
+                      className="mt-6 mb-0"
                     />
 
                     <EditableText
@@ -78,7 +95,11 @@ export default function BrandBenefitsSection() {
                       data-preview-field-path={`home.features[${index}].body`}
                       defaultValue={contentText(feature.body)}
                       fontFamily="body"
-                      className="mt-3.5 m-0 max-w-xs text-sm leading-[1.85] text-[#65685E] dark:text-[#B6B8AE]"
+                      size="0.875rem"
+                      lineHeight={1.8}
+                      color="muted"
+                      align="center"
+                      className="mt-3 mb-0 max-w-xs"
                     />
                   </div>
                 </LuxuryStaggerItem>

@@ -1,15 +1,17 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import { EditableText, EditableBox } from '@deneb-ui/ui';
+import { ArrowRight, Mail, MapPin, Phone } from 'lucide-react';
+import { EditableBox, EditableText } from '@deneb-ui/ui';
 import { contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
+import { LuxuryReveal } from '@/components/motion/LuxuryReveal';
 
 export default function ContactPage() {
   const siteData = useSiteData();
   const contact = contentObject(contentObject(siteData.content).contact);
   const [status, setStatus] = useState('');
 
-  const directionsLabel = contentText(contact.directionsLabel) || 'Get Directions';
+  const directionsLabel = contentText(contact.directionsLabel) || 'Atelier Directions';
   const directionsUrl =
     contentText(contact.directionsUrl) ||
     contentText(contact.mapUrl) ||
@@ -18,7 +20,7 @@ export default function ContactPage() {
   const phone = contentText(contact.phone);
   const email = contentText(contact.email);
   const whatsapp = contentText(contact.whatsapp);
-  const directMessageText = contentText(contact.directMessageText) || 'Chat on WhatsApp';
+  const directMessageText = contentText(contact.directMessageText) || 'Concierge via WhatsApp';
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,7 +32,7 @@ export default function ContactPage() {
     }
 
     const formData = new FormData(form);
-    setStatus('Sending your message...');
+    setStatus('Sending your inquiry...');
     try {
       const response = await fetch('/site-contact', {
         method: 'POST',
@@ -44,153 +46,243 @@ export default function ContactPage() {
       });
       if (!response.ok) throw new Error('Unable to send message.');
       form.reset();
-      setStatus('Thanks — your message has been sent successfully.');
+      setStatus('Thank you — your message has been received by our atelier.');
     } catch {
-      setStatus('We could not send your message right now. Please try again later.');
+      setStatus('We could not send your message right now. Please try again or reach us directly.');
     }
   }
 
   return (
-    <div data-preview-page-key="contact">
-      <section className="page-section page-heading" data-design-section="contact-heading">
-        <EditableText
-          variant="h1"
-          size="4xl"
-          weight="bold"
-          color="heading"
-          data-preview-field-path="contact.heading"
-          defaultValue={contentText(contact.heading)}
-        />
-        <EditableText
-          variant="lead"
-          color="muted"
-          data-preview-field-path="contact.intro"
-          defaultValue={contentText(contact.intro)}
-        />
+    <div data-preview-page-key="contact" className="w-full overflow-x-clip">
+      {/* Compact Editorial Page Header */}
+      <section
+        data-design-section="contact-heading"
+        className="mx-auto max-w-[1440px] px-4 pb-8 pt-12 sm:px-8 lg:px-14 lg:pb-10 lg:pt-16"
+      >
+        <LuxuryReveal className="max-w-3xl">
+          <div className="flex items-center gap-3">
+            <span className="h-px w-8 bg-[#B59B79]" aria-hidden="true" />
+            <p
+              data-preview-static="contact-eyebrow"
+              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+            >
+              Private Client Concierge
+            </p>
+          </div>
+
+          <EditableText
+            as="h1"
+            data-preview-field-path="contact.heading"
+            defaultValue={contentText(contact.heading)}
+            fontFamily="heading"
+            size="clamp(2.6rem, 4.6vw, 4.15rem)"
+            weight={300}
+            lineHeight={1.04}
+            letterSpacing="-0.02em"
+            color="heading"
+            className="mt-4 mb-0"
+          />
+
+          <EditableText
+            as="p"
+            data-preview-field-path="contact.intro"
+            defaultValue={contentText(contact.intro)}
+            fontFamily="body"
+            size="1rem"
+            lineHeight={1.8}
+            color="muted"
+            className="mt-4 mb-0 max-w-2xl"
+          />
+        </LuxuryReveal>
       </section>
 
-      <section className="page-section contact-grid" data-design-section="contact-details">
-        <EditableBox stylePath="contact.informationCard" className="card contact-details" balance radius="xl">
-          <EditableText
-            variant="h3"
-            size="xl"
-            weight="bold"
-            color="heading"
-            fieldPath="contact.directInformationTitle"
-            defaultValue={contentText(contact.directInformationTitle ?? 'Direct Information')}
-            placeholder="Add an information heading"
-          />
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.5rem' }}>
-            <a href={phone ? `tel:${phone}` : ''} data-preview-field-path="contact.phone">
-              {phone}
-            </a>
-            <a href={email ? `mailto:${email}` : ''} data-preview-field-path="contact.email">
-              {email}
-            </a>
-            <EditableText
-              variant="p"
-              color="muted"
-              data-preview-field-path="contact.address"
-              defaultValue={address}
-            />
-          </div>
-          <div style={{ marginTop: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
-            <a
-              href={directionsUrl || '#'}
-              data-preview-field-path="contact.directionsUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="deneb-map-link"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '0.5rem',
-                fontWeight: 500,
-                textDecoration: 'none',
-                transition: 'all 0.2s ease',
-                cursor: 'pointer',
-                borderRadius: '0.5rem',
-                fontSize: '0.95rem',
-                padding: '0.5rem 1rem',
-                backgroundColor: 'transparent',
-                border: '1px solid var(--color-border, #e2e8f0)',
-                color: 'var(--color-text, #0f172a)',
-              }}
+      {/* Contact Details + Private Consultation Form */}
+      <section
+        data-design-section="contact-details"
+        className="w-full border-t border-[#262923]/8 bg-[#E8E0D5]/32 py-12 dark:border-[#F8F6F1]/8 dark:bg-[#20231D] lg:py-16"
+      >
+        <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-8 px-4 sm:px-8 lg:grid-cols-12 lg:gap-12 lg:px-14">
+          <LuxuryReveal className="lg:col-span-5">
+            <EditableBox
+              stylePath="contact.informationCard"
+              className="border border-[#262923]/12 bg-[#FCFBF8] p-7 dark:border-[#F8F6F1]/12 dark:bg-[#171915] sm:p-9"
+              balance
+              radius="none"
             >
-              <svg data-preview-static="map-link-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              <span data-preview-field-path="contact.directionsLabel">{directionsLabel}</span>
-            </a>
-            <a
-              href={whatsapp ? `https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}` : '#'}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="button-secondary"
-              data-preview-field-path="contact.whatsapp"
-            >
-              <span data-preview-field-path="contact.directMessageText">
-                {directMessageText}
-              </span>
-            </a>
-          </div>
-        </EditableBox>
+              <EditableText
+                as="h2"
+                data-preview-field-path="contact.directInformationTitle"
+                defaultValue={contentText(contact.directInformationTitle ?? 'Atelier Concierge')}
+                placeholder="Add an information heading"
+                fontFamily="heading"
+                size="1.85rem"
+                weight={400}
+                lineHeight={1.15}
+                color="heading"
+                className="m-0"
+              />
 
-        <EditableBox stylePath="contact.formCard" className="card" balance radius="xl">
-          <form
-            className="contact-form"
-            onSubmit={handleSubmit}
-            data-fivora-contact-disabled
-          >
-            <EditableText
-              variant="h2"
-              size="2xl"
-              weight="bold"
-              color="heading"
-              data-preview-field-path="contact.formTitle"
-              defaultValue={contentText(contact.formTitle)}
-            />
-            <label>
-              <EditableText
-                as="span"
-                fieldPath="contact.nameLabel"
-                defaultValue={contentText(contact.nameLabel ?? 'Name')}
-                placeholder="Name"
-              />
-              <input type="text" name="name" autoComplete="name" required />
-            </label>
-            <label>
-              <EditableText
-                as="span"
-                fieldPath="contact.emailLabel"
-                defaultValue={contentText(contact.emailLabel ?? 'Email')}
-                placeholder="Email"
-              />
-              <input type="email" name="email" autoComplete="email" required />
-            </label>
-            <label>
-              <EditableText
-                as="span"
-                fieldPath="contact.messageLabel"
-                defaultValue={contentText(contact.messageLabel ?? 'Message')}
-                placeholder="Message"
-              />
-              <textarea name="message" rows={4} required />
-            </label>
-            <button type="submit" className="button-primary" style={{ marginTop: '0.5rem' }}>
-              <span data-preview-field-path="contact.submitLabel">
-                {contentText(contact.submitLabel)}
-              </span>
-            </button>
-            {status && (
-              <p role="status" aria-live="polite" style={{ marginTop: '0.75rem', fontSize: '0.9rem' }}>
-                {status}
-              </p>
-            )}
-          </form>
-        </EditableBox>
+              <div className="mt-6 flex flex-col gap-5 border-t border-[#262923]/10 pt-6 text-sm dark:border-[#F8F6F1]/10">
+                <div className="flex items-start gap-3.5">
+                  <Phone className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#B59B79]" aria-hidden="true" />
+                  <a
+                    href={phone ? `tel:${phone}` : ''}
+                    data-preview-field-path="contact.phone"
+                    className="font-medium text-[#262923] no-underline transition-colors hover:text-[#747B65] dark:text-[#F8F6F1]"
+                  >
+                    {phone}
+                  </a>
+                </div>
+
+                <div className="flex items-start gap-3.5">
+                  <Mail className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#B59B79]" aria-hidden="true" />
+                  <a
+                    href={email ? `mailto:${email}` : ''}
+                    data-preview-field-path="contact.email"
+                    className="break-all font-medium text-[#262923] no-underline transition-colors hover:text-[#747B65] dark:text-[#F8F6F1]"
+                  >
+                    {email}
+                  </a>
+                </div>
+
+                <div className="flex items-start gap-3.5">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#B59B79]" aria-hidden="true" />
+                  <EditableText
+                    as="p"
+                    data-preview-field-path="contact.address"
+                    defaultValue={address}
+                    fontFamily="body"
+                    size="0.9rem"
+                    lineHeight={1.7}
+                    color="muted"
+                    className="m-0"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-3 border-t border-[#262923]/10 pt-6 dark:border-[#F8F6F1]/10">
+                <a
+                  href={directionsUrl || '#'}
+                  data-preview-field-path="contact.directionsUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="loome-btn-outline px-5 py-3 text-[11px]"
+                >
+                  <MapPin className="h-3.5 w-3.5 stroke-[1.5]" aria-hidden="true" />
+                  <span data-preview-field-path="contact.directionsLabel">{directionsLabel}</span>
+                </a>
+                <a
+                  href={whatsapp ? `https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}` : '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-preview-field-path="contact.whatsapp"
+                  className="loome-btn-primary px-5 py-3 text-[11px]"
+                >
+                  <span data-preview-field-path="contact.directMessageText">
+                    {directMessageText}
+                  </span>
+                  <ArrowRight className="h-3.5 w-3.5 stroke-[1.5]" aria-hidden="true" />
+                </a>
+              </div>
+            </EditableBox>
+          </LuxuryReveal>
+
+          <LuxuryReveal delay={0.1} className="lg:col-span-7">
+            <EditableBox
+              stylePath="contact.formCard"
+              className="border border-[#262923]/12 bg-[#FCFBF8] p-7 dark:border-[#F8F6F1]/12 dark:bg-[#171915] sm:p-9"
+              balance
+              radius="none"
+            >
+              <form
+                className="contact-form"
+                onSubmit={handleSubmit}
+                data-fivora-contact-disabled
+              >
+                <EditableText
+                  as="h2"
+                  data-preview-field-path="contact.formTitle"
+                  defaultValue={contentText(contact.formTitle)}
+                  fontFamily="heading"
+                  size="1.85rem"
+                  weight={400}
+                  lineHeight={1.15}
+                  color="heading"
+                  className="mb-2"
+                />
+
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <label>
+                    <EditableText
+                      as="span"
+                      data-preview-field-path="contact.nameLabel"
+                      defaultValue={contentText(contact.nameLabel ?? 'Full Name')}
+                      placeholder="Full Name"
+                      fontFamily="body"
+                      size="0.6875rem"
+                      weight={500}
+                      transform="uppercase"
+                      letterSpacing="0.18em"
+                      color="muted"
+                    />
+                    <input type="text" name="name" autoComplete="name" required />
+                  </label>
+
+                  <label>
+                    <EditableText
+                      as="span"
+                      data-preview-field-path="contact.emailLabel"
+                      defaultValue={contentText(contact.emailLabel ?? 'Email Address')}
+                      placeholder="Email Address"
+                      fontFamily="body"
+                      size="0.6875rem"
+                      weight={500}
+                      transform="uppercase"
+                      letterSpacing="0.18em"
+                      color="muted"
+                    />
+                    <input type="email" name="email" autoComplete="email" required />
+                  </label>
+                </div>
+
+                <label>
+                  <EditableText
+                    as="span"
+                    data-preview-field-path="contact.messageLabel"
+                    defaultValue={contentText(contact.messageLabel ?? 'Project Details or Swatch Request')}
+                    placeholder="Message"
+                    fontFamily="body"
+                    size="0.6875rem"
+                    weight={500}
+                    transform="uppercase"
+                    letterSpacing="0.18em"
+                    color="muted"
+                  />
+                  <textarea name="message" rows={4} required />
+                </label>
+
+                <div className="pt-2">
+                  <button type="submit" className="group loome-btn-primary">
+                    <span data-preview-field-path="contact.submitLabel">
+                      {contentText(contact.submitLabel)}
+                    </span>
+                    <ArrowRight className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1" />
+                  </button>
+                </div>
+
+                {status && (
+                  <p
+                    role="status"
+                    aria-live="polite"
+                    className="m-0 pt-2 text-sm text-[#595C52] dark:text-[#B6B8AE]"
+                  >
+                    {status}
+                  </p>
+                )}
+              </form>
+            </EditableBox>
+          </LuxuryReveal>
+        </div>
       </section>
     </div>
   );

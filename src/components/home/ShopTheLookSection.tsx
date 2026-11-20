@@ -68,7 +68,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
     <section
       id="shop-the-look"
       data-design-section="shop-the-look"
-      className="w-full border-y border-[#262923]/8 bg-[#E8E0D5]/38 py-24 dark:border-[#F8F6F1]/8 dark:bg-[#20231D] lg:py-32"
+      className="w-full border-y border-[#262923]/8 bg-[#E8E0D5]/38 py-16 dark:border-[#F8F6F1]/8 dark:bg-[#20231D] sm:py-20 lg:py-24"
     >
       <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
         <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
@@ -78,14 +78,24 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
               data-preview-field-path="home.shopTheLook.eyebrow"
               defaultValue={contentText(look.eyebrow) || 'INTERACTIVE STYLING'}
               fontFamily="body"
-              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+              size="0.6875rem"
+              weight={500}
+              transform="uppercase"
+              letterSpacing="0.26em"
+              color="primary"
+              className="m-0"
             />
             <EditableText
               as="h2"
               data-preview-field-path="home.shopTheLook.title"
               defaultValue={contentText(look.title) || 'Shop the Look'}
               fontFamily="heading"
-              className="mt-3 font-serif text-4xl font-light leading-[1.06] tracking-tight text-[#262923] dark:text-[#F8F6F1] sm:text-5xl lg:text-[3.5rem]"
+              size="clamp(2.35rem, 4.2vw, 3.5rem)"
+              weight={300}
+              lineHeight={1.06}
+              letterSpacing="-0.02em"
+              color="heading"
+              className="mt-3 mb-0"
             />
           </div>
           <EditableText
@@ -93,7 +103,10 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
             data-preview-field-path="home.shopTheLook.subtitle"
             defaultValue={contentText(look.subtitle)}
             fontFamily="body"
-            className="m-0 max-w-md text-sm leading-relaxed text-[#65685E] dark:text-[#B6B8AE]"
+            size="0.9375rem"
+            lineHeight={1.75}
+            color="muted"
+            className="m-0 max-w-md"
           />
         </LuxuryReveal>
 

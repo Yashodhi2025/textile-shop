@@ -8,13 +8,24 @@
   --loome-ivory-soft: #FCFBF8;
   --loome-ivory-deep: #F0ECE3;
   --loome-charcoal: #262923;
-  --loome-muted: #65685E;
+  --loome-muted: #595C52;
   --loome-olive: #747B65;
   --loome-gold: #B59B79;
   --loome-beige: #E8E0D5;
   --loome-border: rgba(38, 41, 35, 0.11);
   --heading-font: 'Cormorant Garamond', Georgia, serif;
   --body-font: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --page-background: #F8F6F1;
+  --page-text: #262923;
+  --heading-color: #262923;
+  --muted-text: #595C52;
+  --color-text: #262923;
+  --color-text-muted: #595C52;
+  --color-border: rgba(38, 41, 35, 0.12);
+  --brand-color: #747B65;
+  --brand-primary: #747B65;
+  --brand-secondary: #262923;
+  --brand-accent: #B59B79;
 }
 
 html.dark,
@@ -26,6 +37,13 @@ html.dark,
   --loome-charcoal: #F8F6F1;
   --loome-muted: #B6B8AE;
   --loome-border: rgba(248, 246, 241, 0.12);
+  --page-background: #171915;
+  --page-text: #F8F6F1;
+  --heading-color: #F8F6F1;
+  --muted-text: #B6B8AE;
+  --color-text: #F8F6F1;
+  --color-text-muted: #B6B8AE;
+  --color-border: rgba(248, 246, 241, 0.14);
 }
 
 * {

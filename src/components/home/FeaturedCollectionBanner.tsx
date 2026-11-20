@@ -61,13 +61,19 @@ export default function FeaturedCollectionBanner() {
 
       {/* Centered Glass-Veiled Editorial Messaging */}
       <div className="relative z-10 mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
-        <LuxuryReveal className="mx-auto max-w-2xl border border-[#F8F6F1]/22 bg-[#262923]/42 px-7 py-12 text-center text-[#F8F6F1] backdrop-blur-md sm:px-14 sm:py-16">
+        <LuxuryReveal className="mx-auto max-w-2xl border border-[#F8F6F1]/22 bg-[#262923]/48 px-7 py-12 text-center text-[#F8F6F1] backdrop-blur-md sm:px-14 sm:py-16">
           <EditableText
             as="p"
             data-preview-field-path="home.featuredCollection.eyebrow"
             defaultValue={eyebrow}
             fontFamily="body"
-            className="m-0 text-[11px] font-medium uppercase tracking-[0.28em] text-[#E8E0D5]"
+            size="0.6875rem"
+            weight={500}
+            transform="uppercase"
+            letterSpacing="0.28em"
+            color="#E8E0D5"
+            align="center"
+            className="m-0"
           />
 
           <EditableText
@@ -75,7 +81,13 @@ export default function FeaturedCollectionBanner() {
             data-preview-field-path="home.featuredCollection.title"
             defaultValue={title}
             fontFamily="heading"
-            className="mt-4 font-serif text-4xl font-light leading-[1.04] tracking-tight text-[#F8F6F1] sm:text-5xl lg:text-6xl"
+            size="clamp(2.5rem, 4.8vw, 4rem)"
+            weight={300}
+            lineHeight={1.04}
+            letterSpacing="-0.02em"
+            color="#F8F6F1"
+            align="center"
+            className="mt-4 mb-0"
           />
 
           <div className="mx-auto my-6 h-px w-14 bg-[#B59B79]" aria-hidden="true" />
@@ -85,7 +97,12 @@ export default function FeaturedCollectionBanner() {
             data-preview-field-path="home.featuredCollection.description"
             defaultValue={description}
             fontFamily="body"
-            className="mx-auto m-0 max-w-lg text-sm font-light leading-[1.85] text-[#F8F6F1]/86 sm:text-[15px]"
+            size="0.96875rem"
+            weight={400}
+            lineHeight={1.82}
+            color="rgba(248, 246, 241, 0.9)"
+            align="center"
+            className="mx-auto m-0 max-w-lg"
           />
 
           <div className="mt-9 flex justify-center">

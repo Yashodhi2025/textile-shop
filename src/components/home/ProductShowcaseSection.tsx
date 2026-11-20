@@ -48,7 +48,7 @@ export default function ProductShowcaseSection({
     <section
       id={id}
       data-design-section={designSection}
-      className={`w-full py-24 lg:py-32 ${surfaceClassName}`}
+      className={`w-full py-16 sm:py-20 lg:py-24 ${surfaceClassName}`}
     >
       <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
         <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">

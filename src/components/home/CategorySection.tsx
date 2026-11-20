@@ -37,7 +37,7 @@ export default function CategorySection() {
     <section
       id="categories"
       data-design-section="home-categories"
-      className="mx-auto max-w-[1440px] px-4 py-24 sm:px-8 lg:px-14 lg:py-32"
+      className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24"
     >
       {/* Editorial Section Header */}
       <LuxuryReveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
@@ -47,14 +47,24 @@ export default function CategorySection() {
             data-preview-field-path="home.categoriesEyebrow"
             defaultValue={contentText(home.categoriesEyebrow) || 'CURATED EDITIONS'}
             fontFamily="body"
-            className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+            size="0.6875rem"
+            weight={500}
+            transform="uppercase"
+            letterSpacing="0.26em"
+            color="primary"
+            className="m-0"
           />
           <EditableText
             as="h2"
             data-preview-field-path="home.categoriesHeading"
             defaultValue={contentText(home.categoriesHeading) || 'Shop by Category'}
             fontFamily="heading"
-            className="mt-3 font-serif text-4xl font-light leading-[1.06] tracking-tight text-[#262923] dark:text-[#F8F6F1] sm:text-5xl lg:text-[3.5rem]"
+            size="clamp(2.35rem, 4.2vw, 3.5rem)"
+            weight={300}
+            lineHeight={1.06}
+            letterSpacing="-0.02em"
+            color="heading"
+            className="mt-3 mb-0"
           />
         </div>
         <EditableText
@@ -62,7 +72,10 @@ export default function CategorySection() {
           data-preview-field-path="home.categoriesSummary"
           defaultValue={contentText(home.categoriesSummary)}
           fontFamily="body"
-          className="m-0 max-w-md text-sm leading-relaxed text-[#65685E] dark:text-[#B6B8AE]"
+          size="0.9375rem"
+          lineHeight={1.75}
+          color="muted"
+          className="m-0 max-w-md"
         />
       </LuxuryReveal>
 

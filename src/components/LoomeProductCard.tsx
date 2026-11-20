@@ -143,7 +143,12 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
             data-preview-field-path={`products[${idx}].name`}
             defaultValue={product.name}
             fontFamily="heading"
-            className="font-serif text-[21px] font-normal leading-snug tracking-tight"
+            size="1.375rem"
+            weight={400}
+            lineHeight={1.25}
+            letterSpacing="-0.01em"
+            color="inherit"
+            className="m-0"
           />
         </a>
 
@@ -151,7 +156,11 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
           as="p"
           data-preview-field-path={`products[${idx}].description`}
           defaultValue={product.description}
-          className="mt-1.5 line-clamp-2 text-xs leading-relaxed text-[#65685E] dark:text-[#B6B8AE]"
+          fontFamily="body"
+          size="0.8125rem"
+          lineHeight={1.65}
+          color="muted"
+          className="mt-1.5 mb-0 line-clamp-2"
         />
 
         {/* Price + Interactive Color Swatches Footer */}

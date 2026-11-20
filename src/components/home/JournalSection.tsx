@@ -44,7 +44,7 @@ export default function JournalSection() {
     <section
       id="journal"
       data-design-section="home-journal"
-      className="mx-auto max-w-[1440px] px-4 py-24 sm:px-8 lg:px-14 lg:py-32"
+      className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24"
     >
       <LuxuryReveal className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div className="max-w-2xl">
@@ -53,14 +53,24 @@ export default function JournalSection() {
             data-preview-field-path="home.journalEyebrow"
             defaultValue={contentText(home.journalEyebrow) || 'THE LOOMÉ JOURNAL'}
             fontFamily="body"
-            className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+            size="0.6875rem"
+            weight={500}
+            transform="uppercase"
+            letterSpacing="0.26em"
+            color="primary"
+            className="m-0"
           />
           <EditableText
             as="h2"
             data-preview-field-path="home.journalHeading"
             defaultValue={contentText(home.journalHeading) || 'Notes on Material & Light'}
             fontFamily="heading"
-            className="mt-3 font-serif text-4xl font-light leading-[1.06] tracking-tight text-[#262923] dark:text-[#F8F6F1] sm:text-5xl lg:text-[3.5rem]"
+            size="clamp(2.35rem, 4.2vw, 3.5rem)"
+            weight={300}
+            lineHeight={1.06}
+            letterSpacing="-0.02em"
+            color="heading"
+            className="mt-3 mb-0"
           />
         </div>
         <EditableText
@@ -68,7 +78,10 @@ export default function JournalSection() {
           data-preview-field-path="home.journalSummary"
           defaultValue={contentText(home.journalSummary)}
           fontFamily="body"
-          className="m-0 max-w-md text-sm leading-relaxed text-[#65685E] dark:text-[#B6B8AE]"
+          size="0.9375rem"
+          lineHeight={1.75}
+          color="muted"
+          className="m-0 max-w-md"
         />
       </LuxuryReveal>
 
@@ -127,7 +140,12 @@ export default function JournalSection() {
                         data-preview-field-path={`home.journalPosts[${post.index}].title`}
                         defaultValue={post.title}
                         fontFamily="heading"
-                        className="m-0 font-serif text-2xl font-normal leading-snug tracking-tight sm:text-[1.7rem]"
+                        size="1.625rem"
+                        weight={400}
+                        lineHeight={1.22}
+                        letterSpacing="-0.01em"
+                        color="inherit"
+                        className="m-0"
                       />
                     </button>
 
@@ -136,7 +154,10 @@ export default function JournalSection() {
                       data-preview-field-path={`home.journalPosts[${post.index}].excerpt`}
                       defaultValue={post.excerpt}
                       fontFamily="body"
-                      className="mt-2.5 m-0 text-sm leading-relaxed text-[#65685E] dark:text-[#B6B8AE]"
+                      size="0.875rem"
+                      lineHeight={1.72}
+                      color="muted"
+                      className="mt-2.5 mb-0"
                     />
 
                     <div className="mt-auto pt-5">

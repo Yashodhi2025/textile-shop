@@ -32,7 +32,6 @@ export default function HomePage() {
     [rawProducts],
   );
 
-  // Split live catalog seamlessly into New Arrivals & Bestsellers while preserving every original index
   const { newArrivals, bestsellers } = useMemo(() => {
     const taggedNew = allProducts.filter((p) => p.collectionTag === 'new');
     const taggedBest = allProducts.filter((p) => p.collectionTag === 'bestseller');
@@ -51,16 +50,10 @@ export default function HomePage() {
 
   return (
     <div data-preview-page-key="home" className="w-full overflow-x-clip">
-      {/* 1. Cinematic Full-Width Hero */}
       <HeroSection />
-
-      {/* 2. Infinite Scrolling Brand Marquee */}
       <BrandMarquee />
-
-      {/* 3. Asymmetric Shop by Category Cards */}
       <CategorySection />
 
-      {/* 4. New Arrivals 4-Column Product Grid with Interactive Category Filters */}
       <ProductShowcaseSection
         id="new-arrivals"
         designSection="home-products"
@@ -71,14 +64,24 @@ export default function HomePage() {
               data-preview-field-path="home.productsEyebrow"
               defaultValue={contentText(home.productsEyebrow) || 'SEASONAL ARRIVALS'}
               fontFamily="body"
-              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+              size="0.6875rem"
+              weight={500}
+              transform="uppercase"
+              letterSpacing="0.26em"
+              color="primary"
+              className="m-0"
             />
             <EditableText
               as="h2"
               data-preview-field-path="home.productsHeading"
               defaultValue={contentText(home.productsHeading) || 'New Arrivals'}
               fontFamily="heading"
-              className="mt-3 font-serif text-4xl font-light leading-[1.06] tracking-tight text-[#262923] dark:text-[#F8F6F1] sm:text-5xl lg:text-[3.5rem]"
+              size="clamp(2.35rem, 4.2vw, 3.5rem)"
+              weight={300}
+              lineHeight={1.06}
+              letterSpacing="-0.02em"
+              color="heading"
+              className="mt-3 mb-0"
             />
           </>
         }
@@ -88,7 +91,10 @@ export default function HomePage() {
             data-preview-field-path="home.productsSummary"
             defaultValue={contentText(home.productsSummary)}
             fontFamily="body"
-            className="m-0 max-w-md text-sm leading-relaxed text-[#65685E] dark:text-[#B6B8AE] lg:text-right"
+            size="0.9375rem"
+            lineHeight={1.75}
+            color="muted"
+            className="m-0 max-w-md lg:text-right"
           />
         }
         products={newArrivals}
@@ -96,13 +102,9 @@ export default function HomePage() {
         surfaceClassName="border-t border-[#262923]/8 dark:border-[#F8F6F1]/8"
       />
 
-      {/* 5. Editorial Craftsmanship Split Section ("The Beauty Is in the Details") */}
       <CraftsmanshipSection />
-
-      {/* 6. Featured Seasonal Collection Banner */}
       <FeaturedCollectionBanner />
 
-      {/* 7. Bestsellers Reusable Product Showcase */}
       <ProductShowcaseSection
         id="bestsellers"
         designSection="home-bestsellers"
@@ -113,14 +115,24 @@ export default function HomePage() {
               data-preview-field-path="home.bestsellersEyebrow"
               defaultValue={contentText(home.bestsellersEyebrow) || 'CLIENT FAVORITES'}
               fontFamily="body"
-              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+              size="0.6875rem"
+              weight={500}
+              transform="uppercase"
+              letterSpacing="0.26em"
+              color="primary"
+              className="m-0"
             />
             <EditableText
               as="h2"
               data-preview-field-path="home.bestsellersHeading"
               defaultValue={contentText(home.bestsellersHeading) || 'Bestsellers'}
               fontFamily="heading"
-              className="mt-3 font-serif text-4xl font-light leading-[1.06] tracking-tight text-[#262923] dark:text-[#F8F6F1] sm:text-5xl lg:text-[3.5rem]"
+              size="clamp(2.35rem, 4.2vw, 3.5rem)"
+              weight={300}
+              lineHeight={1.06}
+              letterSpacing="-0.02em"
+              color="heading"
+              className="mt-3 mb-0"
             />
           </>
         }
@@ -130,22 +142,18 @@ export default function HomePage() {
             data-preview-field-path="home.bestsellersSummary"
             defaultValue={contentText(home.bestsellersSummary)}
             fontFamily="body"
-            className="m-0 max-w-md text-sm leading-relaxed text-[#65685E] dark:text-[#B6B8AE] lg:text-right"
+            size="0.9375rem"
+            lineHeight={1.75}
+            color="muted"
+            className="m-0 max-w-md lg:text-right"
           />
         }
         products={bestsellers}
       />
 
-      {/* 8. Interactive Shop the Look Editorial Room */}
       <ShopTheLookSection products={allProducts} />
-
-      {/* 9. Brand Benefits Pillars */}
       <BrandBenefitsSection />
-
-      {/* 10. Refined Client Testimonials Slider */}
       <TestimonialsSection />
-
-      {/* 11. Editorial Journal & Inspiration Cards */}
       <JournalSection />
     </div>
   );
