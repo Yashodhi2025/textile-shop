@@ -7,8 +7,28 @@
     "controlOnlyPaths": [
       "common.newsletterDescription",
       "products[*].id",
+      "products[*].isAvailable",
       "services[*].id",
       "products[*].currency",
+      "about.collageImages[*].id",
+      "products[*].showPrice",
+      "products[*].isPriceRange",
+      "products[*].minPrice",
+      "products[*].maxPrice",
+      "products[*].priceRange",
+      "products[*].collectionTag",
+      "products[*].material",
+      "products[*].colors[*].name",
+      "products[*].colors[*].hex",
+      "home.categories[*].id",
+      "home.testimonials[*].id",
+      "home.shopTheLook.hotspots[*].id",
+      "home.shopTheLook.hotspots[*].productId",
+      "home.shopTheLook.hotspots[*].x",
+      "home.shopTheLook.hotspots[*].y",
+      "home.journalPosts[*].id",
+      "home.journalPosts[*].body",
+      "services[*].showPrice",
       "contact.whatsapp"
     ]
   },
@@ -31,7 +51,7 @@
     },
     {
       "id": "services",
-      "label": "Services",
+      "label": "Collections & Services",
       "route": "/services"
     },
     {
@@ -74,8 +94,7 @@
             "key": "deadline",
             "type": "text",
             "label": "Sale end date and time (ISO)",
-            "placeholder": "2026-12-01T23:59+05:30",
-            "description": "Use YYYY-MM-DDTHH:MM with Z or a timezone offset. Example: 2026-12-01T23:59+05:30 (Sri Lanka time). Seconds are optional."
+            "placeholder": "2026-12-15T23:59+05:30"
           },
           {
             "key": "expiryMessage",
@@ -121,7 +140,7 @@
           {
             "key": "headerCtaLabel",
             "type": "text",
-            "label": "Header contact button"
+            "label": "Header atelier link label"
           },
           {
             "key": "navLabels",
@@ -131,7 +150,7 @@
               {
                 "key": "home",
                 "type": "text",
-                "label": "Home label"
+                "label": "Shop / Home label"
               },
               {
                 "key": "about_us",
@@ -141,7 +160,7 @@
               {
                 "key": "services",
                 "type": "text",
-                "label": "Services label"
+                "label": "Collections / Services label"
               },
               {
                 "key": "contact",
@@ -153,7 +172,7 @@
           {
             "key": "footerHeading",
             "type": "text",
-            "label": "Footer heading"
+            "label": "Newsletter & Footer heading"
           },
           {
             "key": "newsletterSubscribeLabel",
@@ -232,38 +251,273 @@
             "key": "bannerImageUrl",
             "type": "image",
             "label": "Hero image",
-            "recommendedWidth": 1600,
-            "recommendedHeight": 900
+            "recommendedWidth": 1920,
+            "recommendedHeight": 1080
           },
           {
             "key": "primaryCtaLabel",
             "type": "text",
-            "label": "Contact button"
+            "label": "Hero primary CTA"
           },
           {
             "key": "secondaryCtaLabel",
             "type": "text",
-            "label": "About button"
+            "label": "Hero secondary CTA"
+          },
+          {
+            "key": "marqueeText",
+            "type": "text",
+            "label": "Brand marquee text"
+          },
+          {
+            "key": "categoriesEyebrow",
+            "type": "text",
+            "label": "Categories eyebrow"
+          },
+          {
+            "key": "categoriesHeading",
+            "type": "text",
+            "label": "Categories heading"
+          },
+          {
+            "key": "categoriesSummary",
+            "type": "textarea",
+            "label": "Categories summary"
+          },
+          {
+            "key": "categories",
+            "type": "list",
+            "label": "Shop Categories",
+            "itemLabel": "Category",
+            "minItems": 0,
+            "maxItems": 8,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Category ID"
+              },
+              {
+                "key": "name",
+                "type": "text",
+                "label": "Category Name",
+                "required": true
+              },
+              {
+                "key": "subtitle",
+                "type": "text",
+                "label": "Subtitle"
+              },
+              {
+                "key": "itemCount",
+                "type": "text",
+                "label": "Edition Count Label"
+              },
+              {
+                "key": "imageUrl",
+                "type": "image",
+                "label": "Category Image"
+              }
+            ]
+          },
+          {
+            "key": "productsEyebrow",
+            "type": "text",
+            "label": "New Arrivals eyebrow"
+          },
+          {
+            "key": "productsHeading",
+            "type": "text",
+            "label": "New Arrivals heading"
+          },
+          {
+            "key": "productsSummary",
+            "type": "textarea",
+            "label": "New Arrivals summary"
+          },
+          {
+            "key": "introEyebrow",
+            "type": "text",
+            "label": "Craftsmanship eyebrow"
           },
           {
             "key": "introTitle",
             "type": "text",
-            "label": "Introduction title"
+            "label": "Craftsmanship heading"
           },
           {
             "key": "introBody",
             "type": "textarea",
-            "label": "Introduction body"
+            "label": "Craftsmanship story"
+          },
+          {
+            "key": "craftsmanshipImageUrl",
+            "type": "image",
+            "label": "Craftsmanship main image"
+          },
+          {
+            "key": "craftsmanshipDetailImageUrl",
+            "type": "image",
+            "label": "Craftsmanship weave detail image"
+          },
+          {
+            "key": "craftsmanshipCaption",
+            "type": "text",
+            "label": "Craftsmanship image caption"
+          },
+          {
+            "key": "demoPreOrderCta",
+            "type": "list",
+            "label": "Atelier Consultation CTA",
+            "itemLabel": "CTA Button",
+            "minItems": 0,
+            "maxItems": 6,
+            "fields": [
+              {
+                "key": "buttonLabel",
+                "type": "text",
+                "label": "Button Label"
+              },
+              {
+                "key": "buttonUrl",
+                "type": "url",
+                "label": "Button Url"
+              }
+            ]
+          },
+          {
+            "key": "featuredCollection",
+            "type": "object",
+            "label": "Featured Collection Banner",
+            "fields": [
+              {
+                "key": "eyebrow",
+                "type": "text",
+                "label": "Collection Eyebrow"
+              },
+              {
+                "key": "title",
+                "type": "text",
+                "label": "Collection Title"
+              },
+              {
+                "key": "description",
+                "type": "textarea",
+                "label": "Collection Description"
+              },
+              {
+                "key": "imageUrl",
+                "type": "image",
+                "label": "Banner Image"
+              },
+              {
+                "key": "ctaLabel",
+                "type": "text",
+                "label": "CTA Label"
+              },
+              {
+                "key": "ctaUrl",
+                "type": "url",
+                "label": "CTA URL"
+              }
+            ]
+          },
+          {
+            "key": "bestsellersEyebrow",
+            "type": "text",
+            "label": "Bestsellers eyebrow"
+          },
+          {
+            "key": "bestsellersHeading",
+            "type": "text",
+            "label": "Bestsellers heading"
+          },
+          {
+            "key": "bestsellersSummary",
+            "type": "textarea",
+            "label": "Bestsellers summary"
+          },
+          {
+            "key": "shopTheLook",
+            "type": "object",
+            "label": "Interactive Shop the Look",
+            "fields": [
+              {
+                "key": "eyebrow",
+                "type": "text",
+                "label": "Eyebrow"
+              },
+              {
+                "key": "title",
+                "type": "text",
+                "label": "Heading"
+              },
+              {
+                "key": "subtitle",
+                "type": "textarea",
+                "label": "Subtitle"
+              },
+              {
+                "key": "imageUrl",
+                "type": "image",
+                "label": "Room Scene Image"
+              },
+              {
+                "key": "hotspots",
+                "type": "list",
+                "label": "Room Hotspots",
+                "itemLabel": "Hotspot",
+                "minItems": 0,
+                "maxItems": 8,
+                "fields": [
+                  {
+                    "key": "id",
+                    "type": "text",
+                    "label": "ID"
+                  },
+                  {
+                    "key": "productId",
+                    "type": "text",
+                    "label": "Linked Product ID"
+                  },
+                  {
+                    "key": "label",
+                    "type": "text",
+                    "label": "Pin Label"
+                  },
+                  {
+                    "key": "note",
+                    "type": "text",
+                    "label": "Styling Note"
+                  },
+                  {
+                    "key": "x",
+                    "type": "number",
+                    "label": "X Position (%)"
+                  },
+                  {
+                    "key": "y",
+                    "type": "number",
+                    "label": "Y Position (%)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "featuresEyebrow",
+            "type": "text",
+            "label": "Brand Benefits eyebrow"
           },
           {
             "key": "featuresHeading",
             "type": "text",
-            "label": "Features heading"
+            "label": "Brand Benefits heading"
           },
           {
             "key": "features",
             "type": "list",
-            "label": "Features",
+            "label": "Brand Benefits",
             "minItems": 0,
             "maxItems": 8,
             "fields": [
@@ -281,34 +535,117 @@
             ]
           },
           {
-            "key": "demoPreOrderCta",
+            "key": "testimonialsEyebrow",
+            "type": "text",
+            "label": "Testimonials eyebrow"
+          },
+          {
+            "key": "testimonialsHeading",
+            "type": "text",
+            "label": "Testimonials heading"
+          },
+          {
+            "key": "testimonials",
             "type": "list",
-            "label": "Demo Pre Order Cta",
-            "itemLabel": "Demo Pre Order Cta",
+            "label": "Client Testimonials",
+            "itemLabel": "Testimonial",
             "minItems": 0,
-            "maxItems": 12,
+            "maxItems": 10,
             "fields": [
               {
-                "key": "buttonLabel",
+                "key": "id",
                 "type": "text",
-                "label": "Button Label"
+                "label": "ID"
               },
               {
-                "key": "buttonUrl",
-                "type": "url",
-                "label": "Button Url"
+                "key": "quote",
+                "type": "textarea",
+                "label": "Quote",
+                "required": true
+              },
+              {
+                "key": "author",
+                "type": "text",
+                "label": "Client Name",
+                "required": true
+              },
+              {
+                "key": "role",
+                "type": "text",
+                "label": "Role / Title"
+              },
+              {
+                "key": "location",
+                "type": "text",
+                "label": "Location"
+              },
+              {
+                "key": "productMention",
+                "type": "text",
+                "label": "Featured Product"
               }
             ]
           },
           {
-            "key": "productsHeading",
+            "key": "journalEyebrow",
             "type": "text",
-            "label": "Featured Products Heading"
+            "label": "Journal eyebrow"
           },
           {
-            "key": "productsSummary",
+            "key": "journalHeading",
+            "type": "text",
+            "label": "Journal heading"
+          },
+          {
+            "key": "journalSummary",
             "type": "textarea",
-            "label": "Featured Products Summary"
+            "label": "Journal summary"
+          },
+          {
+            "key": "journalPosts",
+            "type": "list",
+            "label": "Journal & Inspiration Stories",
+            "itemLabel": "Story",
+            "minItems": 0,
+            "maxItems": 6,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "ID"
+              },
+              {
+                "key": "category",
+                "type": "text",
+                "label": "Category"
+              },
+              {
+                "key": "readTime",
+                "type": "text",
+                "label": "Read Time"
+              },
+              {
+                "key": "title",
+                "type": "text",
+                "label": "Headline",
+                "required": true
+              },
+              {
+                "key": "excerpt",
+                "type": "textarea",
+                "label": "Excerpt"
+              },
+              {
+                "key": "body",
+                "type": "textarea",
+                "label": "Full Story"
+              },
+              {
+                "key": "imageUrl",
+                "type": "image",
+                "label": "Cover Image"
+              }
+            ]
           }
         ]
       },
@@ -384,7 +721,7 @@
         "path": "servicesPage",
         "pageKey": "services",
         "type": "object",
-        "label": "Services Page",
+        "label": "Collections & Services Page",
         "fields": [
           {
             "key": "heading",
@@ -448,7 +785,7 @@
           {
             "key": "priceLabel",
             "type": "text",
-            "label": "Price Label (e.g. Starting from, per hour)"
+            "label": "Price Label"
           },
           {
             "key": "showPrice",
@@ -620,6 +957,36 @@
             "key": "priceRange",
             "type": "text",
             "label": "Price Range Display"
+          },
+          {
+            "key": "collectionTag",
+            "type": "text",
+            "label": "Collection Group (new or bestseller)"
+          },
+          {
+            "key": "material",
+            "type": "text",
+            "label": "Material Composition"
+          },
+          {
+            "key": "colors",
+            "type": "list",
+            "label": "Color Swatches",
+            "itemLabel": "Color",
+            "minItems": 0,
+            "maxItems": 8,
+            "fields": [
+              {
+                "key": "name",
+                "type": "text",
+                "label": "Color Name"
+              },
+              {
+                "key": "hex",
+                "type": "text",
+                "label": "Color Hex"
+              }
+            ]
           }
         ]
       },
@@ -628,7 +995,7 @@
         "path": "announcementBarPreview",
         "pageKey": "announcement_bar_preview",
         "type": "object",
-        "label": "Announcement Bar Preview",
+        "label": "Announcement Bar",
         "fields": [
           {
             "key": "announcements",
@@ -652,7 +1019,7 @@
               {
                 "key": "icon",
                 "type": "text",
-                "label": "Icon (text or emoji)"
+                "label": "Icon (text or symbol)"
               },
               {
                 "key": "linkLabel",
@@ -686,20 +1053,20 @@
     ],
     "defaults": {
       "colors": {
-        "primary": "#2563eb",
-        "secondary": "#0f172a",
-        "accent": "#14b8a6",
-        "background": "#ffffff",
-        "text": "#0f172a"
+        "primary": "#747B65",
+        "secondary": "#262923",
+        "accent": "#B59B79",
+        "background": "#F8F6F1",
+        "text": "#262923"
       },
       "typography": {
-        "headingFont": "Inter",
-        "bodyFont": "Inter",
+        "headingFont": "Cormorant Garamond",
+        "bodyFont": "Manrope",
         "baseSize": "16px"
       },
       "spacing": {
-        "heroMinHeight": "72vh",
-        "sectionPadding": "5rem"
+        "heroMinHeight": "88vh",
+        "sectionPadding": "6rem"
       }
     }
   }

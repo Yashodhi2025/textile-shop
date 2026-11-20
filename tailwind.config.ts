@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -11,10 +12,44 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          primary: 'var(--brand-primary, #2563eb)',
-          secondary: 'var(--brand-secondary, #0f172a)',
-          accent: 'var(--brand-accent, #14b8a6)',
+          primary: 'var(--brand-primary, #747B65)',
+          secondary: 'var(--brand-secondary, #262923)',
+          accent: 'var(--brand-accent, #B59B79)',
         },
+        loome: {
+          ivory: '#F8F6F1',
+          'ivory-soft': '#FCFBF8',
+          'ivory-deep': '#F0ECE3',
+          charcoal: '#262923',
+          'charcoal-soft': '#3B3E36',
+          muted: '#65685E',
+          olive: '#747B65',
+          'olive-dark': '#5D6350',
+          gold: '#B59B79',
+          'gold-light': '#CEB99C',
+          beige: '#E8E0D5',
+          'beige-soft': '#F2ECE3',
+        },
+      },
+      fontFamily: {
+        serif: ['var(--heading-font, "Cormorant Garamond")', '"Cormorant Garamond"', 'Georgia', 'serif'],
+        sans: ['var(--body-font, "Manrope")', '"Manrope"', '"Inter"', 'system-ui', 'sans-serif'],
+      },
+      letterSpacing: {
+        editorial: '0.22em',
+        brand: '0.28em',
+      },
+      transitionTimingFunction: {
+        luxury: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 38s linear infinite',
       },
     },
   },

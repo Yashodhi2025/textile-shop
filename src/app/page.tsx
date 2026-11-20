@@ -1,404 +1,152 @@
 'use client';
 
+import { useMemo } from 'react';
+import { EditableText } from '@deneb-ui/ui';
 import {
-  contentList,
   contentObject,
   contentText,
-  platformProductDetailHref,
-  useSiteData,
   useProducts,
+  useSiteData,
 } from '@/lib/siteDataContext';
-import { pageRoute, withBasePath } from '@/lib/utils';
-import {
-  EditableText,
-  EditableList,
-  EditableCard,
-  EditableImage,
-} from '@deneb-ui/ui';
-
-
-function navigate(pageKey: string) {
-  window.location.href = withBasePath(pageRoute(pageKey));
-}
+import { normalizeLoomeProduct } from '@/lib/storeContext';
+import HeroSection from '@/components/home/HeroSection';
+import BrandMarquee from '@/components/home/BrandMarquee';
+import CategorySection from '@/components/home/CategorySection';
+import ProductShowcaseSection from '@/components/home/ProductShowcaseSection';
+import CraftsmanshipSection from '@/components/home/CraftsmanshipSection';
+import FeaturedCollectionBanner from '@/components/home/FeaturedCollectionBanner';
+import ShopTheLookSection from '@/components/home/ShopTheLookSection';
+import BrandBenefitsSection from '@/components/home/BrandBenefitsSection';
+import TestimonialsSection from '@/components/home/TestimonialsSection';
+import JournalSection from '@/components/home/JournalSection';
 
 export default function HomePage() {
   const siteData = useSiteData();
+  const rawProducts = useProducts();
+
   const content = contentObject(siteData.content);
   const home = contentObject(content.home);
-  const features = contentList(home.features);
-  const products = useProducts();
-  const demoCta = contentObject(
-    (contentList(home.demoPreOrderCta)[0] as Record<string, unknown> | undefined) ?? {}
+
+  const allProducts = useMemo(
+    () => rawProducts.map((item, index) => normalizeLoomeProduct(item, index)),
+    [rawProducts],
   );
-  const demoCtaLabel = contentText(demoCta.buttonLabel) || 'Book a Demo';
-  const demoCtaUrl = contentText(demoCta.buttonUrl) || '';
-  const selectedPages =
-    siteData.requirements?.requiredPages ??
-    siteData.template?.structure?.pages ??
-    [];
+
+  // Split live catalog seamlessly into New Arrivals & Bestsellers while preserving every original index
+  const { newArrivals, bestsellers } = useMemo(() => {
+    const taggedNew = allProducts.filter((p) => p.collectionTag === 'new');
+    const taggedBest = allProducts.filter((p) => p.collectionTag === 'bestseller');
+
+    if (taggedNew.length > 0 && taggedBest.length > 0) {
+      return { newArrivals: taggedNew, bestsellers: taggedBest };
+    }
+
+    const midpoint = Math.ceil(allProducts.length / 2);
+    return {
+      newArrivals: allProducts.slice(0, Math.max(midpoint, Math.min(4, allProducts.length))),
+      bestsellers:
+        allProducts.length > midpoint ? allProducts.slice(midpoint) : allProducts,
+    };
+  }, [allProducts]);
 
   return (
-    <div data-preview-page-key="home">
-      <section className="hero" data-design-section="home-hero">
-        <div className="hero-copy">
-          <EditableText
-            variant="eyebrow"
-            color="primary"
-            className="eyebrow"
-            data-preview-field-path="home.heroEyebrow"
-            defaultValue={contentText(home.heroEyebrow)}
-          />
-          <EditableText
-            variant="h1"
-            size="5xl"
-            weight="bold"
-            align="left"
-            color="heading"
-            data-preview-field-path="home.heroTitle"
-            defaultValue={contentText(home.heroTitle)}
-          />
-          <EditableText
-            variant="lead"
-            color="muted"
-            data-preview-field-path="home.heroSummary"
-            defaultValue={contentText(home.heroSummary)}
-          />
-          <div className="cta-row">
-            {selectedPages.includes('contact') ? (
-              <button
-                type="button"
-                data-target-page="contact"
-                className="button-primary"
-                onClick={() => navigate('contact')}
-              >
-                <span data-preview-field-path="home.primaryCtaLabel">
-                  {contentText(home.primaryCtaLabel)}
-                </span>
-              </button>
-            ) : (
-              <span
-                data-target-page="contact"
-                className="button-primary unavailable"
-                data-preview-field-path="home.primaryCtaLabel"
-              >
-                {contentText(home.primaryCtaLabel)}
-              </span>
-            )}
-            {selectedPages.includes('about_us') ? (
-              <button
-                type="button"
-                data-target-page="about_us"
-                className="button-secondary"
-                onClick={() => navigate('about_us')}
-              >
-                <span data-preview-field-path="home.secondaryCtaLabel">
-                  {contentText(home.secondaryCtaLabel)}
-                </span>
-              </button>
-            ) : (
-              <span
-                data-target-page="about_us"
-                className="button-secondary unavailable"
-                data-preview-field-path="home.secondaryCtaLabel"
-              >
-                {contentText(home.secondaryCtaLabel)}
-              </span>
-            )}
-          </div>
-        </div>
-        <div className="hero-fivora-wrap">
-          <img
-            className="hero-image"
-            src={withBasePath(
-              contentText(home.bannerImageUrl) || '/fivora-icon.svg',
-            )}
-            alt="Fivora"
-            data-preview-field-path="home.bannerImageUrl"
-          />
-        </div>
-      </section>
+    <div data-preview-page-key="home" className="w-full overflow-x-clip">
+      {/* 1. Cinematic Full-Width Hero */}
+      <HeroSection />
 
-      <section
-        className="page-section"
-        data-design-section="home-introduction"
-      >
-        <div className="home-intro-copy">
-          <EditableText
-            variant="h2"
-            size="3xl"
-            weight="bold"
-            align="center"
-            color="heading"
-            data-preview-field-path="home.introTitle"
-            defaultValue={contentText(home.introTitle)}
-          />
-          <EditableText
-            variant="lead"
-            align="center"
-            color="muted"
-            data-preview-field-path="home.introBody"
-            defaultValue={contentText(home.introBody)}
-          />
-          <div
-            style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', marginTop: '1.5rem', flexWrap: 'wrap' }}
-            data-preview-list-path="home.demoPreOrderCta"
-          >
-            {contentList(home.demoPreOrderCta).map((rawCta, index) => {
-              const cta = contentObject(rawCta);
-              const label = contentText(cta.buttonLabel) || 'Book a Consultation';
-              const url = contentText(cta.buttonUrl) || '#';
-              return (
-                <a
-                  key={index}
-                  href={url}
-                  className="button-primary"
-                  data-preview-item-path={`home.demoPreOrderCta[${index}]`}
-                  data-preview-field-path={`home.demoPreOrderCta[${index}].buttonUrl`}
-                >
-                  <span data-preview-field-path={`home.demoPreOrderCta[${index}].buttonLabel`}>
-                    {label}
-                  </span>
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      {/* 2. Infinite Scrolling Brand Marquee */}
+      <BrandMarquee />
 
-      <section
-        className="page-section alt"
-        data-design-section="home-features"
-      >
-        <div className="section-header">
-          <EditableText
-            variant="h2"
-            size="3xl"
-            weight="bold"
-            align="center"
-            color="heading"
-            className="section-title"
-            data-preview-field-path="home.featuresHeading"
-            defaultValue={contentText(home.featuresHeading)}
-          />
-        </div>
-        <EditableList
-          data-preview-list-path="home.features"
-          items={features}
-          className="card-grid"
-          itemAs={false}
-        >
-          {(rawFeature, index) => {
-            const feature = contentObject(rawFeature);
-            return (
-              <EditableCard
-                className="card"
-                key={index}
-                itemPath={`home.features[${index}]`}
-                data-preview-item-path={`home.features[${index}]`}
-                item={feature as any}
-                balance
-                minHeight="220px"
-                radius="16px"
-              >
-                <EditableText
-                  variant="h3"
-                  color="heading"
-                  data-preview-field-path={`home.features[${index}].title`}
-                  defaultValue={contentText(feature.title)}
-                />
-                <EditableText
-                  variant="p"
-                  color="muted"
-                  data-preview-field-path={`home.features[${index}].body`}
-                  defaultValue={contentText(feature.body)}
-                />
-              </EditableCard>
-            );
-          }}
-        </EditableList>
-      </section>
+      {/* 3. Asymmetric Shop by Category Cards */}
+      <CategorySection />
 
-      <section
-        className="page-section"
-        data-design-section="home-products"
-      >
-        <div className="section-header product-section-header">
+      {/* 4. New Arrivals 4-Column Product Grid with Interactive Category Filters */}
+      <ProductShowcaseSection
+        id="new-arrivals"
+        designSection="home-products"
+        headerLeft={
+          <>
+            <EditableText
+              as="p"
+              data-preview-field-path="home.productsEyebrow"
+              defaultValue={contentText(home.productsEyebrow) || 'SEASONAL ARRIVALS'}
+              fontFamily="body"
+              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+            />
+            <EditableText
+              as="h2"
+              data-preview-field-path="home.productsHeading"
+              defaultValue={contentText(home.productsHeading) || 'New Arrivals'}
+              fontFamily="heading"
+              className="mt-3 font-serif text-4xl font-light leading-[1.06] tracking-tight text-[#262923] dark:text-[#F8F6F1] sm:text-5xl lg:text-[3.5rem]"
+            />
+          </>
+        }
+        headerSummary={
           <EditableText
-            variant="h2"
-            size="3xl"
-            weight="bold"
-            align="center"
-            color="heading"
-            className="section-title"
-            data-preview-field-path="home.productsHeading"
-            defaultValue={contentText(home.productsHeading)}
-          />
-          <EditableText
-            variant="lead"
-            align="center"
-            color="muted"
+            as="p"
             data-preview-field-path="home.productsSummary"
             defaultValue={contentText(home.productsSummary)}
+            fontFamily="body"
+            className="m-0 max-w-md text-sm leading-relaxed text-[#65685E] dark:text-[#B6B8AE] lg:text-right"
           />
-        </div>
+        }
+        products={newArrivals}
+        showCategoryFilter
+        surfaceClassName="border-t border-[#262923]/8 dark:border-[#F8F6F1]/8"
+      />
 
-        <div className="card-grid" data-preview-list-path="products">
-          {products.map((rawProduct, index) => {
-            const product = contentObject(rawProduct);
-            const productId =
-              typeof product.id === 'string' || typeof product.id === 'number'
-                ? product.id
-                : null;
-            const price = typeof product.price === 'number' ? product.price : parseFloat(String(product.price || 0));
-            const compareAt = typeof product.compareAtPrice === 'number' ? product.compareAtPrice : parseFloat(String(product.compareAtPrice || 0));
-            const currency = contentText(product.currency) || 'LKR';
-            const badge = contentText(product.badge);
-            const category = contentText(product.category);
+      {/* 5. Editorial Craftsmanship Split Section ("The Beauty Is in the Details") */}
+      <CraftsmanshipSection />
 
-            const itemShowPrice =
-              (product as any)?.showPrice !== undefined
-                ? Boolean((product as any).showPrice)
-                : ((product as any)?.customData?.showPrice !== undefined
-                  ? Boolean((product as any).customData.showPrice)
-                  : true);
-            const isRange = Boolean(
-              (product as any)?.isPriceRange ||
-              ((product as any)?.minPrice !== undefined && (product as any)?.maxPrice !== undefined) ||
-              (product as any)?.priceRange
-            );
-            let displayPrice = `${currency} ${price}`;
-            if (isRange) {
-              if ((product as any).priceRange) {
-                displayPrice = String((product as any).priceRange);
-              } else {
-                const min = (product as any).minPrice !== undefined ? (product as any).minPrice : price;
-                const max = (product as any).maxPrice !== undefined ? (product as any).maxPrice : price;
-                displayPrice = `${currency} ${min} – ${currency} ${max}`;
-              }
-            }
+      {/* 6. Featured Seasonal Collection Banner */}
+      <FeaturedCollectionBanner />
 
-            return (
-              <EditableCard
-                key={productId ?? index}
-                className="card product-card"
-                item={product as any}
-                itemPath={`products[${index}]`}
-                data-preview-item-path={`products[${index}]`}
-                balance
-                radius="xl"
-                style={{ display: 'flex', flexDirection: 'column' }}
-              >
-                <a
-                  href={platformProductDetailHref(productId)}
-                  data-preview-static="Open the stable live product detail page"
-                  style={{ position: 'relative', overflow: 'hidden', borderRadius: '12px', marginBottom: '0.75rem', display: 'block' }}
-                >
-                  <EditableImage
-                    src={contentText(product.imageUrl) || '/placeholder.svg'}
-                    alt={contentText(product.name)}
-                    data-preview-field-path={`products[${index}].imageUrl`}
-                    aspectRatio="4/3"
-                    fit="cover"
-                    radius="lg"
-                  />
-                  {badge && (
-                    <span
-                      className="badge-primary"
-                      data-preview-field-path={`products[${index}].badge`}
-                      style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 10 }}
-                    >
-                      {badge}
-                    </span>
-                  )}
-                </a>
+      {/* 7. Bestsellers Reusable Product Showcase */}
+      <ProductShowcaseSection
+        id="bestsellers"
+        designSection="home-bestsellers"
+        headerLeft={
+          <>
+            <EditableText
+              as="p"
+              data-preview-field-path="home.bestsellersEyebrow"
+              defaultValue={contentText(home.bestsellersEyebrow) || 'CLIENT FAVORITES'}
+              fontFamily="body"
+              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+            />
+            <EditableText
+              as="h2"
+              data-preview-field-path="home.bestsellersHeading"
+              defaultValue={contentText(home.bestsellersHeading) || 'Bestsellers'}
+              fontFamily="heading"
+              className="mt-3 font-serif text-4xl font-light leading-[1.06] tracking-tight text-[#262923] dark:text-[#F8F6F1] sm:text-5xl lg:text-[3.5rem]"
+            />
+          </>
+        }
+        headerSummary={
+          <EditableText
+            as="p"
+            data-preview-field-path="home.bestsellersSummary"
+            defaultValue={contentText(home.bestsellersSummary)}
+            fontFamily="body"
+            className="m-0 max-w-md text-sm leading-relaxed text-[#65685E] dark:text-[#B6B8AE] lg:text-right"
+          />
+        }
+        products={bestsellers}
+      />
 
-                <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '0.5rem' }}>
-                  {category && (
-                    <span
-                      className="tag"
-                      data-preview-field-path={`products[${index}].category`}
-                      style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}
-                    >
-                      {category}
-                    </span>
-                  )}
-                  <a
-                    href={platformProductDetailHref(productId)}
-                    data-preview-static="Open the stable live product detail page"
-                    style={{ textDecoration: 'none', color: 'inherit' }}
-                  >
-                    <EditableText
-                      variant="h3"
-                      size="lg"
-                      weight="bold"
-                      color="heading"
-                      data-preview-field-path={`products[${index}].name`}
-                      defaultValue={contentText(product.name)}
-                    />
-                  </a>
-                  <EditableText
-                    variant="p"
-                    color="muted"
-                    data-preview-field-path={`products[${index}].description`}
-                    defaultValue={contentText(product.description)}
-                  />
+      {/* 8. Interactive Shop the Look Editorial Room */}
+      <ShopTheLookSection products={allProducts} />
 
-                  {itemShowPrice ? (
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginTop: 'auto', paddingTop: '0.75rem', flexWrap: 'wrap' }}>
-                      <EditableText
-                        as="span"
-                        weight="bold"
-                        size="xl"
-                        color="primary"
-                        data-preview-field-path={`products[${index}].price`}
-                        defaultValue={displayPrice}
-                      />
-                      {compareAt > 0 && !isRange && (
-                        <EditableText
-                          as="span"
-                          color="muted"
-                          style={{ textDecoration: 'line-through', fontSize: '0.875rem' }}
-                          data-preview-field-path={`products[${index}].compareAtPrice`}
-                          defaultValue={`${currency} ${compareAt}`}
-                        />
-                      )}
-                    </div>
-                  ) : (
-                    <div style={{ marginTop: 'auto', paddingTop: '0.75rem' }}>
-                      <span
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          padding: '3px 8px',
-                          borderRadius: '6px',
-                          fontSize: '0.75rem',
-                          fontWeight: 600,
-                          backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                          color: 'var(--muted-text, #94a3b8)',
-                          border: '1px solid rgba(255, 255, 255, 0.12)',
-                        }}
-                      >
-                        Price on Request
-                      </span>
-                    </div>
-                  )}
+      {/* 9. Brand Benefits Pillars */}
+      <BrandBenefitsSection />
 
-                  <div style={{ marginTop: '0.75rem' }}>
-                    <a
-                      href={platformProductDetailHref(productId)}
-                      className="button-secondary"
-                      style={{ width: '100%', textAlign: 'center' }}
-                      data-preview-static="Open the stable live product detail page"
-                    >
-                      View details
-                    </a>
-                  </div>
-                </div>
-              </EditableCard>
-            );
-          })}
-        </div>
-      </section>
+      {/* 10. Refined Client Testimonials Slider */}
+      <TestimonialsSection />
+
+      {/* 11. Editorial Journal & Inspiration Cards */}
+      <JournalSection />
     </div>
   );
 }

@@ -1,32 +1,39 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import dynamic from 'next/dynamic';
-import { usePathname } from 'next/navigation';
+import { MotionConfig } from 'framer-motion';
+import { CartProvider, FloatingContactWidget, getThemeCssProperties } from '@deneb-ui/ui';
 import { useSiteData } from '@/lib/siteDataContext';
-import { Navbar, Footer, AnnouncementBar, FloatingContactWidget, getThemeCssProperties } from '@deneb-ui/ui';
+import { LoomeStoreProvider } from '@/lib/storeContext';
+import LoomeAnnouncementBar from './LoomeAnnouncementBar';
+import LoomeNavbar from './LoomeNavbar';
+import LoomeFooter from './LoomeFooter';
+import LoomeOverlays from './LoomeOverlays';
 import { ThemeToggle } from './ThemeToggle';
-
-const AnnouncementPreviewStrip = dynamic(() => import('./AnnouncementPreviewStrip'));
 
 export default function SiteChrome({ children }: { children: ReactNode }) {
   const siteData = useSiteData();
-  const pathname = usePathname();
-  const isAnnouncementPreview = pathname === '/announcement-bar-preview' || pathname === '/announcement-bar-preview/';
   const themeStyle = getThemeCssProperties(
     siteData?.template?.structure?.theme as any,
   );
 
   return (
-    <div className="site-shell" style={themeStyle}>
-      {isAnnouncementPreview ? <AnnouncementPreviewStrip /> : <AnnouncementBar />}
-      <Navbar activeRoute={pathname} />
-      <main>{children}</main>
-      <Footer />
-      <FloatingContactWidget />
-      <div className="fixed bottom-6 left-6 z-40">
-        <ThemeToggle showLabel className="shadow-lg backdrop-blur-md" />
-      </div>
-    </div>
+    <MotionConfig reducedMotion="user">
+      <CartProvider storageKey="loome_atelier_cart_v1">
+        <LoomeStoreProvider>
+          <div className="site-shell" style={themeStyle}>
+            <LoomeAnnouncementBar />
+            <LoomeNavbar />
+            <main>{children}</main>
+            <LoomeFooter />
+            <LoomeOverlays />
+            <FloatingContactWidget />
+            <div className="fixed bottom-6 left-6 z-30">
+              <ThemeToggle className="border border-[#262923]/15 bg-[#F8F6F1]/90 shadow-md backdrop-blur-md dark:border-[#F8F6F1]/15 dark:bg-[#20231D]/90" />
+            </div>
+          </div>
+        </LoomeStoreProvider>
+      </CartProvider>
+    </MotionConfig>
   );
 }

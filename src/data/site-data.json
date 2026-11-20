@@ -1,25 +1,25 @@
 {
   "styles": {
     "home.countdown.card": {
-      "backgroundColor": "#193e34"
+      "backgroundColor": "#262923"
     },
     "home.countdown.text": {
-      "color": "#fffaf0"
+      "color": "#F8F6F1"
     }
   },
   "project": {
-    "id": "deneb-portfolio-showcase",
-    "slug": "deneb-portfolio-showcase",
-    "title": "DENEB UI — Showcase & Portfolio",
+    "id": "loome-fine-textiles",
+    "slug": "loome-fine-textiles",
+    "title": "LOOMÉ — The Art of Fine Textiles",
     "status": "APPROVED"
   },
   "merchant": {
-    "businessName": "DENEB UI Showcase",
-    "description": "The visual-first React framework for high-converting storefronts and modern digital portfolios. Powered by DENEB-UI in collaboration with FIVORA."
+    "businessName": "LOOMÉ",
+    "description": "The Art of Fine Textiles. Architectural drapery, stonewashed European flax bedding, and heirloom upholstery woven for serene modern living."
   },
   "template": {
-    "id": "deneb-portfolio-template",
-    "name": "DENEB UI Portfolio Showcase",
+    "id": "loome-luxury-textile-storefront",
+    "name": "LOOMÉ Luxury Textile Storefront",
     "engine": "NEXT_STATIC_EXPORT",
     "structure": {
       "pages": [
@@ -29,28 +29,28 @@
         "contact"
       ],
       "theme": {
-        "primaryColor": "#2563eb",
-        "secondaryColor": "#1e293b",
-        "accentColor": "#3b82f6",
-        "backgroundColor": "#ffffff",
-        "textColor": "#0f172a",
-        "headingFont": "Inter",
-        "bodyFont": "Inter",
+        "primaryColor": "#747B65",
+        "secondaryColor": "#262923",
+        "accentColor": "#B59B79",
+        "backgroundColor": "#F8F6F1",
+        "textColor": "#262923",
+        "headingFont": "Cormorant Garamond",
+        "bodyFont": "Manrope",
         "baseSize": "16px",
-        "heroMinHeight": "72vh",
-        "sectionPadding": "5rem",
-        "borderRadius": "12px",
+        "heroMinHeight": "88vh",
+        "sectionPadding": "6rem",
+        "borderRadius": "4px",
+        "cardBackgroundColor": "#FCFBF8",
+        "borderColor": "#E8E0D5",
         "dark": {
-          "backgroundColor": "#090d16",
-          "cardBackgroundColor": "#131b2e",
-          "textColor": "#f8fafc",
-          "borderColor": "rgba(255, 255, 255, 0.12)",
-          "primaryColor": "#00adb5",
-          "secondaryColor": "#1e293b",
-          "accentColor": "#38bdf8"
-        },
-        "cardBackgroundColor": "#ffffff",
-        "borderColor": "#e2e8f0"
+          "backgroundColor": "#171915",
+          "cardBackgroundColor": "#20231D",
+          "textColor": "#F8F6F1",
+          "borderColor": "rgba(248, 246, 241, 0.12)",
+          "primaryColor": "#98A086",
+          "secondaryColor": "#262923",
+          "accentColor": "#C9B292"
+        }
       }
     }
   },
@@ -67,249 +67,535 @@
     "announcementBarPreview": {
       "announcements": [
         {
-          "text": "A little good news: delivery is on us this weekend.",
-          "badge": "Delivery",
-          "icon": "🚚",
-          "linkLabel": "See details",
-          "linkUrl": "#preview-details"
+          "text": "Complimentary Swatch Box with Every Bespoke Drapery Inquiry",
+          "badge": "Atelier",
+          "icon": "✦",
+          "linkLabel": "Request Swatches",
+          "linkUrl": "/contact"
         },
         {
-          "text": "Meet the latest additions to our collection.",
-          "badge": "New",
-          "icon": "✨",
-          "linkLabel": "Explore the collection",
-          "linkUrl": "#preview-details"
+          "text": "Complimentary White-Glove Delivery on Orders Over $250",
+          "badge": "Shipping",
+          "icon": "✦",
+          "linkLabel": "Shop New Arrivals",
+          "linkUrl": "#new-arrivals"
         },
         {
-          "text": "Questions? Our team is here to help.",
-          "badge": "",
-          "icon": "",
-          "linkLabel": "",
-          "linkUrl": ""
+          "text": "Autumn / Winter Solitude Linen Edit — Now Available",
+          "badge": "New Edition",
+          "icon": "✦",
+          "linkLabel": "Explore Collection",
+          "linkUrl": "#featured-collection"
         }
       ]
     },
     "common": {
-      "websiteTitle": "DENEB UI — Showcase & Portfolio",
-      "shortDescription": "The visual-first React framework for modern storefronts and digital portfolios. Powered by DENEB-UI in collaboration with FIVORA.",
-      "logoUrl": "/fivora-logo.png",
-      "headerCtaLabel": "Contact Us",
+      "websiteTitle": "LOOMÉ",
+      "shortDescription": "The Art of Fine Textiles. Architectural drapery, European flax bedding, and heirloom upholstery woven in small batches for calm, luminous spaces.",
+      "logoUrl": "/loome-monogram.svg",
+      "headerCtaLabel": "Private Atelier",
       "navLabels": {
-        "home": "Home",
+        "home": "Shop",
+        "services": "Collections",
         "about_us": "About",
-        "services": "Services",
         "contact": "Contact"
       },
-      "footerHeading": "Build something extraordinary with DENEB-UI & FIVORA.",
-      "newsletterDescription": "Join our exclusive community for releases, updates, and special perks.",
-      "newsletterSubscribeLabel": "Subscribe",
-      "newsletterEmailPlaceholder": "Enter your email",
-      "footerExploreHeading": "Explore",
-      "footerContactHeading": "Contact & Support",
+      "footerHeading": "Letters from the Atelier",
+      "newsletterDescription": "Receive private access to seasonal textile editions, complimentary swatch mailings, and architectural interior notes.",
+      "newsletterSubscribeLabel": "Join List",
+      "newsletterEmailPlaceholder": "Enter your email address",
+      "footerExploreHeading": "Maison",
+      "footerContactHeading": "Atelier & Care",
       "footerEmailIcon": "mail",
       "footerPhoneIcon": "phone",
       "footerLocationIcon": "map-pin",
-      "copyright": "DENEB-UI. All rights reserved. Collaborate with FIVORA.",
+      "copyright": "© 2026 LOOMÉ Fine Textiles. Crafted with enduring grace.",
       "socialMedia": {
-        "twitter": "https://twitter.com/denebui",
-        "github": "https://github.com/deneb-ui",
+        "instagram": "https://instagram.com",
+        "twitter": "https://twitter.com",
         "linkedin": "https://linkedin.com",
-        "instagram": "https://instagram.com"
+        "facebook": "https://facebook.com"
       }
     },
     "home": {
       "countdown": {
-        "heading": "The flash sale ends in",
-        "deadline": "2026-11-05T23:59:59+05:30",
-        "expiryMessage": "This offer has ended. Discover what is new in the collection.",
-        "ctaLabel": "Shop the flash sale",
+        "heading": "Private Atelier Event ends in",
+        "subtitle": "Limited seasonal pricing on European flax drapery and bedding sets.",
+        "deadline": "2026-12-15T23:59:59+05:30",
+        "expiryMessage": "This seasonal edit has concluded. Explore our current atelier collection.",
+        "ctaLabel": "Explore Collection",
         "ctaUrl": "#sale-collection"
       },
-      "heroEyebrow": "⚡ DENEB UI FRAMEWORK",
-      "heroTitle": "The Visual-First React Framework for High-Converting Experiences",
-      "heroSummary": "Design, build, and ship web storefronts and portfolios with 100% atomic editable components, auto-balancing layouts, and instant dual-mode aesthetics. Built in collaboration with FIVORA Cloud.",
-      "bannerImageUrl": "/fivora-icon.svg",
-      "primaryCtaLabel": "Explore Showcase",
-      "secondaryCtaLabel": "About DENEB-UI",
-      "introTitle": "Engineered for visual perfection and effortless editing",
-      "introBody": "Every editable value comes directly from structured site data with auto-balancing layouts, responsive typography, and strict contract validation out of the box.",
-      "featuresHeading": "Why build with the DENEB-UI Authoring Kit?",
-      "features": [
+      "heroEyebrow": "LOOMÉ — THE ART OF FINE TEXTILES",
+      "heroTitle": "Woven for Beautiful Living",
+      "heroSummary": "Heirloom Belgian flax curtains, stonewashed linen bedding, and architectural upholstery—loomed in small batches for calm, luminous interiors.",
+      "bannerImageUrl": "/images/hero-linen.jpg",
+      "primaryCtaLabel": "Explore Collection",
+      "secondaryCtaLabel": "Our Craft",
+      "marqueeText": "TIMELESS TEXTURES • THOUGHTFULLY CRAFTED • EVERYDAY LUXURY",
+      "categoriesEyebrow": "CURATED EDITIONS",
+      "categoriesHeading": "Shop by Category",
+      "categoriesSummary": "Five foundational textile expressions chosen for tactile richness, architectural drape, and quiet longevity.",
+      "categories": [
         {
-          "title": "100% Atomic DENEB Components",
-          "body": "Pre-built, accessible, high-converting components with responsive design token integration and zero runtime overhead."
+          "id": "curtains",
+          "name": "Curtains",
+          "subtitle": "Sheer Belgian flax & thermal architectural drapery",
+          "itemCount": "14 Pieces",
+          "imageUrl": "/images/cat-curtains.jpg"
         },
         {
-          "title": "Strict Visual Editing",
-          "body": "Direct bidirectional field bindings enable instant visual customization in the Lab and on the FIVORA platform without breaking styles."
+          "id": "bedding",
+          "name": "Bedding",
+          "subtitle": "Stonewashed European linen & 600TC organic sateen",
+          "itemCount": "18 Pieces",
+          "imageUrl": "/images/cat-bedding.jpg"
         },
         {
-          "title": "Instant Dual-Mode Aesthetics",
-          "body": "Seamless light and dark mode out-of-the-box with intelligent token contrast calculations for typography and surfaces."
+          "id": "upholstery",
+          "name": "Upholstery",
+          "subtitle": "Heavyweight bouclé, wool blends & tailored weaves",
+          "itemCount": "11 Pieces",
+          "imageUrl": "/images/cat-upholstery.jpg"
         },
         {
-          "title": "FIVORA Cloud Collaboration",
-          "body": "Built-in integration for collaborative editing, marketplace publishing, and automated zero-dependency clean packaging."
+          "id": "fabrics",
+          "name": "Fabrics",
+          "subtitle": "By-the-yard atelier bolts for bespoke interiors",
+          "itemCount": "24 Weaves",
+          "imageUrl": "/images/cat-fabrics.jpg"
+        },
+        {
+          "id": "cushions",
+          "name": "Cushions",
+          "subtitle": "Washed velvet, raw silk & hand-stitched linen accents",
+          "itemCount": "16 Pieces",
+          "imageUrl": "/images/cat-cushions.jpg"
         }
       ],
+      "productsEyebrow": "SEASONAL ARRIVALS",
+      "productsHeading": "New Arrivals",
+      "productsSummary": "Fresh from our European partner mills—tactile weaves in warm ivory, stone, sage olive, and champagne.",
+      "introEyebrow": "HERITAGE & ATELIER",
+      "introTitle": "The Beauty Is in the Details",
+      "introBody": "Every LOOMÉ textile begins with long-staple flax grown in Normandy and woven by fourth-generation Belgian artisans. From hand-mitred hems to unbleached selvedge finishes, we obsess over the quiet tactile nuances you feel the moment light touches a room.",
+      "craftsmanshipImageUrl": "/images/craftsmanship-loom.jpg",
+      "craftsmanshipDetailImageUrl": "/images/craftsmanship-detail.jpg",
+      "craftsmanshipCaption": "Shuttle-Woven Belgian Flax · Atelier Loom No. 04",
       "demoPreOrderCta": [
         {
-          "buttonLabel": "Book a Consultation",
-          "buttonUrl": "https://wa.me/94771234567"
+          "buttonLabel": "Order Complimentary Swatches",
+          "buttonUrl": "/contact"
         }
       ],
-      "productsHeading": "Featured Portfolio & Templates",
-      "productsSummary": "Explore high-converting storefronts, portals, and templates engineered with DENEB-UI and verified for production."
+      "featuredCollection": {
+        "eyebrow": "AUTUMN / WINTER 2026 EDIT",
+        "title": "The Solitude Collection",
+        "description": "Sun-warmed limestone neutrals, sage olive merino throws, and translucent linen drapes designed to soften architectural light.",
+        "imageUrl": "/images/featured-collection.jpg",
+        "ctaLabel": "Discover the Edit",
+        "ctaUrl": "#bestsellers"
+      },
+      "bestsellersEyebrow": "CLIENT FAVORITES",
+      "bestsellersHeading": "Bestsellers",
+      "bestsellersSummary": "Our most-requested drapery, bedding, and tactile accents—entrusted by interior architects and serene homes worldwide.",
+      "shopTheLook": {
+        "eyebrow": "INTERACTIVE STYLING",
+        "title": "Shop the Look",
+        "subtitle": "The Morning Light Salon — select any marker in the room to inspect the woven pieces composing this space.",
+        "imageUrl": "/images/hero-linen.jpg",
+        "hotspots": [
+          {
+            "id": "spot-curtains",
+            "productId": "siena-sheer-curtain",
+            "label": "Sheer Belgian Drapery",
+            "note": "Hung floor-to-ceiling for diffused morning glow",
+            "x": 27,
+            "y": 32
+          },
+          {
+            "id": "spot-cushion",
+            "productId": "verona-velvet-cushion",
+            "label": "Sage Velvet Accent",
+            "note": "Grounds neutral limewash walls with soft olive depth",
+            "x": 52,
+            "y": 62
+          },
+          {
+            "id": "spot-throw",
+            "productId": "atelier-merino-throw",
+            "label": "Hand-Loomed Merino Layer",
+            "note": "Adds sculptural drape over natural oak & linen seating",
+            "x": 74,
+            "y": 54
+          },
+          {
+            "id": "spot-fabric",
+            "productId": "como-herringbone-fabric",
+            "label": "Tailored Sofa Upholstery",
+            "note": "Heavyweight Italian herringbone weave in warm stone",
+            "x": 38,
+            "y": 72
+          }
+        ]
+      },
+      "featuresEyebrow": "THE LOOMÉ STANDARD",
+      "featuresHeading": "Crafted to Outlast Seasons",
+      "features": [
+        {
+          "title": "Quality Materials",
+          "body": "Certified European flax linen, 600-thread-count organic cotton sateen, and ethically sourced noble merino woven without synthetic coatings."
+        },
+        {
+          "title": "Thoughtful Craftsmanship",
+          "body": "Small-batch heritage loom weaving paired with hand-finished mitred hems, weighted drapery seams, and meticulous piece-by-piece inspection."
+        },
+        {
+          "title": "Timeless Design",
+          "body": "Restrained architectural palettes in warm ivory, sage olive, beige, and champagne that soften gracefully and remain effortless across decades."
+        }
+      ],
+      "testimonialsEyebrow": "ATELIER VOICES",
+      "testimonialsHeading": "Lived With & Loved",
+      "testimonials": [
+        {
+          "id": "rev-1",
+          "quote": "The Siena sheer linen curtains transformed our entire living room. The way morning sunlight filters through the Belgian flax weave feels like quiet architecture in motion.",
+          "author": "Camille Laurent",
+          "role": "Principal Interior Architect",
+          "location": "Paris & Geneva",
+          "productMention": "Siena Sheer Belgian Linen Curtain"
+        },
+        {
+          "id": "rev-2",
+          "quote": "We specify LOOMÉ across our residential commissions because the fabric weight, subtle sage olive undertones, and hand-finished stitching rival couture European fabric houses.",
+          "author": "Henrik Lindholm",
+          "role": "Founder, Studio Nord",
+          "location": "Copenhagen",
+          "productMention": "Como Herringbone Upholstery Fabric"
+        },
+        {
+          "id": "rev-3",
+          "quote": "Sleeping in the Valence stonewashed flax set feels effortlessly cool in summer and enveloping in winter. After a year of washes it has only grown softer and more luminous.",
+          "author": "Elena Marchetti",
+          "role": "Creative Director & Collector",
+          "location": "Milan",
+          "productMention": "Valence Stonewashed Flax Duvet Set"
+        }
+      ],
+      "journalEyebrow": "THE LOOMÉ JOURNAL",
+      "journalHeading": "Notes on Material & Light",
+      "journalSummary": "Quiet essays on textile care, architectural drapery proportions, and living alongside natural fibers.",
+      "journalPosts": [
+        {
+          "id": "journal-drapery",
+          "category": "Architecture",
+          "readTime": "4 min read",
+          "title": "The Art of Hanging Floor-to-Ceiling Linen Drapery",
+          "excerpt": "How ceiling-mounted tracks, double fullness, and translucent Belgian flax soften proportions and sculpt shifting daylight.",
+          "body": "Architectural drapery does more than frame a window—it alters the acoustics, vertical scale, and emotional temperature of an entire room. At LOOMÉ, we recommend mounting discreet recessed tracks flush with the ceiling line and specifying at least 2.2x fabric fullness so unbleached flax falls in calm, uninterrupted columns. Allow a gentle 1.5 cm kiss at the floor for tailored minimalism, or a 6 cm break for classic European romance.",
+          "imageUrl": "/images/cat-curtains.jpg"
+        },
+        {
+          "id": "journal-flax",
+          "category": "Material Study",
+          "readTime": "5 min read",
+          "title": "Why Normandy Flax Grows More Luminous With Every Wash",
+          "excerpt": "Inside the slow dew-retting harvest that gives European linen its hollow, breathable fiber structure and effortless drape.",
+          "body": "Unlike mass-produced textiles treated with chemical softeners that fade after three washes, true long-staple Normandy flax relies on coastal rain and morning dew to naturally separate fibers from the stem. Each time you launder stonewashed linen in cool water and line-dry in dappled shade, natural pectins relax further—creating a matte, supple luster that endures for generations.",
+          "imageUrl": "/images/cat-bedding.jpg"
+        },
+        {
+          "id": "journal-palette",
+          "category": "Color & Texture",
+          "readTime": "3 min read",
+          "title": "Layering Ivory, Sage Olive & Champagne in Calm Rooms",
+          "excerpt": "A tactile guide to balancing matte bouclé, washed velvet, and raw linen without visual clutter.",
+          "body": "Monochrome interiors sing when contrast comes from weave structure rather than loud pattern. Pair a crisp 165 GSM sheer linen against heavy herringbone upholstery, then introduce a single muted sage olive velvet cushion and champagne merino throw to anchor the seating group. As afternoon sun shifts across plaster walls, each fiber reflects light at a subtly different cadence.",
+          "imageUrl": "/images/cat-fabrics.jpg"
+        }
+      ]
     },
     "about": {
-      "heading": "Empowering Developers to Build Visually Editable Web Experiences",
-      "body": "DENEB UI was created by Chamika Gayashan & Induranga Kawishwara to bridge the gap between developer-grade React code and effortless visual editing. In collaboration with the FIVORA platform, we empower creators to ship ultra-fast static web applications while giving non-technical teams an intuitive live visual editor.",
-      "imageUrl": "/placeholder.svg",
-      "collageHeading": "The DENEB-UI Journey",
-      "collageDescription": "A visual tour of our architecture, design system engineering, and cloud deployment pipeline.",
-      "historyHeading": "Our Engineering Philosophy",
-      "history": "We believe modern web developers shouldn't have to choose between code elegance and visual customization. DENEB-UI provides atomic, contract-bound components that compile to lean Next.js static exports, backed by FIVORA Cloud for instant real-time publishing.",
+      "heading": "Woven with Quiet Reverence for Material & Light",
+      "body": "Founded as an editorial textile maison, LOOMÉ partners with family-owned weaving mills across Belgium, Northern Italy, and Portugal. We create architectural drapery, tactile bedding, and heirloom fabrics designed to bring calm, warmth, and enduring beauty to everyday living.",
+      "imageUrl": "/images/craftsmanship-loom.jpg",
+      "collageHeading": "Inside the LOOMÉ Atelier",
+      "collageDescription": "From raw Normandy flax stalks to final steam-pressed drapery panels, every stage honors slow craft.",
+      "historyHeading": "Our Textile Philosophy",
+      "history": "We reject disposable decor in favor of honest natural fibers that deepen in character with time. Each palette is formulated to harmonize effortlessly with travertine, oak, plaster, and shifting natural daylight.",
       "collageImages": [
         {
-          "id": "design-system",
-          "image": "/placeholder.svg",
-          "caption": "Atomic Design System"
+          "id": "flax-weaving",
+          "image": "/images/cat-fabrics.jpg",
+          "caption": "Small-Batch Mill Swatches"
         },
         {
-          "id": "visual-engine",
-          "image": "/placeholder.svg",
-          "caption": "Live Visual Engine"
+          "id": "hand-hemstitch",
+          "image": "/images/craftsmanship-detail.jpg",
+          "caption": "Champagne Selvedge Finishing"
         },
         {
-          "id": "cloud-publish",
-          "image": "/placeholder.svg",
-          "caption": "FIVORA Cloud Publishing"
+          "id": "architectural-drape",
+          "image": "/images/cat-curtains.jpg",
+          "caption": "Architectural Linen Drapery"
         }
       ]
     },
     "servicesPage": {
-      "heading": "Framework Solutions & Capabilities",
-      "intro": "Every capability is backed by atomic DENEB components, automated packaging, and preflight verification."
+      "heading": "Bespoke Collections & Atelier Services",
+      "intro": "Beyond our ready-to-live editions, our textile specialists offer tailored drapery, upholstery sourcing, and trade consultations."
     },
     "services": [
       {
-        "id": "visual-editing",
-        "name": "Visual Editing Lab",
-        "description": "Simulate how merchants customize your template in real time with the built-in local development lab and field focus bridge.",
-        "imageUrl": "/placeholder.svg",
+        "id": "bespoke-drapery",
+        "name": "Bespoke Architectural Drapery",
+        "description": "Made-to-measure pinch-pleat and wave-fold curtains tailored precisely to ceiling height, light filtration needs, and window geometry.",
+        "imageUrl": "/images/cat-curtains.jpg",
+        "price": 380,
+        "priceLabel": "starting per panel",
+        "showPrice": true,
         "features": [
-          "Zero-server static preview",
-          "Field focus bridge",
-          "Instant visual feedback"
+          "Custom Belgian flax & thermal linings",
+          "Weighted hand-blindstitched hems",
+          "Complimentary virtual measurement guide"
         ]
       },
       {
-        "id": "clean-packaging",
-        "name": "Automated Packager",
-        "description": "Automatically produce clean, upload-ready ZIP archives excluding junk, build caches, and sensitive files.",
-        "imageUrl": "/placeholder.svg",
+        "id": "swatch-curation",
+        "name": "Curated Swatch Atelier",
+        "description": "Experience the weight, slub, and daylight response of our finest weaves in your own space before committing to yardage.",
+        "imageUrl": "/images/cat-fabrics.jpg",
+        "price": 45,
+        "priceLabel": "credited toward order",
+        "showPrice": true,
         "features": [
-          "Excludes node_modules",
-          "Excludes .next and .git",
-          "100% preflight compliant"
+          "Up to 10 generous fabric cuttings",
+          "Dedicated color harmony notes",
+          "Express presentation box delivery"
         ]
       },
       {
-        "id": "dual-mode-system",
-        "name": "Dual-Mode Theme Engine",
-        "description": "Harmonic light and dark themes generated automatically with smart contrast adjustments for high visual appeal.",
-        "imageUrl": "/placeholder.svg",
+        "id": "interior-trade",
+        "name": "Trade & Interior Architect Program",
+        "description": "Dedicated yardage allocations, custom dye lots, and concierge logistics for residential and boutique hospitality projects.",
+        "imageUrl": "/images/featured-collection.jpg",
+        "showPrice": false,
         "features": [
-          "Auto contrast calculations",
-          "ThemeToggle component",
-          "Persistent theme storage"
+          "Preferential trade pricing",
+          "Fire-retardant hospitality treatments",
+          "Dedicated atelier account liaison"
         ]
       }
     ],
     "contact": {
-      "heading": "Connect with the DENEB-UI Team",
-      "intro": "Have questions about DENEB-UI components or building custom storefronts with the FIVORA platform? Contact us today.",
-      "phone": "+94 11 234 5678",
-      "email": "hello@deneb-ui.dev",
-      "address": "Colombo, Sri Lanka",
-      "directionsLabel": "Get Directions",
-      "directionsUrl": "https://maps.app.goo.gl/example",
-      "formTitle": "Send an Inquiry",
-      "directInformationTitle": "Direct Information",
-      "nameLabel": "Name",
-      "emailLabel": "Email",
-      "messageLabel": "Message",
-      "submitLabel": "Send Message",
-      "directMessageText": "Send us a direct message",
-      "whatsapp": "+94 77 123 4567"
+      "heading": "Visit the Atelier or Inquire",
+      "intro": "Whether selecting drapery for a single sunlit room or sourcing yardage for a complete residence, our textile advisors are here to assist.",
+      "phone": "+1 (212) 555-0194",
+      "email": "atelier@loometextiles.com",
+      "address": "48 Mercer Street, Suite 3B, SoHo, New York, NY 10013",
+      "directionsLabel": "Atelier Directions",
+      "directionsUrl": "https://maps.google.com/?q=48+Mercer+Street+New+York",
+      "formTitle": "Private Consultation Request",
+      "directInformationTitle": "Atelier Concierge",
+      "nameLabel": "Full Name",
+      "emailLabel": "Email Address",
+      "messageLabel": "Project Details or Swatch Request",
+      "submitLabel": "Send Inquiry",
+      "directMessageText": "Concierge via WhatsApp",
+      "whatsapp": "+12125550194"
     },
     "products": [
       {
-        "id": "prod-1",
-        "name": "Aura Luxury Storefront",
-        "description": "High-converting boutique and jewelry storefront template with dark aesthetics, before/after sliders, and quick checkout.",
-        "price": 4900,
-        "compareAtPrice": 6500,
-        "currency": "LKR",
-        "imageUrl": "/placeholder.svg",
-        "category": "E-Commerce",
-        "badge": "Popular",
-        "isAvailable": true
-      },
-      {
-        "id": "prod-2",
-        "name": "Apex SaaS & Analytics",
-        "description": "Clean, high-performance web template tailored for developer tools, SaaS metrics, and responsive pricing grids.",
-        "price": 6200,
-        "compareAtPrice": 7500,
-        "currency": "LKR",
-        "imageUrl": "/placeholder.svg",
-        "category": "Technology",
-        "badge": "Featured",
-        "isAvailable": true
-      },
-      {
-        "id": "prod-3",
-        "name": "Zenith Artisan Portfolio",
-        "description": "Minimalist digital portfolio template featuring auto-balancing photo galleries, quote cards, and WhatsApp contact integration.",
-        "price": 3800,
-        "compareAtPrice": null,
-        "currency": "LKR",
-        "imageUrl": "/placeholder.svg",
-        "category": "Portfolio",
+        "id": "siena-sheer-curtain",
+        "name": "Siena Sheer Belgian Linen Curtain",
+        "description": "Airy pinch-pleat sheer drapery loomed from unbleached European flax for soft, diffused daylight and graceful floor pooling.",
+        "price": 245,
+        "compareAtPrice": 290,
+        "currency": "USD",
+        "imageUrl": "/images/prod-curtain-ivory.jpg",
+        "category": "Curtains",
         "badge": "New",
-        "isAvailable": true
+        "showPrice": true,
+        "isAvailable": true,
+        "collectionTag": "new",
+        "material": "100% Belgian Flax Linen · 165 GSM",
+        "colors": [
+          { "name": "Warm Ivory", "hex": "#F8F6F1" },
+          { "name": "Oatmeal", "hex": "#E8E0D5" },
+          { "name": "Sage Olive", "hex": "#747B65" }
+        ]
+      },
+      {
+        "id": "valence-flax-duvet",
+        "name": "Valence Stonewashed Flax Duvet Set",
+        "description": "Pre-washed European linen duvet cover and two shams finished with mother-of-pearl closures and an effortless lived-in drape.",
+        "price": 340,
+        "compareAtPrice": null,
+        "currency": "USD",
+        "imageUrl": "/images/prod-duvet-flax.jpg",
+        "category": "Bedding",
+        "badge": "Atelier Edit",
+        "showPrice": true,
+        "isAvailable": true,
+        "collectionTag": "new",
+        "material": "100% Normandy Flax · OEKO-TEX®",
+        "colors": [
+          { "name": "Warm Beige", "hex": "#E8E0D5" },
+          { "name": "Ivory", "hex": "#F8F6F1" },
+          { "name": "Charcoal", "hex": "#262923" }
+        ]
+      },
+      {
+        "id": "atelier-merino-throw",
+        "name": "Atelier Hand-Loomed Merino Throw",
+        "description": "Feather-soft merino wool and cashmere blend throw with hand-twisted fringe, woven in a sculptural subtle rib.",
+        "price": 285,
+        "compareAtPrice": 325,
+        "currency": "USD",
+        "imageUrl": "/images/prod-throw-boucle.jpg",
+        "category": "Bedding",
+        "badge": "Limited",
+        "showPrice": true,
+        "isAvailable": true,
+        "collectionTag": "new",
+        "material": "85% Extra-Fine Merino · 15% Cashmere",
+        "colors": [
+          { "name": "Champagne", "hex": "#B59B79" },
+          { "name": "Warm Ivory", "hex": "#F8F6F1" },
+          { "name": "Sage Olive", "hex": "#747B65" }
+        ]
+      },
+      {
+        "id": "verona-velvet-cushion",
+        "name": "Verona Washed Velvet Lumbar Cushion",
+        "description": "Matte cotton-viscose washed velvet finished with a crisp flange border and responsibly sourced feather-down insert.",
+        "price": 125,
+        "compareAtPrice": null,
+        "currency": "USD",
+        "imageUrl": "/images/prod-cushion-olive.jpg",
+        "category": "Cushions",
+        "badge": "New",
+        "showPrice": true,
+        "isAvailable": true,
+        "collectionTag": "new",
+        "material": "Italian Washed Cotton Velvet",
+        "colors": [
+          { "name": "Sage Olive", "hex": "#747B65" },
+          { "name": "Champagne", "hex": "#B59B79" },
+          { "name": "Warm Taupe", "hex": "#9E9180" }
+        ]
+      },
+      {
+        "id": "como-herringbone-fabric",
+        "name": "Como Heavyweight Herringbone Fabric",
+        "description": "Architectural upholstery yardage featuring a crisp Italian herringbone weave engineered for 60,000+ Martindale rub durability.",
+        "price": 165,
+        "compareAtPrice": null,
+        "currency": "USD",
+        "imageUrl": "/images/prod-fabric-herringbone.jpg",
+        "category": "Fabrics",
+        "badge": "Bestseller",
+        "showPrice": true,
+        "isAvailable": true,
+        "collectionTag": "bestseller",
+        "material": "62% Linen · 38% Virgin Wool (Per Yard)",
+        "colors": [
+          { "name": "Warm Stone", "hex": "#C8BEB0" },
+          { "name": "Charcoal", "hex": "#262923" },
+          { "name": "Sand Beige", "hex": "#E8E0D5" }
+        ]
+      },
+      {
+        "id": "solstice-thermal-drapery",
+        "name": "Solstice Heavy Linen Drapery Panel",
+        "description": "Double-lined architectural linen drapery offering acoustic softness, thermal insulation, and tailored sculptural folds.",
+        "price": 310,
+        "compareAtPrice": 360,
+        "currency": "USD",
+        "imageUrl": "/images/prod-curtain-blackout.jpg",
+        "category": "Curtains",
+        "badge": "Bestseller",
+        "showPrice": true,
+        "isAvailable": true,
+        "collectionTag": "bestseller",
+        "material": "Heavyweight Linen Blend · Blackout Lined",
+        "colors": [
+          { "name": "Sand Taupe", "hex": "#CBB8A0" },
+          { "name": "Ivory Plaster", "hex": "#F8F6F1" },
+          { "name": "Deep Olive", "hex": "#5D6350" }
+        ]
+      },
+      {
+        "id": "lumiere-sateen-sheets",
+        "name": "Lumière 600TC Organic Sateen Sheet Set",
+        "description": "Lustrous long-staple organic cotton sateen with champagne satin-stitch hem detailing for cool, fluid comfort.",
+        "price": 295,
+        "compareAtPrice": null,
+        "currency": "USD",
+        "imageUrl": "/images/prod-bedsheet-sateen.jpg",
+        "category": "Bedding",
+        "badge": "Bestseller",
+        "showPrice": true,
+        "isAvailable": true,
+        "collectionTag": "bestseller",
+        "material": "100% GOTS Organic Cotton Sateen",
+        "colors": [
+          { "name": "Pearl Ivory", "hex": "#F8F6F1" },
+          { "name": "Champagne", "hex": "#B59B79" },
+          { "name": "Warm Beige", "hex": "#E8E0D5" }
+        ]
+      },
+      {
+        "id": "provence-linen-runner",
+        "name": "Provence Raw-Edge Linen Table Runner",
+        "description": "Generously weighted heirloom flax table runner framed with woven sage stripes and delicate hand-frayed selvedge edges.",
+        "price": 110,
+        "compareAtPrice": 135,
+        "currency": "USD",
+        "imageUrl": "/images/prod-table-runner.jpg",
+        "category": "Upholstery",
+        "badge": "Bestseller",
+        "showPrice": true,
+        "isAvailable": true,
+        "collectionTag": "bestseller",
+        "material": "100% Heavyweight European Flax · 260 GSM",
+        "colors": [
+          { "name": "Natural Flax", "hex": "#E8E0D5" },
+          { "name": "Sage Olive", "hex": "#747B65" },
+          { "name": "Warm Ivory", "hex": "#F8F6F1" }
+        ]
       }
     ]
   },
   "media": {},
   "seo": null,
   "siteInstance": {
-    "id": "deneb-portfolio-showcase-instance",
-    "slug": "deneb-portfolio-showcase",
-    "domain": "deneb-showcase.fivora.site",
-    "subdomain": "deneb-showcase",
+    "id": "loome-fine-textiles-instance",
+    "slug": "loome-fine-textiles",
+    "domain": "loome.fivora.site",
+    "subdomain": "loome",
     "customDomain": null,
-    "liveUrl": "https://deneb-showcase.fivora.site"
+    "liveUrl": "https://loome.fivora.site"
   },
   "api": {
     "baseUrl": "https://api.fivora.site",
-    "catalogUrl": "https://api.fivora.site/site-catalog/deneb-portfolio-showcase/live-data",
+    "catalogUrl": "https://api.fivora.site/site-catalog/loome-fine-textiles/live-data",
     "contactUrl": "https://api.fivora.site/site-contact",
     "analyticsUrl": "https://api.fivora.site/site-analytics/page-view"
   },
   "theme": {
-    "primaryColor": "#2563eb",
-    "secondaryColor": "#1e293b",
-    "accentColor": "#3b82f6",
-    "backgroundColor": "#ffffff",
-    "cardBackgroundColor": "#ffffff",
-    "textColor": "#0f172a",
-    "borderColor": "#e2e8f0",
-    "headingFont": "Inter",
-    "bodyFont": "Inter",
+    "primaryColor": "#747B65",
+    "secondaryColor": "#262923",
+    "accentColor": "#B59B79",
+    "backgroundColor": "#F8F6F1",
+    "cardBackgroundColor": "#FCFBF8",
+    "textColor": "#262923",
+    "borderColor": "#E8E0D5",
+    "headingFont": "Cormorant Garamond",
+    "bodyFont": "Manrope",
     "baseSize": "16px",
-    "heroMinHeight": "72vh",
-    "sectionPadding": "5rem"
+    "heroMinHeight": "88vh",
+    "sectionPadding": "6rem"
   }
 }
