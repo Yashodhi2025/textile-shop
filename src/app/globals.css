@@ -445,6 +445,32 @@ p {
   }
 }
 
+/* Silk Veil Intro: pre-hydration zero-flash state coordination */
+html[data-silk-intro='pending'] body {
+  overflow: hidden;
+}
+
+html[data-silk-intro='skip'] .loome-silk-veil-root,
+html[data-silk-intro='off'] .loome-silk-veil-root {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+@keyframes loomeSilkCopyIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+html[data-silk-intro='pending'] .loome-silk-veil-copy {
+  animation: loomeSilkCopyIn 0.78s cubic-bezier(0.22, 1, 0.36, 1) 0.14s both;
+}
+
 /* Strict accessibility: respect prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -453,7 +479,8 @@ p {
 
   .loome-marquee-track,
   .loome-scroll-line,
-  .loome-hotspot-ring {
+  .loome-hotspot-ring,
+  .loome-silk-veil-copy {
     animation: none !important;
   }
 

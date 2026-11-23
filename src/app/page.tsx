@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { EditableText } from '@deneb-ui/ui';
 import {
   contentObject,
@@ -9,6 +9,7 @@ import {
   useSiteData,
 } from '@/lib/siteDataContext';
 import { normalizeLoomeProduct } from '@/lib/storeContext';
+import SilkVeilIntro from '@/components/home/SilkVeilIntro';
 import HeroSection from '@/components/home/HeroSection';
 import BrandMarquee from '@/components/home/BrandMarquee';
 import CategorySection from '@/components/home/CategorySection';
@@ -23,6 +24,10 @@ import JournalSection from '@/components/home/JournalSection';
 export default function HomePage() {
   const siteData = useSiteData();
   const rawProducts = useProducts();
+  const [heroRevealReady, setHeroRevealReady] = useState(true);
+
+  const handleIntroStart = useCallback(() => setHeroRevealReady(false), []);
+  const handleVeilLift = useCallback(() => setHeroRevealReady(true), []);
 
   const content = contentObject(siteData.content);
   const home = contentObject(content.home);
@@ -50,7 +55,8 @@ export default function HomePage() {
 
   return (
     <div data-preview-page-key="home" className="w-full overflow-x-clip">
-      <HeroSection />
+      <SilkVeilIntro onIntroStart={handleIntroStart} onVeilLift={handleVeilLift} />
+      <HeroSection revealReady={heroRevealReady} />
       <BrandMarquee />
       <CategorySection />
 

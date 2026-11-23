@@ -26,6 +26,8 @@
       "products[*].galleryImages",
       "products[*].colors[*].name",
       "products[*].colors[*].hex",
+      "home.silkIntro.enabled",
+      "home.silkIntro.durationMs",
       "home.categories[*].id",
       "home.testimonials[*].id",
       "home.shopTheLook.hotspots[*].id",
@@ -79,11 +81,57 @@
       "id": "countdown_preview",
       "label": "Countdown Preview",
       "route": "/countdown-preview"
+    },
+    {
+      "id": "silk_intro_preview",
+      "label": "Silk Intro",
+      "route": "/silk-intro-preview"
     }
   ],
   "editorSchema": {
     "version": 1,
     "sections": [
+      {
+        "id": "silk_intro_preview",
+        "path": "home.silkIntro",
+        "pageKey": "silk_intro_preview",
+        "type": "object",
+        "label": "Silk Veil Intro",
+        "fields": [
+          {
+            "key": "enabled",
+            "type": "boolean",
+            "label": "Enable Silk Veil Intro"
+          },
+          {
+            "key": "brandTitle",
+            "type": "text",
+            "label": "Intro Wordmark"
+          },
+          {
+            "key": "tagline",
+            "type": "text",
+            "label": "Intro Tagline"
+          },
+          {
+            "key": "backgroundImageUrl",
+            "type": "image",
+            "label": "Silk Veil Background Image",
+            "recommendedWidth": 1920,
+            "recommendedHeight": 1080
+          },
+          {
+            "key": "skipLabel",
+            "type": "text",
+            "label": "Skip Button Label"
+          },
+          {
+            "key": "durationMs",
+            "type": "number",
+            "label": "Intro Duration (ms)"
+          }
+        ]
+      },
       {
         "id": "countdown_preview",
         "path": "home.countdown",

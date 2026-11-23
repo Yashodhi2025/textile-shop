@@ -125,6 +125,14 @@
       }
     },
     "home": {
+      "silkIntro": {
+        "enabled": true,
+        "brandTitle": "LOOMÉ",
+        "tagline": "The Art of Fine Textiles",
+        "backgroundImageUrl": "/images/silk-veil-bg.jpg",
+        "skipLabel": "Skip Intro",
+        "durationMs": 2800
+      },
       "countdown": {
         "heading": "Private Atelier Event ends in",
         "subtitle": "Limited seasonal pricing on European flax drapery and bedding sets.",

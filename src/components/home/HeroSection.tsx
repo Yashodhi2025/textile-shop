@@ -8,11 +8,16 @@ import { contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
 import { pageRoute, withBasePath } from '@/lib/utils';
 import { LUXURY_EASE, useParallaxActive } from '@/components/motion/LuxuryReveal';
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  revealReady?: boolean;
+}
+
+export default function HeroSection({ revealReady = true }: HeroSectionProps) {
   const siteData = useSiteData();
   const sectionRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const parallaxActive = useParallaxActive();
+  const shouldAnimateIn = prefersReducedMotion || revealReady;
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -57,7 +62,11 @@ export default function HeroSection() {
       >
         <motion.div
           initial={prefersReducedMotion ? false : { scale: 1.11, opacity: 0.82 }}
-          animate={{ scale: 1.02, opacity: 1 }}
+          animate={
+            shouldAnimateIn
+              ? { scale: 1.02, opacity: 1 }
+              : { scale: 1.11, opacity: 0.82 }
+          }
           transition={
             prefersReducedMotion
               ? { duration: 0 }
@@ -85,7 +94,7 @@ export default function HeroSection() {
         <div className="max-w-4xl text-[#F8F6F1]">
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={shouldAnimateIn ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
             transition={
               prefersReducedMotion
                 ? { duration: 0 }
@@ -95,7 +104,7 @@ export default function HeroSection() {
           >
             <motion.span
               initial={prefersReducedMotion ? false : { scaleX: 0 }}
-              animate={{ scaleX: 1 }}
+              animate={shouldAnimateIn ? { scaleX: 1 } : { scaleX: 0 }}
               transition={
                 prefersReducedMotion
                   ? { duration: 0 }
@@ -121,7 +130,7 @@ export default function HeroSection() {
 
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={shouldAnimateIn ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={
               prefersReducedMotion
                 ? { duration: 0 }
@@ -145,7 +154,7 @@ export default function HeroSection() {
 
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={shouldAnimateIn ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={
               prefersReducedMotion
                 ? { duration: 0 }
@@ -168,7 +177,7 @@ export default function HeroSection() {
 
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={shouldAnimateIn ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
             transition={
               prefersReducedMotion
                 ? { duration: 0 }
@@ -216,7 +225,7 @@ export default function HeroSection() {
         aria-label="Scroll to discover collections"
         data-preview-static="hero-scroll-indicator"
         initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={shouldAnimateIn ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
         transition={
           prefersReducedMotion ? { duration: 0 } : { delay: 0.92, duration: 0.85, ease: LUXURY_EASE }
         }
