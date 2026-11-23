@@ -233,6 +233,39 @@ p {
   animation: loomeHotspotPulse 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
+/* Fabric Stories gentle organic float (GPU-accelerated, reduced-motion safe) */
+@keyframes loomeFabricFloatA {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+@keyframes loomeFabricFloatB {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, 7px, 0);
+  }
+}
+
+.loome-fabric-float-0 {
+  animation: loomeFabricFloatA 7.6s ease-in-out infinite;
+}
+
+.loome-fabric-float-1 {
+  animation: loomeFabricFloatB 8.8s ease-in-out infinite;
+}
+
+.loome-fabric-float-2 {
+  animation: loomeFabricFloatA 10.2s ease-in-out infinite;
+}
+
 /* Luxury CTA buttons — softly rounded rectangular corners (11px), champagne highlights & hover lift */
 .loome-btn-primary {
   position: relative;
@@ -564,7 +597,10 @@ html[data-silk-intro='pending'] .loome-silk-veil-copy {
   .loome-marquee-track,
   .loome-scroll-line,
   .loome-hotspot-ring,
-  .loome-silk-veil-copy {
+  .loome-silk-veil-copy,
+  .loome-fabric-float-0,
+  .loome-fabric-float-1,
+  .loome-fabric-float-2 {
     animation: none !important;
   }
 

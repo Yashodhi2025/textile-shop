@@ -81,8 +81,20 @@ export default function SilkVeilIntro({
   const backgroundImageUrl =
     contentText(silkIntro.backgroundImageUrl) || '/images/silk-veil-bg.jpg';
   const skipLabel = contentText(silkIntro.skipLabel) || 'Skip Intro';
-  const heroPreviewImage = contentText(home.bannerImageUrl) || '/images/hero-linen.jpg';
-  const heroPreviewTitle = contentText(home.heroTitle) || 'Woven for Beautiful Living';
+  const fabricStoriesObj = contentObject(home.fabricStories);
+  const firstFabricStory = Array.isArray(fabricStoriesObj.stories)
+    ? contentObject(fabricStoriesObj.stories[0])
+    : {};
+  const heroPreviewImage =
+    contentText(firstFabricStory.imageUrl) ||
+    contentText(home.bannerImageUrl) ||
+    '/images/prod-fabric-herringbone.jpg';
+  const heroPreviewTitle =
+    [contentText(firstFabricStory.heading), contentText(firstFabricStory.headingAccent)]
+      .filter(Boolean)
+      .join(' ') ||
+    contentText(home.heroTitle) ||
+    'The Living Fabric';
 
   const rawDuration = Number(silkIntro.durationMs);
   const totalDurationMs =

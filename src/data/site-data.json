@@ -157,12 +157,52 @@
         "ctaLabel": "Explore Collection",
         "ctaUrl": "#sale-collection"
       },
-      "heroEyebrow": "LOOMÉ — THE ART OF FINE TEXTILES",
-      "heroTitle": "Woven for Beautiful Living",
-      "heroSummary": "Heirloom Belgian flax curtains, stonewashed linen bedding, and architectural upholstery—loomed in small batches for calm, luminous interiors.",
-      "bannerImageUrl": "/images/hero-linen.jpg",
-      "primaryCtaLabel": "Explore Collection",
-      "secondaryCtaLabel": "Our Craft",
+      "fabricStories": {
+        "autoplay": true,
+        "transitionDurationMs": 5600,
+        "animationStyle": "editorial-drift",
+        "panelRadius": 28,
+        "backgroundFrom": "#201C1A",
+        "backgroundTo": "#3B302B",
+        "stories": [
+          {
+            "id": "story-living-fabric",
+            "eyebrow": "THE ART OF FINE TEXTILES",
+            "heading": "The Living",
+            "headingAccent": "Fabric",
+            "description": "Refined linens, natural weaves and bespoke textiles for timeless, beautifully lived spaces.",
+            "imageUrl": "/images/prod-fabric-herringbone.jpg",
+            "primaryCtaLabel": "Explore Collection",
+            "primaryCtaUrl": "#new-arrivals",
+            "secondaryCtaLabel": "Our Craft",
+            "secondaryCtaUrl": "/about_us"
+          },
+          {
+            "id": "story-sculpted-warmth",
+            "eyebrow": "ARCHITECTURAL DRAPERY",
+            "heading": "Sculpted",
+            "headingAccent": "Warmth",
+            "description": "Double-lined Belgian flax and heavyweight mocha weaves tailored to soften shifting architectural daylight.",
+            "imageUrl": "/images/prod-curtain-blackout.jpg",
+            "primaryCtaLabel": "Shop Drapery",
+            "primaryCtaUrl": "/shop",
+            "secondaryCtaLabel": "View Collections",
+            "secondaryCtaUrl": "/services"
+          },
+          {
+            "id": "story-heritage-weaves",
+            "eyebrow": "NORMANDY HERITAGE LOOMS",
+            "heading": "Heritage",
+            "headingAccent": "Weaves",
+            "description": "Small-batch shuttle-woven flax and heirloom natural yarns crafted to soften gracefully across generations.",
+            "imageUrl": "/images/craftsmanship-detail.jpg",
+            "primaryCtaLabel": "Read the Journal",
+            "primaryCtaUrl": "/journal",
+            "secondaryCtaLabel": "Request Swatches",
+            "secondaryCtaUrl": "/contact"
+          }
+        ]
+      },
       "marqueeText": "TIMELESS TEXTURES • THOUGHTFULLY CRAFTED • EVERYDAY LUXURY",
       "categoriesEyebrow": "CURATED EDITIONS",
       "categoriesHeading": "Shop by Category",

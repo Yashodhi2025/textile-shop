@@ -28,6 +28,13 @@
       "products[*].colors[*].hex",
       "home.silkIntro.enabled",
       "home.silkIntro.durationMs",
+      "home.fabricStories.autoplay",
+      "home.fabricStories.transitionDurationMs",
+      "home.fabricStories.animationStyle",
+      "home.fabricStories.panelRadius",
+      "home.fabricStories.backgroundFrom",
+      "home.fabricStories.backgroundTo",
+      "home.fabricStories.stories[*].id",
       "home.categories[*].id",
       "home.testimonials[*].id",
       "home.shopTheLook.hotspots[*].id",
@@ -376,37 +383,107 @@
         "label": "Home Page",
         "fields": [
           {
-            "key": "heroEyebrow",
-            "type": "text",
-            "label": "Hero eyebrow"
-          },
-          {
-            "key": "heroTitle",
-            "type": "text",
-            "label": "Hero title",
-            "required": true
-          },
-          {
-            "key": "heroSummary",
-            "type": "textarea",
-            "label": "Hero summary"
-          },
-          {
-            "key": "bannerImageUrl",
-            "type": "image",
-            "label": "Hero image",
-            "recommendedWidth": 1920,
-            "recommendedHeight": 1080
-          },
-          {
-            "key": "primaryCtaLabel",
-            "type": "text",
-            "label": "Hero primary CTA"
-          },
-          {
-            "key": "secondaryCtaLabel",
-            "type": "text",
-            "label": "Hero secondary CTA"
+            "key": "fabricStories",
+            "type": "object",
+            "label": "Fabric Stories Hero",
+            "fields": [
+              {
+                "key": "autoplay",
+                "type": "boolean",
+                "label": "Enable Autoplay"
+              },
+              {
+                "key": "transitionDurationMs",
+                "type": "number",
+                "label": "Autoplay Interval (ms)"
+              },
+              {
+                "key": "animationStyle",
+                "type": "text",
+                "label": "Animation Style (editorial-drift, crossfade, or static)",
+                "placeholder": "editorial-drift"
+              },
+              {
+                "key": "panelRadius",
+                "type": "number",
+                "label": "Fabric Panel Curve Radius (px)"
+              },
+              {
+                "key": "backgroundFrom",
+                "type": "text",
+                "label": "Hero Primary Background Color (hex)",
+                "placeholder": "#201C1A"
+              },
+              {
+                "key": "backgroundTo",
+                "type": "text",
+                "label": "Hero Secondary Glow Color (hex)",
+                "placeholder": "#3B302B"
+              },
+              {
+                "key": "stories",
+                "type": "list",
+                "label": "Fabric Stories",
+                "itemLabel": "Fabric Story",
+                "minItems": 0,
+                "maxItems": 8,
+                "fields": [
+                  {
+                    "key": "id",
+                    "type": "text",
+                    "label": "Story ID"
+                  },
+                  {
+                    "key": "eyebrow",
+                    "type": "text",
+                    "label": "Eyebrow"
+                  },
+                  {
+                    "key": "heading",
+                    "type": "text",
+                    "label": "Primary Heading",
+                    "required": true
+                  },
+                  {
+                    "key": "headingAccent",
+                    "type": "text",
+                    "label": "Editorial Italic Accent Word"
+                  },
+                  {
+                    "key": "description",
+                    "type": "textarea",
+                    "label": "Description"
+                  },
+                  {
+                    "key": "imageUrl",
+                    "type": "image",
+                    "label": "Fabric Image",
+                    "recommendedWidth": 1200,
+                    "recommendedHeight": 1600
+                  },
+                  {
+                    "key": "primaryCtaLabel",
+                    "type": "text",
+                    "label": "Primary CTA Label"
+                  },
+                  {
+                    "key": "primaryCtaUrl",
+                    "type": "url",
+                    "label": "Primary CTA Destination"
+                  },
+                  {
+                    "key": "secondaryCtaLabel",
+                    "type": "text",
+                    "label": "Secondary CTA Label"
+                  },
+                  {
+                    "key": "secondaryCtaUrl",
+                    "type": "url",
+                    "label": "Secondary CTA Destination"
+                  }
+                ]
+              }
+            ]
           },
           {
             "key": "marqueeText",
