@@ -97,7 +97,7 @@ export default function ShoppingBagView() {
   return (
     <div
       data-preview-page-key="cart"
-      className="min-h-[75vh] w-full bg-[#F6F3EC] text-[#22251F] dark:bg-[#151713] dark:text-[#F8F6F1]"
+      className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
     >
       {/* Compact Editorial Breadcrumb Strip */}
       <div className="border-b border-[#262923]/10 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">

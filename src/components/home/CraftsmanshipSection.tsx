@@ -62,12 +62,12 @@ export default function CraftsmanshipSection() {
       ref={sectionRef}
       id="craftsmanship"
       data-design-section="home-introduction"
-      className="w-full border-y border-[#262923]/8 bg-[#E8E0D5]/42 py-16 dark:border-[#F8F6F1]/8 dark:bg-[#20231D] sm:py-20 lg:py-28"
+      className="loome-surface-mocha w-full border-y border-[#C8A98B]/18 py-16 sm:py-20 lg:py-28"
     >
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-14 px-4 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-14">
         {/* Left: Layered Editorial Loom & Weave Photography with Curtain Mask & Desktop Parallax */}
         <div className="relative lg:col-span-6">
-          <LuxuryImageReveal tone="beige" className="bg-[#E8E0D5]">
+          <LuxuryImageReveal tone="charcoal" className="overflow-hidden rounded-2xl border border-[#C8A98B]/20 bg-[#201C1A]">
             <motion.div
               style={parallaxActive ? { y: mainImageY } : undefined}
               className="aspect-[4/5] w-full will-change-transform"
@@ -85,9 +85,9 @@ export default function CraftsmanshipSection() {
           {/* Overlapping Macro Weave Detail Inset */}
           <motion.div
             style={parallaxActive ? { y: insetY } : undefined}
-            className="absolute -bottom-8 -right-3 z-20 hidden w-44 border-4 border-[#F8F6F1] bg-[#F8F6F1] shadow-[0_24px_50px_rgba(38,41,35,0.16)] dark:border-[#171915] dark:bg-[#171915] sm:block md:w-52 lg:-right-8"
+            className="absolute -bottom-8 -right-3 z-20 hidden w-44 overflow-hidden rounded-2xl border-4 border-[#3B302B] bg-[#201C1A] shadow-[0_20px_42px_rgba(12,9,8,0.35)] sm:block md:w-52 lg:-right-8"
           >
-            <LuxuryImageReveal delay={0.22} tone="ivory" className="aspect-square">
+            <LuxuryImageReveal delay={0.22} tone="charcoal" className="aspect-square">
               <img
                 src={withBasePath(detailImage)}
                 alt="Close-up macro texture of woven Belgian flax linen"
@@ -100,7 +100,7 @@ export default function CraftsmanshipSection() {
 
           <p
             data-preview-field-path="home.craftsmanshipCaption"
-            className="mt-4 text-[10px] uppercase tracking-[0.22em] text-[#65685E] dark:text-[#B6B8AE]"
+            className="mt-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#C8A98B]"
           >
             {caption}
           </p>
@@ -111,17 +111,17 @@ export default function CraftsmanshipSection() {
           <LuxuryStagger staggerDelay={0.11} delayChildren={0.05}>
             <LuxuryStaggerItem y={16}>
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="home.introEyebrow"
                   defaultValue={eyebrow}
                   fontFamily="body"
                   size="0.6875rem"
-                  weight={500}
+                  weight={600}
                   transform="uppercase"
                   letterSpacing="0.26em"
-                  color="primary"
+                  color="#C8A98B"
                   className="m-0"
                 />
               </div>
@@ -133,11 +133,11 @@ export default function CraftsmanshipSection() {
                 data-preview-field-path="home.introTitle"
                 defaultValue={title}
                 fontFamily="heading"
-                size="clamp(2.4rem, 4.4vw, 3.75rem)"
-                weight={300}
+                size="clamp(2.3rem, 4.2vw, 3.6rem)"
+                weight={800}
                 lineHeight={1.04}
-                letterSpacing="-0.02em"
-                color="heading"
+                letterSpacing="-0.03em"
+                color="#F2E9DE"
                 className="mt-4 mb-0"
               />
             </LuxuryStaggerItem>
@@ -150,25 +150,25 @@ export default function CraftsmanshipSection() {
                 fontFamily="body"
                 size="0.96875rem"
                 lineHeight={1.85}
-                color="muted"
+                color="#C7B6A6"
                 className="mt-6 mb-0 max-w-xl"
               />
             </LuxuryStaggerItem>
 
             {/* Provenance Pillars */}
             <LuxuryStaggerItem y={18}>
-              <div className="mt-10 grid grid-cols-3 gap-6 border-y border-[#262923]/12 py-6 dark:border-[#F8F6F1]/12">
+              <div className="mt-10 grid grid-cols-3 gap-6 border-y border-[#C8A98B]/20 py-6">
                 {ATELIER_METRICS.map((metric) => (
                   <div key={metric.label}>
                     <p
                       data-preview-static={`craft-metric-val-${metric.label}`}
-                      className="m-0 font-serif text-2xl font-normal text-[#262923] dark:text-[#F8F6F1] sm:text-3xl"
+                      className="m-0 font-heading text-2xl font-extrabold tracking-tight text-[#F2E9DE] sm:text-3xl"
                     >
                       {metric.value}
                     </p>
                     <p
                       data-preview-static={`craft-metric-lbl-${metric.label}`}
-                      className="mt-1 m-0 text-[10px] uppercase tracking-[0.2em] text-[#747B65] dark:text-[#B59B79]"
+                      className="mt-1 m-0 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C8A98B]"
                     >
                       {metric.label}
                     </p>
@@ -198,7 +198,7 @@ export default function CraftsmanshipSection() {
                       <span data-preview-field-path={`home.demoPreOrderCta[${index}].buttonLabel`}>
                         {label}
                       </span>
-                      <ArrowRight className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1" />
+                      <ArrowRight className="h-3.5 w-3.5 stroke-[1.7] transition-transform duration-300 group-hover:translate-x-1" />
                     </a>
                   );
                 })}

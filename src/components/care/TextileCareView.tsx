@@ -225,7 +225,7 @@ export default function TextileCareView() {
   return (
     <div
       data-preview-page-key="textile_care"
-      className="min-h-[75vh] w-full bg-[#F8F6F1] text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+      className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
     >
       {/* Editorial Breadcrumb Strip */}
       <div className="border-b border-[#262923]/8 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
@@ -542,7 +542,7 @@ export default function TextileCareView() {
                           : { duration: 0.55, ease: LUXURY_EASE }
                       }
                       data-preview-item-path={`textileCarePage.fabrics[${fabric.index}]`}
-                      className="grid grid-cols-1 overflow-hidden border border-[#262923]/10 bg-[#FCFBF8] shadow-[0_18px_54px_rgba(38,41,35,0.045)] dark:border-[#F8F6F1]/12 dark:bg-[#20231D] lg:grid-cols-12"
+                      className="grid grid-cols-1 overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-[0_14px_40px_rgba(32,28,26,0.045)] lg:grid-cols-12"
                     >
                       {/* Editorial Textile Visual */}
                       <div

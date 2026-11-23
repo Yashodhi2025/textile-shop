@@ -304,7 +304,7 @@ export default function LoomeProductDetailView({
   };
 
   return (
-    <div className="bg-[#F8F6F1] text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]">
+    <div className="loome-surface-cream bg-[#F2E9DE] text-[#201C1A]">
       {/* Breadcrumb Navigation */}
       <div className="border-b border-[#262923]/8 bg-[#F8F6F1]/90 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
         <nav

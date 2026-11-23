@@ -180,25 +180,25 @@ export default function LoomeFooter() {
 
   return (
     <footer data-design-section="footer" className="w-full">
-      {/* Editorial Pre-Footer Newsletter Band */}
-      <section className="border-t border-[#262923]/10 bg-[#E8E0D5]/65 px-4 py-20 text-[#262923] dark:border-[#F8F6F1]/10 dark:bg-[#20231D] dark:text-[#F8F6F1] sm:px-8 lg:px-12 lg:py-24">
+      {/* Editorial Pre-Footer Newsletter Band — Dark Mocha */}
+      <section className="border-t border-[#C8A98B]/20 bg-[var(--brand-secondary,#3B302B)] px-4 py-20 text-[#F2E9DE] sm:px-8 lg:px-12 lg:py-24">
         <div className="mx-auto grid max-w-[1360px] grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-6">
             <p
               data-preview-static="newsletter-eyebrow"
-              className="text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+              className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
             >
               Private Correspondence
             </p>
             <h2
               data-preview-field-path="common.footerHeading"
-              className="mt-3 font-serif text-4xl font-light leading-[1.08] tracking-tight sm:text-5xl"
+              className="mt-3 font-heading text-4xl font-extrabold leading-[1.06] tracking-[-0.025em] text-[#F2E9DE] sm:text-5xl"
             >
               {footerHeading}
             </h2>
             <p
               data-preview-field-path="common.newsletterDescription"
-              className="mt-4 max-w-lg text-sm leading-relaxed text-[#595C52] dark:text-[#B6B8AE]"
+              className="mt-4 max-w-lg text-sm leading-relaxed text-[#C7B6A6]"
             >
               {newsletterDescription}
             </p>
@@ -225,18 +225,18 @@ export default function LoomeFooter() {
                   }}
                   data-preview-field-path="common.newsletterEmailPlaceholder"
                   placeholder={newsletterPlaceholder}
-                  className="w-full border-0 border-b border-[#262923]/30 bg-transparent px-1 py-3.5 text-sm text-[#262923] placeholder:text-[#595C52]/75 focus:border-[#B59B79] focus:outline-none dark:border-[#F8F6F1]/25 dark:text-[#F8F6F1] dark:placeholder:text-[#B6B8AE]/70"
+                  className="w-full rounded-[11px] border border-[#C8A98B]/30 bg-[#201C1A]/55 px-4 py-3.5 text-sm text-[#F2E9DE] placeholder:text-[#C7B6A6]/75 focus:border-[#C8A98B] focus:outline-none"
                 />
               </div>
               <button
                 type="submit"
                 disabled={newsletterState === 'submitting'}
-                className="loome-btn-primary shrink-0 disabled:opacity-60"
+                className="group loome-btn-primary shrink-0 disabled:opacity-60"
               >
                 <span data-preview-field-path="common.newsletterSubscribeLabel">
                   {newsletterButtonLabel}
                 </span>
-                <ArrowRight className="h-3.5 w-3.5 stroke-[1.5]" />
+                <ArrowRight className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </form>
 
@@ -244,9 +244,9 @@ export default function LoomeFooter() {
               <div
                 role="status"
                 aria-live="polite"
-                className="mt-4 flex items-center gap-3 border border-[#747B65]/40 bg-[#F8F6F1] px-4 py-3 text-xs text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+                className="mt-4 flex items-center gap-3 rounded-[11px] border border-[#C8A98B]/40 bg-[#201C1A]/85 px-4 py-3 text-xs text-[#F2E9DE]"
               >
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#747B65] text-[#F8F6F1]">
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#C8A98B] text-[#201C1A]">
                   <Check className="h-3 w-3" />
                 </span>
                 <span>You are subscribed to LOOMÉ Atelier correspondence.</span>
@@ -257,9 +257,9 @@ export default function LoomeFooter() {
               <div
                 role="status"
                 aria-live="polite"
-                className="mt-4 flex items-start gap-2.5 border border-[#B59B79]/50 bg-[#F8F6F1]/90 px-4 py-3 text-xs leading-relaxed text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+                className="mt-4 flex items-start gap-2.5 rounded-[11px] border border-[#C8A98B]/45 bg-[#201C1A]/85 px-4 py-3 text-xs leading-relaxed text-[#F2E9DE]"
               >
-                <Info className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[#B59B79]" aria-hidden="true" />
+                <Info className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[#C8A98B]" aria-hidden="true" />
                 <span>
                   {newsletterState === 'unavailable'
                     ? 'Automated newsletter signup is not connected to a mailing service yet.'
@@ -267,7 +267,7 @@ export default function LoomeFooter() {
                   {contactEmail && (
                     <a
                       href={`mailto:${contactEmail}?subject=${encodeURIComponent('Newsletter Subscription Request')}&body=${encodeURIComponent(`Please add ${email.trim()} to the LOOMÉ mailing list.`)}`}
-                      className="font-medium underline underline-offset-4 hover:text-[#747B65]"
+                      className="font-medium text-[#C8A98B] underline underline-offset-4 hover:text-[#F2E9DE]"
                     >
                       Email {contactEmail} to join directly
                     </a>
@@ -278,7 +278,7 @@ export default function LoomeFooter() {
 
             <p
               data-preview-static="newsletter-footnote"
-              className="mt-3 text-[11px] tracking-wide text-[#595C52]/80 dark:text-[#B6B8AE]/70"
+              className="mt-3 text-[11px] tracking-wide text-[#C7B6A6]/80"
             >
               Thoughtful dispatches only. Unsubscribe effortlessly at any time.
             </p>
@@ -286,22 +286,22 @@ export default function LoomeFooter() {
         </div>
       </section>
 
-      {/* Deep Charcoal Multi-Column Luxury Footer */}
-      <div className="bg-[#262923] px-4 pb-12 pt-20 text-[#F8F6F1] sm:px-8 lg:px-12">
+      {/* Deep Espresso Multi-Column Luxury Footer */}
+      <div className="border-t border-[#C8A98B]/14 bg-[var(--page-background,#201C1A)] px-4 pb-12 pt-20 text-[#F2E9DE] sm:px-8 lg:px-12">
         <div className="mx-auto max-w-[1360px]">
-          <div className="grid grid-cols-1 gap-12 border-b border-[#F8F6F1]/12 pb-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
+          <div className="grid grid-cols-1 gap-12 border-b border-[#C8A98B]/16 pb-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
             {/* Column 1: Brand Identity */}
             <div className="lg:col-span-4">
               <button
                 type="button"
                 onClick={() => navigate('/')}
-                className="inline-flex items-center gap-3 border-0 bg-transparent p-0 text-[#F8F6F1]"
+                className="inline-flex items-center gap-3 border-0 bg-transparent p-0 text-[#F2E9DE]"
               >
                 <img
                   src={withBasePath(logoUrl)}
                   alt={siteTitle}
                   data-preview-field-path="common.logoUrl"
-                  className="h-8 w-8 rounded-sm object-contain"
+                  className="h-8 w-8 rounded-[6px] object-contain"
                 />
                 <span
                   data-preview-field-path="common.websiteTitle"
@@ -312,18 +312,18 @@ export default function LoomeFooter() {
               </button>
               <p
                 data-preview-static="footer-tagline"
-                className="mt-2 text-[10px] uppercase tracking-[0.24em] text-[#B59B79]"
+                className="mt-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]"
               >
                 The Art of Fine Textiles
               </p>
               <p
                 data-preview-field-path="common.shortDescription"
-                className="mt-5 max-w-sm text-sm leading-relaxed text-[#E8E0D5]/75"
+                className="mt-5 max-w-sm text-sm leading-relaxed text-[#C7B6A6]"
               >
                 {shortDescription}
               </p>
 
-              {/* Social Icons — always mounted with literal field paths */}
+              {/* Social Icons — softly rounded 10px corners */}
               <div className="mt-7 flex flex-wrap items-center gap-2.5">
                 <a
                   href={contentText(rawSocial.instagram) || 'https://instagram.com'}
@@ -331,7 +331,7 @@ export default function LoomeFooter() {
                   rel="noopener noreferrer"
                   data-preview-field-path="common.socialMedia.instagram"
                   aria-label="Instagram"
-                  className="inline-flex h-9 w-9 items-center justify-center border border-[#F8F6F1]/15 text-[#E8E0D5]/80 transition-colors hover:border-[#B59B79] hover:text-[#B59B79]"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/25 bg-[#3B302B]/45 text-[#F2E9DE]/85 transition-all hover:-translate-y-0.5 hover:border-[#C8A98B] hover:text-[#C8A98B]"
                 >
                   {renderSocialSvg('instagram')}
                 </a>
@@ -341,7 +341,7 @@ export default function LoomeFooter() {
                   rel="noopener noreferrer"
                   data-preview-field-path="common.socialMedia.twitter"
                   aria-label="Twitter"
-                  className="inline-flex h-9 w-9 items-center justify-center border border-[#F8F6F1]/15 text-[#E8E0D5]/80 transition-colors hover:border-[#B59B79] hover:text-[#B59B79]"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/25 bg-[#3B302B]/45 text-[#F2E9DE]/85 transition-all hover:-translate-y-0.5 hover:border-[#C8A98B] hover:text-[#C8A98B]"
                 >
                   {renderSocialSvg('twitter')}
                 </a>
@@ -351,7 +351,7 @@ export default function LoomeFooter() {
                   rel="noopener noreferrer"
                   data-preview-field-path="common.socialMedia.linkedin"
                   aria-label="LinkedIn"
-                  className="inline-flex h-9 w-9 items-center justify-center border border-[#F8F6F1]/15 text-[#E8E0D5]/80 transition-colors hover:border-[#B59B79] hover:text-[#B59B79]"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/25 bg-[#3B302B]/45 text-[#F2E9DE]/85 transition-all hover:-translate-y-0.5 hover:border-[#C8A98B] hover:text-[#C8A98B]"
                 >
                   {renderSocialSvg('linkedin')}
                 </a>
@@ -361,7 +361,7 @@ export default function LoomeFooter() {
                   rel="noopener noreferrer"
                   data-preview-field-path="common.socialMedia.facebook"
                   aria-label="Facebook"
-                  className="inline-flex h-9 w-9 items-center justify-center border border-[#F8F6F1]/15 text-[#E8E0D5]/80 transition-colors hover:border-[#B59B79] hover:text-[#B59B79]"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/25 bg-[#3B302B]/45 text-[#F2E9DE]/85 transition-all hover:-translate-y-0.5 hover:border-[#C8A98B] hover:text-[#C8A98B]"
                 >
                   {renderSocialSvg('facebook')}
                 </a>
@@ -596,7 +596,7 @@ export default function LoomeFooter() {
                 onClick={scrollToTop}
                 aria-label="Back to top"
                 data-preview-static="back-to-top"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#F8F6F1]/18 text-[#E8E0D5] transition-colors hover:border-[#B59B79] hover:text-[#B59B79]"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/28 bg-[#3B302B]/55 text-[#F2E9DE] transition-all hover:-translate-y-0.5 hover:border-[#C8A98B] hover:text-[#C8A98B]"
               >
                 <ArrowUp className="h-3.5 w-3.5 stroke-[1.5]" />
               </button>

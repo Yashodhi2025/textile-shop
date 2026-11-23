@@ -171,7 +171,7 @@ export default function JournalArticleView() {
   return (
     <div
       data-preview-page-key="journal_article"
-      className="min-h-[75vh] w-full bg-[#F8F6F1] text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+      className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
     >
       {/* Breadcrumb Strip */}
       <div className="border-b border-[#262923]/8 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">

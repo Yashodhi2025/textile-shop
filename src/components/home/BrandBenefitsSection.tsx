@@ -16,97 +16,100 @@ export default function BrandBenefitsSection() {
     <section
       id="brand-benefits"
       data-design-section="home-features"
-      className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24"
+      className="loome-surface-mocha w-full border-y border-[#C8A98B]/18 py-16 sm:py-20 lg:py-24"
     >
-      <LuxuryReveal className="mx-auto max-w-2xl text-center">
-        <EditableText
-          as="p"
-          data-preview-field-path="home.featuresEyebrow"
-          defaultValue={contentText(home.featuresEyebrow) || 'THE LOOMÉ STANDARD'}
-          fontFamily="body"
-          size="0.6875rem"
-          weight={500}
-          transform="uppercase"
-          letterSpacing="0.26em"
-          color="primary"
-          align="center"
-          className="m-0"
-        />
-        <EditableText
-          as="h2"
-          data-preview-field-path="home.featuresHeading"
-          defaultValue={contentText(home.featuresHeading) || 'Crafted to Outlast Seasons'}
-          fontFamily="heading"
-          size="clamp(2.35rem, 4vw, 3.25rem)"
-          weight={300}
-          lineHeight={1.08}
-          letterSpacing="-0.02em"
-          color="heading"
-          align="center"
-          className="mt-3 mb-0"
-        />
-      </LuxuryReveal>
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
+        <LuxuryReveal className="mx-auto max-w-2xl text-center">
+          <EditableText
+            as="p"
+            data-preview-field-path="home.featuresEyebrow"
+            defaultValue={contentText(home.featuresEyebrow) || 'THE LOOMÉ STANDARD'}
+            fontFamily="body"
+            size="0.6875rem"
+            weight={600}
+            transform="uppercase"
+            letterSpacing="0.26em"
+            color="#C8A98B"
+            align="center"
+            className="m-0"
+          />
+          <EditableText
+            as="h2"
+            data-preview-field-path="home.featuresHeading"
+            defaultValue={contentText(home.featuresHeading) || 'Crafted to Outlast Seasons'}
+            fontFamily="heading"
+            size="clamp(2.25rem, 3.8vw, 3.2rem)"
+            weight={800}
+            lineHeight={1.06}
+            letterSpacing="-0.03em"
+            color="#F2E9DE"
+            align="center"
+            className="mt-3 mb-0"
+          />
+        </LuxuryReveal>
 
-      {/* Always-mounted list container for Fivora strict validation */}
-      <div
-        data-preview-list-path="home.features"
-        className="mt-16"
-      >
-        {features.length === 0 ? (
-          <div
-            data-preview-static="features-empty"
-            className="border border-dashed border-[#262923]/20 py-14 text-center text-sm text-[#65685E]"
-          >
-            Add brand pillars in your Fivora editor.
-          </div>
-        ) : (
-          <LuxuryStagger className="grid grid-cols-1 divide-y divide-[#262923]/10 border-y border-[#262923]/10 dark:divide-[#F8F6F1]/10 dark:border-[#F8F6F1]/10 md:grid-cols-3 md:divide-x md:divide-y-0">
-            {features.map((rawFeature, index) => {
-              const feature = contentObject(rawFeature);
-              const Icon = PILLAR_ICONS[index % PILLAR_ICONS.length];
-              return (
-                <LuxuryStaggerItem
-                  key={index}
-                  className="group flex flex-col items-center px-6 py-12 text-center sm:px-10 lg:py-16"
-                >
-                  <div
-                    data-preview-item-path={`home.features[${index}]`}
-                    className="flex flex-col items-center"
+        {/* Always-mounted list container for Fivora strict validation */}
+        <div
+          data-preview-list-path="home.features"
+          className="mt-14"
+        >
+          {features.length === 0 ? (
+            <div
+              data-preview-static="features-empty"
+              className="rounded-2xl border border-dashed border-[#C8A98B]/28 py-14 text-center text-sm text-[#C7B6A6]"
+            >
+              Add brand pillars in your Fivora editor.
+            </div>
+          ) : (
+            <LuxuryStagger className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-7">
+              {features.map((rawFeature, index) => {
+                const feature = contentObject(rawFeature);
+                const Icon = PILLAR_ICONS[index % PILLAR_ICONS.length];
+                return (
+                  <LuxuryStaggerItem
+                    key={index}
+                    className="group flex flex-col items-center rounded-2xl border border-[#C8A98B]/18 bg-[#201C1A]/75 px-7 py-11 text-center transition-all duration-500 hover:border-[#C8A98B]/55 sm:px-9"
                   >
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full border border-[#B59B79]/50 bg-[#FCFBF8] text-[#747B65] transition-all duration-500 group-hover:scale-105 group-hover:border-[#747B65] group-hover:bg-[#262923] group-hover:text-[#F8F6F1] dark:bg-[#20231D] dark:text-[#B59B79]">
-                      <Icon className="h-5 w-5 stroke-[1.35]" />
+                    <div
+                      data-preview-item-path={`home.features[${index}]`}
+                      className="flex flex-col items-center"
+                    >
+                      <div className="flex h-14 w-14 items-center justify-center rounded-[12px] border border-[#C8A98B]/45 bg-[#3B302B] text-[#C8A98B] transition-all duration-500 group-hover:scale-105 group-hover:border-[#C8A98B] group-hover:bg-[#C8A98B] group-hover:text-[#201C1A]">
+                        <Icon className="h-5 w-5 stroke-[1.5]" />
+                      </div>
+
+                      <EditableText
+                        as="h3"
+                        data-preview-field-path={`home.features[${index}].title`}
+                        defaultValue={contentText(feature.title)}
+                        fontFamily="heading"
+                        size="1.35rem"
+                        weight={700}
+                        lineHeight={1.25}
+                        letterSpacing="-0.015em"
+                        color="#F2E9DE"
+                        align="center"
+                        className="mt-6 mb-0"
+                      />
+
+                      <EditableText
+                        as="p"
+                        data-preview-field-path={`home.features[${index}].body`}
+                        defaultValue={contentText(feature.body)}
+                        fontFamily="body"
+                        size="0.875rem"
+                        lineHeight={1.8}
+                        color="#C7B6A6"
+                        align="center"
+                        className="mt-3 mb-0 max-w-xs"
+                      />
                     </div>
-
-                    <EditableText
-                      as="h3"
-                      data-preview-field-path={`home.features[${index}].title`}
-                      defaultValue={contentText(feature.title)}
-                      fontFamily="heading"
-                      size="1.65rem"
-                      weight={400}
-                      lineHeight={1.2}
-                      color="heading"
-                      align="center"
-                      className="mt-6 mb-0"
-                    />
-
-                    <EditableText
-                      as="p"
-                      data-preview-field-path={`home.features[${index}].body`}
-                      defaultValue={contentText(feature.body)}
-                      fontFamily="body"
-                      size="0.875rem"
-                      lineHeight={1.8}
-                      color="muted"
-                      align="center"
-                      className="mt-3 mb-0 max-w-xs"
-                    />
-                  </div>
-                </LuxuryStaggerItem>
-              );
-            })}
-          </LuxuryStagger>
-        )}
+                  </LuxuryStaggerItem>
+                );
+              })}
+            </LuxuryStagger>
+          )}
+        </div>
       </div>
     </section>
   );

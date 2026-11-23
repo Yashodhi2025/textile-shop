@@ -12,44 +12,44 @@ export default function BrandMarquee() {
   return (
     <section
       data-design-section="brand-marquee"
-      className="loome-marquee-wrap relative overflow-hidden border-y border-[#262923]/10 bg-[#E8E0D5]/55 py-5 dark:border-[#F8F6F1]/10 dark:bg-[#20231D]"
+      className="loome-marquee-wrap relative overflow-hidden border-y border-[#C8A98B]/20 bg-[var(--brand-secondary,#3B302B)] py-5"
     >
       <div className="loome-marquee-track">
         <div className="flex shrink-0 items-center">
           <span
             data-preview-field-path="home.marqueeText"
-            className="px-8 font-serif text-lg font-normal uppercase tracking-[0.26em] text-[#262923] dark:text-[#F8F6F1] sm:px-10 sm:text-xl"
+            className="px-8 font-serif text-lg font-normal uppercase tracking-[0.28em] text-[#F2E9DE] sm:px-10 sm:text-xl"
           >
             {marqueeText}
           </span>
-          <span data-preview-static="marquee-sep-1" className="text-xs text-[#B59B79]" aria-hidden="true">
+          <span data-preview-static="marquee-sep-1" className="text-xs text-[#C8A98B]" aria-hidden="true">
             ✦
           </span>
           <span
             data-preview-static="marquee-repeat-1"
-            className="px-8 font-serif text-lg font-normal uppercase tracking-[0.26em] text-[#262923] dark:text-[#F8F6F1] sm:px-10 sm:text-xl"
+            className="px-8 font-serif text-lg font-normal uppercase tracking-[0.28em] text-[#F2E9DE] sm:px-10 sm:text-xl"
           >
             {marqueeText}
           </span>
-          <span data-preview-static="marquee-sep-2" className="text-xs text-[#B59B79]" aria-hidden="true">
+          <span data-preview-static="marquee-sep-2" className="text-xs text-[#C8A98B]" aria-hidden="true">
             ✦
           </span>
         </div>
         <div className="flex shrink-0 items-center" aria-hidden="true">
           <span
             data-preview-static="marquee-dup-1"
-            className="px-8 font-serif text-lg font-normal uppercase tracking-[0.26em] text-[#262923] dark:text-[#F8F6F1] sm:px-10 sm:text-xl"
+            className="px-8 font-serif text-lg font-normal uppercase tracking-[0.28em] text-[#F2E9DE] sm:px-10 sm:text-xl"
           >
             {marqueeText}
           </span>
-          <span data-preview-static="marquee-sep-3" className="text-xs text-[#B59B79]">✦</span>
+          <span data-preview-static="marquee-sep-3" className="text-xs text-[#C8A98B]">✦</span>
           <span
             data-preview-static="marquee-dup-2"
-            className="px-8 font-serif text-lg font-normal uppercase tracking-[0.26em] text-[#262923] dark:text-[#F8F6F1] sm:px-10 sm:text-xl"
+            className="px-8 font-serif text-lg font-normal uppercase tracking-[0.28em] text-[#F2E9DE] sm:px-10 sm:text-xl"
           >
             {marqueeText}
           </span>
-          <span data-preview-static="marquee-sep-4" className="text-xs text-[#B59B79]">✦</span>
+          <span data-preview-static="marquee-sep-4" className="text-xs text-[#C8A98B]">✦</span>
         </div>
       </div>
     </section>

@@ -64,7 +64,7 @@ export default function LoomeAnnouncementBar() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       data-design-section="announcement-bar"
-      className="relative z-40 w-full border-b border-[#B59B79]/20 bg-[#262923] text-[#F8F6F1]"
+      className="relative z-40 w-full border-b border-[#C8A98B]/20 bg-[#181412] text-[#F2E9DE]"
     >
       <div className="mx-auto flex min-h-[38px] max-w-[1440px] items-center justify-between px-4 sm:px-8 lg:px-12">
         <button
@@ -72,7 +72,7 @@ export default function LoomeAnnouncementBar() {
           onClick={() => count > 1 && setActiveIndex((prev) => (prev - 1 + count) % count)}
           aria-label="Previous announcement"
           data-preview-static="announcement-prev"
-          className={`flex h-7 w-7 shrink-0 items-center justify-center text-[#F8F6F1]/60 transition-colors hover:text-[#B59B79] ${
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-[8px] text-[#F2E9DE]/60 transition-colors hover:text-[#C8A98B] ${
             count <= 1 ? 'pointer-events-none invisible' : ''
           }`}
         >
@@ -96,7 +96,7 @@ export default function LoomeAnnouncementBar() {
                 >
                   <span
                     data-preview-field-path={`announcementBarPreview.announcements[${item.index}].icon`}
-                    className={item.icon ? 'text-[10px] text-[#B59B79]' : 'inline-block'}
+                    className={item.icon ? 'text-[10px] text-[#C8A98B]' : 'inline-block'}
                   >
                     {item.icon}
                   </span>
@@ -104,7 +104,7 @@ export default function LoomeAnnouncementBar() {
                     data-preview-field-path={`announcementBarPreview.announcements[${item.index}].badge`}
                     className={
                       item.badge
-                        ? 'rounded-sm border border-[#B59B79]/40 bg-[#B59B79]/15 px-1.5 py-0.5 text-[9px] font-medium tracking-[0.2em] text-[#E8E0D5]'
+                        ? 'rounded-[6px] border border-[#C8A98B]/40 bg-[#3B302B]/80 px-2 py-0.5 text-[9px] font-semibold tracking-[0.2em] text-[#C8A98B]'
                         : 'inline-block'
                     }
                   >
@@ -112,7 +112,7 @@ export default function LoomeAnnouncementBar() {
                   </span>
                   <span
                     data-preview-field-path={`announcementBarPreview.announcements[${item.index}].text`}
-                    className="font-normal text-[#F8F6F1]/90"
+                    className="font-normal text-[#F2E9DE]/90"
                   >
                     {item.text}
                   </span>
@@ -121,7 +121,7 @@ export default function LoomeAnnouncementBar() {
                     data-preview-field-path={`announcementBarPreview.announcements[${item.index}].linkUrl`}
                     className={
                       item.linkLabel
-                        ? 'inline-flex items-center gap-1 border-b border-[#B59B79]/70 pb-px text-[10px] font-medium tracking-[0.18em] text-[#E8E0D5] transition-colors hover:border-[#F8F6F1] hover:text-[#F8F6F1]'
+                        ? 'inline-flex items-center gap-1 border-b border-[#C8A98B]/70 pb-px text-[10px] font-semibold tracking-[0.18em] text-[#C8A98B] transition-colors hover:border-[#F2E9DE] hover:text-[#F2E9DE]'
                         : 'inline-block'
                     }
                   >
@@ -137,7 +137,7 @@ export default function LoomeAnnouncementBar() {
               <div className="flex w-full shrink-0 items-center justify-center">
                 <span
                   data-preview-static="announcement-empty"
-                  className="text-[11px] uppercase tracking-[0.2em] text-[#E8E0D5]/75"
+                  className="text-[11px] uppercase tracking-[0.2em] text-[#C8A98B]/80"
                 >
                   LOOMÉ — The Art of Fine Textiles
                 </span>
@@ -151,7 +151,7 @@ export default function LoomeAnnouncementBar() {
           onClick={() => count > 1 && setActiveIndex((prev) => (prev + 1) % count)}
           aria-label="Next announcement"
           data-preview-static="announcement-next"
-          className={`flex h-7 w-7 shrink-0 items-center justify-center text-[#F8F6F1]/60 transition-colors hover:text-[#B59B79] ${
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-[8px] text-[#F2E9DE]/60 transition-colors hover:text-[#C8A98B] ${
             count <= 1 ? 'pointer-events-none invisible' : ''
           }`}
         >

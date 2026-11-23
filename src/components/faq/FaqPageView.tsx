@@ -266,7 +266,7 @@ export default function FaqPageView() {
   return (
     <div
       data-preview-page-key="faq"
-      className="min-h-[75vh] w-full bg-[#F8F6F1] text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+      className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
     >
       {/* Breadcrumb Strip */}
       <div className="border-b border-[#262923]/8 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
@@ -442,7 +442,7 @@ export default function FaqPageView() {
             </div>
 
             {/* 5. Small Editorial Textile Image Card */}
-            <LuxuryReveal delay={0.08} className="overflow-hidden border border-[#262923]/10 bg-[#FCFBF8] shadow-[0_14px_38px_rgba(38,41,35,0.035)] dark:border-[#F8F6F1]/12 dark:bg-[#20231D]">
+            <LuxuryReveal delay={0.08} className="overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-[0_12px_34px_rgba(32,28,26,0.04)]">
               <LuxuryImageReveal tone="ivory" className="aspect-[4/3] w-full bg-[#E8E0D5]/60">
                 <img
                   src={withBasePath(editorialImageUrl)}

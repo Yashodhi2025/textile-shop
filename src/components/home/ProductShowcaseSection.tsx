@@ -16,6 +16,7 @@ interface ProductShowcaseSectionProps {
   filterPool?: LoomeProduct[];
   showCategoryFilter?: boolean;
   surfaceClassName?: string;
+  tone?: 'dark' | 'light';
 }
 
 export default function ProductShowcaseSection({
@@ -27,9 +28,11 @@ export default function ProductShowcaseSection({
   filterPool,
   showCategoryFilter = false,
   surfaceClassName = '',
+  tone = 'light',
 }: ProductShowcaseSectionProps) {
   const { activeCategory, setActiveCategory } = useLoomeStore();
   const prefersReducedMotion = useReducedMotion();
+  const isDark = tone === 'dark';
 
   const sourcePool = filterPool && filterPool.length > 0 ? filterPool : products;
 
@@ -70,10 +73,14 @@ export default function ProductShowcaseSection({
                       type="button"
                       data-preview-static={`category-tab-${cat}`}
                       onClick={() => setActiveCategory(cat)}
-                      className={`border px-3.5 py-1.5 text-[10px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${
+                      className={`rounded-[10px] border px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition-all duration-300 ${
                         isActive
-                          ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#262923]'
-                          : 'border-[#262923]/15 bg-transparent text-[#65685E] hover:border-[#B59B79] hover:text-[#262923] dark:border-[#F8F6F1]/18 dark:text-[#B6B8AE]'
+                          ? isDark
+                            ? 'border-[#C8A98B] bg-[#C8A98B] text-[#201C1A]'
+                            : 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE]'
+                          : isDark
+                            ? 'border-[#C8A98B]/25 bg-transparent text-[#C7B6A6] hover:border-[#C8A98B] hover:text-[#F2E9DE]'
+                            : 'border-[#3B302B]/20 bg-[#FAF5EE] text-[#5E4E45] hover:border-[#8D7667] hover:text-[#201C1A]'
                       }`}
                     >
                       {cat}
@@ -87,18 +94,24 @@ export default function ProductShowcaseSection({
 
         <LuxuryHairline
           delay={0.14}
-          className="mt-8 h-px w-full bg-[#262923]/10 dark:bg-[#F8F6F1]/10"
+          className={`mt-8 h-px w-full ${
+            isDark ? 'bg-[#C8A98B]/20' : 'bg-[#3B302B]/14'
+          }`}
         />
 
         {/* Product Grid */}
         <div
           data-preview-list-path="products"
-          className="mt-10 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-7"
+          className="mt-10 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-6"
         >
           {displayedProducts.length === 0 ? (
             <div
               data-preview-static="products-empty"
-              className="col-span-full border border-dashed border-[#262923]/20 py-16 text-center text-sm text-[#65685E]"
+              className={`col-span-full rounded-2xl border border-dashed py-16 text-center text-sm ${
+                isDark
+                  ? 'border-[#C8A98B]/25 text-[#C7B6A6]'
+                  : 'border-[#3B302B]/20 text-[#5E4E45]'
+              }`}
             >
               Add products in your Fivora catalog to showcase them here.
             </div>
@@ -122,7 +135,7 @@ export default function ProductShowcaseSection({
                         }
                   }
                 >
-                  <LoomeProductCard product={product} />
+                  <LoomeProductCard product={product} tone={tone} />
                 </motion.div>
               ))}
             </AnimatePresence>
@@ -136,7 +149,11 @@ export default function ProductShowcaseSection({
               type="button"
               data-preview-static="reset-category-filter"
               onClick={() => setActiveCategory('All')}
-              className="group inline-flex items-center gap-2 border-b border-[#262923]/40 pb-1 text-[11px] font-medium uppercase tracking-[0.22em] text-[#262923] transition-colors hover:border-[#B59B79] hover:text-[#747B65] dark:border-[#F8F6F1]/40 dark:text-[#F8F6F1]"
+              className={`group inline-flex items-center gap-2 rounded-[10px] border px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition-all ${
+                isDark
+                  ? 'border-[#C8A98B]/40 text-[#F2E9DE] hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A]'
+                  : 'border-[#201C1A]/25 text-[#201C1A] hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE]'
+              }`}
             >
               View All Arrivals
               <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />

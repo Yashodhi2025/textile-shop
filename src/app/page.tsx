@@ -63,6 +63,7 @@ export default function HomePage() {
       <ProductShowcaseSection
         id="new-arrivals"
         designSection="home-products"
+        tone="light"
         headerLeft={
           <>
             <EditableText
@@ -71,10 +72,10 @@ export default function HomePage() {
               defaultValue={contentText(home.productsEyebrow) || 'SEASONAL ARRIVALS'}
               fontFamily="body"
               size="0.6875rem"
-              weight={500}
+              weight={600}
               transform="uppercase"
               letterSpacing="0.26em"
-              color="primary"
+              color="#8D7667"
               className="m-0"
             />
             <EditableText
@@ -82,11 +83,11 @@ export default function HomePage() {
               data-preview-field-path="home.productsHeading"
               defaultValue={contentText(home.productsHeading) || 'New Arrivals'}
               fontFamily="heading"
-              size="clamp(2.35rem, 4.2vw, 3.5rem)"
-              weight={300}
-              lineHeight={1.06}
-              letterSpacing="-0.02em"
-              color="heading"
+              size="clamp(2.25rem, 4vw, 3.4rem)"
+              weight={800}
+              lineHeight={1.04}
+              letterSpacing="-0.03em"
+              color="#201C1A"
               className="mt-3 mb-0"
             />
           </>
@@ -99,14 +100,14 @@ export default function HomePage() {
             fontFamily="body"
             size="0.9375rem"
             lineHeight={1.75}
-            color="muted"
+            color="#5E4E45"
             className="m-0 max-w-md lg:text-right"
           />
         }
         products={newArrivals}
         filterPool={allProducts}
         showCategoryFilter
-        surfaceClassName="border-t border-[#262923]/8 dark:border-[#F8F6F1]/8"
+        surfaceClassName="loome-surface-cream border-y border-[#3B302B]/12"
       />
 
       <CraftsmanshipSection />
@@ -115,6 +116,7 @@ export default function HomePage() {
       <ProductShowcaseSection
         id="bestsellers"
         designSection="home-bestsellers"
+        tone="dark"
         headerLeft={
           <>
             <EditableText
@@ -123,10 +125,10 @@ export default function HomePage() {
               defaultValue={contentText(home.bestsellersEyebrow) || 'CLIENT FAVORITES'}
               fontFamily="body"
               size="0.6875rem"
-              weight={500}
+              weight={600}
               transform="uppercase"
               letterSpacing="0.26em"
-              color="primary"
+              color="#C8A98B"
               className="m-0"
             />
             <EditableText
@@ -134,11 +136,11 @@ export default function HomePage() {
               data-preview-field-path="home.bestsellersHeading"
               defaultValue={contentText(home.bestsellersHeading) || 'Bestsellers'}
               fontFamily="heading"
-              size="clamp(2.35rem, 4.2vw, 3.5rem)"
-              weight={300}
-              lineHeight={1.06}
-              letterSpacing="-0.02em"
-              color="heading"
+              size="clamp(2.25rem, 4vw, 3.4rem)"
+              weight={800}
+              lineHeight={1.04}
+              letterSpacing="-0.03em"
+              color="#F2E9DE"
               className="mt-3 mb-0"
             />
           </>
@@ -151,11 +153,12 @@ export default function HomePage() {
             fontFamily="body"
             size="0.9375rem"
             lineHeight={1.75}
-            color="muted"
+            color="#C7B6A6"
             className="m-0 max-w-md lg:text-right"
           />
         }
         products={bestsellers}
+        surfaceClassName="loome-surface-espresso"
       />
 
       <ShopTheLookSection products={allProducts} />

@@ -3,47 +3,57 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
-  --loome-ivory: #F8F6F1;
-  --loome-ivory-soft: #FCFBF8;
-  --loome-ivory-deep: #F0ECE3;
-  --loome-charcoal: #262923;
-  --loome-muted: #595C52;
-  --loome-olive: #747B65;
-  --loome-gold: #B59B79;
-  --loome-beige: #E8E0D5;
-  --loome-border: rgba(38, 41, 35, 0.11);
-  --heading-font: 'Cormorant Garamond', Georgia, serif;
+  color-scheme: dark;
+  --loome-espresso: var(--page-background, #201C1A);
+  --loome-mocha: var(--brand-secondary, #3B302B);
+  --loome-mushroom: var(--brand-primary, #8D7667);
+  --loome-champagne: var(--brand-accent, #C8A98B);
+  --loome-cream: #F2E9DE;
+  --loome-cream-soft: #FAF5EE;
+  --loome-cream-deep: #E6D9C9;
+  --loome-ivory: #F2E9DE;
+  --loome-ivory-soft: #FAF5EE;
+  --loome-ivory-deep: #E6D9C9;
+  --loome-charcoal: #201C1A;
+  --loome-muted: #C7B6A6;
+  --loome-muted-light: #6B5B51;
+  --loome-olive: var(--brand-primary, #8D7667);
+  --loome-gold: var(--brand-accent, #C8A98B);
+  --loome-beige: #E6D9C9;
+  --loome-border: rgba(200, 169, 139, 0.2);
+  --loome-radius-btn: 11px;
+  --loome-radius-card: 16px;
+  --heading-font: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --body-font: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --page-background: #F8F6F1;
-  --page-text: #262923;
-  --heading-color: #262923;
-  --muted-text: #595C52;
-  --color-text: #262923;
-  --color-text-muted: #595C52;
-  --color-border: rgba(38, 41, 35, 0.12);
-  --brand-color: #747B65;
-  --brand-primary: #747B65;
-  --brand-secondary: #262923;
-  --brand-accent: #B59B79;
+  --editorial-font: 'Cormorant Garamond', Georgia, serif;
+  --page-background: #201C1A;
+  --page-text: #F2E9DE;
+  --heading-color: #F2E9DE;
+  --muted-text: #C7B6A6;
+  --color-text: #F2E9DE;
+  --color-text-muted: #C7B6A6;
+  --color-border: rgba(200, 169, 139, 0.2);
+  --card-bg: #3B302B;
+  --brand-color: #8D7667;
+  --brand-primary: #8D7667;
+  --brand-secondary: #3B302B;
+  --brand-accent: #C8A98B;
 }
 
 html.dark,
 .dark {
   color-scheme: dark;
-  --loome-ivory: #171915;
-  --loome-ivory-soft: #20231D;
-  --loome-ivory-deep: #292C25;
-  --loome-charcoal: #F8F6F1;
-  --loome-muted: #B6B8AE;
-  --loome-border: rgba(248, 246, 241, 0.12);
-  --page-background: #171915;
-  --page-text: #F8F6F1;
-  --heading-color: #F8F6F1;
-  --muted-text: #B6B8AE;
-  --color-text: #F8F6F1;
-  --color-text-muted: #B6B8AE;
-  --color-border: rgba(248, 246, 241, 0.14);
+  --loome-espresso: #161311;
+  --loome-mocha: #2A221F;
+  --loome-border: rgba(200, 169, 139, 0.22);
+  --page-background: #161311;
+  --page-text: #F5EEE6;
+  --heading-color: #F5EEE6;
+  --muted-text: #C9B9AA;
+  --color-text: #F5EEE6;
+  --color-text-muted: #C9B9AA;
+  --color-border: rgba(200, 169, 139, 0.22);
+  --card-bg: #2A221F;
 }
 
 * {
@@ -58,16 +68,16 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--page-background, #F8F6F1);
-  color: var(--page-text, #262923);
+  background-color: var(--page-background, #201C1A);
+  color: var(--page-text, #F2E9DE);
   font-family: var(--body-font, 'Manrope', 'Inter', sans-serif);
   transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
 }
 
 ::selection {
-  background-color: rgba(181, 155, 121, 0.28);
-  color: #262923;
+  background-color: rgba(200, 169, 139, 0.32);
+  color: #F2E9DE;
 }
 
 button,
@@ -89,7 +99,7 @@ h1,
 h2,
 h3,
 h4 {
-  font-family: var(--heading-font, 'Cormorant Garamond', Georgia, serif);
+  font-family: var(--heading-font, 'Manrope', 'Inter', sans-serif);
   margin-top: 0;
 }
 
@@ -99,9 +109,34 @@ p {
 
 .site-shell {
   min-height: 100vh;
-  background-color: var(--page-background, #F8F6F1);
-  color: var(--page-text, #262923);
+  background-color: var(--page-background, #201C1A);
+  color: var(--page-text, #F2E9DE);
   font-size: var(--base-size, 16px);
+}
+
+/* Warm Cream Ivory alternating editorial surface */
+.loome-surface-cream {
+  background-color: var(--loome-cream, #F2E9DE);
+  color: #201C1A;
+  --heading-color: #201C1A;
+  --page-text: #201C1A;
+  --muted-text: #5E4E45;
+  --color-text: #201C1A;
+  --color-text-muted: #5E4E45;
+  --card-bg: #FAF5EE;
+  --loome-border: rgba(59, 48, 43, 0.14);
+}
+
+/* Deep Espresso primary luxury surface */
+.loome-surface-espresso {
+  background-color: var(--page-background, #201C1A);
+  color: var(--page-text, #F2E9DE);
+}
+
+/* Dark Mocha secondary luxury surface */
+.loome-surface-mocha {
+  background-color: var(--brand-secondary, #3B302B);
+  color: var(--page-text, #F2E9DE);
 }
 
 /* Luxury editorial underline hover animation */
@@ -117,8 +152,8 @@ p {
   left: 0;
   bottom: -4px;
   width: 100%;
-  height: 1px;
-  background-color: var(--loome-gold, #B59B79);
+  height: 1.5px;
+  background-color: var(--brand-accent, #C8A98B);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
@@ -198,7 +233,7 @@ p {
   animation: loomeHotspotPulse 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
-/* Luxury CTA buttons */
+/* Luxury CTA buttons — softly rounded rectangular corners (11px), champagne highlights & hover lift */
 .loome-btn-primary {
   position: relative;
   overflow: hidden;
@@ -206,24 +241,53 @@ p {
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  padding: 0.95rem 2.15rem;
+  padding: 0.92rem 2.1rem;
+  border-radius: var(--loome-radius-btn, 11px);
   font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  background-color: #262923;
-  color: #F8F6F1;
-  border: 1px solid #262923;
-  transition: color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+  background-color: var(--brand-accent, #C8A98B);
+  color: #201C1A;
+  border: 1px solid var(--brand-accent, #C8A98B);
+  transition: color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .loome-btn-primary:hover {
-  background-color: #747B65;
-  border-color: #747B65;
-  transform: translateY(-1px);
+  background-color: #D8BFA4;
+  border-color: #D8BFA4;
+  color: #201C1A;
+  box-shadow: 0 10px 26px rgba(200, 169, 139, 0.22);
+  transform: translateY(-2px);
+}
+
+.loome-btn-espresso {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.92rem 2.1rem;
+  border-radius: var(--loome-radius-btn, 11px);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background-color: #201C1A;
+  color: #F2E9DE;
+  border: 1px solid #201C1A;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.loome-btn-espresso:hover {
+  background-color: var(--brand-secondary, #3B302B);
+  border-color: var(--brand-accent, #C8A98B);
+  color: #F2E9DE;
+  box-shadow: 0 10px 24px rgba(32, 28, 26, 0.22);
+  transform: translateY(-2px);
 }
 
 .loome-btn-ivory {
@@ -231,22 +295,24 @@ p {
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  padding: 0.95rem 2.15rem;
+  padding: 0.92rem 2.1rem;
+  border-radius: var(--loome-radius-btn, 11px);
   font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  background-color: #F8F6F1;
-  color: #262923;
-  border: 1px solid #F8F6F1;
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  background-color: #F2E9DE;
+  color: #201C1A;
+  border: 1px solid #F2E9DE;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .loome-btn-ivory:hover {
-  background-color: #B59B79;
-  border-color: #B59B79;
-  color: #F8F6F1;
-  transform: translateY(-1px);
+  background-color: var(--brand-accent, #C8A98B);
+  border-color: var(--brand-accent, #C8A98B);
+  color: #201C1A;
+  box-shadow: 0 10px 26px rgba(200, 169, 139, 0.25);
+  transform: translateY(-2px);
 }
 
 .loome-btn-outline {
@@ -254,53 +320,61 @@ p {
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  padding: 0.9rem 2rem;
+  padding: 0.88rem 1.95rem;
+  border-radius: var(--loome-radius-btn, 11px);
   font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   background-color: transparent;
-  color: var(--page-text, #262923);
-  border: 1px solid color-mix(in srgb, var(--page-text, #262923) 30%, transparent);
+  color: var(--page-text, #F2E9DE);
+  border: 1px solid color-mix(in srgb, var(--brand-accent, #C8A98B) 55%, transparent);
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .loome-btn-outline:hover {
-  border-color: #262923;
-  background-color: #262923;
-  color: #F8F6F1;
+  border-color: var(--brand-accent, #C8A98B);
+  background-color: var(--brand-accent, #C8A98B);
+  color: #201C1A;
+  transform: translateY(-2px);
 }
 
-/* Preserved secondary page layout classes harmonized with LOOMÉ palette */
+/* Preserved secondary page layout classes harmonized with Midnight Espresso palette */
 .page-section {
   padding-left: max(1.5rem, calc((100vw - 80rem) / 2));
   padding-right: max(1.5rem, calc((100vw - 80rem) / 2));
   padding-top: clamp(3.5rem, 6vw, 5.5rem);
   padding-bottom: clamp(3.5rem, 6vw, 5.5rem);
   box-sizing: border-box;
+  background-color: var(--page-background, #201C1A);
+  color: var(--page-text, #F2E9DE);
 }
 
 .page-section.alt {
-  background: color-mix(in srgb, #E8E0D5 38%, var(--page-background, #F8F6F1));
+  background-color: var(--brand-secondary, #3B302B);
+  border-top: 1px solid rgba(200, 169, 139, 0.14);
+  border-bottom: 1px solid rgba(200, 169, 139, 0.14);
 }
 
 .page-heading {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .page-heading h1 {
-  font-size: clamp(2.5rem, 5vw, 4.25rem);
-  font-weight: 400;
-  line-height: 1.06;
+  font-size: clamp(2.4rem, 4.8vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   margin-bottom: 1rem;
+  color: var(--heading-color, #F2E9DE);
 }
 
 .page-heading > p,
 .split-copy > p {
   max-width: 48rem;
-  font-size: 1.0625rem;
+  font-size: 1.025rem;
   line-height: 1.8;
-  color: var(--loome-muted, #65685E);
+  color: var(--muted-text, #C7B6A6);
 }
 
 .split {
@@ -314,71 +388,80 @@ p {
   width: 100%;
   min-height: 24rem;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: var(--loome-radius-card, 16px);
+  border: 1px solid rgba(200, 169, 139, 0.18);
 }
 
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 2rem;
+  gap: 1.75rem;
   width: 100%;
 }
 
 .card {
-  padding: 1.75rem;
-  border: 1px solid var(--loome-border, rgba(38, 41, 35, 0.11));
-  border-radius: 4px;
-  background: var(--card-bg, var(--loome-ivory-soft, #FCFBF8));
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  padding: 1.85rem;
+  border: 1px solid rgba(200, 169, 139, 0.18);
+  border-radius: var(--loome-radius-card, 16px);
+  background: var(--card-bg, var(--brand-secondary, #3B302B));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease;
 }
 
 .card:hover {
-  border-color: rgba(181, 155, 121, 0.48);
+  border-color: rgba(200, 169, 139, 0.5);
+  transform: translateY(-2px);
 }
 
 .button-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.85rem;
-  padding: 0.75rem 1.75rem;
-  background: #262923;
-  color: #F8F6F1;
-  border: 1px solid #262923;
+  gap: 0.5rem;
+  min-height: 2.9rem;
+  padding: 0.78rem 1.85rem;
+  border-radius: var(--loome-radius-btn, 11px);
+  background: var(--brand-accent, #C8A98B);
+  color: #201C1A;
+  border: 1px solid var(--brand-accent, #C8A98B);
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .button-primary:hover {
-  background: #747B65;
-  border-color: #747B65;
+  background: #D8BFA4;
+  border-color: #D8BFA4;
+  transform: translateY(-2px);
 }
 
 .button-secondary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.85rem;
-  padding: 0.75rem 1.75rem;
+  gap: 0.5rem;
+  min-height: 2.9rem;
+  padding: 0.78rem 1.85rem;
+  border-radius: var(--loome-radius-btn, 11px);
   background: transparent;
-  color: var(--page-text, #262923);
-  border: 1px solid var(--loome-border, rgba(38, 41, 35, 0.22));
+  color: var(--page-text, #F2E9DE);
+  border: 1px solid rgba(200, 169, 139, 0.4);
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .button-secondary:hover {
-  border-color: #262923;
-  background: #262923;
-  color: #F8F6F1;
+  border-color: var(--brand-accent, #C8A98B);
+  background: var(--brand-accent, #C8A98B);
+  color: #201C1A;
+  transform: translateY(-2px);
 }
 
 .contact-grid {
@@ -395,7 +478,7 @@ p {
 }
 
 .contact-details a {
-  color: var(--loome-olive, #747B65);
+  color: var(--brand-accent, #C8A98B);
   text-decoration: none;
   font-weight: 500;
 }
@@ -411,27 +494,28 @@ p {
   font-size: 0.75rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--loome-muted, #65685E);
+  color: var(--muted-text, #C7B6A6);
 }
 
 .contact-form input,
 .contact-form textarea {
   width: 100%;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--loome-border, rgba(38, 41, 35, 0.18));
-  border-radius: 2px;
-  background: transparent;
-  color: var(--page-text, #262923);
+  padding: 0.88rem 1rem;
+  border: 1px solid rgba(200, 169, 139, 0.25);
+  border-radius: var(--loome-radius-btn, 11px);
+  background: rgba(32, 28, 26, 0.45);
+  color: var(--page-text, #F2E9DE);
   font-size: 0.9375rem;
   letter-spacing: 0;
   text-transform: none;
-  transition: border-color 0.25s ease;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  border-color: #B59B79;
+  border-color: var(--brand-accent, #C8A98B);
+  background: rgba(32, 28, 26, 0.75);
 }
 
 .unavailable {

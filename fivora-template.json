@@ -2325,14 +2325,14 @@
     ],
     "defaults": {
       "colors": {
-        "primary": "#747B65",
-        "secondary": "#262923",
-        "accent": "#B59B79",
-        "background": "#F8F6F1",
-        "text": "#262923"
+        "primary": "#8D7667",
+        "secondary": "#3B302B",
+        "accent": "#C8A98B",
+        "background": "#201C1A",
+        "text": "#F2E9DE"
       },
       "typography": {
-        "headingFont": "Cormorant Garamond",
+        "headingFont": "Manrope",
         "bodyFont": "Manrope",
         "baseSize": "16px"
       },

@@ -49,7 +49,7 @@ export default function FeaturedCollectionBanner() {
       ref={sectionRef}
       id="featured-collection"
       data-design-section="featured-collection"
-      className="relative flex min-h-[76vh] w-full items-center overflow-hidden bg-[#262923] py-24"
+      className="relative flex min-h-[76vh] w-full items-center overflow-hidden bg-[#201C1A] py-24"
     >
       {/* Parallax Immersive Editorial Photography (desktop-only parallax for mobile smoothness) */}
       <motion.div
@@ -63,13 +63,13 @@ export default function FeaturedCollectionBanner() {
           data-preview-field-path="home.featuredCollection.imageUrl"
           className="h-full w-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[#262923]/48" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#262923]/72 via-transparent to-[#262923]/25" />
+        <div className="absolute inset-0 bg-[#201C1A]/56" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#201C1A]/82 via-transparent to-[#201C1A]/35" />
       </motion.div>
 
-      {/* Centered Glass-Veiled Editorial Messaging */}
+      {/* Centered Frosted Espresso Editorial Card (18px rounded) */}
       <div className="relative z-10 mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
-        <LuxuryReveal className="mx-auto max-w-2xl border border-[#F8F6F1]/22 bg-[#262923]/48 px-7 py-12 text-center text-[#F8F6F1] backdrop-blur-md sm:px-14 sm:py-16">
+        <LuxuryReveal className="mx-auto max-w-2xl rounded-[18px] border border-[#C8A98B]/30 bg-[#201C1A]/68 px-7 py-12 text-center text-[#F2E9DE] backdrop-blur-md sm:px-14 sm:py-16">
           <LuxuryStagger staggerDelay={0.1} delayChildren={0.08}>
             <LuxuryStaggerItem y={14}>
               <EditableText
@@ -78,10 +78,10 @@ export default function FeaturedCollectionBanner() {
                 defaultValue={eyebrow}
                 fontFamily="body"
                 size="0.6875rem"
-                weight={500}
+                weight={600}
                 transform="uppercase"
                 letterSpacing="0.28em"
-                color="#E8E0D5"
+                color="#C8A98B"
                 align="center"
                 className="m-0"
               />
@@ -93,11 +93,11 @@ export default function FeaturedCollectionBanner() {
                 data-preview-field-path="home.featuredCollection.title"
                 defaultValue={title}
                 fontFamily="heading"
-                size="clamp(2.5rem, 4.8vw, 4rem)"
-                weight={300}
+                size="clamp(2.35rem, 4.5vw, 3.85rem)"
+                weight={800}
                 lineHeight={1.04}
-                letterSpacing="-0.02em"
-                color="#F8F6F1"
+                letterSpacing="-0.03em"
+                color="#F2E9DE"
                 align="center"
                 className="mt-4 mb-0"
               />
@@ -106,7 +106,7 @@ export default function FeaturedCollectionBanner() {
             <LuxuryHairline
               origin="center"
               delay={0.22}
-              className="mx-auto my-6 h-px w-14 bg-[#B59B79]"
+              className="mx-auto my-6 h-px w-14 bg-[#C8A98B]"
             />
 
             <LuxuryStaggerItem y={16}>
@@ -118,7 +118,7 @@ export default function FeaturedCollectionBanner() {
                 size="0.96875rem"
                 weight={400}
                 lineHeight={1.82}
-                color="rgba(248, 246, 241, 0.9)"
+                color="rgba(242, 233, 222, 0.9)"
                 align="center"
                 className="mx-auto m-0 max-w-lg"
               />
@@ -129,10 +129,10 @@ export default function FeaturedCollectionBanner() {
                 <a
                   href={resolvedUrl}
                   data-preview-field-path="home.featuredCollection.ctaUrl"
-                  className="group loome-btn-ivory"
+                  className="group loome-btn-primary"
                 >
                   <span data-preview-field-path="home.featuredCollection.ctaLabel">{ctaLabel}</span>
-                  <ArrowRight className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="h-3.5 w-3.5 stroke-[1.7] transition-transform duration-300 group-hover:translate-x-1" />
                 </a>
               </div>
             </LuxuryStaggerItem>

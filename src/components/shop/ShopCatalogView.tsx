@@ -424,8 +424,8 @@ export default function ShopCatalogView() {
   );
 
   return (
-    <div data-preview-page-key="shop" className="w-full overflow-x-clip">
-      {/* 1. Editorial Shop Heading & Introduction */}
+    <div data-preview-page-key="shop" className="loome-surface-espresso w-full overflow-x-clip">
+      {/* 1. Editorial Shop Heading & Introduction — Deep Espresso */}
       <section
         data-design-section="shop-heading"
         className="mx-auto max-w-[1440px] px-4 pb-8 pt-12 sm:px-8 lg:px-14 lg:pb-10 lg:pt-16"
@@ -433,17 +433,17 @@ export default function ShopCatalogView() {
         <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3">
-              <span className="h-px w-8 bg-[#B59B79]" aria-hidden="true" />
+              <span className="h-px w-8 bg-[#C8A98B]" aria-hidden="true" />
               <EditableText
                 as="p"
                 data-preview-field-path="shopPage.eyebrow"
                 defaultValue={contentText(shopPage.eyebrow) || 'THE COMPLETE ARCHIVE'}
                 fontFamily="body"
                 size="0.6875rem"
-                weight={500}
+                weight={600}
                 transform="uppercase"
                 letterSpacing="0.26em"
-                color="primary"
+                color="#C8A98B"
                 className="m-0"
               />
             </div>
@@ -453,11 +453,11 @@ export default function ShopCatalogView() {
               data-preview-field-path="shopPage.heading"
               defaultValue={contentText(shopPage.heading) || 'Shop Fine Textiles'}
               fontFamily="heading"
-              size="clamp(2.75rem, 4.8vw, 4.35rem)"
-              weight={300}
+              size="clamp(2.55rem, 4.6vw, 4.15rem)"
+              weight={800}
               lineHeight={1.03}
-              letterSpacing="-0.02em"
-              color="heading"
+              letterSpacing="-0.03em"
+              color="#F2E9DE"
               className="mt-4 mb-0"
             />
           </div>
@@ -469,16 +469,16 @@ export default function ShopCatalogView() {
             fontFamily="body"
             size="0.96875rem"
             lineHeight={1.8}
-            color="muted"
+            color="#C7B6A6"
             className="m-0 max-w-md lg:text-right"
           />
         </LuxuryReveal>
       </section>
 
-      {/* 2. Premium Category Navigation Ribbon */}
+      {/* 2. Premium Category Navigation Ribbon — Dark Mocha */}
       <section
         data-design-section="shop-categories-nav"
-        className="w-full border-y border-[#262923]/10 bg-[#FCFBF8] dark:border-[#F8F6F1]/10 dark:bg-[#20231D]"
+        className="w-full border-y border-[#C8A98B]/20 bg-[var(--brand-secondary,#3B302B)]"
       >
         <div className="mx-auto flex max-w-[1440px] items-center gap-6 overflow-x-auto px-4 py-4 sm:px-8 lg:gap-10 lg:px-14">
           {categoryEntries.map((entry) => {
@@ -489,16 +489,16 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`shop-cat-nav-${entry.name}`}
                 onClick={() => setActiveCategory(entry.name)}
-                className={`group relative flex shrink-0 items-baseline gap-2 border-0 bg-transparent px-0 py-1.5 text-[11px] font-medium uppercase tracking-[0.22em] transition-colors ${
+                className={`group relative flex shrink-0 items-baseline gap-2 border-0 bg-transparent px-0 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition-colors ${
                   isActive
-                    ? 'text-[#262923] dark:text-[#F8F6F1]'
-                    : 'text-[#595C52] hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]'
+                    ? 'text-[#F2E9DE]'
+                    : 'text-[#C7B6A6] hover:text-[#F2E9DE]'
                 }`}
               >
                 <span>{entry.name}</span>
-                <span className="text-[10px] font-normal text-[#B59B79]">({entry.count})</span>
+                <span className="text-[10px] font-normal text-[#C8A98B]">({entry.count})</span>
                 <span
-                  className={`absolute inset-x-0 bottom-0 h-[1.5px] bg-[#B59B79] transition-transform duration-300 ${
+                  className={`absolute inset-x-0 bottom-0 h-[1.5px] bg-[#C8A98B] transition-transform duration-300 ${
                     isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                   }`}
                 />
@@ -508,13 +508,14 @@ export default function ShopCatalogView() {
         </div>
       </section>
 
-      {/* 3. Toolbar, Filters, Active Chips & 4-Column Product Grid */}
-      <section
-        data-design-section="shop-catalog"
-        className="mx-auto max-w-[1440px] px-4 py-10 sm:px-8 lg:px-14 lg:py-14"
-      >
+      {/* 3. Toolbar, Filters, Active Chips & 4-Column Product Grid — Warm Cream Ivory */}
+      <div className="loome-surface-cream w-full">
+        <section
+          data-design-section="shop-catalog"
+          className="mx-auto max-w-[1440px] px-4 py-10 sm:px-8 lg:px-14 lg:py-14"
+        >
         {/* Filter & Sort Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#262923]/10 pb-5 dark:border-[#F8F6F1]/10">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#3B302B]/14 pb-5">
           <div className="flex flex-wrap items-center gap-3 sm:gap-5">
             {/* Desktop Filter Drawer Toggle */}
             <button
@@ -522,12 +523,12 @@ export default function ShopCatalogView() {
               data-preview-static="shop-desktop-filter-toggle"
               onClick={() => setDesktopFiltersOpen((v) => !v)}
               aria-expanded={desktopFiltersOpen}
-              className="hidden items-center gap-2 border border-[#262923]/20 bg-transparent px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:border-[#262923] hover:bg-[#262923] hover:text-[#F8F6F1] dark:border-[#F8F6F1]/20 dark:text-[#F8F6F1] lg:inline-flex"
+              className="hidden items-center gap-2 rounded-[10px] border border-[#3B302B]/25 bg-[#FAF5EE] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] lg:inline-flex"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 stroke-[1.5]" />
               <span>{desktopFiltersOpen ? 'Hide Filters' : 'Filters'}</span>
               {activeFilters.length > 0 && (
-                <span className="ml-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#B59B79] px-1 text-[9px] text-[#F8F6F1]">
+                <span className="ml-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#C8A98B] px-1 text-[9px] font-bold text-[#201C1A]">
                   {activeFilters.length}
                 </span>
               )}
@@ -538,12 +539,12 @@ export default function ShopCatalogView() {
               type="button"
               data-preview-static="shop-mobile-filter-toggle"
               onClick={() => setMobileDrawerOpen(true)}
-              className="inline-flex items-center gap-2 border border-[#262923]/20 bg-transparent px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:border-[#262923] dark:border-[#F8F6F1]/20 dark:text-[#F8F6F1] lg:hidden"
+              className="inline-flex items-center gap-2 rounded-[10px] border border-[#3B302B]/25 bg-[#FAF5EE] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#201C1A] lg:hidden"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 stroke-[1.5]" />
               <span>Filters</span>
               {activeFilters.length > 0 && (
-                <span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#B59B79] px-1 text-[9px] text-[#F8F6F1]">
+                <span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#C8A98B] px-1 text-[9px] font-bold text-[#201C1A]">
                   {activeFilters.length}
                 </span>
               )}
@@ -552,9 +553,9 @@ export default function ShopCatalogView() {
             {/* Live Product Count */}
             <p
               data-preview-static="shop-product-count"
-              className="m-0 text-xs tracking-wide text-[#595C52] dark:text-[#B6B8AE]"
+              className="m-0 text-xs tracking-wide text-[#5E4E45]"
             >
-              Showing <strong className="font-medium text-[#262923] dark:text-[#F8F6F1]">{filteredProducts.length}</strong> of{' '}
+              Showing <strong className="font-semibold text-[#201C1A]">{filteredProducts.length}</strong> of{' '}
               {allProducts.length} {allProducts.length === 1 ? 'piece' : 'pieces'}
             </p>
           </div>
@@ -564,7 +565,7 @@ export default function ShopCatalogView() {
             <label
               htmlFor="loome-shop-sort"
               data-preview-static="shop-sort-label"
-              className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#595C52] dark:text-[#B6B8AE]"
+              className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#5E4E45]"
             >
               Sort
             </label>
@@ -574,7 +575,7 @@ export default function ShopCatalogView() {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
                 data-preview-static="shop-sort-select"
-                className="appearance-none border border-[#262923]/20 bg-[#FCFBF8] py-2.5 pl-3.5 pr-9 text-xs text-[#262923] focus:border-[#B59B79] focus:outline-none dark:border-[#F8F6F1]/20 dark:bg-[#20231D] dark:text-[#F8F6F1]"
+                className="appearance-none rounded-[10px] border border-[#3B302B]/22 bg-[#FAF5EE] py-2.5 pl-3.5 pr-9 text-xs font-medium text-[#201C1A] focus:border-[#C8A98B] focus:outline-none"
               >
                 <option value="newest">Newest Arrivals</option>
                 <option value="price-asc">Price: Low to High</option>
@@ -691,13 +692,14 @@ export default function ShopCatalogView() {
                     ease: LUXURY_EASE,
                   }}
                 >
-                  <LoomeProductCard product={product} />
+                  <LoomeProductCard product={product} tone="light" />
                 </motion.div>
               ))}
             </AnimatePresence>
           )}
         </div>
-      </section>
+        </section>
+      </div>
 
       {/* 4. Mobile Slide-Over Filter Drawer */}
       <AnimatePresence>

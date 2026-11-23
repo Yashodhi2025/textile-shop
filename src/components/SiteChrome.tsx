@@ -29,7 +29,7 @@ export default function SiteChrome({ children }: { children: ReactNode }) {
             <LoomeOverlays />
             <FloatingContactWidget />
             <div className="fixed bottom-6 left-6 z-30">
-              <ThemeToggle className="border border-[#262923]/15 bg-[#F8F6F1]/90 shadow-md backdrop-blur-md dark:border-[#F8F6F1]/15 dark:bg-[#20231D]/90" />
+              <ThemeToggle className="rounded-[11px] border border-[#C8A98B]/30 bg-[#3B302B]/90 text-[#F2E9DE] shadow-md backdrop-blur-md" />
             </div>
           </div>
         </LoomeStoreProvider>
