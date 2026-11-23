@@ -11,6 +11,7 @@ import { pageRoute, withBasePath } from '@/lib/utils';
 import { LUXURY_EASE } from '@/components/motion/LuxuryReveal';
 
 const NAV_ITEMS = [
+  { id: 'home', fallbackLabel: 'Home', route: '/' },
   { id: 'shop', fallbackLabel: 'Shop', route: '/shop' },
   { id: 'services', fallbackLabel: 'Collections', route: '/services' },
   { id: 'about_us', fallbackLabel: 'About', route: '/about_us' },
@@ -73,16 +74,14 @@ export default function LoomeNavbar() {
     <>
       <header
         data-design-section="navbar"
-        className={`sticky top-0 z-40 w-full transition-all duration-500 ${
-          scrolled
-            ? 'border-b border-[#262923]/10 bg-[#F8F6F1]/95 shadow-[0_8px_30px_rgba(38,41,35,0.05)] backdrop-blur-md dark:border-[#F8F6F1]/10 dark:bg-[#171915]/95'
-            : 'border-b border-[#262923]/8 bg-[#F8F6F1]/88 backdrop-blur-sm dark:border-[#F8F6F1]/8 dark:bg-[#171915]/88'
-        }`}
+        className={`sticky top-0 z-40 w-full transition-all duration-500 ${scrolled
+          ? 'border-b border-[#262923]/10 bg-[#F8F6F1]/95 shadow-[0_8px_30px_rgba(38,41,35,0.05)] backdrop-blur-md dark:border-[#F8F6F1]/10 dark:bg-[#171915]/95'
+          : 'border-b border-[#262923]/8 bg-[#F8F6F1]/88 backdrop-blur-sm dark:border-[#F8F6F1]/8 dark:bg-[#171915]/88'
+          }`}
       >
         <div
-          className={`mx-auto flex max-w-[1440px] items-center justify-between px-4 transition-all duration-500 sm:px-8 lg:px-12 ${
-            scrolled ? 'h-[68px]' : 'h-[82px]'
-          }`}
+          className={`mx-auto flex max-w-[1440px] items-center justify-between px-4 transition-all duration-500 sm:px-8 lg:px-12 ${scrolled ? 'h-[68px]' : 'h-[82px]'
+            }`}
         >
           {/* Left: Mobile Menu Toggle + Desktop Navigation */}
           <div className="flex flex-1 items-center gap-6">
@@ -97,13 +96,15 @@ export default function LoomeNavbar() {
               <Menu className="h-5 w-5 stroke-[1.5]" />
             </button>
 
-            <nav className="hidden items-center gap-8 lg:flex">
+            <nav className="hidden items-center gap-4 lg:flex xl:gap-7">
               {NAV_ITEMS.map((item) => {
-                const isEnabled = requiredPages.includes(item.id);
+                const isEnabled = item.id === 'home' || requiredPages.includes(item.id);
                 const label = contentText(navLabels[item.id]) || item.fallbackLabel;
                 const active = isRouteActive(item.route);
                 const labelEl =
-                  item.id === 'shop' ? (
+                  item.id === 'home' ? (
+                    <span data-preview-field-path="common.navLabels.home">{label}</span>
+                  ) : item.id === 'shop' ? (
                     <span data-preview-field-path="common.navLabels.shop">{label}</span>
                   ) : item.id === 'services' ? (
                     <span data-preview-field-path="common.navLabels.services">{label}</span>
@@ -120,16 +121,16 @@ export default function LoomeNavbar() {
                         type="button"
                         onClick={() => navigateTo(item.id)}
                         data-active={active ? 'true' : 'false'}
-                        className={`loome-nav-link border-0 bg-transparent px-0 py-1 text-[11px] font-medium uppercase tracking-[0.22em] transition-colors ${
-                          active
-                            ? 'text-[#262923] dark:text-[#F8F6F1]'
-                            : 'text-[#262923]/72 hover:text-[#262923] dark:text-[#F8F6F1]/70 dark:hover:text-[#F8F6F1]'
-                        }`}
+                        aria-current={active ? 'page' : undefined}
+                        className={`loome-nav-link whitespace-nowrap border-0 bg-transparent px-0 py-1 text-[11px] font-medium uppercase tracking-[0.22em] transition-colors ${active
+                          ? 'text-[#262923] dark:text-[#F8F6F1]'
+                          : 'text-[#262923]/72 hover:text-[#262923] dark:text-[#F8F6F1]/70 dark:hover:text-[#F8F6F1]'
+                          }`}
                       >
                         {labelEl}
                       </button>
                     ) : (
-                      <span className="unavailable text-[11px] uppercase tracking-[0.22em]">
+                      <span className="unavailable whitespace-nowrap text-[11px] uppercase tracking-[0.22em]">
                         {labelEl}
                       </span>
                     )}
@@ -286,8 +287,9 @@ export default function LoomeNavbar() {
 
                 <nav className="mt-5 flex flex-col divide-y divide-[#262923]/8 dark:divide-[#F8F6F1]/8">
                   {NAV_ITEMS.map((item, idx) => {
-                    const isEnabled = requiredPages.includes(item.id);
+                    const isEnabled = item.id === 'home' || requiredPages.includes(item.id);
                     const label = contentText(navLabels[item.id]) || item.fallbackLabel;
+                    const active = isRouteActive(item.route);
                     return (
                       <motion.div
                         key={item.id}
@@ -299,9 +301,22 @@ export default function LoomeNavbar() {
                           <button
                             type="button"
                             onClick={() => navigateTo(item.id)}
-                            className="flex w-full items-center justify-between border-0 bg-transparent py-4 text-left font-serif text-2xl font-normal tracking-wide text-[#262923] transition-colors hover:text-[#747B65] dark:text-[#F8F6F1]"
+                            data-active={active ? 'true' : 'false'}
+                            aria-current={active ? 'page' : undefined}
+                            className={`flex w-full items-center justify-between border-0 bg-transparent py-4 text-left font-serif text-2xl font-normal tracking-wide transition-colors ${active
+                              ? 'text-[#747B65] dark:text-[#B59B79]'
+                              : 'text-[#262923] hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]'
+                              }`}
                           >
-                            <span>{label}</span>
+                            <span className="inline-flex items-center gap-2.5">
+                              {active && (
+                                <span
+                                  aria-hidden="true"
+                                  className="h-1.5 w-1.5 rounded-full bg-[#B59B79]"
+                                />
+                              )}
+                              <span>{label}</span>
+                            </span>
                             <span className="text-xs text-[#B59B79]">→</span>
                           </button>
                         ) : (
