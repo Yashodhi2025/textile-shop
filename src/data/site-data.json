@@ -426,16 +426,31 @@
         "compareAtPrice": 290,
         "currency": "USD",
         "imageUrl": "/images/prod-curtain-ivory.jpg",
+        "galleryImages": "/images/prod-curtain-ivory.jpg | /images/cat-curtains.jpg | /images/craftsmanship-detail.jpg",
         "category": "Curtains",
         "badge": "New",
         "showPrice": true,
         "isAvailable": true,
         "collectionTag": "new",
-        "material": "100% Belgian Flax Linen · 165 GSM",
+        "material": "Belgian Flax Linen",
+        "composition": "100% Long-Staple Normandy & Belgian Flax",
+        "gsm": "165 GSM",
+        "dimensions": "54 in × 96 in / 108 in / 120 in (Single Panel)",
+        "careInstructions": "Dry clean recommended or gentle cold wash at 30°C; steam vertically while slightly damp.",
+        "sizesText": "54\" × 84\" Panel | 54\" × 96\" Panel | 54\" × 108\" Panel | 54\" × 120\" Panel",
         "colors": [
-          { "name": "Warm Ivory", "hex": "#F8F6F1" },
-          { "name": "Oatmeal", "hex": "#E8E0D5" },
-          { "name": "Sage Olive", "hex": "#747B65" }
+          {
+            "name": "Warm Ivory",
+            "hex": "#F8F6F1"
+          },
+          {
+            "name": "Oatmeal",
+            "hex": "#E8E0D5"
+          },
+          {
+            "name": "Sage Olive",
+            "hex": "#747B65"
+          }
         ]
       },
       {
@@ -446,16 +461,31 @@
         "compareAtPrice": null,
         "currency": "USD",
         "imageUrl": "/images/prod-duvet-flax.jpg",
+        "galleryImages": "/images/prod-duvet-flax.jpg | /images/cat-bedding.jpg | /images/craftsmanship-detail.jpg",
         "category": "Bedding",
         "badge": "Atelier Edit",
         "showPrice": true,
         "isAvailable": true,
         "collectionTag": "new",
-        "material": "100% Normandy Flax · OEKO-TEX®",
+        "material": "Stonewashed European Flax Linen",
+        "composition": "100% OEKO-TEX® Certified Normandy Flax",
+        "gsm": "190 GSM",
+        "dimensions": "Duvet Cover + 2 Pillow Shams (Mother-of-Pearl Button Closure)",
+        "careInstructions": "Machine wash cold on gentle cycle with mild pH-neutral detergent; line dry or tumble dry low.",
+        "sizesText": "Full / Queen | King / Cal King",
         "colors": [
-          { "name": "Warm Beige", "hex": "#E8E0D5" },
-          { "name": "Ivory", "hex": "#F8F6F1" },
-          { "name": "Charcoal", "hex": "#262923" }
+          {
+            "name": "Warm Beige",
+            "hex": "#E8E0D5"
+          },
+          {
+            "name": "Ivory",
+            "hex": "#F8F6F1"
+          },
+          {
+            "name": "Charcoal",
+            "hex": "#262923"
+          }
         ]
       },
       {
@@ -466,16 +496,31 @@
         "compareAtPrice": 325,
         "currency": "USD",
         "imageUrl": "/images/prod-throw-boucle.jpg",
+        "galleryImages": "/images/prod-throw-boucle.jpg | /images/featured-collection.jpg | /images/craftsmanship-loom.jpg",
         "category": "Bedding",
         "badge": "Limited",
         "showPrice": true,
         "isAvailable": true,
         "collectionTag": "new",
-        "material": "85% Extra-Fine Merino · 15% Cashmere",
+        "material": "Merino Wool & Cashmere Blend",
+        "composition": "85% Extra-Fine Australian Merino, 15% Inner Mongolian Cashmere",
+        "gsm": "320 GSM",
+        "dimensions": "51 in × 75 in (130 cm × 190 cm) incl. hand-twisted fringe",
+        "careInstructions": "Professional dry clean only; air flat away from direct heat to preserve loft.",
+        "sizesText": "Standard (51\" × 75\") | Oversized (59\" × 86\")",
         "colors": [
-          { "name": "Champagne", "hex": "#B59B79" },
-          { "name": "Warm Ivory", "hex": "#F8F6F1" },
-          { "name": "Sage Olive", "hex": "#747B65" }
+          {
+            "name": "Champagne",
+            "hex": "#B59B79"
+          },
+          {
+            "name": "Warm Ivory",
+            "hex": "#F8F6F1"
+          },
+          {
+            "name": "Sage Olive",
+            "hex": "#747B65"
+          }
         ]
       },
       {
@@ -486,16 +531,31 @@
         "compareAtPrice": null,
         "currency": "USD",
         "imageUrl": "/images/prod-cushion-olive.jpg",
+        "galleryImages": "/images/prod-cushion-olive.jpg | /images/cat-cushions.jpg | /images/cat-upholstery.jpg",
         "category": "Cushions",
         "badge": "New",
         "showPrice": true,
         "isAvailable": true,
         "collectionTag": "new",
         "material": "Italian Washed Cotton Velvet",
+        "composition": "72% Cotton, 28% Viscose Pile · 90/10 Duck Feather-Down Insert",
+        "gsm": "410 GSM",
+        "dimensions": "14 in × 24 in Lumbar / 20 in × 20 in Square (1 in Flange)",
+        "careInstructions": "Remove cover via concealed brass zip; dry clean cover only and fluff insert regularly.",
+        "sizesText": "Lumbar (14\" × 24\") | Square (20\" × 20\") | Euro (24\" × 24\")",
         "colors": [
-          { "name": "Sage Olive", "hex": "#747B65" },
-          { "name": "Champagne", "hex": "#B59B79" },
-          { "name": "Warm Taupe", "hex": "#9E9180" }
+          {
+            "name": "Sage Olive",
+            "hex": "#747B65"
+          },
+          {
+            "name": "Champagne",
+            "hex": "#B59B79"
+          },
+          {
+            "name": "Warm Taupe",
+            "hex": "#9E9180"
+          }
         ]
       },
       {
@@ -506,16 +566,31 @@
         "compareAtPrice": null,
         "currency": "USD",
         "imageUrl": "/images/prod-fabric-herringbone.jpg",
+        "galleryImages": "/images/prod-fabric-herringbone.jpg | /images/cat-fabrics.jpg | /images/cat-upholstery.jpg",
         "category": "Fabrics",
         "badge": "Bestseller",
         "showPrice": true,
         "isAvailable": true,
         "collectionTag": "bestseller",
-        "material": "62% Linen · 38% Virgin Wool (Per Yard)",
+        "material": "Italian Linen & Virgin Wool Upholstery",
+        "composition": "62% Belgian Linen, 38% Virgin Wool · 60,000+ Martindale Rubs",
+        "gsm": "540 GSM",
+        "dimensions": "55 in (140 cm) Bolt Width · Sold by the Continuous Yard",
+        "careInstructions": "Vacuum gently with soft upholstery brush; specialist upholstery dry clean only.",
+        "sizesText": "1 Yard | 3 Yards | 5 Yards | 10 Yards (Bolt)",
         "colors": [
-          { "name": "Warm Stone", "hex": "#C8BEB0" },
-          { "name": "Charcoal", "hex": "#262923" },
-          { "name": "Sand Beige", "hex": "#E8E0D5" }
+          {
+            "name": "Warm Stone",
+            "hex": "#C8BEB0"
+          },
+          {
+            "name": "Charcoal",
+            "hex": "#262923"
+          },
+          {
+            "name": "Sand Beige",
+            "hex": "#E8E0D5"
+          }
         ]
       },
       {
@@ -526,16 +601,31 @@
         "compareAtPrice": 360,
         "currency": "USD",
         "imageUrl": "/images/prod-curtain-blackout.jpg",
+        "galleryImages": "/images/prod-curtain-blackout.jpg | /images/cat-curtains.jpg | /images/hero-linen.jpg",
         "category": "Curtains",
         "badge": "Bestseller",
         "showPrice": true,
         "isAvailable": true,
         "collectionTag": "bestseller",
-        "material": "Heavyweight Linen Blend · Blackout Lined",
+        "material": "Heavyweight Blackout-Lined Linen",
+        "composition": "100% Heavy Belgian Linen Face · Organic Cotton Thermal Blackout Lining",
+        "gsm": "340 GSM",
+        "dimensions": "52 in × 96 in / 108 in / 120 in (Weighted Mitred Hem)",
+        "careInstructions": "Dry clean only; steam lightly from reverse side to release transit folds.",
+        "sizesText": "52\" × 96\" Panel | 52\" × 108\" Panel | 52\" × 120\" Panel",
         "colors": [
-          { "name": "Sand Taupe", "hex": "#CBB8A0" },
-          { "name": "Ivory Plaster", "hex": "#F8F6F1" },
-          { "name": "Deep Olive", "hex": "#5D6350" }
+          {
+            "name": "Sand Taupe",
+            "hex": "#CBB8A0"
+          },
+          {
+            "name": "Ivory Plaster",
+            "hex": "#F8F6F1"
+          },
+          {
+            "name": "Deep Olive",
+            "hex": "#5D6350"
+          }
         ]
       },
       {
@@ -546,16 +636,31 @@
         "compareAtPrice": null,
         "currency": "USD",
         "imageUrl": "/images/prod-bedsheet-sateen.jpg",
+        "galleryImages": "/images/prod-bedsheet-sateen.jpg | /images/cat-bedding.jpg | /images/craftsmanship-detail.jpg",
         "category": "Bedding",
         "badge": "Bestseller",
         "showPrice": true,
         "isAvailable": true,
         "collectionTag": "bestseller",
-        "material": "100% GOTS Organic Cotton Sateen",
+        "material": "600TC Organic Cotton Sateen",
+        "composition": "100% GOTS-Certified Long-Staple Organic Cotton · Single-Ply 600TC",
+        "gsm": "145 GSM",
+        "dimensions": "Fitted Sheet (16 in Deep Pocket), Flat Sheet & 2 Pillowcases",
+        "careInstructions": "Machine wash warm on gentle cycle; tumble dry low and remove promptly for a smooth finish.",
+        "sizesText": "Queen Set | King Set | Cal King Set",
         "colors": [
-          { "name": "Pearl Ivory", "hex": "#F8F6F1" },
-          { "name": "Champagne", "hex": "#B59B79" },
-          { "name": "Warm Beige", "hex": "#E8E0D5" }
+          {
+            "name": "Pearl Ivory",
+            "hex": "#F8F6F1"
+          },
+          {
+            "name": "Champagne",
+            "hex": "#B59B79"
+          },
+          {
+            "name": "Warm Beige",
+            "hex": "#E8E0D5"
+          }
         ]
       },
       {
@@ -566,16 +671,31 @@
         "compareAtPrice": 135,
         "currency": "USD",
         "imageUrl": "/images/prod-table-runner.jpg",
+        "galleryImages": "/images/prod-table-runner.jpg | /images/cat-fabrics.jpg | /images/craftsmanship-loom.jpg",
         "category": "Upholstery",
         "badge": "Bestseller",
         "showPrice": true,
         "isAvailable": true,
         "collectionTag": "bestseller",
-        "material": "100% Heavyweight European Flax · 260 GSM",
+        "material": "Heavyweight European Flax Linen",
+        "composition": "100% Unbleached Yarn-Dyed European Flax",
+        "gsm": "260 GSM",
+        "dimensions": "18 in × 96 in / 18 in × 120 in (Hand-Fringed Selvedge)",
+        "careInstructions": "Machine wash cold on delicate cycle; press warm on reverse or dry flat for relaxed texture.",
+        "sizesText": "18\" × 96\" (6–8 Seat) | 18\" × 120\" (8–10 Seat)",
         "colors": [
-          { "name": "Natural Flax", "hex": "#E8E0D5" },
-          { "name": "Sage Olive", "hex": "#747B65" },
-          { "name": "Warm Ivory", "hex": "#F8F6F1" }
+          {
+            "name": "Natural Flax",
+            "hex": "#E8E0D5"
+          },
+          {
+            "name": "Sage Olive",
+            "hex": "#747B65"
+          },
+          {
+            "name": "Warm Ivory",
+            "hex": "#F8F6F1"
+          }
         ]
       }
     ]

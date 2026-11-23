@@ -18,6 +18,12 @@
       "products[*].priceRange",
       "products[*].collectionTag",
       "products[*].material",
+      "products[*].composition",
+      "products[*].gsm",
+      "products[*].dimensions",
+      "products[*].careInstructions",
+      "products[*].sizesText",
+      "products[*].galleryImages",
       "products[*].colors[*].name",
       "products[*].colors[*].hex",
       "home.categories[*].id",
@@ -1001,7 +1007,37 @@
           {
             "key": "material",
             "type": "text",
-            "label": "Material Composition"
+            "label": "Material"
+          },
+          {
+            "key": "composition",
+            "type": "text",
+            "label": "Fiber Composition"
+          },
+          {
+            "key": "gsm",
+            "type": "text",
+            "label": "Fabric Weight (GSM)"
+          },
+          {
+            "key": "dimensions",
+            "type": "text",
+            "label": "Dimensions / Measurements"
+          },
+          {
+            "key": "careInstructions",
+            "type": "textarea",
+            "label": "Care Instructions"
+          },
+          {
+            "key": "sizesText",
+            "type": "text",
+            "label": "Available Sizes / Measurements (separate with |)"
+          },
+          {
+            "key": "galleryImages",
+            "type": "textarea",
+            "label": "Gallery Image URLs (separate with |)"
           },
           {
             "key": "colors",

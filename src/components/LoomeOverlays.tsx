@@ -442,6 +442,11 @@ export default function LoomeOverlays() {
                                 Tone: {item.color}
                               </p>
                             )}
+                            {item.size && (
+                              <p className="mt-0.5 text-[11px] tracking-wide text-[#65685E] dark:text-[#B6B8AE]">
+                                Size: {item.size}
+                              </p>
+                            )}
                           </div>
 
                           <div className="mt-3 flex items-center justify-between">

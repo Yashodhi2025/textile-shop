@@ -17,12 +17,19 @@ export interface LoomeProduct {
   compareAtPrice?: number | null;
   currency: string;
   imageUrl: string;
+  gallery: string[];
   category: string;
   badge?: string;
   showPrice: boolean;
   isAvailable: boolean;
   collectionTag?: string;
   material?: string;
+  composition?: string;
+  gsm?: string;
+  dimensions?: string;
+  careInstructions?: string;
+  sizes: string[];
+  hasExplicitColors: boolean;
   colors: LoomeColorSwatch[];
   raw: Record<string, unknown>;
 }
@@ -56,7 +63,12 @@ export function normalizeLoomeProduct(rawInput: unknown, index: number): LoomePr
         ? rawCompare
         : Number.parseFloat(String(rawCompare)) || null;
 
-  const rawColors = Array.isArray(raw.colors) ? raw.colors : [];
+  const customData = contentObject(raw.customData);
+  const rawColors = Array.isArray(raw.colors)
+    ? raw.colors
+    : Array.isArray(customData.colors)
+      ? customData.colors
+      : [];
   const colors: LoomeColorSwatch[] = rawColors
     .map((entry) => {
       const obj = contentObject(entry);
@@ -67,11 +79,45 @@ export function normalizeLoomeProduct(rawInput: unknown, index: number): LoomePr
     })
     .filter((item): item is LoomeColorSwatch => Boolean(item));
 
+  const splitDelimited = (input: unknown): string[] => {
+    if (Array.isArray(input)) {
+      return input.map((entry) => contentText(entry)).filter(Boolean);
+    }
+    const text = contentText(input);
+    if (!text) return [];
+    const delimiter = text.includes('|') ? '|' : text.includes('\n') ? '\n' : ',';
+    return text
+      .split(delimiter)
+      .map((part) => part.trim())
+      .filter(Boolean);
+  };
+
+  const primaryImage = contentText(raw.imageUrl) || '/images/prod-curtain-ivory.jpg';
+  const rawGallerySources = [
+    ...splitDelimited(raw.gallery),
+    ...splitDelimited(raw.galleryImages),
+    ...splitDelimited(raw.images),
+    ...splitDelimited(raw.additionalImages),
+    ...splitDelimited(customData.gallery),
+    ...splitDelimited(customData.galleryImages),
+  ];
+  const gallerySet = new Set<string>([primaryImage]);
+  rawGallerySources.forEach((url) => {
+    if (url) gallerySet.add(url);
+  });
+
+  const sizes = [
+    ...splitDelimited(raw.sizes),
+    ...splitDelimited(raw.sizesText),
+    ...splitDelimited(customData.sizes),
+    ...splitDelimited(customData.sizesText),
+  ].filter((value, index, arr) => arr.indexOf(value) === index);
+
   const showPrice =
     raw.showPrice !== undefined
       ? Boolean(raw.showPrice)
-      : (raw.customData as Record<string, unknown> | undefined)?.showPrice !== undefined
-        ? Boolean((raw.customData as Record<string, unknown>).showPrice)
+      : customData.showPrice !== undefined
+        ? Boolean(customData.showPrice)
         : true;
 
   return {
@@ -82,13 +128,26 @@ export function normalizeLoomeProduct(rawInput: unknown, index: number): LoomePr
     price,
     compareAtPrice: parsedCompare && parsedCompare > 0 ? parsedCompare : null,
     currency: contentText(raw.currency) || 'USD',
-    imageUrl: contentText(raw.imageUrl) || '/images/prod-curtain-ivory.jpg',
+    imageUrl: primaryImage,
+    gallery: Array.from(gallerySet),
     category: contentText(raw.category) || 'Textiles',
     badge: contentText(raw.badge) || undefined,
     showPrice,
-    isAvailable: raw.isAvailable !== false,
+    isAvailable: raw.isAvailable !== false && raw.inStock !== false,
     collectionTag: contentText(raw.collectionTag) || undefined,
-    material: contentText(raw.material) || undefined,
+    material: contentText(raw.material) || contentText(customData.material) || undefined,
+    composition: contentText(raw.composition) || contentText(customData.composition) || undefined,
+    gsm: contentText(raw.gsm) || contentText(customData.gsm) || undefined,
+    dimensions:
+      contentText(raw.dimensions) ||
+      contentText(customData.dimensions) ||
+      (contentText(raw.measurement)
+        ? `${contentText(raw.measurement)} ${contentText(raw.unit)}`.trim()
+        : undefined),
+    careInstructions:
+      contentText(raw.careInstructions) || contentText(customData.careInstructions) || undefined,
+    sizes,
+    hasExplicitColors: colors.length > 0,
     colors: colors.length > 0 ? colors : DEFAULT_SWATCHES,
     raw,
   };
