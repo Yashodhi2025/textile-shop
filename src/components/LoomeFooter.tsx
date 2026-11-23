@@ -14,6 +14,7 @@ const FOOTER_NAV = [
   { id: 'home', fallbackLabel: 'Home', route: '/' },
   { id: 'shop', fallbackLabel: 'Shop', route: '/shop' },
   { id: 'services', fallbackLabel: 'Collections', route: '/services' },
+  { id: 'journal', fallbackLabel: 'Journal', route: '/journal' },
   { id: 'about_us', fallbackLabel: 'About', route: '/about_us' },
   { id: 'contact', fallbackLabel: 'Contact', route: '/contact' },
 ] as const;
@@ -382,6 +383,8 @@ export default function LoomeFooter() {
                       <span data-preview-field-path="common.navLabels.shop">{label}</span>
                     ) : item.id === 'services' ? (
                       <span data-preview-field-path="common.navLabels.services">{label}</span>
+                    ) : item.id === 'journal' ? (
+                      <span data-preview-field-path="common.navLabels.journal">{label}</span>
                     ) : item.id === 'about_us' ? (
                       <span data-preview-field-path="common.navLabels.about_us">{label}</span>
                     ) : (

@@ -35,7 +35,15 @@
       "home.shopTheLook.hotspots[*].x",
       "home.shopTheLook.hotspots[*].y",
       "home.journalPosts[*].id",
+      "home.journalPosts[*].categoryId",
       "home.journalPosts[*].body",
+      "journalPage.categories[*].id",
+      "journalPage.essaySingularLabel",
+      "journalArticlePage.copiedLinkLabel",
+      "journalArticlePage.missingEyebrow",
+      "journalArticlePage.missingHeading",
+      "journalArticlePage.missingCopy",
+      "journalArticlePage.missingBackLabel",
       "services[*].showPrice",
       "cartPage.checkoutLabel",
       "checkoutPage.submitLabel",
@@ -68,6 +76,16 @@
       "id": "checkout",
       "label": "Checkout",
       "route": "/checkout"
+    },
+    {
+      "id": "journal",
+      "label": "Journal",
+      "route": "/journal"
+    },
+    {
+      "id": "journal_article",
+      "label": "Journal Article",
+      "route": "/journal/article"
     },
     {
       "id": "about_us",
@@ -237,6 +255,11 @@
                 "key": "services",
                 "type": "text",
                 "label": "Collections / Services label"
+              },
+              {
+                "key": "journal",
+                "type": "text",
+                "label": "Journal label"
               },
               {
                 "key": "contact",
@@ -678,50 +701,72 @@
             "label": "Journal summary"
           },
           {
-            "key": "journalPosts",
-            "type": "list",
-            "label": "Journal & Inspiration Stories",
-            "itemLabel": "Story",
-            "minItems": 0,
-            "maxItems": 6,
-            "fields": [
-              {
-                "key": "id",
-                "type": "text",
-                "label": "ID"
-              },
-              {
-                "key": "category",
-                "type": "text",
-                "label": "Category"
-              },
-              {
-                "key": "readTime",
-                "type": "text",
-                "label": "Read Time"
-              },
-              {
-                "key": "title",
-                "type": "text",
-                "label": "Headline",
-                "required": true
-              },
-              {
-                "key": "excerpt",
-                "type": "textarea",
-                "label": "Excerpt"
-              },
-              {
-                "key": "body",
-                "type": "textarea",
-                "label": "Full Story"
-              },
-              {
-                "key": "imageUrl",
-                "type": "image",
-                "label": "Cover Image"
-              }
-            ]
+            "key": "journalExploreLabel",
+            "type": "text",
+            "label": "Explore Journal link label"
+          }
+        ]
+      },
+      {
+        "id": "journalPosts",
+        "path": "home.journalPosts",
+        "pageKey": "journal",
+        "type": "list",
+        "label": "Journal & Inspiration Stories",
+        "itemLabel": "Story",
+        "minItems": 0,
+        "maxItems": 8,
+        "fields": [
+          {
+            "key": "id",
+            "type": "text",
+            "label": "Article Slug / ID"
+          },
+          {
+            "key": "category",
+            "type": "text",
+            "label": "Category"
+          },
+          {
+            "key": "categoryId",
+            "type": "text",
+            "label": "Category Filter ID (keeps filtering stable when renaming)"
+          },
+          {
+            "key": "date",
+            "type": "text",
+            "label": "Publication Date"
+          },
+          {
+            "key": "readTime",
+            "type": "text",
+            "label": "Reading Time Label"
+          },
+          {
+            "key": "author",
+            "type": "text",
+            "label": "Author Name"
+          },
+          {
+            "key": "title",
+            "type": "text",
+            "label": "Headline",
+            "required": true
+          },
+          {
+            "key": "excerpt",
+            "type": "textarea",
+            "label": "Excerpt"
+          },
+          {
+            "key": "body",
+            "type": "textarea",
+            "label": "Full Article Content"
+          },
+          {
+            "key": "imageUrl",
+            "type": "image",
+            "label": "Cover Image"
           }
         ]
       },
@@ -837,6 +882,176 @@
             "key": "emptyDescription",
             "type": "textarea",
             "label": "Empty Bag Description"
+          }
+        ]
+      },
+      {
+        "id": "journalPage",
+        "path": "journalPage",
+        "pageKey": "journal",
+        "type": "object",
+        "label": "Journal Page",
+        "fields": [
+          {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Eyebrow"
+          },
+          {
+            "key": "heading",
+            "type": "text",
+            "label": "Heading",
+            "required": true
+          },
+          {
+            "key": "intro",
+            "type": "textarea",
+            "label": "Introduction"
+          },
+          {
+            "key": "allStoriesLabel",
+            "type": "text",
+            "label": "All Stories Filter Label"
+          },
+          {
+            "key": "categories",
+            "type": "list",
+            "label": "Category Filter Labels",
+            "itemLabel": "Category Filter",
+            "minItems": 0,
+            "maxItems": 10,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Stable Filter ID"
+              },
+              {
+                "key": "label",
+                "type": "text",
+                "label": "Display Label",
+                "required": true
+              }
+            ]
+          },
+          {
+            "key": "essaysLabel",
+            "type": "text",
+            "label": "Essays Count Label (Plural)"
+          },
+          {
+            "key": "essaySingularLabel",
+            "type": "text",
+            "label": "Essay Count Label (Singular)"
+          },
+          {
+            "key": "featuredStoryLabel",
+            "type": "text",
+            "label": "Featured Story Badge Label"
+          },
+          {
+            "key": "authorPrefixLabel",
+            "type": "text",
+            "label": "Author Prefix Label"
+          },
+          {
+            "key": "readStoryLabel",
+            "type": "text",
+            "label": "Read Story CTA Label"
+          },
+          {
+            "key": "archiveEyebrow",
+            "type": "text",
+            "label": "Archive Section Eyebrow"
+          },
+          {
+            "key": "archiveHeading",
+            "type": "text",
+            "label": "Archive Section Heading"
+          },
+          {
+            "key": "shopBannerEyebrow",
+            "type": "text",
+            "label": "Shop Invitation Eyebrow"
+          },
+          {
+            "key": "shopBannerHeading",
+            "type": "text",
+            "label": "Shop Invitation Heading"
+          },
+          {
+            "key": "shopBannerCtaLabel",
+            "type": "text",
+            "label": "Shop Invitation CTA Label"
+          }
+        ]
+      },
+      {
+        "id": "journalArticlePage",
+        "path": "journalArticlePage",
+        "pageKey": "journal_article",
+        "type": "object",
+        "label": "Journal Article Reader",
+        "fields": [
+          {
+            "key": "copyLinkLabel",
+            "type": "text",
+            "label": "Copy Link Button Label"
+          },
+          {
+            "key": "copiedLinkLabel",
+            "type": "text",
+            "label": "Copied Link Confirmation Label"
+          },
+          {
+            "key": "shareLabel",
+            "type": "text",
+            "label": "Share Button Label"
+          },
+          {
+            "key": "backToJournalLabel",
+            "type": "text",
+            "label": "Back to Journal Link Label"
+          },
+          {
+            "key": "shopCtaLabel",
+            "type": "text",
+            "label": "Shop Featured Textiles CTA Label"
+          },
+          {
+            "key": "relatedEyebrow",
+            "type": "text",
+            "label": "Related Stories Eyebrow"
+          },
+          {
+            "key": "relatedHeading",
+            "type": "text",
+            "label": "Related Stories Heading"
+          },
+          {
+            "key": "viewArchiveLabel",
+            "type": "text",
+            "label": "View Complete Archive Link Label"
+          },
+          {
+            "key": "missingEyebrow",
+            "type": "text",
+            "label": "Not Found State Eyebrow"
+          },
+          {
+            "key": "missingHeading",
+            "type": "text",
+            "label": "Not Found State Heading"
+          },
+          {
+            "key": "missingCopy",
+            "type": "textarea",
+            "label": "Not Found State Message"
+          },
+          {
+            "key": "missingBackLabel",
+            "type": "text",
+            "label": "Not Found Return Button Label"
           }
         ]
       },

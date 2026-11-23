@@ -27,6 +27,7 @@
         "shop",
         "cart",
         "checkout",
+        "journal",
         "about_us",
         "services",
         "contact"
@@ -67,6 +68,7 @@
       "shop",
       "cart",
       "checkout",
+      "journal",
       "about_us",
       "services",
       "contact"
@@ -108,6 +110,7 @@
         "home": "Home",
         "shop": "Shop",
         "services": "Collections",
+        "journal": "Journal",
         "about_us": "About",
         "contact": "Contact"
       },
@@ -305,35 +308,117 @@
       "journalEyebrow": "THE LOOMÉ JOURNAL",
       "journalHeading": "Notes on Material & Light",
       "journalSummary": "Quiet essays on textile care, architectural drapery proportions, and living alongside natural fibers.",
+      "journalExploreLabel": "Explore the Journal",
       "journalPosts": [
         {
           "id": "journal-drapery",
-          "category": "Architecture",
-          "readTime": "4 min read",
+          "category": "Interior Styling",
+          "categoryId": "interior-styling",
+          "date": "November 2026",
+          "readTime": "5 min read",
+          "author": "Camille Laurent",
           "title": "The Art of Hanging Floor-to-Ceiling Linen Drapery",
-          "excerpt": "How ceiling-mounted tracks, double fullness, and translucent Belgian flax soften proportions and sculpt shifting daylight.",
-          "body": "Architectural drapery does more than frame a window—it alters the acoustics, vertical scale, and emotional temperature of an entire room. At LOOMÉ, we recommend mounting discreet recessed tracks flush with the ceiling line and specifying at least 2.2x fabric fullness so unbleached flax falls in calm, uninterrupted columns. Allow a gentle 1.5 cm kiss at the floor for tailored minimalism, or a 6 cm break for classic European romance.",
+          "excerpt": "How ceiling-mounted tracks, double fullness, and translucent Belgian flax soften architectural proportions and sculpt shifting daylight.",
+          "body": "Architectural drapery does more than frame a window—it alters the acoustics, vertical scale, and emotional temperature of an entire room. When linen panels rise unbroken from ceiling shadow-gap to floor, a modest apartment gains the serene cadence of a sunlit European salon.\n\nAt LOOMÉ, we recommend mounting discreet recessed tracks flush with the ceiling line and specifying at least 2.2x fabric fullness so unbleached Belgian flax falls in calm, uninterrupted vertical columns. Avoid skimping on width: generous fullness creates soft rhythmic shadows even when curtains are drawn open beside the glass.\n\nFor the hem, allow a tailored 1.5 cm kiss at the floor in minimalist spaces with stone or oak boards, or request a relaxed 5 cm break when pairing heavy double-lined drapery with antique plaster walls. Finish with weighted blind-stitched hems so every breeze moves the weave gracefully without losing poise.",
           "imageUrl": "/images/cat-curtains.jpg"
         },
         {
-          "id": "journal-flax",
-          "category": "Material Study",
-          "readTime": "5 min read",
-          "title": "Why Normandy Flax Grows More Luminous With Every Wash",
-          "excerpt": "Inside the slow dew-retting harvest that gives European linen its hollow, breathable fiber structure and effortless drape.",
-          "body": "Unlike mass-produced textiles treated with chemical softeners that fade after three washes, true long-staple Normandy flax relies on coastal rain and morning dew to naturally separate fibers from the stem. Each time you launder stonewashed linen in cool water and line-dry in dappled shade, natural pectins relax further—creating a matte, supple luster that endures for generations.",
+          "id": "journal-linen-care",
+          "category": "Linen Care",
+          "categoryId": "linen-care",
+          "date": "October 2026",
+          "readTime": "4 min read",
+          "author": "Elena Marchetti",
+          "title": "The Quiet Ritual of Caring for European Flax Linen",
+          "excerpt": "Gentle laundering temperatures, pH-neutral soaps, and shaded line-drying habits that make stonewashed bedding more luminous with every year.",
+          "body": "Unlike mass-produced textiles coated in synthetic softeners that wash away after three cycles, genuine long-staple Normandy flax improves organically with age. Its hollow fiber structure releases moisture swiftly and naturally resists pilling when treated with unhurried care.\n\nWash stonewashed duvet sets and sheets at 30°C on a gentle cycle with a mild, optical-brightener-free liquid detergent. Give linen ample space inside the drum so water circulates freely through the weave, and skip fabric softeners altogether—they coat flax fibers and diminish breathability.\n\nRemove linens promptly while barely damp, shake them once to release deep creases, and line-dry in dappled shade away from harsh midday glare. If you prefer a crisper editorial finish on drapery or table runners, steam vertically from the reverse side rather than pressing with a dry high-heat iron.",
           "imageUrl": "/images/cat-bedding.jpg"
         },
         {
+          "id": "journal-craftsmanship",
+          "category": "Craftsmanship",
+          "categoryId": "craftsmanship",
+          "date": "October 2026",
+          "readTime": "6 min read",
+          "author": "Henrik Lindholm",
+          "title": "Inside the Heritage Loom: Four Generations of Belgian Weaving",
+          "excerpt": "A study of slow shuttle tension, yarn-dyed selvedge edges, and the tactile precision behind 60,000-rub heirloom upholstery.",
+          "body": "Step inside a fourth-generation weaving mill in West Flanders and the first sensation is rhythmic quietness. Rather than racing modern air-jet machines to maximum output, heritage looms run at deliberate speeds that preserve the subtle organic slub of long-staple European flax.\n\nEvery warp thread is tensioned by hand and inspected under north-facing daylight before a single yard enters production. For upholstery weaves like our Como herringbone, virgin wool and heavy flax yarns are twisted tightly prior to weaving, achieving over 60,000 Martindale rubs without sacrificing a soft, welcoming hand.\n\nOnce off the loom, each bolt rests before finishing: hand-mitred drapery corners, mother-of-pearl duvet closures, and raw selvedge fringes are completed by atelier seamstresses who sign off every piece individually.",
+          "imageUrl": "/images/craftsmanship-loom.jpg"
+        },
+        {
+          "id": "journal-sustainable-textiles",
+          "category": "Sustainable Textiles",
+          "categoryId": "sustainable-textiles",
+          "date": "September 2026",
+          "readTime": "5 min read",
+          "author": "Claire Beaumont",
+          "title": "From Normandy Dew-Retting to Zero-Waste Atelier Bolts",
+          "excerpt": "Why rain-fed flax cultivation, biodegradable natural fibers, and small-batch mill runs define enduring sustainable luxury.",
+          "body": "True sustainability in interiors begins long before a textile reaches a showroom—it starts in coastal northern European fields where flax thrives on natural rainfall alone, requiring zero artificial irrigation and virtually no chemical inputs.\n\nAfter harvest, stalks lie across the earth for slow dew-retting: morning mist and gentle sunlight naturally loosen the woody core from the silky bast fibers inside. Every part of the plant is utilized, from long fibers spun into drapery yarn to shorter tow fibers transformed into heavyweight upholstery and paper.\n\nAt LOOMÉ, our mills weave in disciplined small batches certified to OEKO-TEX Standard 100. Off-cuts from custom drapery commissions are never discarded—they become our client swatch boxes and limited-edition lumbar cushions, honoring every meter of fiber grown.",
+          "imageUrl": "/images/featured-collection.jpg"
+        },
+        {
           "id": "journal-palette",
-          "category": "Color & Texture",
-          "readTime": "3 min read",
+          "category": "Interior Styling",
+          "categoryId": "interior-styling",
+          "date": "September 2026",
+          "readTime": "4 min read",
+          "author": "LOOMÉ Editorial Studio",
           "title": "Layering Ivory, Sage Olive & Champagne in Calm Rooms",
-          "excerpt": "A tactile guide to balancing matte bouclé, washed velvet, and raw linen without visual clutter.",
-          "body": "Monochrome interiors sing when contrast comes from weave structure rather than loud pattern. Pair a crisp 165 GSM sheer linen against heavy herringbone upholstery, then introduce a single muted sage olive velvet cushion and champagne merino throw to anchor the seating group. As afternoon sun shifts across plaster walls, each fiber reflects light at a subtly different cadence.",
+          "excerpt": "A tactile guide to balancing matte bouclé, washed velvet, and sheer linen so quiet monochrome spaces glow from dawn to dusk.",
+          "body": "Monochrome interiors sing when contrast comes from weave architecture rather than loud pattern. Pair a crisp 165 GSM sheer Belgian linen against heavy wool-linen herringbone upholstery, then anchor the seating group with a single muted sage olive velvet lumbar cushion and a hand-loomed champagne merino throw.\n\nBecause each fiber absorbs and reflects daylight differently—matte stonewashed flax softening glare while cotton sateen and washed velvet catch gentle highlights—the room shifts subtly across the day without ever feeling busy.\n\nAlways test swatches vertically as well as flat on a table: a warm ivory drapery that reads creamy beside oak flooring will take on luminous alabaster notes once backlit by afternoon sun.",
           "imageUrl": "/images/cat-fabrics.jpg"
         }
       ]
+    },
+    "journalPage": {
+      "eyebrow": "THE LOOMÉ JOURNAL",
+      "heading": "Journal & Inspiration",
+      "intro": "Editorial essays on architectural drapery, natural linen care, heritage weaving mills, and the quiet craft of sustainable interiors.",
+      "allStoriesLabel": "All Stories",
+      "categories": [
+        {
+          "id": "interior-styling",
+          "label": "Interior Styling"
+        },
+        {
+          "id": "linen-care",
+          "label": "Linen Care"
+        },
+        {
+          "id": "craftsmanship",
+          "label": "Craftsmanship"
+        },
+        {
+          "id": "sustainable-textiles",
+          "label": "Sustainable Textiles"
+        }
+      ],
+      "essaysLabel": "Essays",
+      "essaySingularLabel": "Essay",
+      "featuredStoryLabel": "Featured Story",
+      "authorPrefixLabel": "By",
+      "readStoryLabel": "Read Story",
+      "archiveEyebrow": "Curated Essays",
+      "archiveHeading": "From the Atelier Archive",
+      "shopBannerEyebrow": "Experience the Weaves",
+      "shopBannerHeading": "Bring European Flax & Natural Textiles Home",
+      "shopBannerCtaLabel": "Explore the Shop"
+    },
+    "journalArticlePage": {
+      "copyLinkLabel": "Copy Link",
+      "copiedLinkLabel": "Link Copied",
+      "shareLabel": "Share",
+      "backToJournalLabel": "All Journal Stories",
+      "shopCtaLabel": "Shop Featured Textiles",
+      "relatedEyebrow": "Continue Reading",
+      "relatedHeading": "More From the LOOMÉ Journal",
+      "viewArchiveLabel": "View Complete Archive",
+      "missingEyebrow": "LOOMÉ Editorial Archive",
+      "missingHeading": "This story could not be found",
+      "missingCopy": "The editorial essay you followed may have been updated or moved in our archive.",
+      "missingBackLabel": "Return to Journal"
     },
     "shopPage": {
       "eyebrow": "THE COMPLETE ARCHIVE",

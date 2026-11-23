@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { id: 'home', fallbackLabel: 'Home', route: '/' },
   { id: 'shop', fallbackLabel: 'Shop', route: '/shop' },
   { id: 'services', fallbackLabel: 'Collections', route: '/services' },
+  { id: 'journal', fallbackLabel: 'Journal', route: '/journal' },
   { id: 'about_us', fallbackLabel: 'About', route: '/about_us' },
   { id: 'contact', fallbackLabel: 'Contact', route: '/contact' },
 ] as const;
@@ -37,7 +38,7 @@ export default function LoomeNavbar() {
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
-    : siteData.template?.structure?.pages || ['home', 'shop', 'services', 'about_us', 'contact'];
+    : siteData.template?.structure?.pages || ['home', 'shop', 'services', 'journal', 'about_us', 'contact'];
 
   const activeCartCount = cart?.totalCount ?? 0;
   const wishlistCount = wishlistIds.length;
@@ -67,6 +68,9 @@ export default function LoomeNavbar() {
   const isRouteActive = (route: string) => {
     const cleanPath = pathname.replace(/\/$/, '') || '/';
     const cleanRoute = route.replace(/\/$/, '') || '/';
+    if (cleanRoute === '/journal') {
+      return cleanPath === '/journal' || cleanPath.startsWith('/journal/');
+    }
     return cleanPath === cleanRoute;
   };
 
@@ -96,7 +100,7 @@ export default function LoomeNavbar() {
               <Menu className="h-5 w-5 stroke-[1.5]" />
             </button>
 
-            <nav className="hidden items-center gap-4 lg:flex xl:gap-7">
+            <nav className="hidden items-center gap-3.5 lg:flex xl:gap-5 2xl:gap-6">
               {NAV_ITEMS.map((item) => {
                 const isEnabled = item.id === 'home' || requiredPages.includes(item.id);
                 const label = contentText(navLabels[item.id]) || item.fallbackLabel;
@@ -108,6 +112,8 @@ export default function LoomeNavbar() {
                     <span data-preview-field-path="common.navLabels.shop">{label}</span>
                   ) : item.id === 'services' ? (
                     <span data-preview-field-path="common.navLabels.services">{label}</span>
+                  ) : item.id === 'journal' ? (
+                    <span data-preview-field-path="common.navLabels.journal">{label}</span>
                   ) : item.id === 'about_us' ? (
                     <span data-preview-field-path="common.navLabels.about_us">{label}</span>
                   ) : (
@@ -122,15 +128,16 @@ export default function LoomeNavbar() {
                         onClick={() => navigateTo(item.id)}
                         data-active={active ? 'true' : 'false'}
                         aria-current={active ? 'page' : undefined}
-                        className={`loome-nav-link whitespace-nowrap border-0 bg-transparent px-0 py-1 text-[11px] font-medium uppercase tracking-[0.22em] transition-colors ${active
-                          ? 'text-[#262923] dark:text-[#F8F6F1]'
-                          : 'text-[#262923]/72 hover:text-[#262923] dark:text-[#F8F6F1]/70 dark:hover:text-[#F8F6F1]'
-                          }`}
+                        className={`loome-nav-link whitespace-nowrap border-0 bg-transparent px-0 py-1 text-[10.5px] font-medium uppercase tracking-[0.18em] transition-colors xl:text-[11px] xl:tracking-[0.2em] ${
+                          active
+                            ? 'text-[#262923] dark:text-[#F8F6F1]'
+                            : 'text-[#262923]/72 hover:text-[#262923] dark:text-[#F8F6F1]/70 dark:hover:text-[#F8F6F1]'
+                        }`}
                       >
                         {labelEl}
                       </button>
                     ) : (
-                      <span className="unavailable whitespace-nowrap text-[11px] uppercase tracking-[0.22em]">
+                      <span className="unavailable whitespace-nowrap text-[10.5px] uppercase tracking-[0.18em] xl:text-[11px] xl:tracking-[0.2em]">
                         {labelEl}
                       </span>
                     )}
@@ -166,7 +173,7 @@ export default function LoomeNavbar() {
 
           {/* Right: Atelier Link + Utility Icons */}
           <div className="flex flex-1 items-center justify-end gap-1.5 sm:gap-3">
-            <span data-target-page="contact" className="mr-2 hidden xl:inline-flex">
+            <span data-target-page="contact" className="mr-2 hidden 2xl:inline-flex">
               {requiredPages.includes('contact') ? (
                 <button
                   type="button"
