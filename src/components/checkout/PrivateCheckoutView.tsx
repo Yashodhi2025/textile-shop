@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, type FormEvent } from 'react';
+import { useEffect, useMemo, useState, type FormEvent } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   AlertCircle,
@@ -12,7 +12,6 @@ import {
   Plus,
   ShieldCheck,
   ShoppingBag,
-  Sparkles,
   Trash2,
   Truck,
 } from 'lucide-react';
@@ -35,6 +34,7 @@ import {
 } from '@/components/motion/LuxuryReveal';
 
 const FREE_DELIVERY_THRESHOLD = 250;
+const CHECKOUT_DRAFT_STORAGE_KEY = 'loome_private_checkout_draft_v1';
 
 interface CheckoutFormState {
   fullName: string;
@@ -58,6 +58,9 @@ const INITIAL_FORM: CheckoutFormState = {
   notes: '',
 };
 
+const INPUT_BASE_CLASS =
+  'mt-1.5 w-full rounded-[2px] border bg-white px-3.5 py-2.5 text-[14px] text-[#22251F] placeholder-[#767A6E] shadow-[inset_0_1px_2px_rgba(38,41,35,0.03)] outline-none transition-all duration-300 focus:border-[#9E825E] focus:ring-2 focus:ring-[#B59B79]/25 dark:bg-[#151713] dark:text-[#F8F6F1] dark:placeholder-[#9EA196] dark:focus:border-[#C9B292] dark:focus:ring-[#B59B79]/25';
+
 export default function PrivateCheckoutView() {
   const siteData = useSiteData();
   const rawProducts = useProducts();
@@ -67,8 +70,29 @@ export default function PrivateCheckoutView() {
   const [form, setForm] = useState<CheckoutFormState>(INITIAL_FORM);
   const [errors, setErrors] = useState<FormErrors>({});
   const [mobileSummaryOpen, setMobileSummaryOpen] = useState(false);
-  const [handoffUrl, setHandoffUrl] = useState<string | null>(null);
-  const [handoffBlockedNotice, setHandoffBlockedNotice] = useState(false);
+  const [blockedFallbackUrl, setBlockedFallbackUrl] = useState<string | null>(null);
+
+  // Restore saved customer details on client mount so returning from WhatsApp keeps form intact
+  useEffect(() => {
+    try {
+      const saved = window.sessionStorage.getItem(CHECKOUT_DRAFT_STORAGE_KEY);
+      if (!saved) return;
+      const parsed = JSON.parse(saved) as Partial<CheckoutFormState>;
+      if (parsed && typeof parsed === 'object') {
+        setForm({
+          fullName: typeof parsed.fullName === 'string' ? parsed.fullName : '',
+          phone: typeof parsed.phone === 'string' ? parsed.phone : '',
+          email: typeof parsed.email === 'string' ? parsed.email : '',
+          address: typeof parsed.address === 'string' ? parsed.address : '',
+          city: typeof parsed.city === 'string' ? parsed.city : '',
+          postalCode: typeof parsed.postalCode === 'string' ? parsed.postalCode : '',
+          notes: typeof parsed.notes === 'string' ? parsed.notes : '',
+        });
+      }
+    } catch {
+      // Ignore storage access errors in restricted environments
+    }
+  }, []);
 
   const content = contentObject(siteData.content);
   const common = contentObject(content.common);
@@ -147,7 +171,15 @@ export default function PrivateCheckoutView() {
   );
 
   const updateField = (field: keyof CheckoutFormState, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
+    setForm((prev) => {
+      const next = { ...prev, [field]: value };
+      try {
+        window.sessionStorage.setItem(CHECKOUT_DRAFT_STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        // Ignore storage write errors
+      }
+      return next;
+    });
     if (errors[field]) {
       setErrors((prev) => {
         const next = { ...prev };
@@ -155,9 +187,8 @@ export default function PrivateCheckoutView() {
         return next;
       });
     }
-    if (handoffUrl) {
-      setHandoffUrl(null);
-      setHandoffBlockedNotice(false);
+    if (blockedFallbackUrl) {
+      setBlockedFallbackUrl(null);
     }
   };
 
@@ -260,12 +291,30 @@ export default function PrivateCheckoutView() {
       return;
     }
 
+    // Persist draft before leaving for WhatsApp so returning preserves customer inputs
+    try {
+      window.sessionStorage.setItem(CHECKOUT_DRAFT_STORAGE_KEY, JSON.stringify(form));
+    } catch {
+      // Ignore storage write errors
+    }
+
     const encodedMessage = encodeURIComponent(buildWhatsAppMessage());
     const url = `https://wa.me/${cleanWhatsappDigits}?text=${encodedMessage}`;
-    setHandoffUrl(url);
 
-    const opened = window.open(url, '_blank', 'noopener,noreferrer');
-    setHandoffBlockedNotice(!opened);
+    // Direct user-initiated navigation without 'noopener' feature string so browsers
+    // accurately return the WindowProxy on success (we clear win.opener immediately).
+    const popup = window.open(url, '_blank');
+    if (popup) {
+      try {
+        popup.opener = null;
+      } catch {
+        // Cross-origin opener clearing may be restricted in some browsers
+      }
+      setBlockedFallbackUrl(null);
+    } else {
+      // Only show compact fallback link when the browser genuinely blocked opening WhatsApp
+      setBlockedFallbackUrl(url);
+    }
   };
 
   const renderOrderItemsList = (compact = false) => (
@@ -278,15 +327,15 @@ export default function PrivateCheckoutView() {
             <motion.li
               key={itemKey}
               layout={!prefersReducedMotion}
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={prefersReducedMotion ? undefined : { opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: LUXURY_EASE }}
-              className={`flex gap-4 ${compact ? 'py-4' : 'py-5'}`}
+              transition={{ duration: 0.28, ease: LUXURY_EASE }}
+              className={`flex gap-3.5 ${compact ? 'py-3.5' : 'py-4'}`}
             >
               <a
                 href={detailHref}
-                className="h-24 w-20 shrink-0 overflow-hidden bg-[#E8E0D5]/55 dark:bg-[#20231D]"
+                className="h-[88px] w-[72px] shrink-0 overflow-hidden rounded-[2px] border border-[#262923]/8 bg-[#F0ECE3] dark:border-[#F8F6F1]/10 dark:bg-[#242721]"
               >
                 <img
                   src={withBasePath(item.image || '/images/prod-curtain-ivory.jpg')}
@@ -300,7 +349,7 @@ export default function PrivateCheckoutView() {
                   <div className="flex items-start justify-between gap-2">
                     <a
                       href={detailHref}
-                      className="font-serif text-lg leading-snug text-[#262923] no-underline transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+                      className="font-serif text-[17px] font-medium leading-snug text-[#22251F] no-underline transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#C9B292]"
                     >
                       {item.name}
                     </a>
@@ -308,46 +357,47 @@ export default function PrivateCheckoutView() {
                       type="button"
                       onClick={() => cart.removeItem(item.id, item.size, item.color)}
                       aria-label={`Remove ${item.name} from bag`}
-                      className="shrink-0 p-1 text-[#65685E] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+                      className="shrink-0 rounded-full p-1 text-[#6E7166] transition-colors hover:bg-[#262923]/6 hover:text-[#22251F] dark:text-[#A9ACA2] dark:hover:bg-[#F8F6F1]/10 dark:hover:text-[#F8F6F1]"
                     >
-                      <Trash2 className="h-3.5 w-3.5 stroke-[1.5]" />
+                      <Trash2 className="h-3.5 w-3.5 stroke-[1.6]" />
                     </button>
                   </div>
 
-                  <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-[#65685E] dark:text-[#B6B8AE]">
+                  <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-[11px]">
                     {item.color && (
-                      <span className="uppercase tracking-[0.15em] text-[#747B65] dark:text-[#B59B79]">
-                        Tone: {item.color}
+                      <span className="font-medium uppercase tracking-[0.14em] text-[#5C634E] dark:text-[#C9B292]">
+                        {item.color}
                       </span>
                     )}
-                    {item.size && <span>Size: {item.size}</span>}
+                    {item.color && item.size && (
+                      <span aria-hidden="true" className="text-[#B59B79]">
+                        ·
+                      </span>
+                    )}
+                    {item.size && (
+                      <span className="text-[#4F5349] dark:text-[#C5C7BE]">{item.size}</span>
+                    )}
                   </div>
-
-                  {item.showPrice !== false && (
-                    <p className="mt-1 mb-0 text-[11px] text-[#65685E] dark:text-[#B6B8AE]">
-                      {formatLoomePrice(item.price, storeCurrency)} each
-                    </p>
-                  )}
                 </div>
 
-                <div className="mt-3 flex items-center justify-between gap-3">
-                  <div className="inline-flex items-center border border-[#262923]/18 bg-[#F8F6F1] dark:border-[#F8F6F1]/20 dark:bg-[#171915]">
+                <div className="mt-2.5 flex items-center justify-between gap-3">
+                  <div className="inline-flex items-center rounded-[2px] border border-[#262923]/18 bg-[#F6F3EC] dark:border-[#F8F6F1]/20 dark:bg-[#151713]">
                     <button
                       type="button"
                       onClick={() =>
                         cart.updateQuantity(item.id, item.quantity - 1, item.size, item.color)
                       }
                       aria-label={`Decrease quantity for ${item.name}`}
-                      className="flex h-7 w-7 items-center justify-center text-[#262923] transition-colors hover:bg-[#262923]/6 dark:text-[#F8F6F1] dark:hover:bg-[#F8F6F1]/10"
+                      className="flex h-7 w-7 items-center justify-center text-[#22251F] transition-colors hover:bg-[#E8E0D5] dark:text-[#F8F6F1] dark:hover:bg-[#F8F6F1]/12"
                     >
-                      <Minus className="h-3 w-3 stroke-[1.6]" />
+                      <Minus className="h-3 w-3 stroke-[1.7]" />
                     </button>
                     <motion.span
                       key={item.quantity}
-                      initial={prefersReducedMotion ? false : { scale: 0.85, opacity: 0.6 }}
+                      initial={prefersReducedMotion ? false : { scale: 0.86, opacity: 0.65 }}
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.2 }}
-                      className="w-7 text-center text-xs font-medium tabular-nums"
+                      className="w-7 text-center text-xs font-semibold tabular-nums text-[#22251F] dark:text-[#F8F6F1]"
                     >
                       {item.quantity}
                     </motion.span>
@@ -357,17 +407,24 @@ export default function PrivateCheckoutView() {
                         cart.updateQuantity(item.id, item.quantity + 1, item.size, item.color)
                       }
                       aria-label={`Increase quantity for ${item.name}`}
-                      className="flex h-7 w-7 items-center justify-center text-[#262923] transition-colors hover:bg-[#262923]/6 dark:text-[#F8F6F1] dark:hover:bg-[#F8F6F1]/10"
+                      className="flex h-7 w-7 items-center justify-center text-[#22251F] transition-colors hover:bg-[#E8E0D5] dark:text-[#F8F6F1] dark:hover:bg-[#F8F6F1]/12"
                     >
-                      <Plus className="h-3 w-3 stroke-[1.6]" />
+                      <Plus className="h-3 w-3 stroke-[1.7]" />
                     </button>
                   </div>
 
-                  <span className="text-sm font-medium tabular-nums text-[#262923] dark:text-[#F8F6F1]">
-                    {item.showPrice === false
-                      ? 'Upon Inquiry'
-                      : formatLoomePrice(item.price * item.quantity, storeCurrency)}
-                  </span>
+                  <div className="text-right">
+                    <span className="block text-[14px] font-semibold tabular-nums text-[#22251F] dark:text-[#F8F6F1]">
+                      {item.showPrice === false
+                        ? 'Upon Inquiry'
+                        : formatLoomePrice(item.price * item.quantity, storeCurrency)}
+                    </span>
+                    {item.showPrice !== false && item.quantity > 1 && (
+                      <span className="block text-[11px] tabular-nums text-[#5E6257] dark:text-[#A9ACA2]">
+                        {formatLoomePrice(item.price, storeCurrency)} each
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </motion.li>
@@ -378,19 +435,19 @@ export default function PrivateCheckoutView() {
   );
 
   const renderTotalsBlock = () => (
-    <div className="border-t border-[#262923]/10 pt-5 dark:border-[#F8F6F1]/12">
+    <div className="mt-4 space-y-4 border-t border-[#262923]/12 pt-4 dark:border-[#F8F6F1]/12">
       {/* White-Glove Delivery Progress */}
-      <div className="mb-5 border border-[#262923]/8 bg-[#F8F6F1]/80 p-3.5 dark:border-[#F8F6F1]/10 dark:bg-[#171915]/70">
-        <div className="flex items-center justify-between text-[11px] tracking-wide text-[#595C52] dark:text-[#C8CAC1]">
+      <div className="rounded-[2px] border border-[#262923]/10 bg-[#F7F4EE] px-3.5 py-3 dark:border-[#F8F6F1]/10 dark:bg-[#151713]">
+        <div className="flex items-center justify-between gap-2 text-[11.5px] font-medium text-[#3F433A] dark:text-[#D1D3CA]">
           <span className="inline-flex items-center gap-1.5">
-            <Truck className="h-3.5 w-3.5 stroke-[1.5] text-[#747B65] dark:text-[#B59B79]" />
+            <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.6] text-[#666D57] dark:text-[#C9B292]" />
             {deliveryRemaining === 0
               ? 'Complimentary white-glove delivery unlocked'
               : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for complimentary delivery`}
           </span>
-          <span className="font-medium tabular-nums">{deliveryProgress}%</span>
+          <span className="tabular-nums text-[#5C634E] dark:text-[#C9B292]">{deliveryProgress}%</span>
         </div>
-        <div className="mt-2 h-1 w-full overflow-hidden bg-[#E8E0D5] dark:bg-[#2A2D26]">
+        <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[#E4DACB] dark:bg-[#2A2D26]">
           <motion.div
             initial={false}
             animate={{ width: `${deliveryProgress}%` }}
@@ -400,33 +457,42 @@ export default function PrivateCheckoutView() {
         </div>
       </div>
 
-      <div className="space-y-2.5 text-sm">
-        <div className="flex items-center justify-between text-[#595C52] dark:text-[#B6B8AE]">
-          <span>
-            Items ({cart.totalCount})
-          </span>
-          <span className="tabular-nums">
-            {formatLoomePrice(cart.subtotal, storeCurrency)}
-          </span>
+      {/* Price Breakdown Inset */}
+      <div className="rounded-[2px] bg-[#FAF8F3] px-4 py-4 dark:bg-[#171915]">
+        <div className="space-y-2 text-[13px]">
+          <div className="flex items-center justify-between text-[#4F5349] dark:text-[#C5C7BE]">
+            <span>
+              Items ({cart.totalCount})
+            </span>
+            <span className="font-medium tabular-nums text-[#22251F] dark:text-[#F8F6F1]">
+              {formatLoomePrice(cart.subtotal, storeCurrency)}
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-[#4F5349] dark:text-[#C5C7BE]">
+            <span>Atelier Delivery</span>
+            <span className="font-medium text-[#22251F] dark:text-[#F8F6F1]">
+              {deliveryRemaining === 0 ? 'Complimentary' : 'Confirmed via Concierge'}
+            </span>
+          </div>
         </div>
-        <div className="flex items-center justify-between text-[#595C52] dark:text-[#B6B8AE]">
-          <span>Atelier Delivery</span>
-          <span>
-            {deliveryRemaining === 0 ? 'Complimentary' : 'Confirmed via Concierge'}
-          </span>
-        </div>
-        <div className="flex items-baseline justify-between border-t border-[#262923]/10 pt-3.5 dark:border-[#F8F6F1]/12">
-          <span className="text-xs font-medium uppercase tracking-[0.2em] text-[#262923] dark:text-[#F8F6F1]">
-            Estimated Subtotal
-          </span>
-          <span className="font-serif text-3xl font-normal tabular-nums text-[#262923] dark:text-[#F8F6F1]">
+
+        <div className="mt-3.5 flex items-baseline justify-between border-t border-[#262923]/12 pt-3.5 dark:border-[#F8F6F1]/12">
+          <div>
+            <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-[#22251F] dark:text-[#F8F6F1]">
+              Estimated Subtotal
+            </span>
+            <span className="mt-0.5 block text-[11px] text-[#5E6257] dark:text-[#A9ACA2]">
+              Currency: {storeCurrency}
+            </span>
+          </div>
+          <span className="font-serif text-[30px] font-medium leading-none tabular-nums text-[#22251F] dark:text-[#F8F6F1]">
             {formatLoomePrice(cart.subtotal, storeCurrency)}
           </span>
         </div>
       </div>
 
-      <p className="mt-3 mb-0 text-xs leading-relaxed text-[#65685E] dark:text-[#B6B8AE]">
-        No online payment is charged here. Sending via WhatsApp connects you directly with our atelier concierge to finalize shipping, custom measurements, and payment.
+      <p className="m-0 text-[12px] leading-relaxed text-[#55594F] dark:text-[#B6B8AE]">
+        No online payment is charged here. Final availability, custom drapery sizing, and delivery timing are confirmed with our atelier concierge on WhatsApp.
       </p>
     </div>
   );
@@ -434,15 +500,15 @@ export default function PrivateCheckoutView() {
   return (
     <div
       data-preview-page-key="checkout"
-      className="min-h-[75vh] w-full bg-[#F8F6F1] text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+      className="min-h-[75vh] w-full bg-[#F6F3EC] text-[#22251F] dark:bg-[#151713] dark:text-[#F8F6F1]"
     >
-      {/* Breadcrumb Strip */}
-      <div className="border-b border-[#262923]/8 bg-[#F8F6F1]/90 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
-        <nav className="mx-auto flex max-w-[1360px] flex-wrap items-center gap-2 px-4 py-4 text-[11px] uppercase tracking-[0.2em] text-[#65685E] dark:text-[#B6B8AE] sm:px-8 lg:px-14">
+      {/* Compact Editorial Breadcrumb Strip */}
+      <div className="border-b border-[#262923]/10 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
+        <nav className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#55594F] dark:text-[#B6B8AE] sm:px-8 lg:px-12">
           <a
             href={withBasePath('/')}
             data-preview-static="checkout-breadcrumb-home"
-            className="text-[#65685E] no-underline transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+            className="text-[#55594F] no-underline transition-colors hover:text-[#22251F] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
           >
             Home
           </a>
@@ -455,7 +521,7 @@ export default function PrivateCheckoutView() {
                 href={withBasePath('/shop')}
                 data-target-page="shop"
                 data-preview-static="checkout-breadcrumb-shop"
-                className="text-[#65685E] no-underline transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+                className="text-[#55594F] no-underline transition-colors hover:text-[#22251F] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
               >
                 Shop
               </a>
@@ -467,32 +533,32 @@ export default function PrivateCheckoutView() {
           <span
             aria-current="page"
             data-preview-static="checkout-breadcrumb-current"
-            className="text-[#262923] dark:text-[#F8F6F1]"
+            className="font-medium text-[#22251F] dark:text-[#F8F6F1]"
           >
             Private Checkout
           </span>
         </nav>
       </div>
 
-      {/* Editorial Ivory / Champagne Checkout Header */}
+      {/* Balanced Editorial Ivory / Champagne Checkout Header */}
       <section
         data-design-section="checkout-hero"
-        className="border-b border-[#262923]/8 bg-gradient-to-b from-[#F4EFE6]/80 via-[#F8F6F1] to-[#F8F6F1] dark:border-[#F8F6F1]/10 dark:from-[#20231D]/70 dark:via-[#171915] dark:to-[#171915]"
+        className="border-b border-[#262923]/10 bg-gradient-to-b from-[#F1EBE0]/85 via-[#F7F4ED] to-[#F6F3EC] dark:border-[#F8F6F1]/10 dark:from-[#1E211B] dark:via-[#171915] dark:to-[#151713]"
       >
-        <div className="mx-auto max-w-[1360px] px-4 py-12 sm:px-8 sm:py-16 lg:px-14 lg:py-20">
-          <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+        <div className="mx-auto max-w-[1320px] px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-11">
+          <LuxuryReveal className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
             <div className="max-w-2xl">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-9 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-8 bg-[#B59B79]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="checkoutPage.eyebrow"
                   defaultValue={eyebrow}
                   fontFamily="body"
                   size="0.6875rem"
-                  weight={500}
+                  weight={600}
                   transform="uppercase"
-                  letterSpacing="0.28em"
+                  letterSpacing="0.26em"
                   color="primary"
                   className="m-0"
                 />
@@ -503,12 +569,12 @@ export default function PrivateCheckoutView() {
                 data-preview-field-path="checkoutPage.heading"
                 defaultValue={heading}
                 fontFamily="heading"
-                size="clamp(2.45rem, 4.6vw, 4rem)"
+                size="clamp(2.2rem, 3.9vw, 3.35rem)"
                 weight={300}
-                lineHeight={1.04}
+                lineHeight={1.06}
                 letterSpacing="-0.02em"
                 color="heading"
-                className="mt-4 mb-0"
+                className="mt-2.5 mb-0"
               />
             </div>
 
@@ -518,30 +584,48 @@ export default function PrivateCheckoutView() {
                 data-preview-field-path="checkoutPage.intro"
                 defaultValue={intro}
                 fontFamily="body"
-                size="0.9375rem"
-                lineHeight={1.8}
+                size="0.9rem"
+                lineHeight={1.72}
                 color="muted"
                 className="m-0"
               />
             </div>
           </LuxuryReveal>
 
-          {/* Subtle 3-Step Private Checkout Cadence */}
-          <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-[#262923]/10 pt-5 text-[10px] font-medium uppercase tracking-[0.22em] text-[#65685E] dark:border-[#F8F6F1]/10 dark:text-[#B6B8AE]">
-            <span data-preview-static="checkout-step-1" className="text-[#262923] dark:text-[#F8F6F1]">
-              01 · Review Curated Bag
+          {/* Compact 3-Step Private Checkout Cadence */}
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[#262923]/10 pt-4 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#4F5349] dark:border-[#F8F6F1]/10 dark:text-[#C5C7BE]">
+            <span
+              data-preview-static="checkout-step-1"
+              className="inline-flex items-center gap-2 text-[#22251F] dark:text-[#F8F6F1]"
+            >
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#B59B79] text-[9px] text-[#747B65] dark:text-[#C9B292]">
+                1
+              </span>
+              Review Bag
             </span>
             <span aria-hidden="true" className="text-[#B59B79]">
-              —
+              /
             </span>
-            <span data-preview-static="checkout-step-2" className="text-[#262923] dark:text-[#F8F6F1]">
-              02 · Delivery Details
+            <span
+              data-preview-static="checkout-step-2"
+              className="inline-flex items-center gap-2 text-[#22251F] dark:text-[#F8F6F1]"
+            >
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#B59B79] text-[9px] text-[#747B65] dark:text-[#C9B292]">
+                2
+              </span>
+              Delivery Details
             </span>
             <span aria-hidden="true" className="text-[#B59B79]">
-              —
+              /
             </span>
-            <span data-preview-static="checkout-step-3" className="text-[#747B65] dark:text-[#B59B79]">
-              03 · WhatsApp Concierge Handoff
+            <span
+              data-preview-static="checkout-step-3"
+              className="inline-flex items-center gap-2 text-[#5C634E] dark:text-[#C9B292]"
+            >
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#747B65]/50 text-[9px]">
+                3
+              </span>
+              WhatsApp Concierge
             </span>
           </div>
         </div>
@@ -550,22 +634,22 @@ export default function PrivateCheckoutView() {
       {/* Main Checkout Content */}
       <section
         data-design-section="checkout-main"
-        className="mx-auto max-w-[1360px] px-4 py-12 sm:px-8 lg:px-14 lg:py-16"
+        className="mx-auto max-w-[1320px] px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12"
       >
         {!hasItems ? (
-          /* Beautiful Empty-Cart State */
-          <LuxuryReveal className="mx-auto max-w-2xl border border-[#262923]/10 bg-[#FCFBF8] px-6 py-16 text-center shadow-[0_20px_60px_rgba(38,41,35,0.04)] dark:border-[#F8F6F1]/12 dark:bg-[#20231D] sm:px-12 sm:py-20">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-[#B59B79]/45 bg-[#F8F6F1] text-[#B59B79] dark:bg-[#171915]">
-              <ShoppingBag className="h-6 w-6 stroke-[1.3]" />
+          /* Refined Empty-Cart State */
+          <LuxuryReveal className="mx-auto max-w-xl rounded-[2px] border border-[#262923]/12 border-t-2 border-t-[#B59B79] bg-[#FEFDFB] px-6 py-12 text-center shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F8F6F1]/12 dark:border-t-[#B59B79] dark:bg-[#1E211B] sm:px-10 sm:py-14">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#B59B79]/50 bg-[#F6F3EC] text-[#9E825E] dark:bg-[#151713] dark:text-[#C9B292]">
+              <ShoppingBag className="h-5 w-5 stroke-[1.4]" />
             </div>
 
-            <div className="mt-6">
+            <div className="mt-5">
               <EditableText
                 as="h2"
                 data-preview-field-path="checkoutPage.emptyHeading"
                 defaultValue={emptyHeading}
                 fontFamily="heading"
-                size="clamp(1.85rem, 3.2vw, 2.5rem)"
+                size="clamp(1.75rem, 3vw, 2.35rem)"
                 weight={300}
                 lineHeight={1.15}
                 color="heading"
@@ -574,21 +658,21 @@ export default function PrivateCheckoutView() {
               />
             </div>
 
-            <div className="mx-auto mt-3.5 max-w-md">
+            <div className="mx-auto mt-3 max-w-md">
               <EditableText
                 as="p"
                 data-preview-field-path="checkoutPage.emptyDescription"
                 defaultValue={emptyDescription}
                 fontFamily="body"
-                size="0.9375rem"
-                lineHeight={1.8}
+                size="0.9rem"
+                lineHeight={1.75}
                 color="muted"
                 align="center"
                 className="m-0"
               />
             </div>
 
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-3.5">
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
               <a
                 href={withBasePath(hasShopPage ? '/shop' : '/')}
                 data-target-page={hasShopPage ? 'shop' : undefined}
@@ -613,27 +697,27 @@ export default function PrivateCheckoutView() {
           </LuxuryReveal>
         ) : (
           /* Active Two-Column Private Checkout */
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* Mobile-Friendly Collapsible Order Summary */}
-            <div className="border border-[#262923]/12 bg-[#FCFBF8] dark:border-[#F8F6F1]/14 dark:bg-[#20231D] lg:hidden">
+            <div className="rounded-[2px] border border-[#262923]/14 border-t-2 border-t-[#B59B79] bg-[#FEFDFB] shadow-[0_8px_24px_rgba(38,41,35,0.04)] dark:border-[#F8F6F1]/14 dark:border-t-[#B59B79] dark:bg-[#1E211B] lg:hidden">
               <button
                 type="button"
                 onClick={() => setMobileSummaryOpen((prev) => !prev)}
                 aria-expanded={mobileSummaryOpen}
-                className="flex w-full items-center justify-between gap-4 border-0 bg-transparent px-5 py-4 text-left text-[#262923] dark:text-[#F8F6F1]"
+                className="flex w-full items-center justify-between gap-4 border-0 bg-transparent px-5 py-4 text-left text-[#22251F] dark:text-[#F8F6F1]"
               >
                 <div className="flex items-center gap-2.5">
-                  <ShoppingBag className="h-4 w-4 stroke-[1.5] text-[#747B65] dark:text-[#B59B79]" />
-                  <span className="text-xs font-medium uppercase tracking-[0.2em]">
+                  <ShoppingBag className="h-4 w-4 stroke-[1.6] text-[#666D57] dark:text-[#C9B292]" />
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.2em]">
                     {mobileSummaryOpen ? 'Hide' : 'Show'} Order Summary ({cart.totalCount})
                   </span>
                 </div>
                 <div className="flex items-center gap-2.5">
-                  <span className="font-serif text-xl tabular-nums">
+                  <span className="font-serif text-xl font-medium tabular-nums">
                     {formatLoomePrice(cart.subtotal, storeCurrency)}
                   </span>
                   <ChevronDown
-                    className={`h-4 w-4 stroke-[1.5] text-[#747B65] transition-transform duration-300 dark:text-[#B59B79] ${
+                    className={`h-4 w-4 stroke-[1.6] text-[#666D57] transition-transform duration-300 dark:text-[#C9B292] ${
                       mobileSummaryOpen ? 'rotate-180' : ''
                     }`}
                   />
@@ -646,7 +730,7 @@ export default function PrivateCheckoutView() {
                     initial={prefersReducedMotion ? false : { height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={prefersReducedMotion ? undefined : { height: 0, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: LUXURY_EASE }}
+                    transition={{ duration: 0.32, ease: LUXURY_EASE }}
                     className="overflow-hidden border-t border-[#262923]/10 dark:border-[#F8F6F1]/10"
                   >
                     <div className="px-5 pb-5">
@@ -658,31 +742,31 @@ export default function PrivateCheckoutView() {
               </AnimatePresence>
             </div>
 
-            <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-start lg:gap-12 xl:gap-16">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-10 xl:gap-12">
               {/* Left Column: Customer & Delivery Form */}
               <div className="lg:col-span-7">
                 <form
                   onSubmit={handleSubmit}
                   noValidate
-                  className="border border-[#262923]/10 bg-[#FCFBF8] p-6 shadow-[0_18px_50px_rgba(38,41,35,0.035)] dark:border-[#F8F6F1]/12 dark:bg-[#20231D] sm:p-9 lg:p-10"
+                  className="rounded-[2px] border border-[#262923]/12 bg-[#FEFDFB] p-6 shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F8F6F1]/12 dark:bg-[#1E211B] sm:p-8 lg:p-9"
                 >
-                  <LuxuryStagger staggerDelay={0.07} className="space-y-8">
+                  <LuxuryStagger staggerDelay={0.06} className="space-y-7">
                     {/* Section 1: Client Details */}
-                    <LuxuryStaggerItem y={14}>
-                      <div className="flex items-center justify-between border-b border-[#262923]/10 pb-3.5 dark:border-[#F8F6F1]/10">
-                        <h2 className="m-0 font-serif text-2xl font-normal tracking-wide text-[#262923] dark:text-[#F8F6F1]">
+                    <LuxuryStaggerItem y={12}>
+                      <div className="flex items-center justify-between border-b border-[#262923]/10 pb-3 dark:border-[#F8F6F1]/10">
+                        <h2 className="m-0 font-serif text-[23px] font-medium tracking-wide text-[#22251F] dark:text-[#F8F6F1]">
                           01. Client Details
                         </h2>
-                        <span className="text-[10px] uppercase tracking-[0.2em] text-[#747B65] dark:text-[#B59B79]">
+                        <span className="text-[10.5px] font-medium uppercase tracking-[0.18em] text-[#5C634E] dark:text-[#C9B292]">
                           * Required
                         </span>
                       </div>
 
-                      <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div className="sm:col-span-2">
                           <label
                             htmlFor="checkout-fullName"
-                            className="block text-[11px] font-medium uppercase tracking-[0.2em] text-[#595C52] dark:text-[#B6B8AE]"
+                            className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#363A32] dark:text-[#D9DBD3]"
                           >
                             Full Name *
                           </label>
@@ -696,14 +780,18 @@ export default function PrivateCheckoutView() {
                             onChange={(e) => updateField('fullName', e.target.value)}
                             placeholder="Camille Laurent"
                             aria-invalid={Boolean(errors.fullName)}
-                            className={`mt-2 w-full border bg-[#F8F6F1] px-4 py-3 text-sm text-[#262923] placeholder-[#65685E]/55 outline-none transition-all duration-300 focus:border-[#B59B79] focus:bg-white focus:ring-1 focus:ring-[#B59B79]/35 dark:bg-[#171915] dark:text-[#F8F6F1] dark:placeholder-[#B6B8AE]/45 dark:focus:bg-[#171915] ${
+                            className={`${INPUT_BASE_CLASS} ${
                               errors.fullName
-                                ? 'border-[#A1685A]'
-                                : 'border-[#262923]/16 dark:border-[#F8F6F1]/18'
+                                ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                                : 'border-[#262923]/22 dark:border-[#F8F6F1]/22'
                             }`}
                           />
                           {errors.fullName && (
-                            <p role="alert" className="mt-1.5 mb-0 text-xs text-[#9E4F40] dark:text-[#E2A89B]">
+                            <p
+                              role="alert"
+                              className="mt-1.5 mb-0 flex items-center gap-1.5 text-xs font-medium text-[#9E3F2E] dark:text-[#EAA597]"
+                            >
+                              <AlertCircle className="h-3.5 w-3.5 shrink-0 stroke-[1.75]" />
                               {errors.fullName}
                             </p>
                           )}
@@ -712,7 +800,7 @@ export default function PrivateCheckoutView() {
                         <div>
                           <label
                             htmlFor="checkout-phone"
-                            className="block text-[11px] font-medium uppercase tracking-[0.2em] text-[#595C52] dark:text-[#B6B8AE]"
+                            className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#363A32] dark:text-[#D9DBD3]"
                           >
                             Phone / WhatsApp *
                           </label>
@@ -726,14 +814,18 @@ export default function PrivateCheckoutView() {
                             onChange={(e) => updateField('phone', e.target.value)}
                             placeholder="+1 (212) 555-0194"
                             aria-invalid={Boolean(errors.phone)}
-                            className={`mt-2 w-full border bg-[#F8F6F1] px-4 py-3 text-sm text-[#262923] placeholder-[#65685E]/55 outline-none transition-all duration-300 focus:border-[#B59B79] focus:bg-white focus:ring-1 focus:ring-[#B59B79]/35 dark:bg-[#171915] dark:text-[#F8F6F1] dark:placeholder-[#B6B8AE]/45 dark:focus:bg-[#171915] ${
+                            className={`${INPUT_BASE_CLASS} ${
                               errors.phone
-                                ? 'border-[#A1685A]'
-                                : 'border-[#262923]/16 dark:border-[#F8F6F1]/18'
+                                ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                                : 'border-[#262923]/22 dark:border-[#F8F6F1]/22'
                             }`}
                           />
                           {errors.phone && (
-                            <p role="alert" className="mt-1.5 mb-0 text-xs text-[#9E4F40] dark:text-[#E2A89B]">
+                            <p
+                              role="alert"
+                              className="mt-1.5 mb-0 flex items-center gap-1.5 text-xs font-medium text-[#9E3F2E] dark:text-[#EAA597]"
+                            >
+                              <AlertCircle className="h-3.5 w-3.5 shrink-0 stroke-[1.75]" />
                               {errors.phone}
                             </p>
                           )}
@@ -742,9 +834,12 @@ export default function PrivateCheckoutView() {
                         <div>
                           <label
                             htmlFor="checkout-email"
-                            className="block text-[11px] font-medium uppercase tracking-[0.2em] text-[#595C52] dark:text-[#B6B8AE]"
+                            className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#363A32] dark:text-[#D9DBD3]"
                           >
-                            Email <span className="opacity-65">(Optional)</span>
+                            Email{' '}
+                            <span className="font-normal normal-case tracking-normal text-[#6E7166] dark:text-[#9EA196]">
+                              (Optional)
+                            </span>
                           </label>
                           <input
                             id="checkout-email"
@@ -755,14 +850,18 @@ export default function PrivateCheckoutView() {
                             onChange={(e) => updateField('email', e.target.value)}
                             placeholder="client@example.com"
                             aria-invalid={Boolean(errors.email)}
-                            className={`mt-2 w-full border bg-[#F8F6F1] px-4 py-3 text-sm text-[#262923] placeholder-[#65685E]/55 outline-none transition-all duration-300 focus:border-[#B59B79] focus:bg-white focus:ring-1 focus:ring-[#B59B79]/35 dark:bg-[#171915] dark:text-[#F8F6F1] dark:placeholder-[#B6B8AE]/45 dark:focus:bg-[#171915] ${
+                            className={`${INPUT_BASE_CLASS} ${
                               errors.email
-                                ? 'border-[#A1685A]'
-                                : 'border-[#262923]/16 dark:border-[#F8F6F1]/18'
+                                ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                                : 'border-[#262923]/22 dark:border-[#F8F6F1]/22'
                             }`}
                           />
                           {errors.email && (
-                            <p role="alert" className="mt-1.5 mb-0 text-xs text-[#9E4F40] dark:text-[#E2A89B]">
+                            <p
+                              role="alert"
+                              className="mt-1.5 mb-0 flex items-center gap-1.5 text-xs font-medium text-[#9E3F2E] dark:text-[#EAA597]"
+                            >
+                              <AlertCircle className="h-3.5 w-3.5 shrink-0 stroke-[1.75]" />
                               {errors.email}
                             </p>
                           )}
@@ -771,18 +870,18 @@ export default function PrivateCheckoutView() {
                     </LuxuryStaggerItem>
 
                     {/* Section 2: Delivery Destination */}
-                    <LuxuryStaggerItem y={14}>
-                      <div className="border-b border-[#262923]/10 pb-3.5 dark:border-[#F8F6F1]/10">
-                        <h2 className="m-0 font-serif text-2xl font-normal tracking-wide text-[#262923] dark:text-[#F8F6F1]">
+                    <LuxuryStaggerItem y={12}>
+                      <div className="border-b border-[#262923]/10 pb-3 dark:border-[#F8F6F1]/10">
+                        <h2 className="m-0 font-serif text-[23px] font-medium tracking-wide text-[#22251F] dark:text-[#F8F6F1]">
                           02. Delivery Destination
                         </h2>
                       </div>
 
-                      <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div className="sm:col-span-2">
                           <label
                             htmlFor="checkout-address"
-                            className="block text-[11px] font-medium uppercase tracking-[0.2em] text-[#595C52] dark:text-[#B6B8AE]"
+                            className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#363A32] dark:text-[#D9DBD3]"
                           >
                             Delivery Address *
                           </label>
@@ -796,14 +895,18 @@ export default function PrivateCheckoutView() {
                             onChange={(e) => updateField('address', e.target.value)}
                             placeholder="48 Mercer Street, Apartment 4B"
                             aria-invalid={Boolean(errors.address)}
-                            className={`mt-2 w-full border bg-[#F8F6F1] px-4 py-3 text-sm text-[#262923] placeholder-[#65685E]/55 outline-none transition-all duration-300 focus:border-[#B59B79] focus:bg-white focus:ring-1 focus:ring-[#B59B79]/35 dark:bg-[#171915] dark:text-[#F8F6F1] dark:placeholder-[#B6B8AE]/45 dark:focus:bg-[#171915] ${
+                            className={`${INPUT_BASE_CLASS} ${
                               errors.address
-                                ? 'border-[#A1685A]'
-                                : 'border-[#262923]/16 dark:border-[#F8F6F1]/18'
+                                ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                                : 'border-[#262923]/22 dark:border-[#F8F6F1]/22'
                             }`}
                           />
                           {errors.address && (
-                            <p role="alert" className="mt-1.5 mb-0 text-xs text-[#9E4F40] dark:text-[#E2A89B]">
+                            <p
+                              role="alert"
+                              className="mt-1.5 mb-0 flex items-center gap-1.5 text-xs font-medium text-[#9E3F2E] dark:text-[#EAA597]"
+                            >
+                              <AlertCircle className="h-3.5 w-3.5 shrink-0 stroke-[1.75]" />
                               {errors.address}
                             </p>
                           )}
@@ -812,7 +915,7 @@ export default function PrivateCheckoutView() {
                         <div>
                           <label
                             htmlFor="checkout-city"
-                            className="block text-[11px] font-medium uppercase tracking-[0.2em] text-[#595C52] dark:text-[#B6B8AE]"
+                            className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#363A32] dark:text-[#D9DBD3]"
                           >
                             City *
                           </label>
@@ -826,14 +929,18 @@ export default function PrivateCheckoutView() {
                             onChange={(e) => updateField('city', e.target.value)}
                             placeholder="New York"
                             aria-invalid={Boolean(errors.city)}
-                            className={`mt-2 w-full border bg-[#F8F6F1] px-4 py-3 text-sm text-[#262923] placeholder-[#65685E]/55 outline-none transition-all duration-300 focus:border-[#B59B79] focus:bg-white focus:ring-1 focus:ring-[#B59B79]/35 dark:bg-[#171915] dark:text-[#F8F6F1] dark:placeholder-[#B6B8AE]/45 dark:focus:bg-[#171915] ${
+                            className={`${INPUT_BASE_CLASS} ${
                               errors.city
-                                ? 'border-[#A1685A]'
-                                : 'border-[#262923]/16 dark:border-[#F8F6F1]/18'
+                                ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                                : 'border-[#262923]/22 dark:border-[#F8F6F1]/22'
                             }`}
                           />
                           {errors.city && (
-                            <p role="alert" className="mt-1.5 mb-0 text-xs text-[#9E4F40] dark:text-[#E2A89B]">
+                            <p
+                              role="alert"
+                              className="mt-1.5 mb-0 flex items-center gap-1.5 text-xs font-medium text-[#9E3F2E] dark:text-[#EAA597]"
+                            >
+                              <AlertCircle className="h-3.5 w-3.5 shrink-0 stroke-[1.75]" />
                               {errors.city}
                             </p>
                           )}
@@ -842,9 +949,12 @@ export default function PrivateCheckoutView() {
                         <div>
                           <label
                             htmlFor="checkout-postalCode"
-                            className="block text-[11px] font-medium uppercase tracking-[0.2em] text-[#595C52] dark:text-[#B6B8AE]"
+                            className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#363A32] dark:text-[#D9DBD3]"
                           >
-                            Postal Code <span className="opacity-65">(Optional)</span>
+                            Postal Code{' '}
+                            <span className="font-normal normal-case tracking-normal text-[#6E7166] dark:text-[#9EA196]">
+                              (Optional)
+                            </span>
                           </label>
                           <input
                             id="checkout-postalCode"
@@ -854,17 +964,19 @@ export default function PrivateCheckoutView() {
                             value={form.postalCode}
                             onChange={(e) => updateField('postalCode', e.target.value)}
                             placeholder="10013"
-                            className="mt-2 w-full border border-[#262923]/16 bg-[#F8F6F1] px-4 py-3 text-sm text-[#262923] placeholder-[#65685E]/55 outline-none transition-all duration-300 focus:border-[#B59B79] focus:bg-white focus:ring-1 focus:ring-[#B59B79]/35 dark:border-[#F8F6F1]/18 dark:bg-[#171915] dark:text-[#F8F6F1] dark:placeholder-[#B6B8AE]/45 dark:focus:bg-[#171915]"
+                            className={`${INPUT_BASE_CLASS} border-[#262923]/22 dark:border-[#F8F6F1]/22`}
                           />
                         </div>
 
                         <div className="sm:col-span-2">
                           <label
                             htmlFor="checkout-notes"
-                            className="block text-[11px] font-medium uppercase tracking-[0.2em] text-[#595C52] dark:text-[#B6B8AE]"
+                            className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#363A32] dark:text-[#D9DBD3]"
                           >
                             Special Instructions{' '}
-                            <span className="opacity-65">(Custom drops, delivery window, notes)</span>
+                            <span className="font-normal normal-case tracking-normal text-[#6E7166] dark:text-[#9EA196]">
+                              (Optional — custom drops, delivery window, notes)
+                            </span>
                           </label>
                           <textarea
                             id="checkout-notes"
@@ -873,22 +985,22 @@ export default function PrivateCheckoutView() {
                             value={form.notes}
                             onChange={(e) => updateField('notes', e.target.value)}
                             placeholder="e.g., Requesting pinch-pleat header confirmation or preferred weekday delivery window."
-                            className="mt-2 w-full resize-y border border-[#262923]/16 bg-[#F8F6F1] px-4 py-3 text-sm leading-relaxed text-[#262923] placeholder-[#65685E]/55 outline-none transition-all duration-300 focus:border-[#B59B79] focus:bg-white focus:ring-1 focus:ring-[#B59B79]/35 dark:border-[#F8F6F1]/18 dark:bg-[#171915] dark:text-[#F8F6F1] dark:placeholder-[#B6B8AE]/45 dark:focus:bg-[#171915]"
+                            className={`${INPUT_BASE_CLASS} resize-y border-[#262923]/22 leading-relaxed dark:border-[#F8F6F1]/22`}
                           />
                         </div>
                       </div>
                     </LuxuryStaggerItem>
 
-                    {/* Section 3: WhatsApp Concierge Handoff CTA */}
-                    <LuxuryStaggerItem y={14}>
+                    {/* Section 3: Direct WhatsApp Concierge Handoff CTA */}
+                    <LuxuryStaggerItem y={12}>
                       {!hasConfiguredWhatsapp && (
                         <div
                           role="alert"
-                          className="mb-5 flex items-start gap-3 border border-[#A1685A]/45 bg-[#A1685A]/10 p-4 text-sm text-[#6E362B] dark:text-[#E8B8AD]"
+                          className="mb-4 flex items-start gap-3 rounded-[2px] border border-[#B04A38]/40 bg-[#FDF7F5] p-4 text-sm text-[#7A3022] dark:border-[#D98272]/40 dark:bg-[#2A1D1A] dark:text-[#F0BDB3]"
                         >
-                          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6]" />
+                          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.7]" />
                           <div>
-                            <p className="m-0 font-medium">
+                            <p className="m-0 font-semibold">
                               WhatsApp concierge number is not configured
                             </p>
                             <p className="mt-1 mb-0 text-xs leading-relaxed opacity-90">
@@ -896,11 +1008,11 @@ export default function PrivateCheckoutView() {
                               {hasContactPage && (
                                 <>
                                   {' '}
-                                  Or reach the atelier via our{' '}
+                                  You may also reach the atelier via our{' '}
                                   <a
                                     href={withBasePath('/contact')}
                                     data-target-page="contact"
-                                    className="underline"
+                                    className="font-medium underline"
                                   >
                                     Contact page
                                   </a>
@@ -916,68 +1028,50 @@ export default function PrivateCheckoutView() {
                         type="submit"
                         disabled={!hasConfiguredWhatsapp}
                         whileHover={
-                          hasConfiguredWhatsapp && !prefersReducedMotion
-                            ? { y: -1 }
-                            : undefined
+                          hasConfiguredWhatsapp && !prefersReducedMotion ? { y: -1 } : undefined
                         }
                         whileTap={
                           hasConfiguredWhatsapp && !prefersReducedMotion
                             ? { scale: 0.99 }
                             : undefined
                         }
-                        className={`group flex h-[54px] w-full items-center justify-center gap-3 px-8 text-[12px] font-medium uppercase tracking-[0.22em] transition-all duration-400 ${
+                        className={`group flex h-[54px] w-full items-center justify-center gap-3 rounded-[2px] px-8 text-[12px] font-medium uppercase tracking-[0.22em] shadow-[0_8px_22px_rgba(38,41,35,0.12)] transition-all duration-400 ${
                           hasConfiguredWhatsapp
-                            ? 'bg-[#262923] text-[#F8F6F1] hover:bg-[#747B65] dark:bg-[#F8F6F1] dark:text-[#262923] dark:hover:bg-[#E8E0D5]'
-                            : 'cursor-not-allowed bg-[#262923]/25 text-[#262923]/55 dark:bg-[#F8F6F1]/15 dark:text-[#F8F6F1]/45'
+                            ? 'bg-[#262923] text-[#F8F6F1] hover:bg-[#747B65] hover:shadow-[0_12px_28px_rgba(116,123,101,0.22)] dark:bg-[#F8F6F1] dark:text-[#22251F] dark:hover:bg-[#E8E0D5]'
+                            : 'cursor-not-allowed bg-[#262923]/25 text-[#262923]/55 shadow-none dark:bg-[#F8F6F1]/15 dark:text-[#F8F6F1]/45'
                         }`}
                       >
                         <MessageCircle className="h-4 w-4 stroke-[1.6]" />
                         <span>{submitLabel}</span>
-                        <ArrowRight className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1" />
+                        <ArrowRight className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-1" />
                       </motion.button>
 
-                      <p className="mt-3.5 mb-0 text-center text-xs leading-relaxed text-[#65685E] dark:text-[#B6B8AE]">
-                        Opens a pre-filled WhatsApp message to {storeName}. Your bag stays saved here until your order is finalized directly with our concierge.
+                      <p className="mt-3 mb-0 text-center text-[12px] leading-relaxed text-[#55594F] dark:text-[#B6B8AE]">
+                        Opens WhatsApp directly with your itemized order for {storeName}. Your bag and details remain saved here until finalized with our concierge.
                       </p>
 
-                      {/* Honest WhatsApp Handoff Confirmation Panel */}
+                      {/* Compact Fallback Link — shown ONLY if the browser blocked opening WhatsApp */}
                       <AnimatePresence>
-                        {handoffUrl && (
+                        {blockedFallbackUrl && (
                           <motion.div
-                            initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+                            initial={prefersReducedMotion ? false : { opacity: 0, y: 6 }}
                             animate={{ opacity: 1, y: 0 }}
-                            exit={prefersReducedMotion ? undefined : { opacity: 0, y: 6 }}
-                            transition={{ duration: 0.35, ease: LUXURY_EASE }}
-                            role="status"
-                            className="mt-6 border border-[#B59B79]/50 bg-[#F4EFE6] p-5 text-left dark:border-[#B59B79]/35 dark:bg-[#171915]"
+                            exit={prefersReducedMotion ? undefined : { opacity: 0, y: 4 }}
+                            transition={{ duration: 0.25, ease: LUXURY_EASE }}
+                            role="alert"
+                            className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[2px] border border-[#B59B79]/60 bg-[#F7F3EA] px-4 py-3 text-xs text-[#22251F] dark:border-[#B59B79]/40 dark:bg-[#171915] dark:text-[#F8F6F1]"
                           >
-                            <div className="flex items-start gap-3">
-                              <Sparkles className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#747B65] dark:text-[#B59B79]" />
-                              <div className="flex-1">
-                                <p className="m-0 text-xs font-medium uppercase tracking-[0.2em] text-[#262923] dark:text-[#F8F6F1]">
-                                  WhatsApp Order Draft Prepared
-                                </p>
-                                <p className="mt-1.5 mb-0 text-xs leading-relaxed text-[#595C52] dark:text-[#C8CAC1]">
-                                  {handoffBlockedNotice
-                                    ? 'Your browser prevented opening WhatsApp automatically. Use the button below to launch your prepared order message.'
-                                    : 'WhatsApp has been opened in a new window with your order summary. Your order is not paid or confirmed until our atelier concierge replies and confirms it with you.'}
-                                </p>
-                                <div className="mt-4 flex flex-wrap items-center gap-3">
-                                  <a
-                                    href={handoffUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 border border-[#262923] bg-[#262923] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.2em] text-[#F8F6F1] no-underline transition-colors hover:border-[#747B65] hover:bg-[#747B65] dark:border-[#F8F6F1] dark:bg-[#F8F6F1] dark:text-[#262923]"
-                                  >
-                                    Open WhatsApp Message
-                                    <ExternalLink className="h-3 w-3 stroke-[1.6]" />
-                                  </a>
-                                  <span className="text-[11px] text-[#65685E] dark:text-[#B6B8AE]">
-                                    Bag contents kept intact for reference.
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
+                            <span>Your browser blocked opening WhatsApp automatically.</span>
+                            <a
+                              href={blockedFallbackUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              onClick={() => setBlockedFallbackUrl(null)}
+                              className="inline-flex items-center gap-1.5 font-semibold uppercase tracking-[0.16em] text-[#5C634E] underline decoration-[#B59B79] underline-offset-4 transition-colors hover:text-[#22251F] dark:text-[#C9B292] dark:hover:text-[#F8F6F1]"
+                            >
+                              Open WhatsApp
+                              <ExternalLink className="h-3 w-3 stroke-[1.7]" />
+                            </a>
                           </motion.div>
                         )}
                       </AnimatePresence>
@@ -987,40 +1081,40 @@ export default function PrivateCheckoutView() {
               </div>
 
               {/* Right Column: Sticky Atelier Order Summary (Desktop) */}
-              <aside className="hidden lg:sticky lg:top-28 lg:col-span-5 lg:block">
+              <aside className="hidden lg:sticky lg:top-24 lg:col-span-5 lg:block">
                 <LuxuryReveal
-                  delay={0.08}
-                  className="border border-[#262923]/10 bg-[#FCFBF8] p-7 shadow-[0_18px_50px_rgba(38,41,35,0.035)] dark:border-[#F8F6F1]/12 dark:bg-[#20231D] xl:p-8"
+                  delay={0.06}
+                  className="rounded-[2px] border border-[#262923]/12 border-t-2 border-t-[#B59B79] bg-[#FEFDFB] p-6 shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F8F6F1]/12 dark:border-t-[#B59B79] dark:bg-[#1E211B] xl:p-7"
                 >
-                  <div className="flex items-baseline justify-between border-b border-[#262923]/10 pb-4 dark:border-[#F8F6F1]/10">
+                  <div className="flex items-baseline justify-between border-b border-[#262923]/10 pb-3.5 dark:border-[#F8F6F1]/10">
                     <div>
-                      <p className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#747B65] dark:text-[#B59B79]">
+                      <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#5C634E] dark:text-[#C9B292]">
                         Curated Selection
                       </p>
-                      <h2 className="mt-1 mb-0 font-serif text-2xl font-normal tracking-wide text-[#262923] dark:text-[#F8F6F1]">
+                      <h2 className="mt-1 mb-0 font-serif text-[24px] font-medium tracking-wide text-[#22251F] dark:text-[#F8F6F1]">
                         Order Summary
                       </h2>
                     </div>
-                    <span className="text-xs uppercase tracking-[0.18em] text-[#65685E] dark:text-[#B6B8AE]">
+                    <span className="rounded-full bg-[#F4EFE6] px-2.5 py-1 text-[10.5px] font-medium uppercase tracking-[0.16em] text-[#4F5349] dark:bg-[#151713] dark:text-[#C5C7BE]">
                       {cart.totalCount} {cart.totalCount === 1 ? 'Piece' : 'Pieces'}
                     </span>
                   </div>
 
-                  <div className="max-h-[420px] overflow-y-auto pr-1">
+                  <div className="max-h-[400px] overflow-y-auto pr-1">
                     {renderOrderItemsList(false)}
                   </div>
 
                   {renderTotalsBlock()}
 
                   {hasShopPage && (
-                    <div className="mt-5 text-center">
+                    <div className="mt-4 text-center">
                       <a
                         href={withBasePath('/shop')}
                         data-target-page="shop"
-                        className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#595C52] no-underline transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+                        className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4F5349] no-underline transition-colors hover:text-[#22251F] dark:text-[#C5C7BE] dark:hover:text-[#F8F6F1]"
                       >
                         Continue Browsing Textiles
-                        <ArrowRight className="h-3 w-3 stroke-[1.5]" />
+                        <ArrowRight className="h-3 w-3 stroke-[1.6]" />
                       </a>
                     </div>
                   )}
@@ -1031,41 +1125,41 @@ export default function PrivateCheckoutView() {
         )}
       </section>
 
-      {/* Always-Mounted Atelier Delivery & Concierge Assurance Band */}
-      <section className="border-t border-[#262923]/8 bg-[#F4F0E8]/60 py-12 dark:border-[#F8F6F1]/10 dark:bg-[#1B1E18]">
-        <div className="mx-auto grid max-w-[1360px] grid-cols-1 gap-8 px-4 sm:px-8 md:grid-cols-3 lg:px-14">
+      {/* Compact Atelier Delivery & Concierge Assurance Band */}
+      <section className="border-t border-[#262923]/10 bg-[#EFEAE0]/70 py-8 dark:border-[#F8F6F1]/10 dark:bg-[#1B1E18] sm:py-10">
+        <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-6 px-4 sm:px-8 md:grid-cols-3 lg:px-12">
           <div className="md:col-span-2">
             <p
               data-preview-static="checkout-assurance-eyebrow"
-              className="m-0 inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.24em] text-[#747B65] dark:text-[#B59B79]"
+              className="m-0 inline-flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.24em] text-[#5C634E] dark:text-[#C9B292]"
             >
-              <ShieldCheck className="h-3.5 w-3.5 stroke-[1.5]" />
+              <ShieldCheck className="h-3.5 w-3.5 stroke-[1.6]" />
               Atelier Delivery &amp; Concierge Policy
             </p>
-            <div className="mt-2.5 max-w-2xl">
+            <div className="mt-2 max-w-2xl">
               <EditableText
                 as="p"
                 data-preview-field-path="checkoutPage.deliveryNote"
                 defaultValue={deliveryNote}
                 fontFamily="body"
                 size="0.875rem"
-                lineHeight={1.8}
+                lineHeight={1.75}
                 color="muted"
                 className="m-0"
               />
             </div>
           </div>
 
-          <div className="flex flex-col justify-center gap-2 border-t border-[#262923]/10 pt-5 md:border-l md:border-t-0 md:pl-8 md:pt-0 dark:border-[#F8F6F1]/10">
+          <div className="flex flex-col justify-center gap-1.5 border-t border-[#262923]/12 pt-4 md:border-l md:border-t-0 md:pl-7 md:pt-0 dark:border-[#F8F6F1]/12">
             <p
               data-preview-static="checkout-currency-label"
-              className="m-0 text-[10px] uppercase tracking-[0.22em] text-[#65685E] dark:text-[#B6B8AE]"
+              className="m-0 text-[10.5px] font-semibold uppercase tracking-[0.22em] text-[#363A32] dark:text-[#D9DBD3]"
             >
               Pricing Currency · {storeCurrency}
             </p>
             <p
               data-preview-static="checkout-handoff-note"
-              className="m-0 text-xs leading-relaxed text-[#595C52] dark:text-[#C8CAC1]"
+              className="m-0 text-[12.5px] leading-relaxed text-[#4F5349] dark:text-[#C5C7BE]"
             >
               Direct WhatsApp order handoff with personal sizing and dispatch confirmation.
             </p>

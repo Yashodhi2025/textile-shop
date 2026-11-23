@@ -37,6 +37,7 @@
       "home.journalPosts[*].id",
       "home.journalPosts[*].body",
       "services[*].showPrice",
+      "cartPage.checkoutLabel",
       "checkoutPage.submitLabel",
       "contact.whatsapp"
     ]
@@ -57,6 +58,11 @@
       "id": "shop",
       "label": "Shop",
       "route": "/shop"
+    },
+    {
+      "id": "cart",
+      "label": "Shopping Bag",
+      "route": "/cart"
     },
     {
       "id": "checkout",
@@ -741,6 +747,51 @@
             "key": "intro",
             "type": "textarea",
             "label": "Introduction"
+          }
+        ]
+      },
+      {
+        "id": "cartPage",
+        "path": "cartPage",
+        "pageKey": "cart",
+        "type": "object",
+        "label": "Shopping Bag Page",
+        "fields": [
+          {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Eyebrow"
+          },
+          {
+            "key": "heading",
+            "type": "text",
+            "label": "Heading",
+            "required": true
+          },
+          {
+            "key": "intro",
+            "type": "textarea",
+            "label": "Introduction"
+          },
+          {
+            "key": "deliveryNote",
+            "type": "textarea",
+            "label": "Delivery & Concierge Note"
+          },
+          {
+            "key": "checkoutLabel",
+            "type": "text",
+            "label": "Proceed to Checkout Button Label"
+          },
+          {
+            "key": "emptyHeading",
+            "type": "text",
+            "label": "Empty Bag Heading"
+          },
+          {
+            "key": "emptyDescription",
+            "type": "textarea",
+            "label": "Empty Bag Description"
           }
         ]
       },

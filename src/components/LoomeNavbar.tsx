@@ -227,10 +227,18 @@ export default function LoomeNavbar() {
 
             <button
               type="button"
-              onClick={() => cart?.toggleCart()}
+              onClick={() => {
+                setMobileOpen(false);
+                window.location.assign(withBasePath('/cart/'));
+              }}
               aria-label={`Shopping bag (${activeCartCount} items)`}
+              aria-current={isRouteActive('/cart') ? 'page' : undefined}
               data-preview-static="header-cart-btn"
-              className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-[#262923] transition-colors hover:bg-[#262923]/5 hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:bg-[#F8F6F1]/10"
+              className={`relative inline-flex h-10 w-10 items-center justify-center rounded-full transition-colors hover:bg-[#262923]/5 hover:text-[#747B65] dark:hover:bg-[#F8F6F1]/10 ${
+                isRouteActive('/cart')
+                  ? 'bg-[#262923]/8 text-[#747B65] dark:bg-[#F8F6F1]/12 dark:text-[#B59B79]'
+                  : 'text-[#262923] dark:text-[#F8F6F1]'
+              }`}
             >
               <ShoppingBag className="h-[18px] w-[18px] stroke-[1.5]" />
               {activeCartCount > 0 && (

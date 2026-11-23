@@ -68,11 +68,6 @@ export default function LoomeOverlays() {
     contentText(shop.currency) ||
     products[0]?.currency ||
     'USD';
-  const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
-    ? siteData.requirements.requiredPages
-    : siteData.template?.structure?.pages || ['home', 'shop', 'checkout', 'about_us', 'services', 'contact'];
-  const hasCheckoutPage = requiredPages.includes('checkout');
-  const hasContactPage = requiredPages.includes('contact');
 
   useEffect(() => {
     if (quickViewProduct) {
@@ -493,30 +488,26 @@ export default function LoomeOverlays() {
                     Custom sizing & shipping confirmed with our atelier concierge.
                   </p>
                   <div className="mt-4 space-y-2.5">
-                    {hasCheckoutPage ? (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          cart.closeCart();
-                          window.location.href = withBasePath('/checkout');
-                        }}
-                        className="loome-btn-primary w-full text-center"
-                      >
-                        Proceed to Checkout
-                      </button>
-                    ) : null}
-                    {hasContactPage && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          cart.closeCart();
-                          window.location.href = withBasePath('/contact');
-                        }}
-                        className="loome-btn-outline w-full"
-                      >
-                        Request Formal Quote
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        cart.closeCart();
+                        window.location.assign(withBasePath('/checkout/'));
+                      }}
+                      className="loome-btn-primary w-full text-center"
+                    >
+                      Proceed to Checkout
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        cart.closeCart();
+                        window.location.assign(withBasePath('/cart/'));
+                      }}
+                      className="loome-btn-outline w-full text-center"
+                    >
+                      View Shopping Bag
+                    </button>
                   </div>
                 </div>
               )}
