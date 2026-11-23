@@ -106,6 +106,7 @@ export default function LoomeFooter() {
         'journal',
         'textile_care',
         'shipping_returns',
+        'faq',
         'about_us',
         'contact',
       ];
@@ -567,6 +568,25 @@ export default function LoomeFooter() {
                   <span className="unavailable">
                     <span data-preview-field-path="common.navLabels.shipping_returns">
                       {contentText(navLabels.shipping_returns) || 'Shipping & Returns'}
+                    </span>
+                  </span>
+                )}
+              </span>
+              <span data-target-page="faq">
+                {requiredPages.includes('faq') ? (
+                  <button
+                    type="button"
+                    onClick={() => navigate(pageRoute('faq'))}
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F8F6F1]"
+                  >
+                    <span data-preview-field-path="common.navLabels.faq">
+                      {contentText(navLabels.faq) || 'FAQ'}
+                    </span>
+                  </button>
+                ) : (
+                  <span className="unavailable">
+                    <span data-preview-field-path="common.navLabels.faq">
+                      {contentText(navLabels.faq) || 'FAQ'}
                     </span>
                   </span>
                 )}

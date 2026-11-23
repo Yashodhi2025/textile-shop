@@ -30,6 +30,7 @@
         "journal",
         "textile_care",
         "shipping_returns",
+        "faq",
         "about_us",
         "services",
         "contact"
@@ -73,6 +74,7 @@
       "journal",
       "textile_care",
       "shipping_returns",
+      "faq",
       "about_us",
       "services",
       "contact"
@@ -117,6 +119,7 @@
         "journal": "Journal",
         "textile_care": "Textile Care",
         "shipping_returns": "Shipping & Returns",
+        "faq": "FAQ",
         "about_us": "About",
         "contact": "Contact"
       },
@@ -735,6 +738,122 @@
       "ctaButtonLabel": "Contact via WhatsApp",
       "ctaSecondaryLabel": "Contact Page",
       "ctaWhatsappMessage": "Hello LOOMÉ Atelier, I would like assistance with shipping or returns."
+    },
+    "faqPage": {
+      "eyebrow": "ATELIER ANSWERS",
+      "heading": "Frequently Asked Questions",
+      "intro": "Thoughtful guidance on ordering LOOMÉ textiles, delivery coordination, return and exchange care, natural fiber upkeep, and made-to-measure drapery commissions.",
+      "categoriesHeading": "Browse by Topic",
+      "allQuestionsLabel": "All Questions",
+      "questionsLabel": "Questions",
+      "questionSingularLabel": "Question",
+      "collapseAllLabel": "Collapse All",
+      "expandAllLabel": "Expand All",
+      "policyNote": "Delivery lead times, shipping charges, and return terms are configured by our atelier and confirmed personally with every order.",
+      "categories": [
+        {
+          "id": "orders",
+          "label": "Orders"
+        },
+        {
+          "id": "shipping",
+          "label": "Shipping"
+        },
+        {
+          "id": "returns",
+          "label": "Returns"
+        },
+        {
+          "id": "product-care",
+          "label": "Product Care"
+        },
+        {
+          "id": "custom-orders",
+          "label": "Custom Orders"
+        }
+      ],
+      "items": [
+        {
+          "id": "faq-orders-how",
+          "categoryId": "orders",
+          "categoryLabel": "Orders",
+          "question": "How does ordering through the LOOMÉ Private Checkout work?",
+          "answer": "Add your chosen textiles, colors, and dimensions to your Shopping Bag and proceed to Checkout. Submitting your delivery details prepares a formatted order summary directly for our concierge via WhatsApp, where our team confirms stock availability, delivery charges, and payment arrangements personally."
+        },
+        {
+          "id": "faq-orders-modify",
+          "categoryId": "orders",
+          "categoryLabel": "Orders",
+          "question": "Can I modify sizes, colors, or quantities after submitting an order request?",
+          "answer": "Yes—because every order is reviewed personally by our concierge before dispatch or cutting, simply message us as soon as possible with your updated preferences and we will adjust your selection prior to confirmation."
+        },
+        {
+          "id": "faq-shipping-timelines",
+          "categoryId": "shipping",
+          "categoryLabel": "Shipping",
+          "question": "How are delivery timelines and shipping charges determined?",
+          "answer": "Shipping charges and estimated transit windows vary by destination, parcel weight, and whether items are ready-to-ship or made-to-measure. Your exact courier option, shipping quote, and estimated dispatch schedule are confirmed directly with your order."
+        },
+        {
+          "id": "faq-shipping-tracking",
+          "categoryId": "shipping",
+          "categoryLabel": "Shipping",
+          "question": "Will I receive tracking details once my textiles are dispatched?",
+          "answer": "Yes. Once your pieces are folded in breathable protective wrapping and handed to our courier partner, our concierge shares your tracking information via WhatsApp or email so you can follow delivery progress."
+        },
+        {
+          "id": "faq-returns-eligibility",
+          "categoryId": "returns",
+          "categoryLabel": "Returns",
+          "question": "Which textiles are eligible for return or exchange?",
+          "answer": "Unused, unwashed ready-to-live textiles in their original condition and packaging are eligible within our store's configured return window. Bespoke drapery panels, custom-hemmed curtains, and cut-to-order yardage are generally final sale unless an item arrives faulty or incorrect."
+        },
+        {
+          "id": "faq-returns-process",
+          "categoryId": "returns",
+          "categoryLabel": "Returns",
+          "question": "How do I request a return, exchange, or assistance with a damaged parcel?",
+          "answer": "Reach out to our concierge via WhatsApp or the Contact page with your order reference and, for damaged or incorrect deliveries, clear photographs of the item and packaging. Our team will walk you through return authorization, inspection, and resolution promptly."
+        },
+        {
+          "id": "faq-care-linen",
+          "categoryId": "product-care",
+          "categoryLabel": "Product Care",
+          "question": "How should I launder European flax linen and organic cotton bedding?",
+          "answer": "In general, wash pure flax linen and organic cotton sateen cool on a gentle cycle using a mild, pH-neutral detergent without bleach or synthetic fabric softeners, then line dry in dappled shade. Always consult the specific care label sewn into your piece for tailored instructions."
+        },
+        {
+          "id": "faq-care-velvet-silk",
+          "categoryId": "product-care",
+          "categoryLabel": "Product Care",
+          "question": "How should velvet cushions, silk veils, and heavyweight upholstery be maintained?",
+          "answer": "For dense velvet, structured silk, and tailored upholstery weaves, specialist professional cleaning is typically recommended. Avoid pressing an iron directly onto velvet pile—use gentle reverse steaming and light soft-brush vacuuming in the direction of the nap, following your item's sewn-in care label."
+        },
+        {
+          "id": "faq-custom-drapery",
+          "categoryId": "custom-orders",
+          "categoryLabel": "Custom Orders",
+          "question": "Do you offer made-to-measure drapery panels and custom fabric yardage?",
+          "answer": "Yes. Our atelier tailors floor-to-ceiling curtains with custom drop lengths, lining weights, and pinch-pleat or wave-fold headings, as well as continuous yardage bolts for interior architects and residential projects. Share your window measurements via WhatsApp or our Contact page to begin."
+        },
+        {
+          "id": "faq-custom-swatches",
+          "categoryId": "custom-orders",
+          "categoryLabel": "Custom Orders",
+          "question": "Can I request fabric swatches before placing a bespoke or upholstery order?",
+          "answer": "Certainly. Natural weaves respond subtly to morning and evening daylight, so we encourage viewing physical cuttings against your walls and flooring first. Contact our concierge to request curated textile swatches for your project."
+        }
+      ],
+      "editorialImageUrl": "/images/cat-fabrics.jpg",
+      "editorialEyebrow": "ATELIER GUIDANCE",
+      "editorialTitle": "Curated Swatches & Personal Advice",
+      "editorialCaption": "Unsure about drapery fullness, fiber weight, or palette harmony? Our textile advisors are always delighted to guide your selection.",
+      "contactEyebrow": "DIRECT CONCIERGE",
+      "contactHeading": "Still Have Questions?",
+      "contactDescription": "Our textile specialists are here to assist with orders, delivery quotes, fabric care advice, and bespoke commissions.",
+      "contactWhatsappLabel": "Contact via WhatsApp",
+      "contactPageLabel": "Visit Contact Page",
+      "contactWhatsappMessage": "Hello LOOMÉ Atelier, I have a question from your FAQ page."
     },
     "shopPage": {
       "eyebrow": "THE COMPLETE ARCHIVE",

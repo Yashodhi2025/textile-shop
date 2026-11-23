@@ -53,6 +53,12 @@
       "shippingReturnsPage.returnPillars[*].id",
       "shippingReturnsPage.damagedSteps[*].id",
       "shippingReturnsPage.ctaWhatsappMessage",
+      "faqPage.categories[*].id",
+      "faqPage.items[*].id",
+      "faqPage.items[*].categoryId",
+      "faqPage.questionSingularLabel",
+      "faqPage.expandAllLabel",
+      "faqPage.contactWhatsappMessage",
       "services[*].showPrice",
       "cartPage.checkoutLabel",
       "checkoutPage.submitLabel",
@@ -105,6 +111,11 @@
       "id": "shipping_returns",
       "label": "Shipping & Returns",
       "route": "/shipping-returns"
+    },
+    {
+      "id": "faq",
+      "label": "FAQ",
+      "route": "/faq"
     },
     {
       "id": "about_us",
@@ -289,6 +300,11 @@
                 "key": "shipping_returns",
                 "type": "text",
                 "label": "Shipping & Returns label"
+              },
+              {
+                "key": "faq",
+                "type": "text",
+                "label": "FAQ label"
               },
               {
                 "key": "contact",
@@ -1701,6 +1717,175 @@
           },
           {
             "key": "ctaWhatsappMessage",
+            "type": "textarea",
+            "label": "Pre-filled WhatsApp Inquiry Message"
+          }
+        ]
+      },
+      {
+        "id": "faqPage",
+        "path": "faqPage",
+        "pageKey": "faq",
+        "type": "object",
+        "label": "FAQ Page",
+        "fields": [
+          {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Hero Eyebrow"
+          },
+          {
+            "key": "heading",
+            "type": "text",
+            "label": "Hero Heading",
+            "required": true
+          },
+          {
+            "key": "intro",
+            "type": "textarea",
+            "label": "Hero Introduction"
+          },
+          {
+            "key": "categoriesHeading",
+            "type": "text",
+            "label": "Sidebar Categories Heading"
+          },
+          {
+            "key": "allQuestionsLabel",
+            "type": "text",
+            "label": "All Questions Tab Label"
+          },
+          {
+            "key": "questionsLabel",
+            "type": "text",
+            "label": "Questions Count Label (Plural)"
+          },
+          {
+            "key": "questionSingularLabel",
+            "type": "text",
+            "label": "Question Count Label (Singular)"
+          },
+          {
+            "key": "collapseAllLabel",
+            "type": "text",
+            "label": "Collapse All Button Label"
+          },
+          {
+            "key": "expandAllLabel",
+            "type": "text",
+            "label": "Expand All Button Label"
+          },
+          {
+            "key": "policyNote",
+            "type": "textarea",
+            "label": "Policy Note Banner"
+          },
+          {
+            "key": "categories",
+            "type": "list",
+            "label": "FAQ Category Tabs",
+            "itemLabel": "Category",
+            "minItems": 0,
+            "maxItems": 10,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Stable Category ID"
+              },
+              {
+                "key": "label",
+                "type": "text",
+                "label": "Category Tab Label",
+                "required": true
+              }
+            ]
+          },
+          {
+            "key": "items",
+            "type": "list",
+            "label": "FAQ Questions & Answers",
+            "itemLabel": "FAQ Item",
+            "minItems": 0,
+            "maxItems": 24,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "FAQ ID"
+              },
+              {
+                "key": "categoryId",
+                "type": "text",
+                "label": "Category Filter ID"
+              },
+              {
+                "key": "categoryLabel",
+                "type": "text",
+                "label": "Category Badge Label"
+              },
+              {
+                "key": "question",
+                "type": "text",
+                "label": "Question",
+                "required": true
+              },
+              {
+                "key": "answer",
+                "type": "textarea",
+                "label": "Answer"
+              }
+            ]
+          },
+          {
+            "key": "editorialImageUrl",
+            "type": "image",
+            "label": "Editorial Sidebar Image",
+            "recommendedWidth": 900,
+            "recommendedHeight": 675
+          },
+          {
+            "key": "editorialEyebrow",
+            "type": "text",
+            "label": "Editorial Image Eyebrow"
+          },
+          {
+            "key": "editorialTitle",
+            "type": "text",
+            "label": "Editorial Image Heading"
+          },
+          {
+            "key": "editorialCaption",
+            "type": "textarea",
+            "label": "Editorial Image Description"
+          },
+          {
+            "key": "contactEyebrow",
+            "type": "text",
+            "label": "Still Have Questions Eyebrow"
+          },
+          {
+            "key": "contactHeading",
+            "type": "text",
+            "label": "Still Have Questions Heading"
+          },
+          {
+            "key": "contactDescription",
+            "type": "textarea",
+            "label": "Still Have Questions Description"
+          },
+          {
+            "key": "contactWhatsappLabel",
+            "type": "text",
+            "label": "WhatsApp Button Label"
+          },
+          {
+            "key": "contactPageLabel",
+            "type": "text",
+            "label": "Contact Page Button Label"
+          },
+          {
+            "key": "contactWhatsappMessage",
             "type": "textarea",
             "label": "Pre-filled WhatsApp Inquiry Message"
           }
