@@ -1,6 +1,14 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState, type TouchEvent } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FocusEvent,
+  type TouchEvent,
+} from 'react';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { EditableText } from '@deneb-ui/ui';
@@ -25,6 +33,8 @@ interface FabricStoryItem {
   secondaryCtaLabel: string;
   secondaryCtaUrl: string;
 }
+
+type CopyPhase = 'visible' | 'exiting' | 'entering';
 
 const KNOWN_INTERNAL_PAGES = new Set([
   'shop',
@@ -60,8 +70,8 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
     target: sectionRef,
     offset: ['start start', 'end start'],
   });
-  const panelsParallaxY = useTransform(scrollYProgress, [0, 1], ['0%', '6%']);
-  const copyParallaxY = useTransform(scrollYProgress, [0, 1], ['0%', '-4%']);
+  const panelsParallaxY = useTransform(scrollYProgress, [0, 1], ['0%', '5%']);
+  const copyParallaxY = useTransform(scrollYProgress, [0, 1], ['0%', '-3%']);
 
   const home = contentObject(contentObject(siteData.content).home);
   const fabricStoriesConfig = contentObject(home.fabricStories);
@@ -82,7 +92,7 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
         : 'editorial-drift';
   const rawRadius = Number(fabricStoriesConfig.panelRadius);
   const panelRadius =
-    Number.isFinite(rawRadius) && rawRadius >= 0 && rawRadius <= 56 ? rawRadius : 28;
+    Number.isFinite(rawRadius) && rawRadius >= 0 && rawRadius <= 56 ? rawRadius : 30;
   const backgroundFrom = normalizeColor(
     contentText(fabricStoriesConfig.backgroundFrom),
     '#201C1A',
@@ -94,6 +104,7 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
 
   const isStaticMode = animationStyle === 'static' || Boolean(prefersReducedMotion);
   const enableDrift = animationStyle === 'editorial-drift' && !isStaticMode;
+  const enableVerticalStagger = animationStyle === 'editorial-drift' && !isStaticMode;
 
   const stories = useMemo<FabricStoryItem[]>(
     () =>
@@ -123,18 +134,18 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
       Array.isArray(siteData.requirements?.requiredPages)
         ? siteData.requirements.requiredPages
         : siteData.template?.structure?.pages || [
-          'home',
-          'shop',
-          'cart',
-          'checkout',
-          'journal',
-          'textile_care',
-          'shipping_returns',
-          'faq',
-          'about_us',
-          'services',
-          'contact',
-        ],
+            'home',
+            'shop',
+            'cart',
+            'checkout',
+            'journal',
+            'textile_care',
+            'shipping_returns',
+            'faq',
+            'about_us',
+            'services',
+            'contact',
+          ],
     [siteData.requirements?.requiredPages, siteData.template?.structure?.pages],
   );
 
@@ -162,10 +173,66 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [displayedIndex, setDisplayedIndex] = useState(0);
+  const [copyPhase, setCopyPhase] = useState<CopyPhase>('visible');
   const [isPaused, setIsPaused] = useState(false);
+  const [isTabHidden, setIsTabHidden] = useState(false);
+  const displayedIndexRef = useRef(0);
 
   const count = stories.length;
   const safeIndex = count > 0 ? activeIndex % count : 0;
+  const safeDisplayedIndex = count > 0 ? displayedIndex % count : 0;
+
+  // Atomic 3-phase sequential transition: clean exit -> invisible swap -> staggered editorial entrance
+  useEffect(() => {
+    if (count === 0) return;
+    const currentDisplayed = displayedIndexRef.current % count;
+
+    if (safeIndex === currentDisplayed) {
+      setCopyPhase('visible');
+      return;
+    }
+
+    if (isStaticMode) {
+      displayedIndexRef.current = safeIndex;
+      setDisplayedIndex(safeIndex);
+      setCopyPhase('visible');
+      return;
+    }
+
+    setCopyPhase('exiting');
+
+    let rafId1: number | null = null;
+    let rafId2: number | null = null;
+
+    const swapTimer = window.setTimeout(() => {
+      displayedIndexRef.current = safeIndex;
+      setDisplayedIndex(safeIndex);
+      setCopyPhase('entering');
+
+      rafId1 = window.requestAnimationFrame(() => {
+        rafId2 = window.requestAnimationFrame(() => {
+          setCopyPhase('visible');
+        });
+      });
+    }, 250);
+
+    return () => {
+      window.clearTimeout(swapTimer);
+      if (rafId1 !== null) window.cancelAnimationFrame(rafId1);
+      if (rafId2 !== null) window.cancelAnimationFrame(rafId2);
+    };
+  }, [safeIndex, count, isStaticMode]);
+
+  const selectStory = useCallback(
+    (nextIndex: number) => {
+      if (count <= 1) return;
+      const normalized = ((nextIndex % count) + count) % count;
+      if (normalized === safeIndex) return;
+      setActiveIndex(normalized);
+    },
+    [count, safeIndex],
+  );
 
   const goNext = useCallback(() => {
     if (count <= 1) return;
@@ -177,16 +244,49 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
     setActiveIndex((prev) => (prev - 1 + count) % count);
   }, [count]);
 
-  // Autoplay interval — pauses on hover, focus, static mode, reduced motion, or single story
+  // Pause autoplay when browser tab is backgrounded
   useEffect(() => {
-    if (!autoplaySetting || isStaticMode || isPaused || count <= 1 || !shouldAnimateIn) {
+    const onVisibilityChange = () => {
+      setIsTabHidden(document.visibilityState === 'hidden');
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange);
+  }, []);
+
+  // Autoplay timer — resets cleanly after every manual navigation/swipe and pauses on hover/focus/static/reduced-motion
+  useEffect(() => {
+    if (
+      !autoplaySetting ||
+      isStaticMode ||
+      isPaused ||
+      isTabHidden ||
+      count <= 1 ||
+      !shouldAnimateIn
+    ) {
       return;
     }
-    const timer = window.setInterval(() => {
+    const timer = window.setTimeout(() => {
       setActiveIndex((prev) => (prev + 1) % count);
     }, transitionDurationMs);
-    return () => window.clearInterval(timer);
-  }, [autoplaySetting, isStaticMode, isPaused, count, shouldAnimateIn, transitionDurationMs]);
+    return () => window.clearTimeout(timer);
+  }, [
+    autoplaySetting,
+    isStaticMode,
+    isPaused,
+    isTabHidden,
+    count,
+    shouldAnimateIn,
+    transitionDurationMs,
+    safeIndex,
+  ]);
+
+  // Focus handling — stays paused while focus moves between internal hero controls
+  const handleBlurCapture = (e: FocusEvent<HTMLElement>) => {
+    const nextFocused = e.relatedTarget as Node | null;
+    if (!nextFocused || !e.currentTarget.contains(nextFocused)) {
+      setIsPaused(false);
+    }
+  };
 
   // Touch swipe handlers for mobile/tablet
   const handleTouchStart = (e: TouchEvent<HTMLElement>) => {
@@ -207,52 +307,72 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
     touchStartXRef.current = null;
     touchStartYRef.current = null;
 
-    if (Math.abs(dx) > 42 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.25) {
       if (dx < 0) goNext();
       else goPrev();
     }
   };
 
-  // Compute panel visual slot (0 = Front-Right Active, 1 = Middle, 2 = Back-Left, 3+ = Deep Stack)
+  // Balanced 3-panel cascading depth geometry (0 = Front-Right Active, 1 = Mid, 2 = Back-Left, 3+ = Deep stack)
   const getPanelSlotStyle = (slot: number) => {
     if (slot === 0) {
       return {
-        left: '34%',
+        left: '35%',
         right: '-9%',
         top: '0%',
         zIndex: 30,
-        filter: 'brightness(1.03) contrast(1.03)',
-        boxShadow: '-26px 0 58px rgba(10, 7, 6, 0.72)',
+        filter: 'brightness(1.04) contrast(1.03)',
+        boxShadow:
+          '-30px 10px 64px rgba(10, 7, 5, 0.78), -8px 0 22px rgba(10, 7, 5, 0.52)',
       };
     }
     if (slot === 1) {
       return {
-        left: '16%',
-        right: '24%',
+        left: '17.5%',
+        right: '21%',
         top: '5.5%',
         zIndex: 20,
-        filter: 'brightness(0.82) contrast(1.02)',
-        boxShadow: '-20px 0 44px rgba(10, 7, 6, 0.62)',
+        filter: 'brightness(0.84) contrast(1.02) saturate(0.96)',
+        boxShadow:
+          '-22px 8px 46px rgba(10, 7, 5, 0.66), -6px 0 16px rgba(10, 7, 5, 0.45)',
       };
     }
     if (slot === 2) {
       return {
-        left: '0%',
-        right: '42%',
-        top: '11%',
+        left: '1.5%',
+        right: '38%',
+        top: '11.5%',
         zIndex: 10,
-        filter: 'brightness(0.66) saturate(0.92)',
-        boxShadow: '-14px 0 32px rgba(10, 7, 6, 0.5)',
+        filter: 'brightness(0.68) contrast(1.01) saturate(0.9)',
+        boxShadow: '-16px 6px 34px rgba(10, 7, 5, 0.54)',
       };
     }
     return {
-      left: '-3%',
-      right: '48%',
-      top: '14%',
+      left: '2%',
+      right: '40%',
+      top: '12.5%',
       zIndex: 5,
       filter: 'brightness(0.55)',
       boxShadow: 'none',
     };
+  };
+
+  // Compute crisp editorial transition classes for the active slide's staggered elements
+  const getCopyPartClass = (isDisplayed: boolean, delayClass: string) => {
+    if (!isDisplayed || isStaticMode) {
+      return 'opacity-100 translate-y-0 transition-none';
+    }
+    if (copyPhase === 'exiting') {
+      return `${
+        enableVerticalStagger ? '-translate-y-2.5' : 'translate-y-0'
+      } opacity-0 transition-[opacity,transform] duration-[230ms] ease-in`;
+    }
+    if (copyPhase === 'entering') {
+      return `${
+        enableVerticalStagger ? 'translate-y-3.5' : 'translate-y-0'
+      } opacity-0 transition-none`;
+    }
+    return `opacity-100 translate-y-0 transition-[opacity,transform] duration-[580ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${delayClass}`;
   };
 
   return (
@@ -262,35 +382,35 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocusCapture={() => setIsPaused(true)}
-      onBlurCapture={() => setIsPaused(false)}
+      onBlurCapture={handleBlurCapture}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       style={{
-        background: `radial-gradient(ellipse 72% 65% at 14% 92%, ${backgroundTo} 0%, transparent 65%), radial-gradient(ellipse 60% 70% at 80% 45%, ${backgroundTo}90 0%, transparent 72%), linear-gradient(125deg, ${backgroundFrom} 0%, #191513 55%, ${backgroundFrom} 100%)`,
+        background: `radial-gradient(ellipse 68% 62% at 12% 94%, ${backgroundTo} 0%, transparent 66%), radial-gradient(ellipse 56% 68% at 82% 42%, ${backgroundTo}88 0%, transparent 72%), linear-gradient(125deg, ${backgroundFrom} 0%, #191513 54%, ${backgroundFrom} 100%)`,
       }}
-      className="relative flex min-h-[78vh] w-full items-center overflow-hidden text-[#F2E9DE] lg:min-h-[85vh]"
+      className="relative flex min-h-[76vh] w-full items-center overflow-hidden text-[#F2E9DE] lg:min-h-[84vh]"
     >
       {/* Subtle atmospheric flowing silk light accents along bottom-left */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-24 -left-24 h-[380px] w-[640px] rounded-full opacity-35 blur-3xl"
+        className="pointer-events-none absolute -bottom-28 -left-24 h-[400px] w-[680px] rounded-full opacity-35 blur-3xl"
         style={{
           background:
-            'radial-gradient(circle, rgba(141, 118, 103, 0.42) 0%, rgba(59, 48, 43, 0.16) 55%, transparent 75%)',
+            'radial-gradient(circle, rgba(141, 118, 103, 0.4) 0%, rgba(59, 48, 43, 0.16) 55%, transparent 76%)',
         }}
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#161210]/65 to-transparent"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#161210]/70 to-transparent"
       />
 
       {/* Unified list wrapper for Fivora strict visual editing */}
       <div
         data-preview-list-path="home.fabricStories.stories"
-        className="relative z-10 mx-auto w-full max-w-[1440px]"
+        className="relative z-10 w-full"
       >
         {stories.length === 0 ? (
-          <div className="px-5 py-28 text-center sm:px-8 lg:px-14">
+          <div className="mx-auto max-w-[1440px] px-5 py-28 text-center sm:px-8 lg:px-14">
             <div
               data-preview-static="fabric-stories-empty"
               className="mx-auto max-w-xl rounded-2xl border border-dashed border-[#C8A98B]/30 bg-[#3B302B]/30 px-8 py-14 text-sm text-[#C7B6A6]"
@@ -299,94 +419,94 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
             </div>
           </div>
         ) : (
-          <div className="grid min-h-[78vh] grid-cols-1 items-center lg:min-h-[85vh] lg:grid-cols-12">
-            {/* LEFT COLUMN: Editorial Story Copy & Softly Rounded CTAs */}
+          <div className="grid min-h-[76vh] grid-cols-1 items-center lg:min-h-[84vh] lg:grid-cols-12">
+            {/* LEFT COLUMN: Active-Only Editorial Copy with Zero-Overlap Exit/Enter Choreography */}
             <motion.div
               style={parallaxActive && !isStaticMode ? { y: copyParallaxY } : undefined}
-              className="relative z-20 px-5 pb-8 pt-14 sm:px-8 sm:pt-16 lg:col-span-5 lg:py-20 lg:pl-14 lg:pr-4"
+              className="relative z-20 px-5 pb-6 pt-12 sm:px-8 sm:pt-16 lg:col-span-5 lg:py-20 lg:pl-[max(3.5rem,calc((100vw-1440px)/2+3.5rem))] lg:pr-6"
             >
-              <div className="overflow-hidden">
-                <motion.div
-                  animate={{ x: `-${safeIndex * 100}%` }}
-                  transition={
-                    isStaticMode
-                      ? { duration: 0 }
-                      : { duration: 0.78, ease: LUXURY_EASE }
-                  }
+              {/* Generous outer negative margin + matching inner slide padding prevents any italic or button shadow clipping */}
+              <div className="-mx-4 overflow-hidden py-3 sm:-mx-5">
+                <div
+                  style={{
+                    transform: `translate3d(-${safeDisplayedIndex * 100}%, 0, 0)`,
+                  }}
                   className="flex w-full"
                 >
                   {stories.map((story) => {
-                    const isCurrent = story.index === safeIndex;
+                    const isDisplayed = story.index === safeDisplayedIndex;
+
                     return (
                       <div
                         key={story.id}
                         data-preview-item-path={`home.fabricStories.stories[${story.index}]`}
-                        className="w-full shrink-0 pr-2"
+                        className="w-full shrink-0 px-4 sm:px-5"
                       >
-                        <motion.div
-                          initial={false}
-                          animate={
-                            isStaticMode
-                              ? { opacity: 1, y: 0 }
-                              : isCurrent && shouldAnimateIn
-                                ? { opacity: 1, y: 0 }
-                                : { opacity: 0.72, y: 8 }
-                          }
-                          transition={
-                            isStaticMode
-                              ? { duration: 0 }
-                              : { duration: 0.65, ease: LUXURY_EASE }
-                          }
+                        {/* Hairline + Tracked Eyebrow */}
+                        <div
+                          className={`flex items-center gap-3.5 ${getCopyPartClass(
+                            isDisplayed,
+                            'delay-0',
+                          )}`}
                         >
-                          {/* Hairline + Tracked Eyebrow */}
-                          <div className="flex items-center gap-3.5">
-                            <span
-                              aria-hidden="true"
-                              className="h-px w-8 shrink-0 bg-[#C8A98B]"
-                            />
-                            <EditableText
-                              as="p"
-                              data-preview-field-path={`home.fabricStories.stories[${story.index}].eyebrow`}
-                              defaultValue={story.eyebrow}
-                              fontFamily="body"
-                              size="0.6875rem"
-                              weight={600}
-                              transform="uppercase"
-                              letterSpacing="0.26em"
-                              color="#C8A98B"
-                              className="m-0"
-                            />
-                          </div>
+                          <span
+                            aria-hidden="true"
+                            className="h-px w-9 shrink-0 bg-[#C8A98B]/85"
+                          />
+                          <EditableText
+                            as="p"
+                            data-preview-field-path={`home.fabricStories.stories[${story.index}].eyebrow`}
+                            defaultValue={story.eyebrow}
+                            fontFamily="body"
+                            size="0.6875rem"
+                            weight={600}
+                            transform="uppercase"
+                            letterSpacing="0.26em"
+                            color="#C8A98B"
+                            className="m-0"
+                          />
+                        </div>
 
-                          {/* Dual-Typography Fashion-Editorial Headline */}
-                          <div className="mt-5">
-                            <EditableText
-                              as="h1"
-                              data-preview-field-path={`home.fabricStories.stories[${story.index}].heading`}
-                              defaultValue={story.heading}
-                              fontFamily="heading"
-                              size="clamp(2.65rem, 4.9vw, 4.45rem)"
-                              weight={800}
-                              lineHeight={0.98}
-                              letterSpacing="-0.035em"
-                              color="#F2E9DE"
-                              className="m-0"
-                            />
-                            <EditableText
-                              as="p"
-                              data-preview-field-path={`home.fabricStories.stories[${story.index}].headingAccent`}
-                              defaultValue={story.headingAccent}
-                              fontFamily="body"
-                              size="clamp(2.9rem, 5.4vw, 4.9rem)"
-                              weight={400}
-                              lineHeight={0.96}
-                              letterSpacing="-0.01em"
-                              color="#C8A98B"
-                              className="m-0 mt-1 font-serif italic"
-                            />
-                          </div>
+                        {/* Dual-Typography Fashion-Editorial Headline */}
+                        <div
+                          className={`mt-5 pr-2 ${getCopyPartClass(
+                            isDisplayed,
+                            'delay-[65ms]',
+                          )}`}
+                        >
+                          <EditableText
+                            as={story.index === 0 ? 'h1' : 'h2'}
+                            data-preview-field-path={`home.fabricStories.stories[${story.index}].heading`}
+                            defaultValue={story.heading}
+                            fontFamily="heading"
+                            size="clamp(2.45rem, 4.7vw, 4.35rem)"
+                            weight={800}
+                            lineHeight={1.02}
+                            letterSpacing="-0.035em"
+                            color="#F2E9DE"
+                            className="m-0"
+                          />
+                          <EditableText
+                            as="p"
+                            data-preview-field-path={`home.fabricStories.stories[${story.index}].headingAccent`}
+                            defaultValue={story.headingAccent}
+                            fontFamily="body"
+                            size="clamp(2.75rem, 5.2vw, 4.85rem)"
+                            weight={400}
+                            lineHeight={0.98}
+                            letterSpacing="-0.01em"
+                            color="#C8A98B"
+                            className="m-0 mt-0.5 pb-1 font-serif italic"
+                          />
+                        </div>
 
-                          {/* Editorial Description */}
+                        {/* Editorial Description */}
+                        <div
+                          className={`mt-5 max-w-[430px] ${getCopyPartClass(
+                            isDisplayed,
+                            'delay-[130ms]',
+                          )}`}
+                        >
                           <EditableText
                             as="p"
                             data-preview-field-path={`home.fabricStories.stories[${story.index}].description`}
@@ -394,54 +514,67 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
                             fontFamily="body"
                             size="clamp(0.9375rem, 1.05vw, 1.025rem)"
                             weight={400}
-                            lineHeight={1.78}
+                            lineHeight={1.76}
                             color="rgba(242, 233, 222, 0.84)"
-                            className="mt-6 mb-0 max-w-md"
+                            className="m-0"
                           />
+                        </div>
 
-                          {/* Softly Rounded Rectangular CTAs (11px) */}
-                          <div className="mt-9 flex flex-wrap items-center gap-3.5">
-                            <a
-                              href={resolveStoryHref(story.primaryCtaUrl)}
-                              data-preview-field-path={`home.fabricStories.stories[${story.index}].primaryCtaUrl`}
-                              className="group loome-btn-primary h-[48px] px-7 no-underline"
+                        {/* Softly Rounded Rectangular CTAs (11px) */}
+                        <div
+                          className={`mt-8 flex flex-wrap items-center gap-3.5 sm:mt-9 ${getCopyPartClass(
+                            isDisplayed,
+                            'delay-[195ms]',
+                          )}`}
+                        >
+                          <a
+                            href={resolveStoryHref(story.primaryCtaUrl)}
+                            tabIndex={isDisplayed ? undefined : -1}
+                            data-preview-field-path={`home.fabricStories.stories[${story.index}].primaryCtaUrl`}
+                            className="group loome-btn-primary h-[48px] px-7 no-underline"
+                          >
+                            <span
+                              data-preview-field-path={`home.fabricStories.stories[${story.index}].primaryCtaLabel`}
                             >
-                              <span
-                                data-preview-field-path={`home.fabricStories.stories[${story.index}].primaryCtaLabel`}
-                              >
-                                {story.primaryCtaLabel}
-                              </span>
-                              <ArrowRight
-                                aria-hidden="true"
-                                className="h-3.5 w-3.5 stroke-[1.8] transition-transform duration-300 group-hover:translate-x-1"
-                              />
-                            </a>
+                              {story.primaryCtaLabel}
+                            </span>
+                            <ArrowRight
+                              aria-hidden="true"
+                              className="h-3.5 w-3.5 stroke-[1.85] transition-transform duration-300 group-hover:translate-x-1"
+                            />
+                          </a>
 
-                            <a
-                              href={resolveStoryHref(story.secondaryCtaUrl)}
-                              data-preview-field-path={`home.fabricStories.stories[${story.index}].secondaryCtaUrl`}
-                              className="group inline-flex h-[48px] items-center justify-center rounded-[11px] border border-[#C8A98B]/48 bg-[#201C1A]/45 px-7 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#F2E9DE] no-underline backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8A98B] hover:bg-[#3B302B]/85"
+                          <a
+                            href={resolveStoryHref(story.secondaryCtaUrl)}
+                            tabIndex={isDisplayed ? undefined : -1}
+                            data-preview-field-path={`home.fabricStories.stories[${story.index}].secondaryCtaUrl`}
+                            className="group inline-flex h-[48px] items-center justify-center rounded-[11px] border border-[#C8A98B]/50 bg-[#201C1A]/50 px-7 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#F2E9DE] no-underline backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8A98B] hover:bg-[#3B302B]/90"
+                          >
+                            <span
+                              data-preview-field-path={`home.fabricStories.stories[${story.index}].secondaryCtaLabel`}
                             >
-                              <span
-                                data-preview-field-path={`home.fabricStories.stories[${story.index}].secondaryCtaLabel`}
-                              >
-                                {story.secondaryCtaLabel}
-                              </span>
-                            </a>
-                          </div>
-                        </motion.div>
+                              {story.secondaryCtaLabel}
+                            </span>
+                          </a>
+                        </div>
                       </div>
                     );
                   })}
-                </motion.div>
+                </div>
               </div>
             </motion.div>
 
-            {/* RIGHT COLUMN: 3 Overlapping Softly Curved Dramatic Fabric Panels */}
+            {/* RIGHT COLUMN: 3 Overlapping Curved Dramatic Fabric Panels */}
             <motion.div
               style={parallaxActive && !isStaticMode ? { y: panelsParallaxY } : undefined}
-              className="relative h-[400px] w-full sm:h-[480px] lg:col-span-7 lg:h-[85vh] lg:min-h-[600px]"
+              className="loome-hero-panel-stage relative h-[330px] w-full sm:h-[440px] md:h-[500px] lg:col-span-7 lg:h-[84vh] lg:min-h-[600px]"
             >
+              {/* Soft espresso feather fade on desktop left boundary so rear panel emerges organically */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 left-0 z-20 hidden w-20 bg-gradient-to-r from-[#201C1A]/65 via-[#201C1A]/20 to-transparent lg:block"
+              />
+
               <div className="relative h-full w-full">
                 {stories.map((story) => {
                   const slot = (story.index - safeIndex + count) % count;
@@ -454,8 +587,9 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
                     <motion.div
                       key={story.id}
                       onClick={() => {
-                        if (!isFront) setActiveIndex(story.index);
+                        if (!isFront) selectStory(story.index);
                       }}
+                      initial={false}
                       animate={{
                         left: slotStyle.left,
                         right: slotStyle.right,
@@ -465,37 +599,42 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
                       transition={
                         isStaticMode
                           ? { duration: 0 }
-                          : { duration: 0.9, ease: LUXURY_EASE }
+                          : { duration: 0.88, ease: LUXURY_EASE }
                       }
                       style={{
                         position: 'absolute',
                         bottom: '-2%',
-                        transform: 'skewX(-11deg)',
+                        transform: 'skewX(var(--loome-panel-skew, -10.5deg))',
                         transformOrigin: 'bottom left',
                         borderTopLeftRadius: `${panelRadius}px`,
-                        borderBottomLeftRadius: `${Math.round(panelRadius * 0.45)}px`,
+                        borderBottomLeftRadius: `${Math.round(panelRadius * 0.5)}px`,
                         boxShadow: slotStyle.boxShadow,
                         filter: slotStyle.filter,
+                        willChange: 'left, right, top',
                       }}
-                      className={`overflow-hidden bg-[#2A221E] transition-[filter] duration-700 ${isFront ? 'cursor-default' : 'cursor-pointer hover:brightness-100'
-                        }`}
+                      className={`overflow-hidden bg-[#2A221E] transition-[filter,box-shadow] duration-700 ${
+                        isFront
+                          ? 'cursor-default'
+                          : 'cursor-pointer hover:brightness-95'
+                      }`}
                     >
                       <div className={`relative h-full w-full ${floatClass}`}>
+                        {/* Oversized counter-skewed wrapper prevents any sheared corner gaps at every viewport ratio */}
                         <motion.div
                           initial={false}
                           animate={{
-                            scale: isStaticMode ? 1.24 : isFront ? 1.22 : 1.28,
+                            scale: isStaticMode ? 1.04 : isFront ? 1.02 : 1.08,
                           }}
                           transition={
                             isStaticMode
                               ? { duration: 0 }
-                              : { duration: 1.35, ease: LUXURY_EASE }
+                              : { duration: 1.25, ease: LUXURY_EASE }
                           }
                           style={{
-                            transform: 'skewX(11deg)',
-                            transformOrigin: 'center',
+                            transform: 'skewX(var(--loome-panel-unskew, 10.5deg))',
+                            transformOrigin: 'center center',
                           }}
-                          className="h-full w-full"
+                          className="absolute -inset-x-[18%] -inset-y-[5%]"
                         >
                           <img
                             src={withBasePath(story.imageUrl)}
@@ -505,74 +644,77 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
                           />
                         </motion.div>
 
-                        {/* Dramatic chiaroscuro edge lighting & warm espresso vignette */}
+                        {/* Dramatic chiaroscuro edge lighting & warm espresso depth shading */}
                         <div
                           aria-hidden="true"
-                          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#181311]/45 via-transparent to-[#181311]/25"
+                          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#171210]/48 via-transparent to-[#171210]/22"
                         />
                         <div
                           aria-hidden="true"
-                          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#181311]/55 via-transparent to-[#201C1A]/20"
+                          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#171210]/58 via-transparent to-[#201C1A]/18"
                         />
-                        {/* Subtle top-left champagne highlight rim on active panel */}
-                        {isFront && (
-                          <div
-                            aria-hidden="true"
-                            style={{ borderTopLeftRadius: `${panelRadius}px` }}
-                            className="pointer-events-none absolute inset-0 border-l border-t border-[#C8A98B]/28"
-                          />
-                        )}
+                        {/* Delicate curved top-left champagne catchlight rim */}
+                        <div
+                          aria-hidden="true"
+                          style={{ borderTopLeftRadius: `${panelRadius}px` }}
+                          className={`pointer-events-none absolute inset-0 border-l border-t transition-opacity duration-700 ${
+                            isFront
+                              ? 'border-[#C8A98B]/32 opacity-100'
+                              : 'border-[#C8A98B]/14 opacity-80'
+                          }`}
+                        />
                       </div>
                     </motion.div>
                   );
                 })}
               </div>
+
+              {/* Right-Edge Stacked Circular Navigation Arrows — anchored cleanly to the panel stage */}
+              {count > 1 && (
+                <div className="absolute right-4 top-1/2 z-40 flex -translate-y-1/2 flex-col gap-2.5 sm:right-6 lg:right-8">
+                  <button
+                    type="button"
+                    onClick={goNext}
+                    aria-label="Next fabric story"
+                    data-preview-static="hero-story-next"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F2E9DE]/38 bg-[#201C1A]/52 text-[#F2E9DE] shadow-[0_8px_24px_rgba(10,7,5,0.4)] backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B] sm:h-11 sm:w-11"
+                  >
+                    <ChevronRight className="h-4 w-4 stroke-[1.8]" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={goPrev}
+                    aria-label="Previous fabric story"
+                    data-preview-static="hero-story-prev"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F2E9DE]/38 bg-[#201C1A]/52 text-[#F2E9DE] shadow-[0_8px_24px_rgba(10,7,5,0.4)] backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B] sm:h-11 sm:w-11"
+                  >
+                    <ChevronLeft className="h-4 w-4 stroke-[1.8]" />
+                  </button>
+                </div>
+              )}
             </motion.div>
           </div>
         )}
       </div>
 
-      {/* Right-Edge Stacked Circular Navigation Arrows (Matching Reference) */}
+      {/* Bottom-Center Pagination Dots */}
       {count > 1 && (
-        <div className="absolute right-4 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-2.5 sm:right-6 lg:right-8">
-          <button
-            type="button"
-            onClick={goNext}
-            aria-label="Next fabric story"
-            data-preview-static="hero-story-next"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F2E9DE]/38 bg-[#201C1A]/45 text-[#F2E9DE] backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B]"
-          >
-            <ChevronRight className="h-4 w-4 stroke-[1.7]" />
-          </button>
-          <button
-            type="button"
-            onClick={goPrev}
-            aria-label="Previous fabric story"
-            data-preview-static="hero-story-prev"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F2E9DE]/38 bg-[#201C1A]/45 text-[#F2E9DE] backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B]"
-          >
-            <ChevronLeft className="h-4 w-4 stroke-[1.7]" />
-          </button>
-        </div>
-      )}
-
-      {/* Bottom-Center Pagination Dots (Matching Reference) */}
-      {count > 1 && (
-        <div className="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 items-center gap-3 sm:bottom-7">
+        <div className="absolute bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-full bg-[#201C1A]/42 px-3.5 py-2 backdrop-blur-sm sm:bottom-7">
           {stories.map((story) => {
             const isActive = story.index === safeIndex;
             return (
               <button
                 key={story.id}
                 type="button"
-                onClick={() => setActiveIndex(story.index)}
+                onClick={() => selectStory(story.index)}
                 aria-label={`View fabric story: ${story.heading} ${story.headingAccent}`}
                 aria-current={isActive ? 'true' : undefined}
                 data-preview-static={`hero-story-dot-${story.index}`}
-                className={`h-2.5 w-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B] ${isActive
-                  ? 'scale-110 bg-[#C8A98B] shadow-[0_0_12px_rgba(200,169,139,0.55)]'
-                  : 'border border-[#C8A98B]/50 bg-transparent hover:border-[#C8A98B] hover:bg-[#C8A98B]/30'
-                  }`}
+                className={`h-2.5 w-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#201C1A] ${
+                  isActive
+                    ? 'scale-110 bg-[#C8A98B] shadow-[0_0_12px_rgba(200,169,139,0.65)]'
+                    : 'border border-[#C8A98B]/55 bg-transparent hover:border-[#C8A98B] hover:bg-[#C8A98B]/30'
+                }`}
               />
             );
           })}

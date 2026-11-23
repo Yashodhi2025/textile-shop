@@ -234,13 +234,25 @@ p {
 }
 
 /* Fabric Stories gentle organic float (GPU-accelerated, reduced-motion safe) */
+.loome-hero-panel-stage {
+  --loome-panel-skew: -7deg;
+  --loome-panel-unskew: 7deg;
+}
+
+@media (min-width: 640px) {
+  .loome-hero-panel-stage {
+    --loome-panel-skew: -10.5deg;
+    --loome-panel-unskew: 10.5deg;
+  }
+}
+
 @keyframes loomeFabricFloatA {
   0%,
   100% {
     transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate3d(0, -8px, 0);
+    transform: translate3d(0, -6px, 0);
   }
 }
 
@@ -250,20 +262,20 @@ p {
     transform: translate3d(0, 0, 0);
   }
   50% {
-    transform: translate3d(0, 7px, 0);
+    transform: translate3d(0, 5px, 0);
   }
 }
 
 .loome-fabric-float-0 {
-  animation: loomeFabricFloatA 7.6s ease-in-out infinite;
+  animation: loomeFabricFloatA 8.4s ease-in-out infinite;
 }
 
 .loome-fabric-float-1 {
-  animation: loomeFabricFloatB 8.8s ease-in-out infinite;
+  animation: loomeFabricFloatB 9.6s ease-in-out infinite;
 }
 
 .loome-fabric-float-2 {
-  animation: loomeFabricFloatA 10.2s ease-in-out infinite;
+  animation: loomeFabricFloatA 10.8s ease-in-out infinite;
 }
 
 /* Luxury CTA buttons — softly rounded rectangular corners (11px), champagne highlights & hover lift */
