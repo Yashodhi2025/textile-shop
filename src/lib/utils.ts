@@ -28,7 +28,9 @@ export function withBasePath(value?: string | null) {
 }
 
 export function pageRoute(pageKey: string) {
-  return pageKey === 'home' ? '/' : `/${pageKey}`;
+  if (pageKey === 'home') return '/';
+  if (pageKey === 'textile_care') return '/textile-care';
+  return `/${pageKey}`;
 }
 
 export const resolveAsset = withBasePath;

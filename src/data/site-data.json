@@ -28,6 +28,7 @@
         "cart",
         "checkout",
         "journal",
+        "textile_care",
         "about_us",
         "services",
         "contact"
@@ -69,6 +70,7 @@
       "cart",
       "checkout",
       "journal",
+      "textile_care",
       "about_us",
       "services",
       "contact"
@@ -111,6 +113,7 @@
         "shop": "Shop",
         "services": "Collections",
         "journal": "Journal",
+        "textile_care": "Textile Care",
         "about_us": "About",
         "contact": "Contact"
       },
@@ -419,6 +422,159 @@
       "missingHeading": "This story could not be found",
       "missingCopy": "The editorial essay you followed may have been updated or moved in our archive.",
       "missingBackLabel": "Return to Journal"
+    },
+    "textileCarePage": {
+      "eyebrow": "ATELIER CARE MANUAL",
+      "heading": "The Art of Textile Care",
+      "intro": "Natural fibers reward unhurried stewardship. Explore our atelier guidance for laundering, drying, steaming, storing, and preserving European flax linen, organic cotton, washed velvet, mulberry silk, and tailored upholstery.",
+      "labelReminderHeading": "Always Follow Your Product Care Label",
+      "labelReminderBody": "This guide offers accurate general care advice for pure natural textiles. Because custom drapery linings, yarn-dyed trims, and specialty blends may require tailored handling, always follow the individual care label sewn into your specific LOOMÉ piece.",
+      "fabricsEyebrow": "BY FIBER & WEAVE",
+      "fabricsHeading": "Fabric Care Directory",
+      "allFabricsLabel": "All Fabrics",
+      "stepWashingLabel": "Washing",
+      "stepDryingLabel": "Drying",
+      "stepIroningLabel": "Ironing & Steaming",
+      "stepStorageLabel": "Storage",
+      "stepMaintenanceLabel": "Maintenance",
+      "atelierNoteLabel": "Atelier Tip",
+      "fabrics": [
+        {
+          "id": "linen",
+          "name": "Linen",
+          "subtitle": "Stonewashed European flax bedding, table linens & architectural drapery",
+          "fiberProfile": "Long-Staple Normandy & Belgian Flax",
+          "quickSummary": "30°C Gentle Wash · Shade Line Dry · Steam Damp",
+          "imageUrl": "/images/cat-bedding.jpg",
+          "washing": "Machine wash separately or with similar neutrals at 30°C (85°F) on a gentle cycle using a mild, pH-neutral liquid detergent free of optical brighteners or bleach. Leave generous space in the drum so flax fibers rinse cleanly.",
+          "drying": "Remove promptly while slightly damp and give each piece a gentle shake to relax creases. Line dry in dappled shade or lay flat; if tumble drying bedding, use the lowest heat setting and remove before completely dry.",
+          "ironing": "Embrace linen's relaxed drape naturally, or steam vertically while barely damp. For a crisp table or curtain finish, iron on medium-high heat from the reverse side using steam.",
+          "storage": "Store completely dry in a cool, ventilated linen closet wrapped in breathable unbleached cotton bags rather than sealed plastic, which can trap humidity and yellow natural flax.",
+          "maintenance": "Avoid fabric softeners—they coat flax fibers and reduce breathability. Rotate bedding sets weekly and shake drapery periodically to release settled household dust.",
+          "atelierNote": "Genuine European flax grows noticeably softer and more luminous with every gentle wash, developing an heirloom drape over years of daily use."
+        },
+        {
+          "id": "cotton",
+          "name": "Cotton",
+          "subtitle": "600-thread-count organic cotton sateen sheets, pillowcases & woven throws",
+          "fiberProfile": "GOTS-Certified Long-Staple Organic Cotton",
+          "quickSummary": "30–40°C Delicate Wash · Low Tumble · Warm Press",
+          "imageUrl": "/images/prod-bedsheet-sateen.jpg",
+          "washing": "Wash organic cotton sateen in cool to warm water (30–40°C) on a delicate cycle with mild plant-based detergent. Turn duvet covers and pillowcases inside out and fasten buttons before laundering to protect the lustrous satin weave.",
+          "drying": "Line dry outdoors away from direct harsh midday sun to preserve ivory and champagne tones, or tumble dry on low heat and remove immediately while softly warm to minimize creasing.",
+          "ironing": "Press on a medium cotton setting with light steam while slightly damp, gliding along the weave direction to restore sateen's fluid sheen. Avoid high dry heat on satin-stitched borders.",
+          "storage": "Fold neatly once thoroughly cooled and dry, placing heavier sheets at the base of the stack. Tuck a natural cedar block or dried lavender sachet nearby for lasting freshness.",
+          "maintenance": "Wash separately from rough terry towels or garments with zippers to prevent surface abrasion and pilling. Blot spills immediately with cool water before laundering.",
+          "atelierNote": "Shaking organic sateen sheets smooth immediately after the spin cycle dramatically reduces creases and preserves their cool, whisper-soft hand."
+        },
+        {
+          "id": "velvet",
+          "name": "Velvet",
+          "subtitle": "Matte Italian cotton-viscose washed velvet cushions & accent panels",
+          "fiberProfile": "Dense Cut-Pile Cotton & Viscose Velvet",
+          "quickSummary": "Specialist Dry Clean · Never Iron Pile · Gentle Steam",
+          "imageUrl": "/images/prod-cushion-olive.jpg",
+          "washing": "Professional specialist dry cleaning is strongly recommended for velvet covers and drapery to protect pile luster and prevent water spotting. Remove feather inserts via the concealed zip before cleaning.",
+          "drying": "Never wring, twist, or tumble dry velvet. If lightly spot-blotted, allow the fabric to air dry naturally away from radiators or direct sunlight, then restore the pile once fully dry.",
+          "ironing": "Never press an iron directly onto the velvet face—direct heat and weight permanently crush the nap. Instead, hold a handheld steamer a few centimeters away on the reverse side and lightly brush the pile upward.",
+          "storage": "Hang velvet drapery on padded hangers or fold loosely with acid-free tissue paper between layers so the pile never rests under heavy weight, which can leave lasting pressure marks.",
+          "maintenance": "Vacuum lightly every few weeks using a soft upholstery brush nozzle moving in the direction of the nap. Fluff cushion inserts regularly and rotate exposure to bright window light.",
+          "atelierNote": "If shipping or storage leaves a light crease in velvet, hanging the cover in a gently steamy bathroom often relaxes the pile effortlessly without touching the surface."
+        },
+        {
+          "id": "silk",
+          "name": "Silk",
+          "subtitle": "Luminous mulberry silk accents, sheer interior veils & delicate trims",
+          "fiberProfile": "Fine Natural Protein Filament Silk",
+          "quickSummary": "Dry Clean or Cool Hand Wash · Flat Shade Dry · Low Reverse Steam",
+          "imageUrl": "/images/silk-veil-bg.jpg",
+          "washing": "Consult the piece's care label first: structured or lined silk pieces should be professionally dry cleaned. Unlined washable silk may be hand-washed gently in cool water (under 30°C) using a pH-neutral silk detergent—never soak longer than five minutes.",
+          "drying": "Never wring silk fibers. Press excess water gently between two clean white cotton towels, then lay flat on a dry surface in cool shade away from direct sunlight and heating vents.",
+          "ironing": "Steam lightly from the reverse side using distilled water at a low distance, or press on the lowest silk setting on the reverse side with a clean cotton pressing cloth and no water droplets that could leave rings.",
+          "storage": "Store silk in breathable cotton garment bags or wrapped in acid-free tissue paper in a dark, dry drawer. Avoid wire hangers, cedar oil contact, and direct perfumes or room sprays.",
+          "maintenance": "Air silk textiles gently after use rather than over-cleaning. Shield sheer silk drapery from prolonged direct UV light with solar shades or lined backing to preserve fiber tensile strength.",
+          "atelierNote": "Because silk is a natural protein fiber, enzyme-based detergents and alkaline soaps weaken its sheen—always choose a dedicated silk wash or trusted specialty cleaner."
+        },
+        {
+          "id": "upholstery",
+          "name": "Upholstery",
+          "subtitle": "Heavyweight Italian herringbone, wool-flax blends & sculptural bouclé",
+          "fiberProfile": "60,000+ Martindale Architectural Upholstery",
+          "quickSummary": "Weekly Soft Vacuum · Blot Spills Immediately · Annual Pro Clean",
+          "imageUrl": "/images/cat-upholstery.jpg",
+          "washing": "Fixed upholstery and heavyweight wool-linen bolts should never be machine washed. For routine refreshing or deep cleaning, engage a certified upholstery specialist familiar with natural flax and wool blends.",
+          "drying": "After blotting a fresh spill, allow the area to dry evenly in ambient room airflow. Never apply hairdryers or concentrated heat, which can shrink natural yarns or set organic stains.",
+          "ironing": "Tailored upholstery requires no routine ironing. Removable heavy linen slipcovers—only where permitted by the product care label—may be gently steamed in place while slightly damp for a crisp tailored silhouette.",
+          "storage": "Store spare yardage bolts rolled right-side-in on cardboard tubes wrapped in breathable cotton sheeting, kept flat off the floor in a climate-stable, moth-protected room.",
+          "maintenance": "Vacuum weekly with a low-suction soft brush attachment to lift fine dust before it abrades yarns. Rotate seat and back cushions monthly for even wear, and blot spills gently with a clean white damp cloth—never rub.",
+          "atelierNote": "Consistent light vacuuming is the single most effective habit for upholstery longevity, preventing microscopic grit from wearing down heavyweight bouclé and herringbone weaves."
+        }
+      ],
+      "tipsEyebrow": "ATELIER TECHNIQUES",
+      "tipsHeading": "Essential Care Rituals",
+      "tipsIntro": "Small, deliberate habits protect fiber integrity, subtle neutral tones, and tailored architectural drape across decades of daily living.",
+      "legendWashLabel": "Cool Gentle Wash",
+      "legendDryLabel": "Shade Line Dry",
+      "legendSteamLabel": "Reverse Steam",
+      "legendStoreLabel": "Breathable Storage",
+      "careTips": [
+        {
+          "id": "tip-stains",
+          "tag": "Spot Care",
+          "question": "How should I treat spills on natural linen, cotton, or upholstery?",
+          "answer": "Act promptly by blotting—never rubbing—with an undyed absorbent cloth or paper towel to lift excess liquid. Work from the outer edge of the spill inward with cool water so the mark does not spread. Avoid chlorine bleach and harsh optical brighteners, which weaken natural cellulose and protein fibers and leave pale halos on warm ivory or sage weaves. For red wine, oil, or delicate velvet and silk, consult a trusted textile specialist promptly."
+        },
+        {
+          "id": "tip-softeners",
+          "tag": "Laundering",
+          "question": "Why does LOOMÉ advise against synthetic fabric softeners?",
+          "answer": "Commercial fabric softeners coat natural fibers in silicone and waxy compounds that create artificial slipperiness while clogging the breathable hollow core of European flax and organic cotton. Over time, this buildup traps detergent residue, dulls natural luster, and reduces moisture absorption. Cool gentle washing, ample drum room, and natural wool dryer balls keep textiles effortlessly soft without residue."
+        },
+        {
+          "id": "tip-steaming",
+          "tag": "Drapery & Finish",
+          "question": "Should I steam or iron floor-to-ceiling linen curtains?",
+          "answer": "For installed drapery, vertical steaming from the reverse side using distilled water is the gentlest and most effective way to release transit creases while maintaining soft architectural folds. Hang panels for 48 hours first so natural gravity relaxes the weave, then glide the steamer downward without tugging the hem. Reserve flat ironing for table linens or tailored borders where the care label permits medium heat."
+        },
+        {
+          "id": "tip-sunlight",
+          "tag": "Light Protection",
+          "question": "How can I protect curtains and upholstery from direct sunlight?",
+          "answer": "All natural fibers—especially silk, washed velvet, and yarn-dyed linen—respond gradually to intense ultraviolet light. Pair sheer drapery with discreet UV-filtering window film or layered lined panels in south- and west-facing rooms, and rotate cushions, throws, and sofa seats every few weeks so daylight softens surfaces evenly over time."
+        },
+        {
+          "id": "tip-storage",
+          "tag": "Seasonal Care",
+          "question": "What is the best way to store seasonal bedding and throws?",
+          "answer": "Always launder or air textiles completely before seasonal storage—even invisible oils or humidity can cause discoloration over months. Ensure every piece is thoroughly dry, fold loosely to avoid permanent crease stress, and place inside breathable unbleached cotton storage bags with natural cedar or lavender. Avoid sealed plastic bins or damp basements."
+        }
+      ],
+      "longevityEyebrow": "THE PATINA OF TIME",
+      "longevityHeading": "Woven to Soften, Made to Endure",
+      "longevityBody": "Fine textiles are not meant to be kept untouched behind glass—they are crafted to live beside you, softening with every season and gathering quiet character as light moves across a room.\n\nWhen long-staple Normandy flax, GOTS-certified organic cotton, and heritage-loomed wool blends are cared for gently—washed cool, dried in shade, and stored in breathable air—their fibers relax without losing structural poise. Caring well for natural textiles is both a daily sensory ritual and the most meaningful expression of sustainable living.",
+      "longevityImageUrl": "/images/craftsmanship-detail.jpg",
+      "longevityCaption": "Hand-Finished Champagne Selvedge · Long-Staple European Flax",
+      "longevityPillars": [
+        {
+          "id": "pillar-gentle",
+          "title": "Cooler Cycles, Longer Life",
+          "detail": "Lower wash temperatures and mild pH-neutral soaps preserve tensile strength while reducing energy use."
+        },
+        {
+          "id": "pillar-air",
+          "title": "Air & Steam Over Friction",
+          "detail": "Shaded line drying and vertical steaming protect natural luster and keep mitred hems crisp."
+        },
+        {
+          "id": "pillar-rotate",
+          "title": "Mindful Rotation",
+          "detail": "Alternating bedding sets and rotating cushions lets fibers rest and age gracefully in harmony."
+        }
+      ],
+      "shopCtaEyebrow": "EXPLORE THE COLLECTION",
+      "shopCtaHeading": "Bring Enduring Natural Textiles Home",
+      "shopCtaDescription": "Discover our Belgian flax drapery, stonewashed European linen bedding, washed velvet accents, and heirloom upholstery weaves.",
+      "shopCtaLabel": "Explore the Shop"
     },
     "shopPage": {
       "eyebrow": "THE COMPLETE ARCHIVE",

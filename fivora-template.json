@@ -44,6 +44,9 @@
       "journalArticlePage.missingHeading",
       "journalArticlePage.missingCopy",
       "journalArticlePage.missingBackLabel",
+      "textileCarePage.fabrics[*].id",
+      "textileCarePage.careTips[*].id",
+      "textileCarePage.longevityPillars[*].id",
       "services[*].showPrice",
       "cartPage.checkoutLabel",
       "checkoutPage.submitLabel",
@@ -86,6 +89,11 @@
       "id": "journal_article",
       "label": "Journal Article",
       "route": "/journal/article"
+    },
+    {
+      "id": "textile_care",
+      "label": "Textile Care",
+      "route": "/textile-care"
     },
     {
       "id": "about_us",
@@ -260,6 +268,11 @@
                 "key": "journal",
                 "type": "text",
                 "label": "Journal label"
+              },
+              {
+                "key": "textile_care",
+                "type": "text",
+                "label": "Textile Care label"
               },
               {
                 "key": "contact",
@@ -1052,6 +1065,296 @@
             "key": "missingBackLabel",
             "type": "text",
             "label": "Not Found Return Button Label"
+          }
+        ]
+      },
+      {
+        "id": "textileCarePage",
+        "path": "textileCarePage",
+        "pageKey": "textile_care",
+        "type": "object",
+        "label": "Textile Care Guide Page",
+        "fields": [
+          {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Hero Eyebrow"
+          },
+          {
+            "key": "heading",
+            "type": "text",
+            "label": "Hero Heading",
+            "required": true
+          },
+          {
+            "key": "intro",
+            "type": "textarea",
+            "label": "Hero Introduction"
+          },
+          {
+            "key": "labelReminderHeading",
+            "type": "text",
+            "label": "Care Label Reminder Heading"
+          },
+          {
+            "key": "labelReminderBody",
+            "type": "textarea",
+            "label": "Care Label Reminder Note"
+          },
+          {
+            "key": "fabricsEyebrow",
+            "type": "text",
+            "label": "Fabrics Section Eyebrow"
+          },
+          {
+            "key": "fabricsHeading",
+            "type": "text",
+            "label": "Fabrics Section Heading"
+          },
+          {
+            "key": "allFabricsLabel",
+            "type": "text",
+            "label": "All Fabrics Filter Label"
+          },
+          {
+            "key": "stepWashingLabel",
+            "type": "text",
+            "label": "Washing Step Label"
+          },
+          {
+            "key": "stepDryingLabel",
+            "type": "text",
+            "label": "Drying Step Label"
+          },
+          {
+            "key": "stepIroningLabel",
+            "type": "text",
+            "label": "Ironing & Steaming Step Label"
+          },
+          {
+            "key": "stepStorageLabel",
+            "type": "text",
+            "label": "Storage Step Label"
+          },
+          {
+            "key": "stepMaintenanceLabel",
+            "type": "text",
+            "label": "Maintenance Step Label"
+          },
+          {
+            "key": "atelierNoteLabel",
+            "type": "text",
+            "label": "Atelier Tip Prefix Label"
+          },
+          {
+            "key": "fabrics",
+            "type": "list",
+            "label": "Fabric Care Categories",
+            "itemLabel": "Fabric Guide",
+            "minItems": 0,
+            "maxItems": 8,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Fabric ID"
+              },
+              {
+                "key": "name",
+                "type": "text",
+                "label": "Fabric Name",
+                "required": true
+              },
+              {
+                "key": "subtitle",
+                "type": "text",
+                "label": "Fabric Subtitle"
+              },
+              {
+                "key": "fiberProfile",
+                "type": "text",
+                "label": "Fiber Profile Badge"
+              },
+              {
+                "key": "quickSummary",
+                "type": "text",
+                "label": "Quick Care Summary"
+              },
+              {
+                "key": "imageUrl",
+                "type": "image",
+                "label": "Fabric Photography"
+              },
+              {
+                "key": "washing",
+                "type": "textarea",
+                "label": "Washing Guidance"
+              },
+              {
+                "key": "drying",
+                "type": "textarea",
+                "label": "Drying Guidance"
+              },
+              {
+                "key": "ironing",
+                "type": "textarea",
+                "label": "Ironing & Steaming Guidance"
+              },
+              {
+                "key": "storage",
+                "type": "textarea",
+                "label": "Storage Guidance"
+              },
+              {
+                "key": "maintenance",
+                "type": "textarea",
+                "label": "Maintenance Guidance"
+              },
+              {
+                "key": "atelierNote",
+                "type": "textarea",
+                "label": "Atelier Tip Note"
+              }
+            ]
+          },
+          {
+            "key": "tipsEyebrow",
+            "type": "text",
+            "label": "Care Tips Eyebrow"
+          },
+          {
+            "key": "tipsHeading",
+            "type": "text",
+            "label": "Care Tips Heading"
+          },
+          {
+            "key": "tipsIntro",
+            "type": "textarea",
+            "label": "Care Tips Introduction"
+          },
+          {
+            "key": "legendWashLabel",
+            "type": "text",
+            "label": "Wash Icon Legend Label"
+          },
+          {
+            "key": "legendDryLabel",
+            "type": "text",
+            "label": "Dry Icon Legend Label"
+          },
+          {
+            "key": "legendSteamLabel",
+            "type": "text",
+            "label": "Steam Icon Legend Label"
+          },
+          {
+            "key": "legendStoreLabel",
+            "type": "text",
+            "label": "Storage Icon Legend Label"
+          },
+          {
+            "key": "careTips",
+            "type": "list",
+            "label": "Expandable Care Tip Accordions",
+            "itemLabel": "Care Tip",
+            "minItems": 0,
+            "maxItems": 10,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Tip ID"
+              },
+              {
+                "key": "tag",
+                "type": "text",
+                "label": "Topic Tag"
+              },
+              {
+                "key": "question",
+                "type": "text",
+                "label": "Accordion Question",
+                "required": true
+              },
+              {
+                "key": "answer",
+                "type": "textarea",
+                "label": "Accordion Answer"
+              }
+            ]
+          },
+          {
+            "key": "longevityEyebrow",
+            "type": "text",
+            "label": "Longevity Editorial Eyebrow"
+          },
+          {
+            "key": "longevityHeading",
+            "type": "text",
+            "label": "Longevity Editorial Heading"
+          },
+          {
+            "key": "longevityBody",
+            "type": "textarea",
+            "label": "Longevity Editorial Story"
+          },
+          {
+            "key": "longevityImageUrl",
+            "type": "image",
+            "label": "Longevity Editorial Image",
+            "recommendedWidth": 1200,
+            "recommendedHeight": 900
+          },
+          {
+            "key": "longevityCaption",
+            "type": "text",
+            "label": "Longevity Image Caption"
+          },
+          {
+            "key": "longevityPillars",
+            "type": "list",
+            "label": "Longevity Pillars",
+            "itemLabel": "Pillar",
+            "minItems": 0,
+            "maxItems": 6,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Pillar ID"
+              },
+              {
+                "key": "title",
+                "type": "text",
+                "label": "Pillar Title",
+                "required": true
+              },
+              {
+                "key": "detail",
+                "type": "textarea",
+                "label": "Pillar Description"
+              }
+            ]
+          },
+          {
+            "key": "shopCtaEyebrow",
+            "type": "text",
+            "label": "Shop CTA Eyebrow"
+          },
+          {
+            "key": "shopCtaHeading",
+            "type": "text",
+            "label": "Shop CTA Heading"
+          },
+          {
+            "key": "shopCtaDescription",
+            "type": "textarea",
+            "label": "Shop CTA Description"
+          },
+          {
+            "key": "shopCtaLabel",
+            "type": "text",
+            "label": "Shop CTA Button Label"
           }
         ]
       },

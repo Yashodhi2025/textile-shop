@@ -99,7 +99,15 @@ export default function LoomeFooter() {
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
-    : siteData.template?.structure?.pages || ['home', 'shop', 'services', 'about_us', 'contact'];
+    : siteData.template?.structure?.pages || [
+        'home',
+        'shop',
+        'services',
+        'journal',
+        'textile_care',
+        'about_us',
+        'contact',
+      ];
   const hasShopPage = requiredPages.includes('shop');
 
   const configuredNewsletterUrl = contentText(
@@ -514,16 +522,25 @@ export default function LoomeFooter() {
             </p>
 
             <div className="flex flex-wrap items-center gap-6">
-              {requiredPages.includes('about_us') && (
-                <a
-                  href={withBasePath('/about_us')}
-                  data-target-page="about_us"
-                  data-preview-static="footer-legal-care"
-                  className="transition-colors hover:text-[#F8F6F1]"
-                >
-                  Textile Care
-                </a>
-              )}
+              <span data-target-page="textile_care">
+                {requiredPages.includes('textile_care') ? (
+                  <button
+                    type="button"
+                    onClick={() => navigate(pageRoute('textile_care'))}
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F8F6F1]"
+                  >
+                    <span data-preview-field-path="common.navLabels.textile_care">
+                      {contentText(navLabels.textile_care) || 'Textile Care'}
+                    </span>
+                  </button>
+                ) : (
+                  <span className="unavailable">
+                    <span data-preview-field-path="common.navLabels.textile_care">
+                      {contentText(navLabels.textile_care) || 'Textile Care'}
+                    </span>
+                  </span>
+                )}
+              </span>
               {requiredPages.includes('services') && (
                 <a
                   href={withBasePath('/services')}
