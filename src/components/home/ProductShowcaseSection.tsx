@@ -1,11 +1,11 @@
 'use client';
 
 import { useMemo, type ReactNode } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useLoomeStore, type LoomeProduct } from '@/lib/storeContext';
 import LoomeProductCard from '@/components/LoomeProductCard';
-import { LUXURY_EASE, LuxuryReveal } from '@/components/motion/LuxuryReveal';
+import { LUXURY_EASE, LuxuryHairline, LuxuryReveal } from '@/components/motion/LuxuryReveal';
 
 interface ProductShowcaseSectionProps {
   id: string;
@@ -29,6 +29,7 @@ export default function ProductShowcaseSection({
   surfaceClassName = '',
 }: ProductShowcaseSectionProps) {
   const { activeCategory, setActiveCategory } = useLoomeStore();
+  const prefersReducedMotion = useReducedMotion();
 
   const sourcePool = filterPool && filterPool.length > 0 ? filterPool : products;
 
@@ -84,10 +85,15 @@ export default function ProductShowcaseSection({
           </div>
         </LuxuryReveal>
 
+        <LuxuryHairline
+          delay={0.14}
+          className="mt-8 h-px w-full bg-[#262923]/10 dark:bg-[#F8F6F1]/10"
+        />
+
         {/* Product Grid */}
         <div
           data-preview-list-path="products"
-          className="mt-14 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-7"
+          className="mt-10 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-7"
         >
           {displayedProducts.length === 0 ? (
             <div
@@ -101,16 +107,20 @@ export default function ProductShowcaseSection({
               {displayedProducts.map((product, idx) => (
                 <motion.div
                   key={product.id}
-                  layout
-                  initial={{ opacity: 0, y: 22 }}
+                  layout={!prefersReducedMotion}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  viewport={{ once: true, amount: 0.12 }}
-                  transition={{
-                    duration: 0.65,
-                    delay: Math.min(idx * 0.08, 0.32),
-                    ease: LUXURY_EASE,
-                  }}
+                  exit={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.97 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={
+                    prefersReducedMotion
+                      ? { duration: 0 }
+                      : {
+                          duration: 0.75,
+                          delay: Math.min(idx * 0.085, 0.34),
+                          ease: LUXURY_EASE,
+                        }
+                  }
                 >
                   <LoomeProductCard product={product} />
                 </motion.div>

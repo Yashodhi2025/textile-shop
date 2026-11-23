@@ -6,7 +6,13 @@ import { ArrowUpRight, Clock, X } from 'lucide-react';
 import { EditableText } from '@deneb-ui/ui';
 import { contentList, contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
 import { withBasePath } from '@/lib/utils';
-import { LUXURY_EASE, LuxuryReveal, LuxuryStagger, LuxuryStaggerItem } from '@/components/motion/LuxuryReveal';
+import {
+  LUXURY_EASE,
+  LuxuryImageReveal,
+  LuxuryReveal,
+  LuxuryStagger,
+  LuxuryStaggerItem,
+} from '@/components/motion/LuxuryReveal';
 
 interface JournalArticle {
   index: number;
@@ -107,13 +113,19 @@ export default function JournalSection() {
                     onClick={() => setActiveArticle(post)}
                     className="relative aspect-[4/3] w-full overflow-hidden border-0 bg-[#E8E0D5]/60 p-0 text-left"
                   >
-                    <img
-                      src={withBasePath(post.imageUrl)}
-                      alt={post.title}
-                      loading="lazy"
-                      data-preview-field-path={`home.journalPosts[${post.index}].imageUrl`}
-                      className="h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.06]"
-                    />
+                    <LuxuryImageReveal
+                      delay={Math.min(post.index * 0.1, 0.24)}
+                      tone="ivory"
+                      className="h-full w-full"
+                    >
+                      <img
+                        src={withBasePath(post.imageUrl)}
+                        alt={post.title}
+                        loading="lazy"
+                        data-preview-field-path={`home.journalPosts[${post.index}].imageUrl`}
+                        className="h-full w-full object-cover transition-transform duration-[950ms] ease-luxury group-hover:scale-[1.055]"
+                      />
+                    </LuxuryImageReveal>
                   </button>
 
                   <div className="flex flex-1 flex-col pt-5">
@@ -168,7 +180,7 @@ export default function JournalSection() {
                         className="inline-flex items-center gap-1.5 border-0 border-b border-[#262923]/30 bg-transparent px-0 pb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:border-[#B59B79] hover:text-[#747B65] dark:border-[#F8F6F1]/30 dark:text-[#F8F6F1]"
                       >
                         Read Essay
-                        <ArrowUpRight className="h-3.5 w-3.5 stroke-[1.5]" />
+                        <ArrowUpRight className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </button>
                     </div>
                   </div>

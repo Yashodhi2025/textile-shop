@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Eye, Plus, ShoppingBag } from 'lucide-react';
 import { EditableText, useCart } from '@deneb-ui/ui';
 import { contentList, contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
@@ -11,7 +11,14 @@ import {
   type LoomeProduct,
 } from '@/lib/storeContext';
 import { withBasePath } from '@/lib/utils';
-import { LUXURY_EASE, LuxuryReveal } from '@/components/motion/LuxuryReveal';
+import {
+  LUXURY_EASE,
+  LuxuryImageReveal,
+  LuxuryReveal,
+  LuxuryStagger,
+  LuxuryStaggerItem,
+  useParallaxActive,
+} from '@/components/motion/LuxuryReveal';
 
 interface ShopTheLookSectionProps {
   products: LoomeProduct[];
@@ -21,6 +28,15 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
   const siteData = useSiteData();
   const cart = useCart();
   const { openQuickView } = useLoomeStore();
+  const sectionRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const parallaxActive = useParallaxActive();
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+  const roomImageY = useTransform(scrollYProgress, [0, 1], ['-3%', '3%']);
 
   const home = contentObject(contentObject(siteData.content).home);
   const look = contentObject(home.shopTheLook);
@@ -66,6 +82,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
 
   return (
     <section
+      ref={sectionRef}
       id="shop-the-look"
       data-design-section="shop-the-look"
       className="w-full border-y border-[#262923]/8 bg-[#E8E0D5]/38 py-16 dark:border-[#F8F6F1]/8 dark:bg-[#20231D] sm:py-20 lg:py-24"
@@ -111,17 +128,24 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
         </LuxuryReveal>
 
         <div className="mt-14 grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-10">
-          {/* Left: Interactive Hotspot Room Photograph */}
-          <LuxuryReveal className="relative lg:col-span-7">
+          {/* Left: Interactive Hotspot Room Photograph with Editorial Curtain Reveal */}
+          <div className="relative lg:col-span-7">
             <div className="relative aspect-[16/11] w-full overflow-hidden bg-[#262923]">
-              <img
-                src={withBasePath(contentText(look.imageUrl) || '/images/hero-linen.jpg')}
-                alt="Interactive LOOMÉ styled living room"
-                loading="lazy"
-                data-preview-field-path="home.shopTheLook.imageUrl"
-                className="h-full w-full object-cover"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#262923]/35 via-transparent to-transparent" />
+              <LuxuryImageReveal tone="charcoal" className="h-full w-full">
+                <motion.div
+                  style={parallaxActive ? { y: roomImageY } : undefined}
+                  className="h-full w-full will-change-transform"
+                >
+                  <img
+                    src={withBasePath(contentText(look.imageUrl) || '/images/hero-linen.jpg')}
+                    alt="Interactive LOOMÉ styled living room"
+                    loading="lazy"
+                    data-preview-field-path="home.shopTheLook.imageUrl"
+                    className="h-full w-full scale-[1.06] object-cover"
+                  />
+                </motion.div>
+              </LuxuryImageReveal>
+              <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-[#262923]/35 via-transparent to-transparent" />
 
               {/* Interactive Pulsing Champagne Hotspots */}
               {hotspots.map((spot, idx) => {
@@ -136,7 +160,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                     aria-label={`Inspect ${spot.label}`}
                     aria-pressed={isSelected}
                     style={{ left: `${spot.x}%`, top: `${spot.y}%` }}
-                    className="group absolute -translate-x-1/2 -translate-y-1/2 border-0 bg-transparent p-2 focus:outline-none"
+                    className="group absolute z-20 -translate-x-1/2 -translate-y-1/2 border-0 bg-transparent p-2 focus:outline-none"
                   >
                     <span
                       className={`loome-hotspot-ring absolute inset-1 rounded-full bg-[#F8F6F1]/65 ${
@@ -161,11 +185,13 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={activeSpot.id}
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.35, ease: LUXURY_EASE }}
-                    className="absolute bottom-4 left-4 right-4 hidden items-center justify-between gap-4 border border-[#F8F6F1]/25 bg-[#262923]/80 px-5 py-3.5 text-[#F8F6F1] backdrop-blur-md sm:flex"
+                    exit={prefersReducedMotion ? undefined : { opacity: 0, y: 6 }}
+                    transition={
+                      prefersReducedMotion ? { duration: 0 } : { duration: 0.38, ease: LUXURY_EASE }
+                    }
+                    className="absolute bottom-4 left-4 right-4 z-20 hidden items-center justify-between gap-4 border border-[#F8F6F1]/25 bg-[#262923]/80 px-5 py-3.5 text-[#F8F6F1] backdrop-blur-md sm:flex"
                   >
                     <div className="min-w-0">
                       <p
@@ -193,12 +219,12 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                 </AnimatePresence>
               )}
             </div>
-          </LuxuryReveal>
+          </div>
 
           {/* Right: Synchronized Curated Pieces List */}
           <div
             data-preview-list-path="home.shopTheLook.hotspots"
-            className="flex flex-col gap-3.5 lg:col-span-5"
+            className="lg:col-span-5"
           >
             {hotspots.length === 0 ? (
               <div
@@ -208,102 +234,107 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                 Add interactive hotspots in site data to curate this room.
               </div>
             ) : (
-              hotspots.map((spot, idx) => {
-                const isSelected = idx === safeIndex;
-                const product = spot.product;
+              <LuxuryStagger staggerDelay={0.09} className="flex flex-col gap-3.5">
+                {hotspots.map((spot, idx) => {
+                  const isSelected = idx === safeIndex;
+                  const product = spot.product;
 
-                return (
-                  <div
-                    key={spot.id}
-                    data-preview-item-path={`home.shopTheLook.hotspots[${spot.index}]`}
-                    onClick={() => setActiveIndex(idx)}
-                    className={`cursor-pointer border p-4 transition-all duration-300 sm:p-5 ${
-                      isSelected
-                        ? 'border-[#B59B79] bg-[#F8F6F1] shadow-[0_14px_34px_rgba(38,41,35,0.07)] dark:bg-[#171915]'
-                        : 'border-[#262923]/10 bg-[#FCFBF8]/75 hover:border-[#262923]/28 dark:border-[#F8F6F1]/10 dark:bg-[#171915]/60'
-                    }`}
-                  >
-                    <div className="flex items-start gap-4">
-                      {product && (
-                        <img
-                          src={withBasePath(product.imageUrl)}
-                          alt={product.name}
-                          data-preview-static="shop-look-product-thumb"
-                          className="h-24 w-20 shrink-0 bg-[#E8E0D5]/50 object-cover"
-                        />
-                      )}
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#747B65] dark:text-[#B59B79]">
-                            <span data-preview-static="shop-look-num">0{idx + 1} · </span>
-                            <span data-preview-field-path={`home.shopTheLook.hotspots[${spot.index}].label`}>
-                              {spot.label}
-                            </span>
-                          </span>
-                          {product && product.showPrice && (
-                            <span
-                              data-preview-static="shop-look-price"
-                              className="text-sm font-medium text-[#262923] dark:text-[#F8F6F1]"
-                            >
-                              {formatLoomePrice(product.price, product.currency)}
-                            </span>
+                  return (
+                    <LuxuryStaggerItem key={spot.id} y={16}>
+                      <div
+                        data-preview-item-path={`home.shopTheLook.hotspots[${spot.index}]`}
+                        onClick={() => setActiveIndex(idx)}
+                        className={`group cursor-pointer border p-4 transition-all duration-400 sm:p-5 ${
+                          isSelected
+                            ? 'border-[#B59B79] bg-[#F8F6F1] shadow-[0_14px_34px_rgba(38,41,35,0.07)] dark:bg-[#171915]'
+                            : 'border-[#262923]/10 bg-[#FCFBF8]/75 hover:border-[#262923]/28 dark:border-[#F8F6F1]/10 dark:bg-[#171915]/60'
+                        }`}
+                      >
+                        <div className="flex items-start gap-4">
+                          {product && (
+                            <div className="h-24 w-20 shrink-0 overflow-hidden bg-[#E8E0D5]/50">
+                              <img
+                                src={withBasePath(product.imageUrl)}
+                                alt={product.name}
+                                data-preview-static="shop-look-product-thumb"
+                                className="h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.06]"
+                              />
+                            </div>
                           )}
-                        </div>
 
-                        {product && (
-                          <h3
-                            data-preview-static="shop-look-product-title"
-                            className="mt-1 m-0 font-serif text-xl font-normal leading-snug text-[#262923] dark:text-[#F8F6F1]"
-                          >
-                            {product.name}
-                          </h3>
-                        )}
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center justify-between gap-2">
+                              <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-[#747B65] dark:text-[#B59B79]">
+                                <span data-preview-static="shop-look-num">0{idx + 1} · </span>
+                                <span data-preview-field-path={`home.shopTheLook.hotspots[${spot.index}].label`}>
+                                  {spot.label}
+                                </span>
+                              </span>
+                              {product && product.showPrice && (
+                                <span
+                                  data-preview-static="shop-look-price"
+                                  className="text-sm font-medium text-[#262923] dark:text-[#F8F6F1]"
+                                >
+                                  {formatLoomePrice(product.price, product.currency)}
+                                </span>
+                              )}
+                            </div>
 
-                        <p
-                          data-preview-field-path={`home.shopTheLook.hotspots[${spot.index}].note`}
-                          className="mt-1 m-0 text-xs leading-relaxed text-[#65685E] dark:text-[#B6B8AE]"
-                        >
-                          {spot.note}
-                        </p>
+                            {product && (
+                              <h3
+                                data-preview-static="shop-look-product-title"
+                                className="mt-1 m-0 font-serif text-xl font-normal leading-snug text-[#262923] dark:text-[#F8F6F1]"
+                              >
+                                {product.name}
+                              </h3>
+                            )}
 
-                        {product && (
-                          <div className="mt-3.5 flex flex-wrap items-center gap-3">
-                            <button
-                              type="button"
-                              data-preview-static="shop-look-add-bag"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleAddPiece(product);
-                              }}
-                              className="inline-flex items-center gap-1.5 bg-[#262923] px-3.5 py-2 text-[10px] font-medium uppercase tracking-[0.18em] text-[#F8F6F1] transition-colors hover:bg-[#747B65]"
+                            <p
+                              data-preview-field-path={`home.shopTheLook.hotspots[${spot.index}].note`}
+                              className="mt-1 m-0 text-xs leading-relaxed text-[#65685E] dark:text-[#B6B8AE]"
                             >
-                              <ShoppingBag className="h-3 w-3 stroke-[1.6]" />
-                              Add to Bag
-                            </button>
-                            <button
-                              type="button"
-                              data-preview-static="shop-look-quick-view"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                openQuickView(product);
-                              }}
-                              className="inline-flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.18em] text-[#65685E] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
-                            >
-                              <Eye className="h-3 w-3 stroke-[1.6]" />
-                              Quick View
-                            </button>
+                              {spot.note}
+                            </p>
+
+                            {product && (
+                              <div className="mt-3.5 flex flex-wrap items-center gap-3">
+                                <button
+                                  type="button"
+                                  data-preview-static="shop-look-add-bag"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAddPiece(product);
+                                  }}
+                                  className="inline-flex items-center gap-1.5 bg-[#262923] px-3.5 py-2 text-[10px] font-medium uppercase tracking-[0.18em] text-[#F8F6F1] transition-colors hover:bg-[#747B65]"
+                                >
+                                  <ShoppingBag className="h-3 w-3 stroke-[1.6]" />
+                                  Add to Bag
+                                </button>
+                                <button
+                                  type="button"
+                                  data-preview-static="shop-look-quick-view"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    openQuickView(product);
+                                  }}
+                                  className="inline-flex items-center gap-1 text-[10px] font-medium uppercase tracking-[0.18em] text-[#65685E] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+                                >
+                                  <Eye className="h-3 w-3 stroke-[1.6]" />
+                                  Quick View
+                                </button>
+                              </div>
+                            )}
                           </div>
-                        )}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })
+                    </LuxuryStaggerItem>
+                  );
+                })}
+              </LuxuryStagger>
             )}
 
             {hotspots.length > 0 && (
-              <div className="pt-2">
+              <div className="pt-5">
                 <a
                   href="#new-arrivals"
                   data-preview-static="shop-look-explore-all"

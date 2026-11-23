@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { EditableText } from '@deneb-ui/ui';
 import { contentList, contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
@@ -27,6 +27,7 @@ export default function TestimonialsSection() {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   const count = reviews.length;
   const safeIndex = count > 0 ? activeIndex % count : 0;
@@ -77,7 +78,7 @@ export default function TestimonialsSection() {
           />
         </LuxuryReveal>
 
-        <div className="mt-14">
+        <LuxuryReveal delay={0.1} className="mt-14">
           <div className="relative mx-auto max-w-3xl text-center">
             <p
               aria-hidden="true"
@@ -102,7 +103,9 @@ export default function TestimonialsSection() {
               <motion.div
                 data-preview-list-path="home.testimonials"
                 animate={{ x: `-${safeIndex * 100}%` }}
-                transition={{ duration: 0.65, ease: LUXURY_EASE }}
+                transition={
+                  prefersReducedMotion ? { duration: 0 } : { duration: 0.7, ease: LUXURY_EASE }
+                }
                 className="flex w-full"
               >
                 {reviews.length === 0 ? (
@@ -202,7 +205,7 @@ export default function TestimonialsSection() {
               </div>
             )}
           </div>
-        </div>
+        </LuxuryReveal>
       </div>
     </section>
   );

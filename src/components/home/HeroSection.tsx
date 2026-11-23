@@ -1,25 +1,27 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { EditableText } from '@deneb-ui/ui';
 import { contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
 import { pageRoute, withBasePath } from '@/lib/utils';
-import { LUXURY_EASE } from '@/components/motion/LuxuryReveal';
+import { LUXURY_EASE, useParallaxActive } from '@/components/motion/LuxuryReveal';
 
 export default function HeroSection() {
   const siteData = useSiteData();
   const sectionRef = useRef<HTMLElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const parallaxActive = useParallaxActive();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end start'],
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '14%']);
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.12]);
-  const copyOpacity = useTransform(scrollYProgress, [0, 0.72], [1, 0.2]);
+  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '12%']);
+  const copyY = useTransform(scrollYProgress, [0, 1], ['0%', '-6%']);
+  const copyOpacity = useTransform(scrollYProgress, [0, 0.78], [1, 0.25]);
 
   const home = contentObject(contentObject(siteData.content).home);
   const heroEyebrow = contentText(home.heroEyebrow) || 'LOOMÉ — THE ART OF FINE TEXTILES';
@@ -48,38 +50,61 @@ export default function HeroSection() {
       data-design-section="home-hero"
       className="relative flex min-h-[82vh] w-full items-end overflow-hidden bg-[#262923] sm:min-h-[86vh] lg:min-h-[88vh]"
     >
-      {/* Full-Bleed Editorial Background with Subtle Ken-Burns & Scroll Parallax */}
+      {/* Full-Bleed Editorial Background: separated desktop scroll parallax & gentle entrance zoom-out */}
       <motion.div
-        style={{ y: imageY, scale: imageScale }}
-        initial={{ scale: 1.09, opacity: 0.88 }}
-        animate={{ scale: 1.04, opacity: 1 }}
-        transition={{ duration: 1.4, ease: LUXURY_EASE }}
+        style={parallaxActive ? { y: imageY } : undefined}
         className="absolute inset-0 h-full w-full will-change-transform"
       >
-        <img
-          src={withBasePath(bannerImage)}
-          alt="LOOMÉ luxury Belgian linen drapery and serene living space"
-          data-preview-field-path="home.bannerImageUrl"
-          className="h-full w-full object-cover object-center"
-        />
+        <motion.div
+          initial={prefersReducedMotion ? false : { scale: 1.11, opacity: 0.82 }}
+          animate={{ scale: 1.02, opacity: 1 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 1.75, ease: LUXURY_EASE }
+          }
+          className="h-full w-full will-change-transform"
+        >
+          <img
+            src={withBasePath(bannerImage)}
+            alt="LOOMÉ luxury Belgian linen drapery and serene living space"
+            data-preview-field-path="home.bannerImageUrl"
+            className="h-full w-full object-cover object-center"
+          />
+        </motion.div>
         {/* Warm layered atmospheric contrast veils */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1E211B]/84 via-[#1E211B]/34 to-[#1E211B]/14" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#1E211B]/68 via-[#1E211B]/28 to-transparent" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#1E211B]/84 via-[#1E211B]/34 to-[#1E211B]/14" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#1E211B]/68 via-[#1E211B]/28 to-transparent" />
       </motion.div>
 
       {/* Hero Editorial Copy */}
       <motion.div
-        style={{ opacity: copyOpacity }}
+        style={parallaxActive ? { y: copyY, opacity: copyOpacity } : undefined}
         className="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col justify-end px-5 pb-16 pt-28 sm:px-8 sm:pb-20 lg:px-14 lg:pb-24"
       >
         <div className="max-w-4xl text-[#F8F6F1]">
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.75, delay: 0.14, ease: LUXURY_EASE }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.85, delay: 0.14, ease: LUXURY_EASE }
+            }
             className="flex items-center gap-3.5"
           >
-            <span className="h-px w-10 bg-[#B59B79]" aria-hidden="true" />
+            <motion.span
+              initial={prefersReducedMotion ? false : { scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.9, delay: 0.1, ease: LUXURY_EASE }
+              }
+              style={{ transformOrigin: 'left' }}
+              className="h-px w-10 bg-[#B59B79]"
+              aria-hidden="true"
+            />
             <EditableText
               as="p"
               data-preview-field-path="home.heroEyebrow"
@@ -95,9 +120,13 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 28 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.26, ease: LUXURY_EASE }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 1.05, delay: 0.28, ease: LUXURY_EASE }
+            }
             className="mt-5"
           >
             <EditableText
@@ -115,9 +144,13 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 22 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.85, delay: 0.4, ease: LUXURY_EASE }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.9, delay: 0.46, ease: LUXURY_EASE }
+            }
             className="mt-6 max-w-xl"
           >
             <EditableText
@@ -134,9 +167,13 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.54, ease: LUXURY_EASE }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.85, delay: 0.64, ease: LUXURY_EASE }
+            }
             className="mt-9 flex flex-wrap items-center gap-4"
           >
             <button
@@ -178,9 +215,11 @@ export default function HeroSection() {
         onClick={scrollToCollection}
         aria-label="Scroll to discover collections"
         data-preview-static="hero-scroll-indicator"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.95, duration: 0.8 }}
+        initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={
+          prefersReducedMotion ? { duration: 0 } : { delay: 0.92, duration: 0.85, ease: LUXURY_EASE }
+        }
         className="absolute bottom-7 right-6 z-10 hidden flex-col items-center gap-3 border-0 bg-transparent text-[#F8F6F1]/80 transition-colors hover:text-[#F8F6F1] md:flex lg:right-14"
       >
         <span

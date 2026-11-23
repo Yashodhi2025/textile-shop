@@ -6,11 +6,18 @@ import { ArrowRight } from 'lucide-react';
 import { EditableText } from '@deneb-ui/ui';
 import { contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
 import { withBasePath } from '@/lib/utils';
-import { LuxuryReveal } from '@/components/motion/LuxuryReveal';
+import {
+  LuxuryHairline,
+  LuxuryReveal,
+  LuxuryStagger,
+  LuxuryStaggerItem,
+  useParallaxActive,
+} from '@/components/motion/LuxuryReveal';
 
 export default function FeaturedCollectionBanner() {
   const siteData = useSiteData();
   const sectionRef = useRef<HTMLElement>(null);
+  const parallaxActive = useParallaxActive();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -18,6 +25,7 @@ export default function FeaturedCollectionBanner() {
   });
 
   const bgY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1.06, 1.0]);
 
   const home = contentObject(contentObject(siteData.content).home);
   const featured = contentObject(home.featuredCollection);
@@ -43,9 +51,9 @@ export default function FeaturedCollectionBanner() {
       data-design-section="featured-collection"
       className="relative flex min-h-[76vh] w-full items-center overflow-hidden bg-[#262923] py-24"
     >
-      {/* Parallax Immersive Editorial Photography */}
+      {/* Parallax Immersive Editorial Photography (desktop-only parallax for mobile smoothness) */}
       <motion.div
-        style={{ y: bgY }}
+        style={parallaxActive ? { y: bgY, scale: bgScale } : undefined}
         className="absolute inset-0 -top-[10%] h-[120%] w-full will-change-transform"
       >
         <img
@@ -62,59 +70,73 @@ export default function FeaturedCollectionBanner() {
       {/* Centered Glass-Veiled Editorial Messaging */}
       <div className="relative z-10 mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
         <LuxuryReveal className="mx-auto max-w-2xl border border-[#F8F6F1]/22 bg-[#262923]/48 px-7 py-12 text-center text-[#F8F6F1] backdrop-blur-md sm:px-14 sm:py-16">
-          <EditableText
-            as="p"
-            data-preview-field-path="home.featuredCollection.eyebrow"
-            defaultValue={eyebrow}
-            fontFamily="body"
-            size="0.6875rem"
-            weight={500}
-            transform="uppercase"
-            letterSpacing="0.28em"
-            color="#E8E0D5"
-            align="center"
-            className="m-0"
-          />
+          <LuxuryStagger staggerDelay={0.1} delayChildren={0.08}>
+            <LuxuryStaggerItem y={14}>
+              <EditableText
+                as="p"
+                data-preview-field-path="home.featuredCollection.eyebrow"
+                defaultValue={eyebrow}
+                fontFamily="body"
+                size="0.6875rem"
+                weight={500}
+                transform="uppercase"
+                letterSpacing="0.28em"
+                color="#E8E0D5"
+                align="center"
+                className="m-0"
+              />
+            </LuxuryStaggerItem>
 
-          <EditableText
-            as="h2"
-            data-preview-field-path="home.featuredCollection.title"
-            defaultValue={title}
-            fontFamily="heading"
-            size="clamp(2.5rem, 4.8vw, 4rem)"
-            weight={300}
-            lineHeight={1.04}
-            letterSpacing="-0.02em"
-            color="#F8F6F1"
-            align="center"
-            className="mt-4 mb-0"
-          />
+            <LuxuryStaggerItem y={20}>
+              <EditableText
+                as="h2"
+                data-preview-field-path="home.featuredCollection.title"
+                defaultValue={title}
+                fontFamily="heading"
+                size="clamp(2.5rem, 4.8vw, 4rem)"
+                weight={300}
+                lineHeight={1.04}
+                letterSpacing="-0.02em"
+                color="#F8F6F1"
+                align="center"
+                className="mt-4 mb-0"
+              />
+            </LuxuryStaggerItem>
 
-          <div className="mx-auto my-6 h-px w-14 bg-[#B59B79]" aria-hidden="true" />
+            <LuxuryHairline
+              origin="center"
+              delay={0.22}
+              className="mx-auto my-6 h-px w-14 bg-[#B59B79]"
+            />
 
-          <EditableText
-            as="p"
-            data-preview-field-path="home.featuredCollection.description"
-            defaultValue={description}
-            fontFamily="body"
-            size="0.96875rem"
-            weight={400}
-            lineHeight={1.82}
-            color="rgba(248, 246, 241, 0.9)"
-            align="center"
-            className="mx-auto m-0 max-w-lg"
-          />
+            <LuxuryStaggerItem y={16}>
+              <EditableText
+                as="p"
+                data-preview-field-path="home.featuredCollection.description"
+                defaultValue={description}
+                fontFamily="body"
+                size="0.96875rem"
+                weight={400}
+                lineHeight={1.82}
+                color="rgba(248, 246, 241, 0.9)"
+                align="center"
+                className="mx-auto m-0 max-w-lg"
+              />
+            </LuxuryStaggerItem>
 
-          <div className="mt-9 flex justify-center">
-            <a
-              href={resolvedUrl}
-              data-preview-field-path="home.featuredCollection.ctaUrl"
-              className="group loome-btn-ivory"
-            >
-              <span data-preview-field-path="home.featuredCollection.ctaLabel">{ctaLabel}</span>
-              <ArrowRight className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
-          </div>
+            <LuxuryStaggerItem y={14}>
+              <div className="mt-9 flex justify-center">
+                <a
+                  href={resolvedUrl}
+                  data-preview-field-path="home.featuredCollection.ctaUrl"
+                  className="group loome-btn-ivory"
+                >
+                  <span data-preview-field-path="home.featuredCollection.ctaLabel">{ctaLabel}</span>
+                  <ArrowRight className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1" />
+                </a>
+              </div>
+            </LuxuryStaggerItem>
+          </LuxuryStagger>
         </LuxuryReveal>
       </div>
     </section>

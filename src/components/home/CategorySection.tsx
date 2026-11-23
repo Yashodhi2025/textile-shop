@@ -5,7 +5,12 @@ import { EditableText } from '@deneb-ui/ui';
 import { contentList, contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
 import { useLoomeStore } from '@/lib/storeContext';
 import { withBasePath } from '@/lib/utils';
-import { LuxuryReveal } from '@/components/motion/LuxuryReveal';
+import {
+  LuxuryImageReveal,
+  LuxuryReveal,
+  LuxuryStagger,
+  LuxuryStaggerItem,
+} from '@/components/motion/LuxuryReveal';
 
 export default function CategorySection() {
   const siteData = useSiteData();
@@ -80,83 +85,88 @@ export default function CategorySection() {
       </LuxuryReveal>
 
       {/* Asymmetric Editorial Grid: 2 tall monumental cards on top, 3 architectural cards below */}
-      <div
-        data-preview-list-path="home.categories"
-        className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-6 lg:gap-7"
-      >
+      <div data-preview-list-path="home.categories" className="mt-14">
         {categories.length === 0 ? (
           <div
             data-preview-static="categories-empty"
-            className="col-span-full border border-dashed border-[#262923]/20 py-16 text-center text-sm text-[#65685E]"
+            className="border border-dashed border-[#262923]/20 py-16 text-center text-sm text-[#65685E]"
           >
             Add categories in your Fivora editor to populate this showcase.
           </div>
         ) : (
-          categories.map((cat, idx) => {
-            const isHeroFeature = idx < 2;
-            const spanClass = isHeroFeature
-              ? 'md:col-span-3 aspect-[4/5] sm:aspect-[5/6] lg:aspect-[16/15]'
-              : 'md:col-span-2 aspect-[4/3] sm:aspect-[5/4]';
+          <LuxuryStagger
+            staggerDelay={0.11}
+            delayChildren={0.04}
+            className="grid grid-cols-1 gap-6 md:grid-cols-6 lg:gap-7"
+          >
+            {categories.map((cat, idx) => {
+              const isHeroFeature = idx < 2;
+              const spanClass = isHeroFeature
+                ? 'md:col-span-3 aspect-[4/5] sm:aspect-[5/6] lg:aspect-[16/15]'
+                : 'md:col-span-2 aspect-[4/3] sm:aspect-[5/4]';
 
-            return (
-              <LuxuryReveal
-                key={cat.id}
-                delay={idx * 0.08}
-                className={spanClass}
-              >
-                <button
-                  type="button"
-                  onClick={() => handleSelectCategory(cat.name)}
-                  data-preview-item-path={`home.categories[${cat.index}]`}
-                  className="group relative flex h-full w-full overflow-hidden border-0 bg-[#E8E0D5]/60 p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B59B79]"
-                >
-                  <img
-                    src={withBasePath(cat.imageUrl)}
-                    alt={cat.name}
-                    loading="lazy"
-                    data-preview-field-path={`home.categories[${cat.index}].imageUrl`}
-                    className="h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.06]"
-                  />
-
-                  {/* Subtle warm editorial bottom scrim */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#262923]/72 via-[#262923]/16 to-transparent transition-opacity duration-500 group-hover:from-[#262923]/82" />
-
-                  {/* Top Count Pill */}
-                  <span
-                    data-preview-field-path={`home.categories[${cat.index}].itemCount`}
-                    className="absolute left-5 top-5 border border-[#F8F6F1]/30 bg-[#262923]/30 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#F8F6F1] backdrop-blur-md"
+              return (
+                <LuxuryStaggerItem key={cat.id} className={spanClass} y={24}>
+                  <button
+                    type="button"
+                    onClick={() => handleSelectCategory(cat.name)}
+                    data-preview-item-path={`home.categories[${cat.index}]`}
+                    className="group relative flex h-full w-full overflow-hidden border-0 bg-[#E8E0D5]/60 p-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#B59B79]"
                   >
-                    {cat.itemCount}
-                  </span>
-
-                  {/* Bottom Animated Label & Sliding Arrow */}
-                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6 sm:p-8">
-                    <div className="max-w-sm">
-                      <h3
-                        data-preview-field-path={`home.categories[${cat.index}].name`}
-                        className="m-0 font-serif text-3xl font-light tracking-wide text-[#F8F6F1] transition-transform duration-500 ease-luxury group-hover:-translate-y-1 sm:text-4xl"
-                      >
-                        {cat.name}
-                      </h3>
-                      <p
-                        data-preview-field-path={`home.categories[${cat.index}].subtitle`}
-                        className="mt-1.5 m-0 text-xs leading-relaxed text-[#E8E0D5]/88 transition-all duration-500 group-hover:text-[#F8F6F1]"
-                      >
-                        {cat.subtitle}
-                      </p>
-                    </div>
-
-                    <span
-                      aria-hidden="true"
-                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#F8F6F1]/40 bg-[#F8F6F1]/10 text-[#F8F6F1] backdrop-blur-sm transition-all duration-500 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:border-[#B59B79] group-hover:bg-[#B59B79]"
+                    <LuxuryImageReveal
+                      delay={Math.min(idx * 0.08, 0.28)}
+                      tone="beige"
+                      className="h-full w-full"
                     >
-                      <ArrowUpRight className="h-4 w-4 stroke-[1.5]" />
+                      <img
+                        src={withBasePath(cat.imageUrl)}
+                        alt={cat.name}
+                        loading="lazy"
+                        data-preview-field-path={`home.categories[${cat.index}].imageUrl`}
+                        className="h-full w-full object-cover transition-transform duration-[950ms] ease-luxury group-hover:scale-[1.055]"
+                      />
+                    </LuxuryImageReveal>
+
+                    {/* Subtle warm editorial bottom scrim */}
+                    <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-[#262923]/72 via-[#262923]/16 to-transparent transition-opacity duration-700 group-hover:from-[#262923]/82" />
+
+                    {/* Top Count Pill */}
+                    <span
+                      data-preview-field-path={`home.categories[${cat.index}].itemCount`}
+                      className="absolute left-5 top-5 z-20 border border-[#F8F6F1]/30 bg-[#262923]/30 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-[#F8F6F1] backdrop-blur-md transition-colors duration-500 group-hover:border-[#B59B79]/70"
+                    >
+                      {cat.itemCount}
                     </span>
-                  </div>
-                </button>
-              </LuxuryReveal>
-            );
-          })
+
+                    {/* Bottom Animated Label & Sliding Arrow */}
+                    <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-4 p-6 sm:p-8">
+                      <div className="max-w-sm">
+                        <h3
+                          data-preview-field-path={`home.categories[${cat.index}].name`}
+                          className="m-0 font-serif text-3xl font-light tracking-wide text-[#F8F6F1] transition-transform duration-500 ease-luxury group-hover:-translate-y-1 sm:text-4xl"
+                        >
+                          {cat.name}
+                        </h3>
+                        <p
+                          data-preview-field-path={`home.categories[${cat.index}].subtitle`}
+                          className="mt-1.5 m-0 text-xs leading-relaxed text-[#E8E0D5]/88 transition-all duration-500 group-hover:text-[#F8F6F1]"
+                        >
+                          {cat.subtitle}
+                        </p>
+                      </div>
+
+                      <span
+                        aria-hidden="true"
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-[#F8F6F1]/40 bg-[#F8F6F1]/10 text-[#F8F6F1] backdrop-blur-sm transition-all duration-500 ease-luxury group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:border-[#B59B79] group-hover:bg-[#B59B79]"
+                      >
+                        <ArrowUpRight className="h-4 w-4 stroke-[1.5]" />
+                      </span>
+                    </div>
+                  </button>
+                </LuxuryStaggerItem>
+              );
+            })}
+          </LuxuryStagger>
         )}
       </div>
     </section>

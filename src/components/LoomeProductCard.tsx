@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Eye, Heart, ShoppingBag } from 'lucide-react';
 import { EditableText, useCart } from '@deneb-ui/ui';
 import { platformProductDetailHref } from '@/lib/siteDataContext';
@@ -19,6 +19,7 @@ interface LoomeProductCardProps {
 export default function LoomeProductCard({ product }: LoomeProductCardProps) {
   const cart = useCart();
   const { toggleWishlist, isWishlisted, openQuickView } = useLoomeStore();
+  const prefersReducedMotion = useReducedMotion();
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
 
   const wishlisted = isWishlisted(product.id);
@@ -58,9 +59,9 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
             alt={product.name}
             loading="lazy"
             data-preview-field-path={`products[${idx}].imageUrl`}
-            className="h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.06]"
+            className="h-full w-full object-cover will-change-transform transition-transform duration-[950ms] ease-luxury group-hover:scale-[1.055]"
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#262923]/30 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#262923]/32 via-[#262923]/5 to-transparent opacity-0 transition-opacity duration-700 ease-luxury group-hover:opacity-100" />
         </div>
 
         {/* Top Left Editorial Badge — always visible & clickable in Fivora */}
@@ -68,7 +69,7 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
           data-preview-field-path={`products[${idx}].badge`}
           className={
             product.badge
-              ? 'pointer-events-none absolute left-3.5 top-3.5 bg-[#F8F6F1]/92 px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.22em] text-[#262923] backdrop-blur-sm'
+              ? 'pointer-events-none absolute left-3.5 top-3.5 bg-[#F8F6F1]/92 px-2.5 py-1 text-[9px] font-medium uppercase tracking-[0.22em] text-[#262923] backdrop-blur-sm transition-transform duration-500 ease-luxury group-hover:-translate-y-0.5'
               : 'pointer-events-none absolute left-3.5 top-3.5 text-[9px]'
           }
         >
@@ -78,7 +79,7 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
         {/* Top Right Wishlist Toggle */}
         <motion.button
           type="button"
-          whileTap={{ scale: 0.86 }}
+          whileTap={prefersReducedMotion ? undefined : { scale: 0.88 }}
           onClick={() => toggleWishlist(product.id)}
           aria-label={wishlisted ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`}
           aria-pressed={wishlisted}
