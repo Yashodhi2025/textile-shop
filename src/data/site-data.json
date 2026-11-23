@@ -25,6 +25,7 @@
       "pages": [
         "home",
         "shop",
+        "checkout",
         "about_us",
         "services",
         "contact"
@@ -63,6 +64,7 @@
     "requiredPages": [
       "home",
       "shop",
+      "checkout",
       "about_us",
       "services",
       "contact"
@@ -335,6 +337,15 @@
       "eyebrow": "THE COMPLETE ARCHIVE",
       "heading": "Shop Fine Textiles",
       "intro": "Explore our complete curation of Belgian flax drapery, stonewashed European linen bedding, architectural upholstery weaves, and atelier fabrics by the yard."
+    },
+    "checkoutPage": {
+      "eyebrow": "THE PRIVATE CHECKOUT",
+      "heading": "Complete Your Atelier Order",
+      "intro": "Review your curated textile pieces and share your delivery details below to send your order directly to our concierge via WhatsApp.",
+      "deliveryNote": "Complimentary white-glove delivery on qualifying orders. Availability, bespoke sizing, shipping, and payment are confirmed personally with our atelier concierge via WhatsApp.",
+      "submitLabel": "Place Order via WhatsApp",
+      "emptyHeading": "Your atelier bag is currently empty",
+      "emptyDescription": "Explore our Belgian flax drapery, stonewashed linen bedding, and heirloom fabrics to begin curating your order."
     },
     "about": {
       "heading": "Woven with Quiet Reverence for Material & Light",

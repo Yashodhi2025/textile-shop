@@ -61,16 +61,18 @@ export default function LoomeOverlays() {
     [rawProducts],
   );
 
-  const contact = contentObject(contentObject(siteData.content).contact);
   const common = contentObject(contentObject(siteData.content).common);
   const shop = contentObject((siteData as Record<string, unknown>).shop);
-  const storeName = contentText(common.websiteTitle) || 'LOOMÉ';
   const storeCurrency =
     contentText(common.currency) ||
     contentText(shop.currency) ||
     products[0]?.currency ||
     'USD';
-  const whatsappNumber = contentText(contact.whatsapp) || contentText(contact.phone) || '+12125550194';
+  const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
+    ? siteData.requirements.requiredPages
+    : siteData.template?.structure?.pages || ['home', 'shop', 'checkout', 'about_us', 'services', 'contact'];
+  const hasCheckoutPage = requiredPages.includes('checkout');
+  const hasContactPage = requiredPages.includes('contact');
 
   useEffect(() => {
     if (quickViewProduct) {
@@ -142,11 +144,6 @@ export default function LoomeOverlays() {
       cart.openCart();
     }, 450);
   };
-
-  const whatsappCartHref = cart.getWhatsAppOrderUrl(whatsappNumber, {
-    storeName,
-    currency: storeCurrency,
-  });
 
   const deliveryProgress = Math.min(100, Math.round((cart.subtotal / FREE_DELIVERY_THRESHOLD) * 100));
   const deliveryRemaining = Math.max(0, FREE_DELIVERY_THRESHOLD - cart.subtotal);
@@ -496,24 +493,30 @@ export default function LoomeOverlays() {
                     Custom sizing & shipping confirmed with our atelier concierge.
                   </p>
                   <div className="mt-4 space-y-2.5">
-                    <a
-                      href={whatsappCartHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="loome-btn-primary w-full text-center"
-                    >
-                      Complete via Atelier Concierge
-                    </a>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        cart.closeCart();
-                        window.location.href = withBasePath('/contact');
-                      }}
-                      className="loome-btn-outline w-full"
-                    >
-                      Request Formal Quote
-                    </button>
+                    {hasCheckoutPage ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          cart.closeCart();
+                          window.location.href = withBasePath('/checkout');
+                        }}
+                        className="loome-btn-primary w-full text-center"
+                      >
+                        Proceed to Checkout
+                      </button>
+                    ) : null}
+                    {hasContactPage && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          cart.closeCart();
+                          window.location.href = withBasePath('/contact');
+                        }}
+                        className="loome-btn-outline w-full"
+                      >
+                        Request Formal Quote
+                      </button>
+                    )}
                   </div>
                 </div>
               )}

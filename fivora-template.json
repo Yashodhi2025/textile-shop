@@ -37,6 +37,7 @@
       "home.journalPosts[*].id",
       "home.journalPosts[*].body",
       "services[*].showPrice",
+      "checkoutPage.submitLabel",
       "contact.whatsapp"
     ]
   },
@@ -56,6 +57,11 @@
       "id": "shop",
       "label": "Shop",
       "route": "/shop"
+    },
+    {
+      "id": "checkout",
+      "label": "Checkout",
+      "route": "/checkout"
     },
     {
       "id": "about_us",
@@ -735,6 +741,51 @@
             "key": "intro",
             "type": "textarea",
             "label": "Introduction"
+          }
+        ]
+      },
+      {
+        "id": "checkoutPage",
+        "path": "checkoutPage",
+        "pageKey": "checkout",
+        "type": "object",
+        "label": "Checkout Page",
+        "fields": [
+          {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Eyebrow"
+          },
+          {
+            "key": "heading",
+            "type": "text",
+            "label": "Heading",
+            "required": true
+          },
+          {
+            "key": "intro",
+            "type": "textarea",
+            "label": "Introduction"
+          },
+          {
+            "key": "deliveryNote",
+            "type": "textarea",
+            "label": "Delivery & Concierge Note"
+          },
+          {
+            "key": "submitLabel",
+            "type": "text",
+            "label": "WhatsApp Submit Button Label"
+          },
+          {
+            "key": "emptyHeading",
+            "type": "text",
+            "label": "Empty Bag Heading"
+          },
+          {
+            "key": "emptyDescription",
+            "type": "textarea",
+            "label": "Empty Bag Description"
           }
         ]
       },
