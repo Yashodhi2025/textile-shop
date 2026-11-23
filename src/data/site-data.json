@@ -29,6 +29,7 @@
         "checkout",
         "journal",
         "textile_care",
+        "shipping_returns",
         "about_us",
         "services",
         "contact"
@@ -71,6 +72,7 @@
       "checkout",
       "journal",
       "textile_care",
+      "shipping_returns",
       "about_us",
       "services",
       "contact"
@@ -114,6 +116,7 @@
         "services": "Collections",
         "journal": "Journal",
         "textile_care": "Textile Care",
+        "shipping_returns": "Shipping & Returns",
         "about_us": "About",
         "contact": "Contact"
       },
@@ -575,6 +578,163 @@
       "shopCtaHeading": "Bring Enduring Natural Textiles Home",
       "shopCtaDescription": "Discover our Belgian flax drapery, stonewashed European linen bedding, washed velvet accents, and heirloom upholstery weaves.",
       "shopCtaLabel": "Explore the Shop"
+    },
+    "shippingReturnsPage": {
+      "eyebrow": "ATELIER CLIENT CARE",
+      "heading": "Shipping & Returns",
+      "intro": "Every LOOMÉ textile is carefully inspected, folded in breathable protective wrapping, and dispatched with attentive concierge support. Review our configurable delivery, return, and exchange guidance below.",
+      "policyNoticeHeading": "Merchant-Configured Delivery & Return Terms",
+      "policyNoticeBody": "Delivery timeframes, courier rates, and return windows depend on your destination and whether pieces are ready-to-ship or made-to-measure. Exact shipping terms and dispatch dates are confirmed personally with every order.",
+      "highlights": [
+        {
+          "id": "delivery",
+          "label": "Delivery",
+          "title": "Tracked & Protective Dispatch",
+          "description": "Orders are thoughtfully prepared in breathable tissue and dispatched via trusted courier partners, with tracking updates shared upon handoff."
+        },
+        {
+          "id": "returns",
+          "label": "Returns",
+          "title": "Simple Return & Exchange Care",
+          "description": "Eligible unused, unwashed ready-to-live textiles may be returned or exchanged within our store return window in original packaging."
+        },
+        {
+          "id": "assistance",
+          "label": "Order Assistance",
+          "title": "Direct Atelier Concierge",
+          "description": "Need help with delivery scheduling, bespoke measurements, or an exchange? Connect directly with our textile specialists on WhatsApp."
+        }
+      ],
+      "shippingEyebrow": "DELIVERY & DISPATCH",
+      "shippingHeading": "Shipping Information",
+      "shippingIntro": "Choose the delivery service that best suits your order. Timelines begin once your order is confirmed and prepared by our atelier.",
+      "methodTimelineLabel": "Estimated Timeline",
+      "methodChargeLabel": "Shipping Charge",
+      "deliveryMethods": [
+        {
+          "id": "standard-courier",
+          "name": "Standard Tracked Courier",
+          "region": "Local & Regional Delivery",
+          "timeline": "Confirmed at dispatch by region",
+          "charge": "Calculated per destination (complimentary on qualifying orders)",
+          "details": "Reliable door-to-door courier delivery with tracking for ready-to-ship bedding sets, cushions, throws, and table linens."
+        },
+        {
+          "id": "express-courier",
+          "name": "Express Priority Shipping",
+          "region": "Select Metropolitan Areas",
+          "timeline": "Expedited transit window upon stock confirmation",
+          "charge": "Quoted by parcel weight & destination",
+          "details": "Prioritized atelier preparation and accelerated courier service when your interior installation follows a tighter schedule."
+        },
+        {
+          "id": "atelier-white-glove",
+          "name": "Bespoke & White-Glove Delivery",
+          "region": "Custom Drapery & Yardage Bolts",
+          "timeline": "Scheduled upon atelier completion",
+          "charge": "Quoted individually by our concierge",
+          "details": "Dedicated handling and scheduled appointment delivery for custom-length drapery panels, heavyweight upholstery bolts, and trade orders."
+        }
+      ],
+      "shippingFootnote": "Note: International shipments may be subject to local import duties, customs clearance times, or taxes determined by your destination country.",
+      "faqEyebrow": "SHIPPING QUESTIONS",
+      "faqHeading": "Shipping & Delivery FAQ",
+      "faqIntro": "Clear answers on order preparation, custom drapery lead times, tracking updates, and protective packaging.",
+      "faqImageUrl": "/images/cat-curtains.jpg",
+      "faqImageCaption": "Protective Fold & Pressed Finishing Prior to Dispatch",
+      "shippingFaqs": [
+        {
+          "id": "faq-tracking",
+          "tag": "Tracking",
+          "question": "How will I receive tracking details once my order ships?",
+          "answer": "As soon as your parcel leaves our atelier and is scanned by our courier partner, our concierge shares your tracking reference via WhatsApp or email so you can follow delivery progress to your door."
+        },
+        {
+          "id": "faq-bespoke",
+          "tag": "Custom Orders",
+          "question": "Do custom drapery panels or cut-to-order fabrics take longer to ship?",
+          "answer": "Yes. Ready-to-ship bedding and cushions are prepared first, whereas made-to-measure drapery, weighted hems, and continuous yardage bolts require dedicated atelier finishing. Your estimated completion date is confirmed before production begins."
+        },
+        {
+          "id": "faq-address",
+          "tag": "Order Updates",
+          "question": "Can I update my delivery address after placing an order?",
+          "answer": "If your parcel has not yet been handed to the courier, message our concierge promptly with your name and order details and we will gladly update your delivery instructions."
+        },
+        {
+          "id": "faq-packaging",
+          "tag": "Packaging",
+          "question": "How are fine linen and velvet pieces protected in transit?",
+          "answer": "Textiles are folded cleanly in acid-free paper and breathable cotton wraps inside reinforced outer cartons so natural fibers arrive fresh, dry, and ready to hang or steam."
+        },
+        {
+          "id": "faq-international",
+          "tag": "Destinations",
+          "question": "Do you deliver to regional, international, or interior-trade job sites?",
+          "answer": "Delivery coverage, trade receiving-warehouse coordination, and international courier options are arranged according to your location. Reach out via WhatsApp with your postal code for a tailored delivery quote."
+        }
+      ],
+      "returnsEyebrow": "RETURNS & EXCHANGES",
+      "returnsHeading": "Returns & Exchanges Policy",
+      "returnsIntro": "We want every LOOMÉ weave to harmonize effortlessly with your space. Below is how eligible returns, exchanges, and refunds are handled.",
+      "returnPillars": [
+        {
+          "id": "eligibility",
+          "step": "01 · Eligibility",
+          "title": "Eligible Textiles",
+          "description": "Ready-to-ship bedding, cushions, throws, and standard-size curtains in unused condition are eligible for return or exchange according to store policy. Made-to-measure drapery and custom-cut fabric yardage are generally final sale unless faulty."
+        },
+        {
+          "id": "window",
+          "step": "02 · Return Window",
+          "title": "Return Request Timeframe",
+          "description": "Please contact our concierge within our merchant-configured return window following delivery. Share your order details and preferred outcome—exchange, store credit, or refund—so we can provide return instructions."
+        },
+        {
+          "id": "conditions",
+          "step": "03 · Conditions",
+          "title": "Original Condition & Packaging",
+          "description": "Items must be returned unwashed, unused, unaltered, and free from fragrance or wear, folded neatly inside their original protective bags with all care labels and tags intact."
+        },
+        {
+          "id": "refund-process",
+          "step": "04 · Refund Process",
+          "title": "Inspection & Reimbursement",
+          "description": "Once your parcel arrives back at our atelier, our team inspects the textiles promptly. Approved exchanges are dispatched swiftly, and approved refunds are processed back via your agreed payment method within our standard review timeframe."
+        }
+      ],
+      "damagedEyebrow": "QUALITY ASSURANCE",
+      "damagedHeading": "Damaged or Incorrect Items",
+      "damagedIntro": "Every piece is inspected by hand before leaving LOOMÉ. In the rare event that your parcel arrives damaged in transit or contains an incorrect size, color, or item, we will prioritize making it right.",
+      "damagedImageUrl": "/images/prod-duvet-flax.jpg",
+      "damagedImageCaption": "Hand-Inspected Finish · Stonewashed European Flax",
+      "damagedSteps": [
+        {
+          "id": "damaged-inspect",
+          "stepLabel": "Step 01",
+          "title": "Inspect Parcel Upon Arrival",
+          "description": "Please check the outer carton and your textiles promptly upon delivery, keeping the original packaging intact if transit damage is visible."
+        },
+        {
+          "id": "damaged-report",
+          "stepLabel": "Step 02",
+          "title": "Share Photos & Order Reference",
+          "description": "Send clear photographs of the item, care label, and packaging along with your order details to our concierge via WhatsApp or email."
+        },
+        {
+          "id": "damaged-resolve",
+          "stepLabel": "Step 03",
+          "title": "Priority Replacement or Resolution",
+          "description": "Once verified, our team will coordinate a priority replacement, correction, or refund arrangement at no extra inconvenience to you."
+        }
+      ],
+      "ctaEyebrow": "ATELIER CONCIERGE",
+      "ctaHeading": "Need Personal Help With Shipping or Returns?",
+      "ctaDescription": "Connect directly with our textile specialists on WhatsApp for courier estimates, custom drapery scheduling, or return assistance.",
+      "ctaImageUrl": "/images/featured-collection.jpg",
+      "ctaButtonLabel": "Contact via WhatsApp",
+      "ctaSecondaryLabel": "Contact Page",
+      "ctaWhatsappMessage": "Hello LOOMÉ Atelier, I would like assistance with shipping or returns."
     },
     "shopPage": {
       "eyebrow": "THE COMPLETE ARCHIVE",

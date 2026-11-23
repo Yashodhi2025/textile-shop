@@ -105,6 +105,7 @@ export default function LoomeFooter() {
         'services',
         'journal',
         'textile_care',
+        'shipping_returns',
         'about_us',
         'contact',
       ];
@@ -551,16 +552,25 @@ export default function LoomeFooter() {
                   Trade Program
                 </a>
               )}
-              {requiredPages.includes('contact') && (
-                <a
-                  href={withBasePath('/contact')}
-                  data-target-page="contact"
-                  data-preview-static="footer-legal-shipping"
-                  className="transition-colors hover:text-[#F8F6F1]"
-                >
-                  Shipping &amp; Returns
-                </a>
-              )}
+              <span data-target-page="shipping_returns">
+                {requiredPages.includes('shipping_returns') ? (
+                  <button
+                    type="button"
+                    onClick={() => navigate(pageRoute('shipping_returns'))}
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F8F6F1]"
+                  >
+                    <span data-preview-field-path="common.navLabels.shipping_returns">
+                      {contentText(navLabels.shipping_returns) || 'Shipping & Returns'}
+                    </span>
+                  </button>
+                ) : (
+                  <span className="unavailable">
+                    <span data-preview-field-path="common.navLabels.shipping_returns">
+                      {contentText(navLabels.shipping_returns) || 'Shipping & Returns'}
+                    </span>
+                  </span>
+                )}
+              </span>
               <button
                 type="button"
                 onClick={scrollToTop}

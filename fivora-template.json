@@ -47,6 +47,12 @@
       "textileCarePage.fabrics[*].id",
       "textileCarePage.careTips[*].id",
       "textileCarePage.longevityPillars[*].id",
+      "shippingReturnsPage.highlights[*].id",
+      "shippingReturnsPage.deliveryMethods[*].id",
+      "shippingReturnsPage.shippingFaqs[*].id",
+      "shippingReturnsPage.returnPillars[*].id",
+      "shippingReturnsPage.damagedSteps[*].id",
+      "shippingReturnsPage.ctaWhatsappMessage",
       "services[*].showPrice",
       "cartPage.checkoutLabel",
       "checkoutPage.submitLabel",
@@ -94,6 +100,11 @@
       "id": "textile_care",
       "label": "Textile Care",
       "route": "/textile-care"
+    },
+    {
+      "id": "shipping_returns",
+      "label": "Shipping & Returns",
+      "route": "/shipping-returns"
     },
     {
       "id": "about_us",
@@ -273,6 +284,11 @@
                 "key": "textile_care",
                 "type": "text",
                 "label": "Textile Care label"
+              },
+              {
+                "key": "shipping_returns",
+                "type": "text",
+                "label": "Shipping & Returns label"
               },
               {
                 "key": "contact",
@@ -1355,6 +1371,338 @@
             "key": "shopCtaLabel",
             "type": "text",
             "label": "Shop CTA Button Label"
+          }
+        ]
+      },
+      {
+        "id": "shippingReturnsPage",
+        "path": "shippingReturnsPage",
+        "pageKey": "shipping_returns",
+        "type": "object",
+        "label": "Shipping & Returns Page",
+        "fields": [
+          {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Hero Eyebrow"
+          },
+          {
+            "key": "heading",
+            "type": "text",
+            "label": "Hero Heading",
+            "required": true
+          },
+          {
+            "key": "intro",
+            "type": "textarea",
+            "label": "Hero Introduction"
+          },
+          {
+            "key": "policyNoticeHeading",
+            "type": "text",
+            "label": "Policy Notice Heading"
+          },
+          {
+            "key": "policyNoticeBody",
+            "type": "textarea",
+            "label": "Policy Notice Description"
+          },
+          {
+            "key": "highlights",
+            "type": "list",
+            "label": "Overview Info Cards (Delivery, Returns, Assistance)",
+            "itemLabel": "Info Card",
+            "minItems": 0,
+            "maxItems": 6,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Card ID"
+              },
+              {
+                "key": "label",
+                "type": "text",
+                "label": "Card Eyebrow Label"
+              },
+              {
+                "key": "title",
+                "type": "text",
+                "label": "Card Heading",
+                "required": true
+              },
+              {
+                "key": "description",
+                "type": "textarea",
+                "label": "Card Description"
+              }
+            ]
+          },
+          {
+            "key": "shippingEyebrow",
+            "type": "text",
+            "label": "Shipping Section Eyebrow"
+          },
+          {
+            "key": "shippingHeading",
+            "type": "text",
+            "label": "Shipping Section Heading"
+          },
+          {
+            "key": "shippingIntro",
+            "type": "textarea",
+            "label": "Shipping Section Introduction"
+          },
+          {
+            "key": "methodTimelineLabel",
+            "type": "text",
+            "label": "Estimated Timeline Label"
+          },
+          {
+            "key": "methodChargeLabel",
+            "type": "text",
+            "label": "Shipping Charge Label"
+          },
+          {
+            "key": "deliveryMethods",
+            "type": "list",
+            "label": "Delivery Methods",
+            "itemLabel": "Delivery Method",
+            "minItems": 0,
+            "maxItems": 8,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Method ID"
+              },
+              {
+                "key": "name",
+                "type": "text",
+                "label": "Method Name",
+                "required": true
+              },
+              {
+                "key": "region",
+                "type": "text",
+                "label": "Coverage / Region"
+              },
+              {
+                "key": "timeline",
+                "type": "text",
+                "label": "Estimated Timeline"
+              },
+              {
+                "key": "charge",
+                "type": "text",
+                "label": "Shipping Charge"
+              },
+              {
+                "key": "details",
+                "type": "textarea",
+                "label": "Delivery Details"
+              }
+            ]
+          },
+          {
+            "key": "shippingFootnote",
+            "type": "textarea",
+            "label": "Shipping Footnote / Duties Note"
+          },
+          {
+            "key": "faqEyebrow",
+            "type": "text",
+            "label": "Shipping FAQ Eyebrow"
+          },
+          {
+            "key": "faqHeading",
+            "type": "text",
+            "label": "Shipping FAQ Heading"
+          },
+          {
+            "key": "faqIntro",
+            "type": "textarea",
+            "label": "Shipping FAQ Introduction"
+          },
+          {
+            "key": "faqImageUrl",
+            "type": "image",
+            "label": "Shipping FAQ Editorial Image"
+          },
+          {
+            "key": "faqImageCaption",
+            "type": "text",
+            "label": "Shipping FAQ Image Caption"
+          },
+          {
+            "key": "shippingFaqs",
+            "type": "list",
+            "label": "Shipping FAQ Accordions",
+            "itemLabel": "FAQ",
+            "minItems": 0,
+            "maxItems": 10,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "FAQ ID"
+              },
+              {
+                "key": "tag",
+                "type": "text",
+                "label": "Topic Tag"
+              },
+              {
+                "key": "question",
+                "type": "text",
+                "label": "Question",
+                "required": true
+              },
+              {
+                "key": "answer",
+                "type": "textarea",
+                "label": "Answer"
+              }
+            ]
+          },
+          {
+            "key": "returnsEyebrow",
+            "type": "text",
+            "label": "Returns Section Eyebrow"
+          },
+          {
+            "key": "returnsHeading",
+            "type": "text",
+            "label": "Returns Section Heading"
+          },
+          {
+            "key": "returnsIntro",
+            "type": "textarea",
+            "label": "Returns Section Introduction"
+          },
+          {
+            "key": "returnPillars",
+            "type": "list",
+            "label": "Returns & Exchanges Details",
+            "itemLabel": "Return Policy Detail",
+            "minItems": 0,
+            "maxItems": 8,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Detail ID"
+              },
+              {
+                "key": "step",
+                "type": "text",
+                "label": "Step / Category Tag"
+              },
+              {
+                "key": "title",
+                "type": "text",
+                "label": "Heading",
+                "required": true
+              },
+              {
+                "key": "description",
+                "type": "textarea",
+                "label": "Policy Description"
+              }
+            ]
+          },
+          {
+            "key": "damagedEyebrow",
+            "type": "text",
+            "label": "Damaged / Incorrect Items Eyebrow"
+          },
+          {
+            "key": "damagedHeading",
+            "type": "text",
+            "label": "Damaged / Incorrect Items Heading"
+          },
+          {
+            "key": "damagedIntro",
+            "type": "textarea",
+            "label": "Damaged / Incorrect Items Intro"
+          },
+          {
+            "key": "damagedImageUrl",
+            "type": "image",
+            "label": "Quality Assurance Image"
+          },
+          {
+            "key": "damagedImageCaption",
+            "type": "text",
+            "label": "Quality Assurance Image Caption"
+          },
+          {
+            "key": "damagedSteps",
+            "type": "list",
+            "label": "Damaged / Incorrect Item Resolution Steps",
+            "itemLabel": "Resolution Step",
+            "minItems": 0,
+            "maxItems": 6,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Step ID"
+              },
+              {
+                "key": "stepLabel",
+                "type": "text",
+                "label": "Step Label"
+              },
+              {
+                "key": "title",
+                "type": "text",
+                "label": "Step Title",
+                "required": true
+              },
+              {
+                "key": "description",
+                "type": "textarea",
+                "label": "Step Description"
+              }
+            ]
+          },
+          {
+            "key": "ctaEyebrow",
+            "type": "text",
+            "label": "WhatsApp CTA Eyebrow"
+          },
+          {
+            "key": "ctaHeading",
+            "type": "text",
+            "label": "WhatsApp CTA Heading"
+          },
+          {
+            "key": "ctaDescription",
+            "type": "textarea",
+            "label": "WhatsApp CTA Description"
+          },
+          {
+            "key": "ctaImageUrl",
+            "type": "image",
+            "label": "WhatsApp CTA Background Image",
+            "recommendedWidth": 1920,
+            "recommendedHeight": 900
+          },
+          {
+            "key": "ctaButtonLabel",
+            "type": "text",
+            "label": "WhatsApp CTA Button Label"
+          },
+          {
+            "key": "ctaSecondaryLabel",
+            "type": "text",
+            "label": "Secondary Contact Button Label"
+          },
+          {
+            "key": "ctaWhatsappMessage",
+            "type": "textarea",
+            "label": "Pre-filled WhatsApp Inquiry Message"
           }
         ]
       },
