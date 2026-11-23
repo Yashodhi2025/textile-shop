@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Eye, Heart, ShoppingBag } from 'lucide-react';
 import { EditableText, useCart } from '@deneb-ui/ui';
-import { platformProductDetailHref } from '@/lib/siteDataContext';
+import { platformProductDetailHref, useSiteData } from '@/lib/siteDataContext';
 import {
   formatLoomePrice,
+  resolveLoomeCurrency,
   useLoomeStore,
   type LoomeProduct,
 } from '@/lib/storeContext';
@@ -17,6 +18,7 @@ interface LoomeProductCardProps {
 }
 
 export default function LoomeProductCard({ product }: LoomeProductCardProps) {
+  const siteData = useSiteData();
   const cart = useCart();
   const { toggleWishlist, isWishlisted, openQuickView } = useLoomeStore();
   const prefersReducedMotion = useReducedMotion();
@@ -24,21 +26,23 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
 
   const wishlisted = isWishlisted(product.id);
   const activeColor = product.colors[selectedColorIndex] ?? product.colors[0];
+  const storeCurrency = resolveLoomeCurrency(siteData, product.currency);
   const detailHref = platformProductDetailHref(product.id);
   const idx = product.index;
 
   const handleQuickAdd = () => {
+    if (!product.isAvailable) return;
     cart.addItem({
       id: product.id,
       name: product.name,
       price: product.price,
       originalPrice: product.compareAtPrice ?? undefined,
       image: product.imageUrl,
-      color: activeColor?.name,
+      color: product.hasExplicitColors ? activeColor?.name : undefined,
+      size: product.sizes[0],
       quantity: 1,
       showPrice: product.showPrice,
     });
-    cart.openCart();
   };
 
   return (
@@ -106,10 +110,19 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
           </button>
           <button
             type="button"
+            disabled={!product.isAvailable}
             onClick={handleQuickAdd}
-            aria-label={`Add ${product.name} to bag`}
+            aria-label={
+              product.isAvailable
+                ? `Add ${product.name} to bag`
+                : `${product.name} is currently unavailable`
+            }
             data-preview-static="product-quick-add"
-            className="flex h-[36px] w-[38px] shrink-0 items-center justify-center bg-[#262923] text-[#F8F6F1] transition-colors hover:bg-[#747B65]"
+            className={`flex h-[36px] w-[38px] shrink-0 items-center justify-center transition-colors ${
+              product.isAvailable
+                ? 'bg-[#262923] text-[#F8F6F1] hover:bg-[#747B65]'
+                : 'cursor-not-allowed bg-[#262923]/40 text-[#F8F6F1]/60'
+            }`}
           >
             <ShoppingBag className="h-3.5 w-3.5 stroke-[1.5]" />
           </button>
@@ -182,7 +195,7 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
               data-preview-field-path={`products[${idx}].price`}
               className="text-sm font-medium tracking-wide text-[#262923] dark:text-[#F8F6F1]"
             >
-              {product.showPrice ? formatLoomePrice(product.price, product.currency) : 'Upon Inquiry'}
+              {product.showPrice ? formatLoomePrice(product.price, storeCurrency) : 'Upon Inquiry'}
             </span>
             <span
               data-preview-field-path={`products[${idx}].compareAtPrice`}
@@ -193,7 +206,7 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
               }
             >
               {product.showPrice && product.compareAtPrice
-                ? formatLoomePrice(product.compareAtPrice, product.currency)
+                ? formatLoomePrice(product.compareAtPrice, storeCurrency)
                 : ''}
             </span>
           </div>

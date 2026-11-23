@@ -7,6 +7,7 @@ import { EditableText, useCart } from '@deneb-ui/ui';
 import { contentList, contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
 import {
   formatLoomePrice,
+  resolveLoomeCurrency,
   useLoomeStore,
   type LoomeProduct,
 } from '@/lib/storeContext';
@@ -66,18 +67,21 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
   const safeIndex = hotspots.length > 0 ? activeIndex % hotspots.length : 0;
   const activeSpot = hotspots[safeIndex];
 
+  const storeCurrency = resolveLoomeCurrency(siteData, products[0]?.currency);
+
   const handleAddPiece = (product: LoomeProduct) => {
+    if (!product.isAvailable) return;
     cart.addItem({
       id: product.id,
       name: product.name,
       price: product.price,
       originalPrice: product.compareAtPrice ?? undefined,
       image: product.imageUrl,
-      color: product.colors[0]?.name,
+      color: product.hasExplicitColors ? product.colors[0]?.name : undefined,
+      size: product.sizes[0],
       quantity: 1,
       showPrice: product.showPrice,
     });
-    cart.openCart();
   };
 
   return (
@@ -275,7 +279,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                                   data-preview-static="shop-look-price"
                                   className="text-sm font-medium text-[#262923] dark:text-[#F8F6F1]"
                                 >
-                                  {formatLoomePrice(product.price, product.currency)}
+                                  {formatLoomePrice(product.price, storeCurrency)}
                                 </span>
                               )}
                             </div>

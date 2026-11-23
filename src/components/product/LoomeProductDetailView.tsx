@@ -35,6 +35,7 @@ import {
 import {
   formatLoomePrice,
   normalizeLoomeProduct,
+  resolveLoomeCurrency,
   useLoomeStore,
   type LoomeProduct,
 } from '@/lib/storeContext';
@@ -80,19 +81,14 @@ export default function LoomeProductDetailView({
   const content = contentObject(siteData.content);
   const common = contentObject(content.common);
   const contact = contentObject(content.contact);
-  const shopMeta = contentObject((siteData as Record<string, unknown>).shop);
-  const requiredPages = Array.isArray(siteData.requiredPages)
-    ? siteData.requiredPages
-    : ['home', 'shop', 'about_us', 'services', 'contact'];
+  const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
+    ? siteData.requirements.requiredPages
+    : siteData.template?.structure?.pages || ['home', 'shop', 'about_us', 'services', 'contact'];
   const hasShopPage = requiredPages.includes('shop');
   const hasContactPage = requiredPages.includes('contact');
 
   const storeName = contentText(common.websiteTitle) || 'LOOMÉ';
-  const storeCurrency =
-    contentText(common.currency) ||
-    contentText(shopMeta.currency) ||
-    normalized.currency ||
-    'USD';
+  const storeCurrency = resolveLoomeCurrency(siteData, normalized.currency);
   const whatsappNumber =
     contentText(rawProduct.whatsappNumber) ||
     contentText(contact.whatsapp) ||
@@ -277,9 +273,6 @@ export default function LoomeProductDetailView({
       showPrice: normalized.showPrice,
     });
     setAddedFeedback(true);
-    window.setTimeout(() => {
-      cart.openCart();
-    }, 280);
     window.setTimeout(() => {
       setAddedFeedback(false);
     }, 2200);

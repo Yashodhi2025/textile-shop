@@ -20,7 +20,11 @@ import {
   useProducts,
   useSiteData,
 } from '@/lib/siteDataContext';
-import { formatLoomePrice, normalizeLoomeProduct } from '@/lib/storeContext';
+import {
+  formatLoomePrice,
+  normalizeLoomeProduct,
+  resolveLoomeCurrency,
+} from '@/lib/storeContext';
 import { withBasePath } from '@/lib/utils';
 import {
   LUXURY_EASE,
@@ -37,10 +41,7 @@ export default function ShoppingBagView() {
   const prefersReducedMotion = useReducedMotion();
 
   const content = contentObject(siteData.content);
-  const common = contentObject(content.common);
   const cartPage = contentObject(content.cartPage);
-  const shopMeta = contentObject((siteData as Record<string, unknown>).shop);
-  const merchantMeta = contentObject((siteData as Record<string, unknown>).merchant);
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
@@ -62,12 +63,7 @@ export default function ShoppingBagView() {
   );
 
   // Dynamic merchant currency resolution (never hardcoded when merchant currency is set)
-  const storeCurrency =
-    contentText(shopMeta.currency) ||
-    contentText(common.currency) ||
-    contentText(merchantMeta.currency) ||
-    catalogProducts[0]?.currency ||
-    'USD';
+  const storeCurrency = resolveLoomeCurrency(siteData, catalogProducts[0]?.currency);
 
   // Editable page copy
   const eyebrow = contentText(cartPage.eyebrow) || 'THE ATELIER BAG';
@@ -86,6 +82,10 @@ export default function ShoppingBagView() {
     'Discover our Belgian flax drapery, stonewashed European linen bedding, and heirloom fabrics by the yard to begin curating your rooms.';
 
   const hasItems = cart.items.length > 0;
+  const allInquiryOnly = hasItems && cart.items.every((item) => item.showPrice === false);
+  const subtotalDisplay = allInquiryOnly
+    ? 'Upon Inquiry'
+    : formatLoomePrice(cart.subtotal, storeCurrency);
   const deliveryRemaining = Math.max(0, FREE_DELIVERY_THRESHOLD - cart.subtotal);
   const deliveryProgress = Math.min(
     100,
@@ -525,7 +525,7 @@ export default function ShoppingBagView() {
                     <div className="flex items-center justify-between text-[#4F5349] dark:text-[#C5C7BE]">
                       <span>Items ({cart.totalCount})</span>
                       <span className="font-medium tabular-nums text-[#22251F] dark:text-[#F8F6F1]">
-                        {formatLoomePrice(cart.subtotal, storeCurrency)}
+                        {subtotalDisplay}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-[#4F5349] dark:text-[#C5C7BE]">
@@ -546,7 +546,7 @@ export default function ShoppingBagView() {
                       </span>
                     </div>
                     <span className="font-serif text-[30px] font-medium leading-none tabular-nums text-[#22251F] dark:text-[#F8F6F1]">
-                      {formatLoomePrice(cart.subtotal, storeCurrency)}
+                      {subtotalDisplay}
                     </span>
                   </div>
                 </div>

@@ -23,7 +23,11 @@ import {
   useProducts,
   useSiteData,
 } from '@/lib/siteDataContext';
-import { formatLoomePrice, normalizeLoomeProduct } from '@/lib/storeContext';
+import {
+  formatLoomePrice,
+  normalizeLoomeProduct,
+  resolveLoomeCurrency,
+} from '@/lib/storeContext';
 import { withBasePath } from '@/lib/utils';
 import {
   LUXURY_EASE,
@@ -127,12 +131,7 @@ export default function PrivateCheckoutView() {
     contentText(merchantMeta.businessName) ||
     'LOOMÉ';
 
-  const storeCurrency =
-    contentText(shopMeta.currency) ||
-    contentText(common.currency) ||
-    contentText(merchantMeta.currency) ||
-    catalogProducts[0]?.currency ||
-    'USD';
+  const storeCurrency = resolveLoomeCurrency(siteData, catalogProducts[0]?.currency);
 
   const rawWhatsappNumber =
     contentText(contact.whatsapp) ||
@@ -164,6 +163,10 @@ export default function PrivateCheckoutView() {
 
   const hasItems = cart.items.length > 0;
   const hasInquiryOnlyItem = cart.items.some((item) => item.showPrice === false);
+  const allInquiryOnly = hasItems && cart.items.every((item) => item.showPrice === false);
+  const subtotalDisplay = allInquiryOnly
+    ? 'Upon Inquiry'
+    : formatLoomePrice(cart.subtotal, storeCurrency);
   const deliveryRemaining = Math.max(0, FREE_DELIVERY_THRESHOLD - cart.subtotal);
   const deliveryProgress = Math.min(
     100,
@@ -258,7 +261,9 @@ export default function PrivateCheckoutView() {
 
     lines.push('');
     lines.push(
-      `Estimated Subtotal: ${formatLoomePrice(cart.subtotal, storeCurrency)}${hasInquiryOnlyItem ? ' (plus inquiry items)' : ''}`,
+      allInquiryOnly
+        ? 'Estimated Subtotal: Price Upon Inquiry'
+        : `Estimated Subtotal: ${formatLoomePrice(cart.subtotal, storeCurrency)}${hasInquiryOnlyItem ? ' (plus inquiry items)' : ''}`,
     );
     lines.push(
       deliveryRemaining === 0
@@ -465,7 +470,7 @@ export default function PrivateCheckoutView() {
               Items ({cart.totalCount})
             </span>
             <span className="font-medium tabular-nums text-[#22251F] dark:text-[#F8F6F1]">
-              {formatLoomePrice(cart.subtotal, storeCurrency)}
+              {subtotalDisplay}
             </span>
           </div>
           <div className="flex items-center justify-between text-[#4F5349] dark:text-[#C5C7BE]">
@@ -486,7 +491,7 @@ export default function PrivateCheckoutView() {
             </span>
           </div>
           <span className="font-serif text-[30px] font-medium leading-none tabular-nums text-[#22251F] dark:text-[#F8F6F1]">
-            {formatLoomePrice(cart.subtotal, storeCurrency)}
+            {subtotalDisplay}
           </span>
         </div>
       </div>
@@ -714,7 +719,7 @@ export default function PrivateCheckoutView() {
                 </div>
                 <div className="flex items-center gap-2.5">
                   <span className="font-serif text-xl font-medium tabular-nums">
-                    {formatLoomePrice(cart.subtotal, storeCurrency)}
+                    {subtotalDisplay}
                   </span>
                   <ChevronDown
                     className={`h-4 w-4 stroke-[1.6] text-[#666D57] transition-transform duration-300 dark:text-[#C9B292] ${

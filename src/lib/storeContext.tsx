@@ -153,6 +153,21 @@ export function normalizeLoomeProduct(rawInput: unknown, index: number): LoomePr
   };
 }
 
+export function resolveLoomeCurrency(siteData: unknown, fallbackCurrency?: string): string {
+  const sd = contentObject(siteData);
+  const content = contentObject(sd.content);
+  const common = contentObject(content.common);
+  const shop = contentObject(sd.shop);
+  const merchant = contentObject(sd.merchant);
+  return (
+    contentText(shop.currency) ||
+    contentText(common.currency) ||
+    contentText(merchant.currency) ||
+    contentText(fallbackCurrency) ||
+    'USD'
+  );
+}
+
 export function formatLoomePrice(amount: number, currency = 'USD'): string {
   const code = (currency || 'USD').toUpperCase();
   if (code === 'USD' || code === '$') {

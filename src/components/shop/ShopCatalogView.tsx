@@ -19,6 +19,7 @@ import {
 import {
   formatLoomePrice,
   normalizeLoomeProduct,
+  resolveLoomeCurrency,
   useLoomeStore,
   type LoomeColorSwatch,
   type LoomeProduct,
@@ -45,8 +46,6 @@ export default function ShopCatalogView() {
   const { activeCategory, setActiveCategory } = useLoomeStore();
 
   const content = contentObject(siteData.content);
-  const common = contentObject(content.common);
-  const shopMeta = contentObject((siteData as Record<string, unknown>).shop);
   const shopPage = contentObject(content.shopPage);
 
   const allProducts = useMemo<LoomeProduct[]>(
@@ -54,11 +53,7 @@ export default function ShopCatalogView() {
     [rawProducts],
   );
 
-  const storeCurrency =
-    contentText(common.currency) ||
-    contentText(shopMeta.currency) ||
-    allProducts[0]?.currency ||
-    'USD';
+  const storeCurrency = resolveLoomeCurrency(siteData, allProducts[0]?.currency);
 
   const catalogMaxPrice = useMemo(() => {
     const prices = allProducts.map((p) => p.price).filter((n) => Number.isFinite(n) && n > 0);

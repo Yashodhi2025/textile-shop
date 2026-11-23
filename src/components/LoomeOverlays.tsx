@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   ArrowRight,
-  Check,
   Heart,
   Minus,
   Plus,
@@ -16,8 +15,6 @@ import {
 } from 'lucide-react';
 import { useCart } from '@deneb-ui/ui';
 import {
-  contentObject,
-  contentText,
   platformProductDetailHref,
   useProducts,
   useSiteData,
@@ -25,6 +22,7 @@ import {
 import {
   formatLoomePrice,
   normalizeLoomeProduct,
+  resolveLoomeCurrency,
   useLoomeStore,
 } from '@/lib/storeContext';
 import { withBasePath } from '@/lib/utils';
@@ -53,27 +51,23 @@ export default function LoomeOverlays() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedColor, setSelectedColor] = useState<string>('');
+  const [selectedSize, setSelectedSize] = useState<string>('');
   const [quickQty, setQuickQty] = useState(1);
-  const [addedFeedback, setAddedFeedback] = useState(false);
 
   const products = useMemo(
     () => rawProducts.map((item, idx) => normalizeLoomeProduct(item, idx)),
     [rawProducts],
   );
 
-  const common = contentObject(contentObject(siteData.content).common);
-  const shop = contentObject((siteData as Record<string, unknown>).shop);
-  const storeCurrency =
-    contentText(common.currency) ||
-    contentText(shop.currency) ||
-    products[0]?.currency ||
-    'USD';
+  const storeCurrency = resolveLoomeCurrency(siteData, products[0]?.currency);
 
   useEffect(() => {
     if (quickViewProduct) {
-      setSelectedColor(quickViewProduct.colors[0]?.name || 'Warm Ivory');
+      setSelectedColor(
+        quickViewProduct.hasExplicitColors ? quickViewProduct.colors[0]?.name || '' : '',
+      );
+      setSelectedSize(quickViewProduct.sizes[0] || '');
       setQuickQty(1);
-      setAddedFeedback(false);
     }
   }, [quickViewProduct]);
 
@@ -122,24 +116,23 @@ export default function LoomeOverlays() {
   }, [products, searchQuery]);
 
   const handleQuickAddToBag = () => {
-    if (!quickViewProduct) return;
+    if (!quickViewProduct || !quickViewProduct.isAvailable) return;
+    closeQuickView();
     cart.addItem({
       id: quickViewProduct.id,
       name: quickViewProduct.name,
       price: quickViewProduct.price,
       originalPrice: quickViewProduct.compareAtPrice ?? undefined,
       image: quickViewProduct.imageUrl,
-      color: selectedColor,
+      color: quickViewProduct.hasExplicitColors && selectedColor ? selectedColor : undefined,
+      size: selectedSize || undefined,
       quantity: quickQty,
       showPrice: quickViewProduct.showPrice,
     });
-    setAddedFeedback(true);
-    window.setTimeout(() => {
-      closeQuickView();
-      cart.openCart();
-    }, 450);
   };
 
+  const allCartInquiryOnly =
+    cart.items.length > 0 && cart.items.every((item) => item.showPrice === false);
   const deliveryProgress = Math.min(100, Math.round((cart.subtotal / FREE_DELIVERY_THRESHOLD) * 100));
   const deliveryRemaining = Math.max(0, FREE_DELIVERY_THRESHOLD - cart.subtotal);
 
@@ -200,11 +193,11 @@ export default function LoomeOverlays() {
                   {quickViewProduct.showPrice ? (
                     <div className="mt-4 flex items-baseline gap-3">
                       <span className="text-xl font-medium tracking-wide">
-                        {formatLoomePrice(quickViewProduct.price, quickViewProduct.currency)}
+                        {formatLoomePrice(quickViewProduct.price, storeCurrency)}
                       </span>
                       {quickViewProduct.compareAtPrice && (
                         <span className="text-sm text-[#65685E] line-through">
-                          {formatLoomePrice(quickViewProduct.compareAtPrice, quickViewProduct.currency)}
+                          {formatLoomePrice(quickViewProduct.compareAtPrice, storeCurrency)}
                         </span>
                       )}
                     </div>
@@ -224,33 +217,64 @@ export default function LoomeOverlays() {
                     </p>
                   )}
 
-                  {/* Color Swatches */}
-                  <div className="mt-6">
-                    <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.18em]">
-                      <span className="text-[#65685E] dark:text-[#B6B8AE]">Tone</span>
-                      <span className="font-medium">{selectedColor}</span>
+                  {/* Color Swatches — only when merchant product has explicit swatches */}
+                  {quickViewProduct.hasExplicitColors && (
+                    <div className="mt-6">
+                      <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.18em]">
+                        <span className="text-[#65685E] dark:text-[#B6B8AE]">Tone</span>
+                        <span className="font-medium">{selectedColor}</span>
+                      </div>
+                      <div className="mt-3 flex items-center gap-3">
+                        {quickViewProduct.colors.map((swatch) => {
+                          const isSelected = selectedColor === swatch.name;
+                          return (
+                            <button
+                              key={swatch.name}
+                              type="button"
+                              onClick={() => setSelectedColor(swatch.name)}
+                              aria-label={`Select tone ${swatch.name}`}
+                              title={swatch.name}
+                              className={`h-7 w-7 rounded-full border transition-all ${
+                                isSelected
+                                  ? 'scale-110 border-[#262923] ring-2 ring-[#B59B79] ring-offset-2 ring-offset-[#F8F6F1] dark:ring-offset-[#20231D]'
+                                  : 'border-[#262923]/20 hover:scale-105'
+                              }`}
+                              style={{ backgroundColor: swatch.hex }}
+                            />
+                          );
+                        })}
+                      </div>
                     </div>
-                    <div className="mt-3 flex items-center gap-3">
-                      {quickViewProduct.colors.map((swatch) => {
-                        const isSelected = selectedColor === swatch.name;
-                        return (
-                          <button
-                            key={swatch.name}
-                            type="button"
-                            onClick={() => setSelectedColor(swatch.name)}
-                            aria-label={`Select tone ${swatch.name}`}
-                            title={swatch.name}
-                            className={`h-7 w-7 rounded-full border transition-all ${
-                              isSelected
-                                ? 'scale-110 border-[#262923] ring-2 ring-[#B59B79] ring-offset-2 ring-offset-[#F8F6F1] dark:ring-offset-[#20231D]'
-                                : 'border-[#262923]/20 hover:scale-105'
-                            }`}
-                            style={{ backgroundColor: swatch.hex }}
-                          />
-                        );
-                      })}
+                  )}
+
+                  {/* Size / Measurement Selector — only when real sizes exist */}
+                  {quickViewProduct.sizes.length > 0 && (
+                    <div className="mt-5">
+                      <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.18em]">
+                        <span className="text-[#65685E] dark:text-[#B6B8AE]">Size</span>
+                        <span className="font-medium">{selectedSize}</span>
+                      </div>
+                      <div className="mt-2.5 flex flex-wrap gap-2">
+                        {quickViewProduct.sizes.map((sizeOpt) => {
+                          const isSelected = selectedSize === sizeOpt;
+                          return (
+                            <button
+                              key={sizeOpt}
+                              type="button"
+                              onClick={() => setSelectedSize(sizeOpt)}
+                              className={`border px-3 py-1.5 text-xs transition-colors ${
+                                isSelected
+                                  ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#F8F6F1] dark:bg-[#F8F6F1] dark:text-[#262923]'
+                                  : 'border-[#262923]/18 bg-transparent text-[#262923] hover:border-[#262923]/45 dark:border-[#F8F6F1]/20 dark:text-[#F8F6F1]'
+                              }`}
+                            >
+                              {sizeOpt}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Quantity */}
                   <div className="mt-6 flex items-center gap-4">
@@ -260,18 +284,20 @@ export default function LoomeOverlays() {
                     <div className="inline-flex items-center border border-[#262923]/20 dark:border-[#F8F6F1]/20">
                       <button
                         type="button"
+                        disabled={!quickViewProduct.isAvailable}
                         onClick={() => setQuickQty((q) => Math.max(1, q - 1))}
                         aria-label="Decrease quantity"
-                        className="flex h-9 w-9 items-center justify-center transition-colors hover:bg-[#262923]/5"
+                        className="flex h-9 w-9 items-center justify-center transition-colors hover:bg-[#262923]/5 disabled:opacity-40"
                       >
                         <Minus className="h-3.5 w-3.5" />
                       </button>
                       <span className="w-10 text-center text-sm">{quickQty}</span>
                       <button
                         type="button"
+                        disabled={!quickViewProduct.isAvailable}
                         onClick={() => setQuickQty((q) => q + 1)}
                         aria-label="Increase quantity"
-                        className="flex h-9 w-9 items-center justify-center transition-colors hover:bg-[#262923]/5"
+                        className="flex h-9 w-9 items-center justify-center transition-colors hover:bg-[#262923]/5 disabled:opacity-40"
                       >
                         <Plus className="h-3.5 w-3.5" />
                       </button>
@@ -283,17 +309,18 @@ export default function LoomeOverlays() {
                   <div className="flex gap-2.5">
                     <button
                       type="button"
+                      disabled={!quickViewProduct.isAvailable}
                       onClick={handleQuickAddToBag}
-                      className="loome-btn-primary flex-1"
+                      className={`loome-btn-primary flex-1 ${
+                        !quickViewProduct.isAvailable ? 'cursor-not-allowed opacity-50' : ''
+                      }`}
                     >
-                      {addedFeedback ? (
-                        <>
-                          <Check className="h-4 w-4" /> Added to Bag
-                        </>
-                      ) : (
+                      {quickViewProduct.isAvailable ? (
                         <>
                           <ShoppingBag className="h-4 w-4 stroke-[1.5]" /> Add to Bag
                         </>
+                      ) : (
+                        'Currently Unavailable'
                       )}
                     </button>
                     <button
@@ -466,7 +493,9 @@ export default function LoomeOverlays() {
                               </button>
                             </div>
                             <span className="text-sm font-medium">
-                              {formatLoomePrice(item.price * item.quantity, storeCurrency)}
+                              {item.showPrice === false
+                                ? 'Upon Inquiry'
+                                : formatLoomePrice(item.price * item.quantity, storeCurrency)}
                             </span>
                           </div>
                         </div>
@@ -482,7 +511,11 @@ export default function LoomeOverlays() {
                     <span className="text-xs uppercase tracking-[0.2em] text-[#65685E] dark:text-[#B6B8AE]">
                       Estimated Subtotal
                     </span>
-                    <span className="font-serif text-2xl">{formatLoomePrice(cart.subtotal, storeCurrency)}</span>
+                    <span className="font-serif text-2xl">
+                      {allCartInquiryOnly
+                        ? 'Upon Inquiry'
+                        : formatLoomePrice(cart.subtotal, storeCurrency)}
+                    </span>
                   </div>
                   <p className="mt-1 text-xs text-[#65685E] dark:text-[#B6B8AE]">
                     Custom sizing & shipping confirmed with our atelier concierge.
@@ -577,28 +610,33 @@ export default function LoomeOverlays() {
                             </p>
                             <h4 className="mt-0.5 font-serif text-lg leading-snug">{product.name}</h4>
                             <p className="mt-1 text-sm font-medium">
-                              {formatLoomePrice(product.price, product.currency)}
+                              {product.showPrice
+                                ? formatLoomePrice(product.price, storeCurrency)
+                                : 'Upon Inquiry'}
                             </p>
                           </div>
                           <div className="mt-3 flex items-center gap-3">
                             <button
                               type="button"
+                              disabled={!product.isAvailable}
                               onClick={() => {
+                                if (!product.isAvailable) return;
+                                closeWishlist();
                                 cart.addItem({
                                   id: product.id,
                                   name: product.name,
                                   price: product.price,
+                                  originalPrice: product.compareAtPrice ?? undefined,
                                   image: product.imageUrl,
-                                  color: product.colors[0]?.name,
+                                  color: product.hasExplicitColors ? product.colors[0]?.name : undefined,
+                                  size: product.sizes[0],
                                   quantity: 1,
                                   showPrice: product.showPrice,
                                 });
-                                closeWishlist();
-                                cart.openCart();
                               }}
-                              className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#262923] underline underline-offset-4 hover:text-[#747B65] dark:text-[#F8F6F1]"
+                              className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#262923] underline underline-offset-4 hover:text-[#747B65] disabled:cursor-not-allowed disabled:opacity-45 dark:text-[#F8F6F1]"
                             >
-                              Move to Bag
+                              {product.isAvailable ? 'Move to Bag' : 'Unavailable'}
                             </button>
                             <button
                               type="button"
@@ -702,7 +740,9 @@ export default function LoomeOverlays() {
                           </a>
                           <div className="mt-1.5 flex items-center justify-between">
                             <span className="text-xs font-medium">
-                              {formatLoomePrice(product.price, product.currency)}
+                              {product.showPrice
+                                ? formatLoomePrice(product.price, storeCurrency)
+                                : 'Upon Inquiry'}
                             </span>
                             <button
                               type="button"
