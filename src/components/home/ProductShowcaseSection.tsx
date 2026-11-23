@@ -13,6 +13,7 @@ interface ProductShowcaseSectionProps {
   headerLeft: ReactNode;
   headerSummary: ReactNode;
   products: LoomeProduct[];
+  filterPool?: LoomeProduct[];
   showCategoryFilter?: boolean;
   surfaceClassName?: string;
 }
@@ -23,26 +24,28 @@ export default function ProductShowcaseSection({
   headerLeft,
   headerSummary,
   products,
+  filterPool,
   showCategoryFilter = false,
   surfaceClassName = '',
 }: ProductShowcaseSectionProps) {
   const { activeCategory, setActiveCategory } = useLoomeStore();
 
+  const sourcePool = filterPool && filterPool.length > 0 ? filterPool : products;
+
   const categories = useMemo(() => {
     const unique = new Set<string>();
-    products.forEach((p) => {
+    sourcePool.forEach((p) => {
       if (p.category) unique.add(p.category);
     });
     return ['All', ...Array.from(unique)];
-  }, [products]);
+  }, [sourcePool]);
 
   const displayedProducts = useMemo(() => {
     if (!showCategoryFilter || activeCategory === 'All') return products;
-    const filtered = products.filter(
+    return sourcePool.filter(
       (p) => p.category.toLowerCase() === activeCategory.toLowerCase(),
     );
-    return filtered.length > 0 ? filtered : products;
-  }, [products, showCategoryFilter, activeCategory]);
+  }, [products, sourcePool, showCategoryFilter, activeCategory]);
 
   return (
     <section

@@ -63,7 +63,13 @@ export default function LoomeOverlays() {
 
   const contact = contentObject(contentObject(siteData.content).contact);
   const common = contentObject(contentObject(siteData.content).common);
+  const shop = contentObject((siteData as Record<string, unknown>).shop);
   const storeName = contentText(common.websiteTitle) || 'LOOMÉ';
+  const storeCurrency =
+    contentText(common.currency) ||
+    contentText(shop.currency) ||
+    products[0]?.currency ||
+    'USD';
   const whatsappNumber = contentText(contact.whatsapp) || contentText(contact.phone) || '+12125550194';
 
   useEffect(() => {
@@ -139,7 +145,7 @@ export default function LoomeOverlays() {
 
   const whatsappCartHref = cart.getWhatsAppOrderUrl(whatsappNumber, {
     storeName,
-    currency: 'USD',
+    currency: storeCurrency,
   });
 
   const deliveryProgress = Math.min(100, Math.round((cart.subtotal / FREE_DELIVERY_THRESHOLD) * 100));
@@ -375,7 +381,7 @@ export default function LoomeOverlays() {
                     </span>
                   ) : (
                     <>
-                      Add <strong>{formatLoomePrice(deliveryRemaining)}</strong> more for complimentary
+                      Add <strong>{formatLoomePrice(deliveryRemaining, storeCurrency)}</strong> more for complimentary
                       white-glove delivery
                     </>
                   )}
@@ -463,7 +469,7 @@ export default function LoomeOverlays() {
                               </button>
                             </div>
                             <span className="text-sm font-medium">
-                              {formatLoomePrice(item.price * item.quantity)}
+                              {formatLoomePrice(item.price * item.quantity, storeCurrency)}
                             </span>
                           </div>
                         </div>
@@ -479,7 +485,7 @@ export default function LoomeOverlays() {
                     <span className="text-xs uppercase tracking-[0.2em] text-[#65685E] dark:text-[#B6B8AE]">
                       Estimated Subtotal
                     </span>
-                    <span className="font-serif text-2xl">{formatLoomePrice(cart.subtotal)}</span>
+                    <span className="font-serif text-2xl">{formatLoomePrice(cart.subtotal, storeCurrency)}</span>
                   </div>
                   <p className="mt-1 text-xs text-[#65685E] dark:text-[#B6B8AE]">
                     Custom sizing & shipping confirmed with our atelier concierge.

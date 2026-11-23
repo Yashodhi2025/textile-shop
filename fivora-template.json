@@ -45,6 +45,11 @@
       "required": true
     },
     {
+      "id": "shop",
+      "label": "Shop",
+      "route": "/shop"
+    },
+    {
       "id": "about_us",
       "label": "About Us",
       "route": "/about_us"
@@ -150,7 +155,12 @@
               {
                 "key": "home",
                 "type": "text",
-                "label": "Shop / Home label"
+                "label": "Home label"
+              },
+              {
+                "key": "shop",
+                "type": "text",
+                "label": "Shop label"
               },
               {
                 "key": "about_us",
@@ -646,6 +656,31 @@
                 "label": "Cover Image"
               }
             ]
+          }
+        ]
+      },
+      {
+        "id": "shopPage",
+        "path": "shopPage",
+        "pageKey": "shop",
+        "type": "object",
+        "label": "Shop Page",
+        "fields": [
+          {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Eyebrow"
+          },
+          {
+            "key": "heading",
+            "type": "text",
+            "label": "Heading",
+            "required": true
+          },
+          {
+            "key": "intro",
+            "type": "textarea",
+            "label": "Introduction"
           }
         ]
       },

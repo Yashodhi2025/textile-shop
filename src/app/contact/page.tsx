@@ -1,15 +1,19 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import { ArrowRight, Mail, MapPin, Phone } from 'lucide-react';
+import { ArrowRight, Check, Info, Mail, MapPin, Phone } from 'lucide-react';
 import { EditableBox, EditableText } from '@deneb-ui/ui';
-import { contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
+import { contentObject, contentText, useSiteApi, useSiteData } from '@/lib/siteDataContext';
 import { LuxuryReveal } from '@/components/motion/LuxuryReveal';
+
+type SubmitState = 'idle' | 'submitting' | 'success' | 'error';
 
 export default function ContactPage() {
   const siteData = useSiteData();
+  const siteApi = useSiteApi();
   const contact = contentObject(contentObject(siteData.content).contact);
-  const [status, setStatus] = useState('');
+  const [submitState, setSubmitState] = useState<SubmitState>('idle');
+  const [statusMessage, setStatusMessage] = useState('');
 
   const directionsLabel = contentText(contact.directionsLabel) || 'Atelier Directions';
   const directionsUrl =
@@ -21,34 +25,52 @@ export default function ContactPage() {
   const email = contentText(contact.email);
   const whatsapp = contentText(contact.whatsapp);
   const directMessageText = contentText(contact.directMessageText) || 'Concierge via WhatsApp';
+  const whatsappHref = whatsapp ? `https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}` : '';
+
+  const contactEndpoint =
+    contentText(siteApi?.contactUrl) || contentText(siteData.api?.contactUrl) || '/site-contact';
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const projectId = siteData.project?.id?.trim();
-    if (!projectId) {
-      setStatus('This website is not connected to a published project yet.');
+
+    if (!projectId || !contactEndpoint) {
+      setSubmitState('error');
+      setStatusMessage(
+        'Online form delivery is not connected to a live storefront backend yet. Please reach our atelier directly via email or WhatsApp below.',
+      );
       return;
     }
 
     const formData = new FormData(form);
-    setStatus('Sending your inquiry...');
+    const payload = {
+      projectId,
+      name: String(formData.get('name') ?? '').trim(),
+      email: String(formData.get('email') ?? '').trim(),
+      message: String(formData.get('message') ?? '').trim(),
+    };
+
+    setSubmitState('submitting');
+    setStatusMessage('Sending your inquiry to our atelier...');
+
     try {
-      const response = await fetch('/site-contact', {
+      const response = await fetch(contactEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          projectId,
-          name: String(formData.get('name') ?? ''),
-          email: String(formData.get('email') ?? ''),
-          message: String(formData.get('message') ?? ''),
-        }),
+        body: JSON.stringify(payload),
       });
-      if (!response.ok) throw new Error('Unable to send message.');
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
       form.reset();
-      setStatus('Thank you — your message has been received by our atelier.');
+      setSubmitState('success');
+      setStatusMessage('Thank you — your message has been delivered to our atelier.');
     } catch {
-      setStatus('We could not send your message right now. Please try again or reach us directly.');
+      setSubmitState('error');
+      setStatusMessage(
+        'We could not deliver your form automatically right now. Please contact our atelier directly via email or WhatsApp.',
+      );
     }
   }
 
@@ -172,7 +194,7 @@ export default function ContactPage() {
                   <span data-preview-field-path="contact.directionsLabel">{directionsLabel}</span>
                 </a>
                 <a
-                  href={whatsapp ? `https://wa.me/${whatsapp.replace(/[^0-9]/g, '')}` : '#'}
+                  href={whatsappHref || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-preview-field-path="contact.whatsapp"
@@ -262,7 +284,11 @@ export default function ContactPage() {
                 </label>
 
                 <div className="pt-2">
-                  <button type="submit" className="group loome-btn-primary">
+                  <button
+                    type="submit"
+                    disabled={submitState === 'submitting'}
+                    className="group loome-btn-primary disabled:opacity-60"
+                  >
                     <span data-preview-field-path="contact.submitLabel">
                       {contentText(contact.submitLabel)}
                     </span>
@@ -270,14 +296,47 @@ export default function ContactPage() {
                   </button>
                 </div>
 
-                {status && (
-                  <p
+                {statusMessage && (
+                  <div
                     role="status"
                     aria-live="polite"
-                    className="m-0 pt-2 text-sm text-[#595C52] dark:text-[#B6B8AE]"
+                    className={`mt-2 flex items-start gap-2.5 border px-4 py-3 text-xs leading-relaxed ${
+                      submitState === 'success'
+                        ? 'border-[#747B65]/40 bg-[#F8F6F1] text-[#262923] dark:bg-[#20231D] dark:text-[#F8F6F1]'
+                        : 'border-[#B59B79]/50 bg-[#F8F6F1] text-[#262923] dark:bg-[#20231D] dark:text-[#F8F6F1]'
+                    }`}
                   >
-                    {status}
-                  </p>
+                    {submitState === 'success' ? (
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#747B65]" aria-hidden="true" />
+                    ) : (
+                      <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#B59B79]" aria-hidden="true" />
+                    )}
+                    <div className="space-y-1.5">
+                      <p className="m-0">{statusMessage}</p>
+                      {submitState === 'error' && (email || whatsappHref) && (
+                        <div className="flex flex-wrap gap-4 pt-0.5">
+                          {email && (
+                            <a
+                              href={`mailto:${email}?subject=${encodeURIComponent('LOOMÉ Atelier Inquiry')}`}
+                              className="font-medium underline underline-offset-4 hover:text-[#747B65]"
+                            >
+                              Email {email}
+                            </a>
+                          )}
+                          {whatsappHref && (
+                            <a
+                              href={whatsappHref}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-medium underline underline-offset-4 hover:text-[#747B65]"
+                            >
+                              Message on WhatsApp
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 )}
               </form>
             </EditableBox>

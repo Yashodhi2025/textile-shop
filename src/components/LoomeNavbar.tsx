@@ -11,7 +11,7 @@ import { pageRoute, withBasePath } from '@/lib/utils';
 import { LUXURY_EASE } from '@/components/motion/LuxuryReveal';
 
 const NAV_ITEMS = [
-  { id: 'home', fallbackLabel: 'Shop', route: '/' },
+  { id: 'shop', fallbackLabel: 'Shop', route: '/shop' },
   { id: 'services', fallbackLabel: 'Collections', route: '/services' },
   { id: 'about_us', fallbackLabel: 'About', route: '/about_us' },
   { id: 'contact', fallbackLabel: 'Contact', route: '/contact' },
@@ -36,7 +36,7 @@ export default function LoomeNavbar() {
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
-    : siteData.template?.structure?.pages || ['home', 'services', 'about_us', 'contact'];
+    : siteData.template?.structure?.pages || ['home', 'shop', 'services', 'about_us', 'contact'];
 
   const activeCartCount = cart?.totalCount ?? 0;
   const wishlistCount = wishlistIds.length;
@@ -60,13 +60,6 @@ export default function LoomeNavbar() {
   const navigateTo = (pageId: string) => {
     setMobileOpen(false);
     const route = pageRoute(pageId);
-    if (pageId === 'home' && (pathname === '/' || pathname === '')) {
-      const target = document.getElementById('categories');
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-        return;
-      }
-    }
     window.location.href = withBasePath(route);
   };
 
@@ -106,12 +99,12 @@ export default function LoomeNavbar() {
 
             <nav className="hidden items-center gap-8 lg:flex">
               {NAV_ITEMS.map((item) => {
-                const isEnabled = item.id === 'home' || requiredPages.includes(item.id);
+                const isEnabled = requiredPages.includes(item.id);
                 const label = contentText(navLabels[item.id]) || item.fallbackLabel;
                 const active = isRouteActive(item.route);
                 const labelEl =
-                  item.id === 'home' ? (
-                    <span data-preview-field-path="common.navLabels.home">{label}</span>
+                  item.id === 'shop' ? (
+                    <span data-preview-field-path="common.navLabels.shop">{label}</span>
                   ) : item.id === 'services' ? (
                     <span data-preview-field-path="common.navLabels.services">{label}</span>
                   ) : item.id === 'about_us' ? (
@@ -293,7 +286,7 @@ export default function LoomeNavbar() {
 
                 <nav className="mt-5 flex flex-col divide-y divide-[#262923]/8 dark:divide-[#F8F6F1]/8">
                   {NAV_ITEMS.map((item, idx) => {
-                    const isEnabled = item.id === 'home' || requiredPages.includes(item.id);
+                    const isEnabled = requiredPages.includes(item.id);
                     const label = contentText(navLabels[item.id]) || item.fallbackLabel;
                     return (
                       <motion.div

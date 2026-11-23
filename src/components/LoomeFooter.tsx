@@ -1,24 +1,29 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import { ArrowRight, ArrowUp, Check } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { ArrowRight, ArrowUp, Check, Info } from 'lucide-react';
 import { EditableIcon, EditableText } from '@deneb-ui/ui';
-import { contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
+import { contentObject, contentText, useSiteApi, useSiteData } from '@/lib/siteDataContext';
+import { useLoomeStore } from '@/lib/storeContext';
 import { pageRoute, withBasePath } from '@/lib/utils';
 
+const PENDING_CATEGORY_KEY = 'loome_pending_category_v1';
+
 const FOOTER_NAV = [
-  { id: 'home', fallbackLabel: 'Shop', route: '/' },
+  { id: 'home', fallbackLabel: 'Home', route: '/' },
+  { id: 'shop', fallbackLabel: 'Shop', route: '/shop' },
   { id: 'services', fallbackLabel: 'Collections', route: '/services' },
   { id: 'about_us', fallbackLabel: 'About', route: '/about_us' },
   { id: 'contact', fallbackLabel: 'Contact', route: '/contact' },
 ] as const;
 
 const SHOP_SHORTCUTS = [
-  { label: 'Curtains & Drapery', href: '#categories' },
-  { label: 'European Flax Bedding', href: '#categories' },
-  { label: 'Upholstery Weaves', href: '#categories' },
-  { label: 'Fabrics by the Yard', href: '#categories' },
-  { label: 'Cushions & Throws', href: '#categories' },
+  { label: 'Curtains & Drapery', category: 'Curtains' },
+  { label: 'European Flax Bedding', category: 'Bedding' },
+  { label: 'Upholstery Weaves', category: 'Upholstery' },
+  { label: 'Fabrics by the Yard', category: 'Fabrics' },
+  { label: 'Cushions & Throws', category: 'Cushions' },
 ];
 
 function renderSocialSvg(platform: string) {
@@ -53,11 +58,19 @@ function renderSocialSvg(platform: string) {
   );
 }
 
+type NewsletterState = 'idle' | 'submitting' | 'success' | 'unavailable' | 'error';
+
 export default function LoomeFooter() {
   const siteData = useSiteData();
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
+  const siteApi = useSiteApi();
+  const pathname = usePathname() || '/';
+  const { setActiveCategory } = useLoomeStore();
 
+  const [email, setEmail] = useState('');
+  const [newsletterState, setNewsletterState] = useState<NewsletterState>('idle');
+
+  const isHome = pathname === '/' || pathname === '';
+  const isShopPage = pathname === '/shop' || pathname === '/shop/';
   const content = contentObject(siteData.content);
   const common = contentObject(content.common);
   const contact = contentObject(content.contact);
@@ -85,22 +98,74 @@ export default function LoomeFooter() {
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
-    : siteData.template?.structure?.pages || ['home', 'services', 'about_us', 'contact'];
+    : siteData.template?.structure?.pages || ['home', 'shop', 'services', 'about_us', 'contact'];
+  const hasShopPage = requiredPages.includes('shop');
 
-  const handleSubscribe = (e: FormEvent<HTMLFormElement>) => {
+  const configuredNewsletterUrl = contentText(
+    (siteApi as Record<string, unknown> | undefined)?.newsletterUrl ??
+      (siteData.api as Record<string, unknown> | undefined)?.newsletterUrl,
+  );
+
+  const handleSubscribe = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email.trim()) return;
-    setSubscribed(true);
-    setEmail('');
+    const trimmed = email.trim();
+    if (!trimmed) return;
+
+    if (!configuredNewsletterUrl) {
+      setNewsletterState('unavailable');
+      return;
+    }
+
+    setNewsletterState('submitting');
+    try {
+      const response = await fetch(configuredNewsletterUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectId: siteData.project?.id?.trim() || undefined,
+          email: trimmed,
+        }),
+      });
+      if (!response.ok) throw new Error('Newsletter service error');
+      setEmail('');
+      setNewsletterState('success');
+    } catch {
+      setNewsletterState('error');
+    }
   };
 
   const navigate = (route: string) => {
     window.location.href = withBasePath(route);
   };
 
+  const handleShortcutClick = (category: string) => {
+    if (isShopPage) {
+      setActiveCategory(category);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    if (!hasShopPage && isHome) {
+      setActiveCategory(category);
+      const target = document.getElementById('new-arrivals') || document.getElementById('categories');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    try {
+      window.sessionStorage.setItem(PENDING_CATEGORY_KEY, category);
+    } catch {
+      // Ignore storage errors
+    }
+  };
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  const collectionShortcutHref = hasShopPage
+    ? withBasePath('/shop')
+    : isHome
+      ? '#new-arrivals'
+      : `${withBasePath('/')}#new-arrivals`;
 
   return (
     <footer data-design-section="footer" className="w-full">
@@ -122,56 +187,87 @@ export default function LoomeFooter() {
             </h2>
             <p
               data-preview-field-path="common.newsletterDescription"
-              className="mt-4 max-w-lg text-sm leading-relaxed text-[#65685E] dark:text-[#B6B8AE]"
+              className="mt-4 max-w-lg text-sm leading-relaxed text-[#595C52] dark:text-[#B6B8AE]"
             >
               {newsletterDescription}
             </p>
           </div>
 
           <div className="lg:col-span-6">
-            {subscribed ? (
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-3 sm:flex-row sm:items-end">
+              <div className="flex-1">
+                <label
+                  htmlFor="loome-newsletter-email"
+                  data-preview-static="newsletter-email-label"
+                  className="sr-only"
+                >
+                  Email address
+                </label>
+                <input
+                  id="loome-newsletter-email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (newsletterState !== 'idle') setNewsletterState('idle');
+                  }}
+                  data-preview-field-path="common.newsletterEmailPlaceholder"
+                  placeholder={newsletterPlaceholder}
+                  className="w-full border-0 border-b border-[#262923]/30 bg-transparent px-1 py-3.5 text-sm text-[#262923] placeholder:text-[#595C52]/75 focus:border-[#B59B79] focus:outline-none dark:border-[#F8F6F1]/25 dark:text-[#F8F6F1] dark:placeholder:text-[#B6B8AE]/70"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={newsletterState === 'submitting'}
+                className="loome-btn-primary shrink-0 disabled:opacity-60"
+              >
+                <span data-preview-field-path="common.newsletterSubscribeLabel">
+                  {newsletterButtonLabel}
+                </span>
+                <ArrowRight className="h-3.5 w-3.5 stroke-[1.5]" />
+              </button>
+            </form>
+
+            {newsletterState === 'success' && (
               <div
                 role="status"
-                data-preview-static="newsletter-success"
-                className="flex items-center gap-3 border border-[#747B65]/40 bg-[#F8F6F1] px-5 py-4 text-sm text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+                aria-live="polite"
+                className="mt-4 flex items-center gap-3 border border-[#747B65]/40 bg-[#F8F6F1] px-4 py-3 text-xs text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
               >
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#747B65] text-[#F8F6F1]">
-                  <Check className="h-3.5 w-3.5" />
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#747B65] text-[#F8F6F1]">
+                  <Check className="h-3 w-3" />
                 </span>
-                <span>Welcome to the LOOMÉ Atelier list. Seasonal editions await.</span>
+                <span>You are subscribed to LOOMÉ Atelier correspondence.</span>
               </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="flex flex-col gap-3 sm:flex-row sm:items-end">
-                <div className="flex-1">
-                  <label
-                    htmlFor="loome-newsletter-email"
-                    data-preview-static="newsletter-email-label"
-                    className="sr-only"
-                  >
-                    Email address
-                  </label>
-                  <input
-                    id="loome-newsletter-email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    data-preview-field-path="common.newsletterEmailPlaceholder"
-                    placeholder={newsletterPlaceholder}
-                    className="w-full border-0 border-b border-[#262923]/30 bg-transparent px-1 py-3.5 text-sm text-[#262923] placeholder:text-[#65685E]/75 focus:border-[#B59B79] focus:outline-none dark:border-[#F8F6F1]/25 dark:text-[#F8F6F1] dark:placeholder:text-[#B6B8AE]/70"
-                  />
-                </div>
-                <button type="submit" className="loome-btn-primary shrink-0">
-                  <span data-preview-field-path="common.newsletterSubscribeLabel">
-                    {newsletterButtonLabel}
-                  </span>
-                  <ArrowRight className="h-3.5 w-3.5 stroke-[1.5]" />
-                </button>
-              </form>
             )}
+
+            {(newsletterState === 'unavailable' || newsletterState === 'error') && (
+              <div
+                role="status"
+                aria-live="polite"
+                className="mt-4 flex items-start gap-2.5 border border-[#B59B79]/50 bg-[#F8F6F1]/90 px-4 py-3 text-xs leading-relaxed text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+              >
+                <Info className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[#B59B79]" aria-hidden="true" />
+                <span>
+                  {newsletterState === 'unavailable'
+                    ? 'Automated newsletter signup is not connected to a mailing service yet.'
+                    : 'We could not register your email right now.'}{' '}
+                  {contactEmail && (
+                    <a
+                      href={`mailto:${contactEmail}?subject=${encodeURIComponent('Newsletter Subscription Request')}&body=${encodeURIComponent(`Please add ${email.trim()} to the LOOMÉ mailing list.`)}`}
+                      className="font-medium underline underline-offset-4 hover:text-[#747B65]"
+                    >
+                      Email {contactEmail} to join directly
+                    </a>
+                  )}
+                </span>
+              </div>
+            )}
+
             <p
               data-preview-static="newsletter-footnote"
-              className="mt-3 text-[11px] tracking-wide text-[#65685E]/80 dark:text-[#B6B8AE]/70"
+              className="mt-3 text-[11px] tracking-wide text-[#595C52]/80 dark:text-[#B6B8AE]/70"
             >
               Thoughtful dispatches only. Unsubscribe effortlessly at any time.
             </p>
@@ -216,7 +312,7 @@ export default function LoomeFooter() {
                 {shortDescription}
               </p>
 
-              {/* Social Icons — always mounted with literal field paths for strict Fivora contract */}
+              {/* Social Icons — always mounted with literal field paths */}
               <div className="mt-7 flex flex-wrap items-center gap-2.5">
                 <a
                   href={contentText(rawSocial.instagram) || 'https://instagram.com'}
@@ -282,6 +378,8 @@ export default function LoomeFooter() {
                   const labelEl =
                     item.id === 'home' ? (
                       <span data-preview-field-path="common.navLabels.home">{label}</span>
+                    ) : item.id === 'shop' ? (
+                      <span data-preview-field-path="common.navLabels.shop">{label}</span>
                     ) : item.id === 'services' ? (
                       <span data-preview-field-path="common.navLabels.services">{label}</span>
                     ) : item.id === 'about_us' ? (
@@ -310,7 +408,7 @@ export default function LoomeFooter() {
               </ul>
             </div>
 
-            {/* Column 3: Collections Shortcuts */}
+            {/* Column 3: Collections Shortcuts — Cross-Page Working Category Links */}
             <div className="lg:col-span-3">
               <h3
                 data-preview-static="footer-collections-heading"
@@ -322,7 +420,12 @@ export default function LoomeFooter() {
                 {SHOP_SHORTCUTS.map((link) => (
                   <li key={link.label}>
                     <a
-                      href={link.href}
+                      href={collectionShortcutHref}
+                      data-target-page={hasShopPage ? 'shop' : undefined}
+                      onClick={(e) => {
+                        if (isShopPage || (!hasShopPage && isHome)) e.preventDefault();
+                        handleShortcutClick(link.category);
+                      }}
                       data-preview-static={`footer-shortcut-${link.label}`}
                       className="inline-block transition-colors hover:text-[#B59B79]"
                     >
@@ -435,7 +538,7 @@ export default function LoomeFooter() {
                   data-preview-static="footer-legal-shipping"
                   className="transition-colors hover:text-[#F8F6F1]"
                 >
-                  Shipping & Returns
+                  Shipping &amp; Returns
                 </a>
               )}
               <button

@@ -24,6 +24,7 @@
     "structure": {
       "pages": [
         "home",
+        "shop",
         "about_us",
         "services",
         "contact"
@@ -61,6 +62,7 @@
   "requirements": {
     "requiredPages": [
       "home",
+      "shop",
       "about_us",
       "services",
       "contact"
@@ -99,7 +101,8 @@
       "logoUrl": "/loome-monogram.svg",
       "headerCtaLabel": "Private Atelier",
       "navLabels": {
-        "home": "Shop",
+        "home": "Home",
+        "shop": "Shop",
         "services": "Collections",
         "about_us": "About",
         "contact": "Contact"
@@ -319,6 +322,11 @@
           "imageUrl": "/images/cat-fabrics.jpg"
         }
       ]
+    },
+    "shopPage": {
+      "eyebrow": "THE COMPLETE ARCHIVE",
+      "heading": "Shop Fine Textiles",
+      "intro": "Explore our complete curation of Belgian flax drapery, stonewashed European linen bedding, architectural upholstery weaves, and atelier fabrics by the yard."
     },
     "about": {
       "heading": "Woven with Quiet Reverence for Material & Light",

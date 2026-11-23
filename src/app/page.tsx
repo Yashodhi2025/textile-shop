@@ -98,6 +98,7 @@ export default function HomePage() {
           />
         }
         products={newArrivals}
+        filterPool={allProducts}
         showCategoryFilter
         surfaceClassName="border-t border-[#262923]/8 dark:border-[#F8F6F1]/8"
       />

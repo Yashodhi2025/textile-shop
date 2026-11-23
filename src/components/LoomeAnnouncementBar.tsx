@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { contentList, contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
@@ -38,16 +39,22 @@ export default function LoomeAnnouncementBar() {
     return () => window.clearInterval(timer);
   }, [count, paused]);
 
+  const pathname = usePathname() || '/';
+  const isHome = pathname === '/' || pathname === '';
+
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
     : siteData.template?.structure?.pages || ['home', 'about_us', 'services', 'contact'];
 
   const resolveLink = (href: string) => {
     if (!href) return '#';
-    if (href.startsWith('#') || /^https?:\/\//i.test(href)) return href;
+    if (/^https?:\/\//i.test(href)) return href;
+    if (href.startsWith('#')) {
+      return isHome ? href : `${withBasePath('/')}${href}`;
+    }
     const clean = href.replace(/^\/+|\/+$/g, '');
     if (['about_us', 'services', 'contact'].includes(clean) && !requiredPages.includes(clean)) {
-      return '#categories';
+      return isHome ? '#categories' : `${withBasePath('/')}#categories`;
     }
     return withBasePath(href);
   };

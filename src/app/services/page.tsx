@@ -6,6 +6,7 @@ import {
   contentList,
   contentObject,
   contentText,
+  useProducts,
   useServices,
   useSiteData,
 } from '@/lib/siteDataContext';
@@ -17,9 +18,16 @@ export default function ServicesPage() {
   const siteData = useSiteData();
   const content = contentObject(siteData.content);
   const common = contentObject(content.common);
+  const shop = contentObject((siteData as Record<string, unknown>).shop);
   const page = contentObject(content.servicesPage);
   const services = useServices();
-  const defaultCurrency = contentText(common.currency) || 'USD';
+  const products = useProducts();
+  const firstProductCurrency = contentText(contentObject(products[0]).currency);
+  const defaultCurrency =
+    contentText(common.currency) ||
+    contentText(shop.currency) ||
+    firstProductCurrency ||
+    'USD';
 
   return (
     <div data-preview-page-key="services" className="w-full overflow-x-clip">

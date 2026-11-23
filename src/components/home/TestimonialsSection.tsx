@@ -79,23 +79,23 @@ export default function TestimonialsSection() {
 
         <div className="mt-14">
           <div className="relative mx-auto max-w-3xl text-center">
-            <div
+            <p
               aria-hidden="true"
               data-preview-static="testimonial-quote-mark"
-              className="pointer-events-none select-none font-serif text-7xl leading-none text-[#B59B79]/55"
+              className="pointer-events-none m-0 select-none font-serif text-7xl leading-none text-[#B59B79]/55"
             >
               &ldquo;
-            </div>
+            </p>
 
-            <div
+            <p
               data-preview-static="testimonial-stars"
-              className="mt-2 flex items-center justify-center gap-1.5"
+              className="mt-2 mb-0 flex items-center justify-center gap-1.5"
               aria-label="5 out of 5 stars"
             >
               {[0, 1, 2, 3, 4].map((star) => (
                 <Star key={star} className="h-3.5 w-3.5 fill-[#B59B79] text-[#B59B79]" />
               ))}
-            </div>
+            </p>
 
             {/* Smooth horizontal slider track — keeps all slides visible & clickable for Fivora */}
             <div className="relative mt-7 overflow-hidden">

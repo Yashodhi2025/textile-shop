@@ -47,10 +47,11 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
     >
       {/* Editorial 3:4 Photography Frame */}
       <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#E8E0D5]/50 dark:bg-[#20231D]">
-        <a
-          href={detailHref}
-          data-preview-static="Open product detail page"
-          className="block h-full w-full"
+        <div
+          onClick={() => {
+            window.location.href = detailHref;
+          }}
+          className="block h-full w-full cursor-pointer"
         >
           <img
             src={withBasePath(product.imageUrl)}
@@ -60,7 +61,7 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
             className="h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.06]"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#262923]/30 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-        </a>
+        </div>
 
         {/* Top Left Editorial Badge — always visible & clickable in Fivora */}
         <span
@@ -111,6 +112,14 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
           >
             <ShoppingBag className="h-3.5 w-3.5 stroke-[1.5]" />
           </button>
+          <a
+            href={detailHref}
+            aria-label={`View details for ${product.name}`}
+            data-preview-static="Open the stable live product detail page"
+            className="flex h-[36px] items-center justify-center bg-[#F8F6F1]/95 px-2.5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#262923] no-underline transition-colors hover:bg-[#262923] hover:text-[#F8F6F1]"
+          >
+            Details
+          </a>
         </div>
       </div>
 
@@ -133,10 +142,12 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
           )}
         </div>
 
-        <a
-          href={detailHref}
-          data-preview-static="Open product detail page"
-          className="mt-1.5 block text-[#262923] no-underline transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+        <button
+          type="button"
+          onClick={() => {
+            window.location.href = detailHref;
+          }}
+          className="mt-1.5 block w-full border-0 bg-transparent p-0 text-left text-[#262923] transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
         >
           <EditableText
             as="h3"
@@ -150,7 +161,7 @@ export default function LoomeProductCard({ product }: LoomeProductCardProps) {
             color="inherit"
             className="m-0"
           />
-        </a>
+        </button>
 
         <EditableText
           as="p"

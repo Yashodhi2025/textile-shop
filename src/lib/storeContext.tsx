@@ -129,6 +129,7 @@ interface LoomeStoreContextValue {
 }
 
 const WISHLIST_STORAGE_KEY = 'loome_wishlist_v1';
+const PENDING_CATEGORY_KEY = 'loome_pending_category_v1';
 
 const LoomeStoreContext = createContext<LoomeStoreContextValue | null>(null);
 
@@ -148,6 +149,11 @@ export function LoomeStoreProvider({ children }: { children: React.ReactNode }) 
         if (Array.isArray(parsed)) {
           setWishlistIds(parsed.filter((item): item is string => typeof item === 'string'));
         }
+      }
+      const pendingCategory = window.sessionStorage.getItem(PENDING_CATEGORY_KEY);
+      if (pendingCategory) {
+        setActiveCategory(pendingCategory);
+        window.sessionStorage.removeItem(PENDING_CATEGORY_KEY);
       }
     } catch {
       // Ignore storage access errors in restricted environments

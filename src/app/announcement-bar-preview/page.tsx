@@ -1,10 +1,28 @@
-﻿export default function AnnouncementBarPreviewPage() {
+export default function AnnouncementBarPreviewPage() {
   return (
-    <section id="preview-details" data-preview-page-key="announcement_bar_preview"
-      style={{ maxWidth: 960, margin: '0 auto', padding: 'clamp(3rem, 8vw, 7rem) 1.5rem', textAlign: 'center' }}>
-      <p style={{ fontSize: '0.75rem', letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 16 }}>A fresh perspective</p>
-      <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.75rem)', lineHeight: 1.15, marginBottom: 24 }}>Good things, thoughtfully chosen.</h1>
-      <p style={{ maxWidth: 540, margin: '0 auto', lineHeight: 1.8 }}>Discover the latest arrivals, enjoy a little extra with every order, and find something to make your day.</p>
+    <section
+      id="preview-details"
+      data-preview-page-key="announcement_bar_preview"
+      className="mx-auto max-w-3xl px-6 py-20 text-center sm:py-28"
+    >
+      <p
+        data-preview-static="announcement-preview-eyebrow"
+        className="mb-4 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+      >
+        LOOMÉ Atelier Preview
+      </p>
+      <h1
+        data-preview-static="announcement-preview-heading"
+        className="mb-6 font-serif text-4xl font-light leading-[1.08] tracking-tight text-[#262923] dark:text-[#F8F6F1] sm:text-5xl"
+      >
+        Good things, thoughtfully woven.
+      </h1>
+      <p
+        data-preview-static="announcement-preview-copy"
+        className="mx-auto max-w-lg text-sm leading-[1.85] text-[#595C52] dark:text-[#B6B8AE]"
+      >
+        Preview your rotating storefront announcements above. Edit badges, promotional copy, and destination links live from the Fivora editor.
+      </p>
     </section>
   );
 }
