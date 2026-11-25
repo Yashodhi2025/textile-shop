@@ -206,10 +206,13 @@ export default function LoomeFooter() {
   };
 
   return (
-    <footer data-design-section="footer" className="w-full">
-      {/* Editorial Pre-Footer Newsletter Band — Rich Dark Mocha */}
-      <section className="border-t border-[#C8A98B]/20 bg-[#2C2420] px-4 py-18 text-[#F2E9DE] sm:px-8 lg:px-12 lg:py-22">
-        <div className="mx-auto grid max-w-[1360px] grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-16">
+    <footer data-design-section="footer" className="w-full font-sans">
+      {/* Editorial Pre-Footer Newsletter Band — Soft Warm Walnut with 48–56px Vertical Padding */}
+      <section
+        data-testid="footer-newsletter-section"
+        className="border-t border-[var(--loome-footer-border)] bg-[var(--loome-newsletter-bg)] px-5 py-12 text-[var(--loome-footer-text)] sm:px-8 lg:px-12 lg:py-14"
+      >
+        <div className="mx-auto grid max-w-[1320px] grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-6">
             <EditableText
               as="p"
@@ -219,26 +222,30 @@ export default function LoomeFooter() {
               size="0.6875rem"
               weight={600}
               transform="uppercase"
-              letterSpacing="0.26em"
-              color="#C8A98B"
+              letterSpacing="0.22em"
+              color="var(--loome-footer-accent)"
               className="m-0"
             />
             <h2
               data-preview-field-path="common.footerHeading"
-              className="mt-3 font-heading text-4xl font-extrabold leading-[1.06] tracking-[-0.025em] text-[#F2E9DE] sm:text-5xl"
+              data-testid="footer-newsletter-heading"
+              className="mt-2.5 mb-0 font-heading text-[32px] font-extrabold leading-[1.15] tracking-[-0.02em] text-[var(--loome-footer-text)] lg:text-[36px]"
             >
               {footerHeading}
             </h2>
             <p
               data-preview-field-path="common.newsletterDescription"
-              className="mt-4 max-w-lg text-sm leading-relaxed text-[#C7B6A6]"
+              className="mt-3 mb-0 max-w-lg text-sm leading-relaxed text-[var(--loome-footer-muted)]"
             >
               {newsletterDescription}
             </p>
           </div>
 
           <div className="lg:col-span-6">
-            <form onSubmit={handleSubscribe} className="flex flex-col gap-3 sm:flex-row sm:items-end">
+            <form
+              onSubmit={handleSubscribe}
+              className="flex flex-col gap-3 sm:flex-row sm:items-stretch"
+            >
               <div className="flex-1">
                 <label
                   htmlFor="loome-newsletter-email"
@@ -258,18 +265,18 @@ export default function LoomeFooter() {
                   }}
                   data-preview-field-path="common.newsletterEmailPlaceholder"
                   placeholder={newsletterPlaceholder}
-                  className="w-full rounded-[11px] border border-[#C8A98B]/30 bg-[#201C1A]/55 px-4 py-3.5 text-sm text-[#F2E9DE] placeholder:text-[#C7B6A6]/75 focus:border-[#C8A98B] focus:outline-none"
+                  className="h-12 w-full rounded-[11px] border border-[var(--loome-footer-border)] bg-[var(--loome-footer-input-bg)] px-4 text-sm text-[var(--loome-footer-text)] placeholder:text-[var(--loome-footer-muted)]/75 focus:border-[var(--loome-footer-accent)] focus:outline-none"
                 />
               </div>
               <button
                 type="submit"
                 disabled={newsletterState === 'submitting'}
-                className="group loome-btn-primary shrink-0 disabled:opacity-60"
+                className="group inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-[11px] border-0 bg-[var(--loome-footer-accent)] px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#2B201A] transition-colors hover:bg-[var(--loome-footer-text)] hover:text-[#2B201A] disabled:opacity-60"
               >
                 <span data-preview-field-path="common.newsletterSubscribeLabel">
                   {newsletterButtonLabel}
                 </span>
-                <ArrowRight className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-1" />
+                <ArrowRight className="h-3.5 w-3.5 stroke-[1.8] transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </form>
 
@@ -277,9 +284,9 @@ export default function LoomeFooter() {
               <div
                 role="status"
                 aria-live="polite"
-                className="mt-4 flex items-center gap-3 rounded-[11px] border border-[#C8A98B]/40 bg-[#201C1A]/85 px-4 py-3 text-xs text-[#F2E9DE]"
+                className="mt-3.5 flex items-center gap-3 rounded-[11px] border border-[var(--loome-footer-accent)]/40 bg-[var(--loome-footer-input-bg)] px-4 py-3 text-xs text-[var(--loome-footer-text)]"
               >
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#C8A98B] text-[#201C1A]">
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--loome-footer-accent)] text-[#2B201A]">
                   <Check className="h-3 w-3" />
                 </span>
                 <span>You are subscribed to {siteTitle} Atelier correspondence.</span>
@@ -290,9 +297,12 @@ export default function LoomeFooter() {
               <div
                 role="status"
                 aria-live="polite"
-                className="mt-4 flex items-start gap-2.5 rounded-[11px] border border-[#C8A98B]/45 bg-[#201C1A]/85 px-4 py-3 text-xs leading-relaxed text-[#F2E9DE]"
+                className="mt-3.5 flex items-start gap-2.5 rounded-[11px] border border-[var(--loome-footer-accent)]/45 bg-[var(--loome-footer-input-bg)] px-4 py-3 text-xs leading-relaxed text-[var(--loome-footer-text)]"
               >
-                <Info className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[#C8A98B]" aria-hidden="true" />
+                <Info
+                  className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[var(--loome-footer-accent)]"
+                  aria-hidden="true"
+                />
                 <span>
                   {newsletterState === 'unavailable'
                     ? 'Automated newsletter signup is not connected to a mailing service yet.'
@@ -300,7 +310,7 @@ export default function LoomeFooter() {
                   {contactEmail && (
                     <a
                       href={`mailto:${contactEmail}?subject=${encodeURIComponent('Newsletter Subscription Request')}&body=${encodeURIComponent(`Please add ${email.trim()} to the ${siteTitle} mailing list.`)}`}
-                      className="font-medium text-[#C8A98B] underline underline-offset-4 hover:text-[#F2E9DE]"
+                      className="font-medium text-[var(--loome-footer-accent)] underline underline-offset-4 hover:text-[var(--loome-footer-text)]"
                     >
                       Email {contactEmail} to join directly
                     </a>
@@ -314,24 +324,27 @@ export default function LoomeFooter() {
               data-preview-field-path="common.newsletterFootnote"
               defaultValue={newsletterFootnote}
               fontFamily="body"
-              size="0.6875rem"
-              color="rgba(199, 182, 166, 0.85)"
-              className="mt-3 mb-0 tracking-wide"
+              size="0.75rem"
+              color="var(--loome-footer-muted)"
+              className="mt-3 mb-0 opacity-85"
             />
           </div>
         </div>
       </section>
 
-      {/* Deep Espresso Multi-Column Luxury Footer */}
-      <div className="border-t border-[#C8A98B]/14 bg-[#201C1A] px-4 pb-12 pt-18 text-[#F2E9DE] sm:px-8 lg:px-12">
-        <div className="mx-auto max-w-[1360px]">
-          <div className="grid grid-cols-1 gap-12 border-b border-[#C8A98B]/16 pb-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
+      {/* Softer Walnut Brown Multi-Column Footer with 48px Top Padding */}
+      <div
+        data-testid="footer-main-band"
+        className="border-t border-[var(--loome-footer-border)] bg-[var(--loome-footer-bg)] px-5 pb-10 pt-12 text-[var(--loome-footer-text)] sm:px-8 lg:px-12"
+      >
+        <div className="mx-auto max-w-[1320px]">
+          <div className="grid grid-cols-1 items-start gap-10 border-b border-[var(--loome-footer-border)] pb-12 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
             {/* Column 1: Brand Identity */}
-            <div className="lg:col-span-4">
+            <div data-testid="footer-col-1" className="lg:col-span-4">
               <button
                 type="button"
                 onClick={() => navigate('/')}
-                className="inline-flex items-center gap-3 border-0 bg-transparent p-0 text-[#F2E9DE]"
+                className="inline-flex items-center gap-3 border-0 bg-transparent p-0 text-[var(--loome-footer-text)]"
               >
                 <img
                   src={withBasePath(logoUrl)}
@@ -341,7 +354,7 @@ export default function LoomeFooter() {
                 />
                 <span
                   data-preview-field-path="common.websiteTitle"
-                  className="font-serif text-3xl font-normal tracking-[0.28em]"
+                  className="font-heading text-2xl font-bold tracking-[0.22em]"
                 >
                   {siteTitle}
                 </span>
@@ -351,29 +364,29 @@ export default function LoomeFooter() {
                 data-preview-field-path="common.footerTagline"
                 defaultValue={footerTagline}
                 fontFamily="body"
-                size="0.625rem"
+                size="0.6875rem"
                 weight={600}
                 transform="uppercase"
-                letterSpacing="0.24em"
-                color="#C8A98B"
-                className="mt-2 mb-0"
+                letterSpacing="0.2em"
+                color="var(--loome-footer-accent)"
+                className="mt-2.5 mb-0"
               />
               <p
                 data-preview-field-path="common.shortDescription"
-                className="mt-5 max-w-sm text-sm leading-relaxed text-[#C7B6A6]"
+                className="mt-4 mb-0 max-w-sm text-sm leading-relaxed text-[var(--loome-footer-muted)]"
               >
                 {shortDescription}
               </p>
 
               {/* Social Icons — softly rounded 10px corners */}
-              <div className="mt-7 flex flex-wrap items-center gap-2.5">
+              <div className="mt-6 flex flex-wrap items-center gap-2.5">
                 <a
                   href={contentText(rawSocial.instagram) || 'https://instagram.com'}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-preview-field-path="common.socialMedia.instagram"
                   aria-label="Instagram"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/25 bg-[#3B302B]/45 text-[#F2E9DE]/85 transition-all hover:-translate-y-0.5 hover:border-[#C8A98B] hover:text-[#C8A98B]"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--loome-footer-border)] bg-[var(--loome-footer-surface-chip)] text-[var(--loome-footer-text)]/90 transition-all hover:-translate-y-0.5 hover:border-[var(--loome-footer-accent)] hover:text-[var(--loome-footer-accent)]"
                 >
                   {renderSocialSvg('instagram')}
                 </a>
@@ -383,7 +396,7 @@ export default function LoomeFooter() {
                   rel="noopener noreferrer"
                   data-preview-field-path="common.socialMedia.twitter"
                   aria-label="Twitter"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/25 bg-[#3B302B]/45 text-[#F2E9DE]/85 transition-all hover:-translate-y-0.5 hover:border-[#C8A98B] hover:text-[#C8A98B]"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--loome-footer-border)] bg-[var(--loome-footer-surface-chip)] text-[var(--loome-footer-text)]/90 transition-all hover:-translate-y-0.5 hover:border-[var(--loome-footer-accent)] hover:text-[var(--loome-footer-accent)]"
                 >
                   {renderSocialSvg('twitter')}
                 </a>
@@ -393,7 +406,7 @@ export default function LoomeFooter() {
                   rel="noopener noreferrer"
                   data-preview-field-path="common.socialMedia.linkedin"
                   aria-label="LinkedIn"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/25 bg-[#3B302B]/45 text-[#F2E9DE]/85 transition-all hover:-translate-y-0.5 hover:border-[#C8A98B] hover:text-[#C8A98B]"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--loome-footer-border)] bg-[var(--loome-footer-surface-chip)] text-[var(--loome-footer-text)]/90 transition-all hover:-translate-y-0.5 hover:border-[var(--loome-footer-accent)] hover:text-[var(--loome-footer-accent)]"
                 >
                   {renderSocialSvg('linkedin')}
                 </a>
@@ -403,7 +416,7 @@ export default function LoomeFooter() {
                   rel="noopener noreferrer"
                   data-preview-field-path="common.socialMedia.facebook"
                   aria-label="Facebook"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/25 bg-[#3B302B]/45 text-[#F2E9DE]/85 transition-all hover:-translate-y-0.5 hover:border-[#C8A98B] hover:text-[#C8A98B]"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--loome-footer-border)] bg-[var(--loome-footer-surface-chip)] text-[var(--loome-footer-text)]/90 transition-all hover:-translate-y-0.5 hover:border-[var(--loome-footer-accent)] hover:text-[var(--loome-footer-accent)]"
                 >
                   {renderSocialSvg('facebook')}
                 </a>
@@ -411,20 +424,20 @@ export default function LoomeFooter() {
             </div>
 
             {/* Column 2: Maison Navigation */}
-            <div className="lg:col-span-2">
+            <div data-testid="footer-col-2" className="lg:col-span-2 lg:pt-1">
               <EditableText
                 as="h3"
                 data-preview-field-path="common.footerExploreHeading"
                 defaultValue={contentText(common.footerExploreHeading) || 'Maison'}
-                fontFamily="body"
+                fontFamily="heading"
                 size="0.6875rem"
-                weight={600}
+                weight={700}
                 transform="uppercase"
-                letterSpacing="0.24em"
-                color="#C8A98B"
+                letterSpacing="0.22em"
+                color="var(--loome-footer-accent)"
                 className="m-0"
               />
-              <ul className="mt-6 space-y-3.5 text-sm text-[#F2E9DE]/80">
+              <ul className="mt-5 mb-0 list-none space-y-3 p-0 text-sm text-[var(--loome-footer-text)]/88">
                 {FOOTER_NAV.map((item) => {
                   const enabled = item.id === 'home' || requiredPages.includes(item.id);
                   const label = contentText(navLabels[item.id]) || item.fallbackLabel;
@@ -451,7 +464,7 @@ export default function LoomeFooter() {
                           <button
                             type="button"
                             onClick={() => navigate(pageRoute(item.id))}
-                            className="inline-block border-0 bg-transparent p-0 text-left text-inherit transition-colors hover:text-[#C8A98B]"
+                            className="inline-block border-0 bg-transparent p-0 text-left text-inherit transition-colors hover:text-[var(--loome-footer-accent)]"
                           >
                             {labelEl}
                           </button>
@@ -466,27 +479,27 @@ export default function LoomeFooter() {
             </div>
 
             {/* Column 3: Collections Shortcuts — Fully Editable Collection Links */}
-            <div className="lg:col-span-3">
+            <div data-testid="footer-col-3" className="lg:col-span-3 lg:pt-1">
               <EditableText
                 as="h3"
                 data-preview-field-path="common.footerCollectionsHeading"
                 defaultValue={footerCollectionsHeading}
-                fontFamily="body"
+                fontFamily="heading"
                 size="0.6875rem"
-                weight={600}
+                weight={700}
                 transform="uppercase"
-                letterSpacing="0.24em"
-                color="#C8A98B"
+                letterSpacing="0.22em"
+                color="var(--loome-footer-accent)"
                 className="m-0"
               />
               <ul
                 data-preview-list-path="common.footerCollections"
-                className="mt-6 space-y-3.5 text-sm text-[#F2E9DE]/82"
+                className="mt-5 mb-0 list-none space-y-3 p-0 text-sm text-[var(--loome-footer-text)]/88"
               >
                 {footerCollections.length === 0 ? (
                   <li
                     data-preview-static="footer-collections-empty"
-                    className="text-xs text-[#C7B6A6]/75"
+                    className="text-xs text-[var(--loome-footer-muted)]/75"
                   >
                     Add collection links in your Fivora editor.
                   </li>
@@ -513,7 +526,7 @@ export default function LoomeFooter() {
                               handleShortcutClick(link.category);
                             }
                           }}
-                          className="inline-block no-underline transition-colors hover:text-[#C8A98B]"
+                          className="inline-block text-inherit no-underline transition-colors hover:text-[var(--loome-footer-accent)]"
                         >
                           <span data-preview-field-path={`common.footerCollections[${link.index}].label`}>
                             {link.label}
@@ -527,62 +540,65 @@ export default function LoomeFooter() {
             </div>
 
             {/* Column 4: Atelier & Care */}
-            <div className="lg:col-span-3">
+            <div data-testid="footer-col-4" className="lg:col-span-3 lg:pt-1">
               <EditableText
                 as="h3"
                 data-preview-field-path="common.footerContactHeading"
                 defaultValue={contentText(common.footerContactHeading) || 'Atelier & Care'}
-                fontFamily="body"
+                fontFamily="heading"
                 size="0.6875rem"
-                weight={600}
+                weight={700}
                 transform="uppercase"
-                letterSpacing="0.24em"
-                color="#C8A98B"
+                letterSpacing="0.22em"
+                color="var(--loome-footer-accent)"
                 className="m-0"
               />
-              <div className="mt-6 space-y-4 text-sm text-[#F2E9DE]/80">
+              <div className="mt-5 space-y-3.5 text-sm text-[var(--loome-footer-text)]/88">
                 <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-[#C8A98B]">
+                  <span className="mt-0.5 text-[var(--loome-footer-accent)]">
                     <EditableIcon name="mail" fieldPath="common.footerEmailIcon" size={15} />
                   </span>
                   <a
                     href={contactEmail ? `mailto:${contactEmail}` : '#'}
                     data-preview-field-path="contact.email"
-                    className="break-all transition-colors hover:text-[#F2E9DE]"
+                    className="break-all text-inherit no-underline transition-colors hover:text-[var(--loome-footer-accent)]"
                   >
                     {contactEmail || 'demo-atelier@loometextiles.lk'}
                   </a>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-[#C8A98B]">
+                  <span className="mt-0.5 text-[var(--loome-footer-accent)]">
                     <EditableIcon name="phone" fieldPath="common.footerPhoneIcon" size={15} />
                   </span>
                   <a
                     href={contactPhone ? `tel:${contactPhone}` : '#'}
                     data-preview-field-path="contact.phone"
-                    className="transition-colors hover:text-[#F2E9DE]"
+                    className="text-inherit no-underline transition-colors hover:text-[var(--loome-footer-accent)]"
                   >
                     {contactPhone || '+94 11 000 0194'}
                   </a>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-[#C8A98B]">
+                  <span className="mt-0.5 text-[var(--loome-footer-accent)]">
                     <EditableIcon name="map-pin" fieldPath="common.footerLocationIcon" size={15} />
                   </span>
-                  <span data-preview-field-path="contact.address" className="leading-relaxed">
+                  <span
+                    data-preview-field-path="contact.address"
+                    className="leading-relaxed text-[var(--loome-footer-muted)]"
+                  >
                     {contactAddress || 'Demo Showroom — 42 Flower Road, Colombo 07, Sri Lanka'}
                   </span>
                 </div>
 
-                <div className="pt-2">
+                <div className="pt-1.5">
                   <a
                     href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     data-preview-field-path="contact.whatsapp"
-                    className="inline-flex items-center gap-2 border-b border-[#C8A98B]/60 pb-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#C8A98B] transition-colors hover:border-[#F2E9DE] hover:text-[#F2E9DE]"
+                    className="inline-flex items-center gap-2 border-b border-[var(--loome-footer-accent)]/60 pb-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--loome-footer-accent)] no-underline transition-colors hover:border-[var(--loome-footer-text)] hover:text-[var(--loome-footer-text)]"
                   >
                     <span data-preview-field-path="contact.directMessageText">
                       {directMessageText}
@@ -595,18 +611,18 @@ export default function LoomeFooter() {
           </div>
 
           {/* Bottom Legal & Back-to-Top Row */}
-          <div className="flex flex-col items-center justify-between gap-5 pt-8 text-xs text-[#C7B6A6]/80 sm:flex-row">
+          <div className="flex flex-col items-center justify-between gap-5 pt-7 text-xs text-[var(--loome-footer-muted)] sm:flex-row">
             <p data-preview-field-path="common.copyright" className="m-0">
               {copyright}
             </p>
 
-            <div className="flex flex-wrap items-center gap-6">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:justify-end">
               <span data-target-page="textile_care">
                 {requiredPages.includes('textile_care') ? (
                   <button
                     type="button"
                     onClick={() => navigate(pageRoute('textile_care'))}
-                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F2E9DE]"
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[var(--loome-footer-text)]"
                   >
                     <span data-preview-field-path="common.navLabels.textile_care">
                       {contentText(navLabels.textile_care) || 'Textile Care'}
@@ -625,7 +641,7 @@ export default function LoomeFooter() {
                   <button
                     type="button"
                     onClick={() => navigate(pageRoute('services'))}
-                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F2E9DE]"
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[var(--loome-footer-text)]"
                   >
                     <span data-preview-field-path="common.footerTradeLabel">
                       {footerTradeLabel}
@@ -644,7 +660,7 @@ export default function LoomeFooter() {
                   <button
                     type="button"
                     onClick={() => navigate(pageRoute('shipping_returns'))}
-                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F2E9DE]"
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[var(--loome-footer-text)]"
                   >
                     <span data-preview-field-path="common.navLabels.shipping_returns">
                       {contentText(navLabels.shipping_returns) || 'Shipping & Returns'}
@@ -663,7 +679,7 @@ export default function LoomeFooter() {
                   <button
                     type="button"
                     onClick={() => navigate(pageRoute('faq'))}
-                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F2E9DE]"
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[var(--loome-footer-text)]"
                   >
                     <span data-preview-field-path="common.navLabels.faq">
                       {contentText(navLabels.faq) || 'FAQ'}
@@ -682,9 +698,9 @@ export default function LoomeFooter() {
                 onClick={scrollToTop}
                 aria-label="Back to top"
                 data-preview-static="back-to-top"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/28 bg-[#3B302B]/55 text-[#F2E9DE] transition-all hover:-translate-y-0.5 hover:border-[#C8A98B] hover:text-[#C8A98B]"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--loome-footer-border)] bg-[var(--loome-footer-surface-chip)] text-[var(--loome-footer-text)] transition-all hover:-translate-y-0.5 hover:border-[var(--loome-footer-accent)] hover:text-[var(--loome-footer-accent)]"
               >
-                <ArrowUp className="h-3.5 w-3.5 stroke-[1.5]" />
+                <ArrowUp className="h-3.5 w-3.5 stroke-[1.6]" />
               </button>
             </div>
           </div>
