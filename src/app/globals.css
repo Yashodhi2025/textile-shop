@@ -200,6 +200,34 @@ html.dark .loome-surface-beige,
   --loome-border: rgba(200, 169, 139, 0.22);
 }
 
+/* Warm Beige Commerce Surface (#EDE5DA) for Cart, Wishlist & Product Detail — adapts cleanly in Dark Mode */
+.loome-surface-commerce {
+  background-color: #EDE5DA;
+  color: #49382D;
+  --heading-color: #2C211B;
+  --page-text: #49382D;
+  --muted-text: #6E5B4E;
+  --color-text: #49382D;
+  --color-text-muted: #6E5B4E;
+  --card-bg: #FFFFFF;
+  --brand-primary: #B28B65;
+  --loome-border: rgba(73, 56, 45, 0.13);
+}
+
+html.dark .loome-surface-commerce,
+.dark .loome-surface-commerce {
+  background-color: #1A1614;
+  color: #F5EEE6;
+  --heading-color: #F5EEE6;
+  --page-text: #F5EEE6;
+  --muted-text: #C9B9AA;
+  --color-text: #F5EEE6;
+  --color-text-muted: #C9B9AA;
+  --card-bg: #28211D;
+  --brand-primary: #C8A98B;
+  --loome-border: rgba(200, 169, 139, 0.22);
+}
+
 /* Sticky Navbar adaptive frosted surface — warm ivory in Light Mode, deep espresso in Dark Mode */
 .loome-navbar-surface {
   background-color: #F7F3ED;

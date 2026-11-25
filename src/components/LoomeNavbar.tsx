@@ -23,7 +23,7 @@ export default function LoomeNavbar() {
   const siteData = useSiteData();
   const pathname = usePathname() || '/';
   const cart = useOptionalCart();
-  const { wishlistIds, openWishlist, openSearch, openAccount } = useLoomeStore();
+  const { wishlistIds, openSearch, openAccount } = useLoomeStore();
 
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -233,12 +233,21 @@ export default function LoomeNavbar() {
 
             <button
               type="button"
-              onClick={openWishlist}
+              onClick={() => {
+                setMobileOpen(false);
+                window.location.assign(withBasePath('/wishlist/'));
+              }}
               aria-label={`Saved wishlist (${wishlistCount} items)`}
+              aria-current={isRouteActive('/wishlist') ? 'page' : undefined}
+              data-target-page="wishlist"
               data-preview-static="header-wishlist-btn"
-              className="relative inline-flex h-10 w-10 items-center justify-center rounded-[10px] text-[#49382D] transition-colors hover:bg-[#E8DDD0] hover:text-[#2C211B] dark:text-[#F5EEE6]/85 dark:hover:bg-[#3B302B] dark:hover:text-[#C8A98B]"
+              className={`relative inline-flex h-10 w-10 items-center justify-center rounded-[10px] transition-colors hover:bg-[#E8DDD0] hover:text-[#2C211B] dark:hover:bg-[#3B302B] dark:hover:text-[#C8A98B] ${
+                isRouteActive('/wishlist')
+                  ? 'bg-[#E8DDD0] text-[#2C211B] dark:bg-[#3B302B] dark:text-[#C8A98B]'
+                  : 'text-[#49382D] dark:text-[#F5EEE6]/85'
+              }`}
             >
-              <Heart className="h-[18px] w-[18px] stroke-[1.6]" />
+              <Heart className={`h-[18px] w-[18px] stroke-[1.6] ${isRouteActive('/wishlist') ? 'fill-current' : ''}`} />
               {wishlistCount > 0 && (
                 <motion.span
                   key={wishlistCount}
@@ -384,12 +393,13 @@ export default function LoomeNavbar() {
                     type="button"
                     onClick={() => {
                       setMobileOpen(false);
-                      openWishlist();
+                      window.location.assign(withBasePath('/wishlist/'));
                     }}
+                    data-target-page="wishlist"
                     className="flex items-center justify-center gap-2 rounded-[10px] border border-[#49382D]/18 bg-white py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#49382D] transition-colors hover:border-[#B28B65] dark:border-[#C8A98B]/28 dark:bg-[#28211D] dark:text-[#F5EEE6]"
                   >
                     <Heart className="h-3.5 w-3.5 stroke-[1.6]" />
-                    Saved ({wishlistCount})
+                    Wishlist ({wishlistCount})
                   </button>
                 </div>
                 {requiredPages.includes('services') && (

@@ -27,11 +27,7 @@ import {
   resolveLoomeCurrency,
 } from '@/lib/storeContext';
 import { withBasePath } from '@/lib/utils';
-import {
-  LUXURY_EASE,
-  LuxuryHairline,
-  LuxuryReveal,
-} from '@/components/motion/LuxuryReveal';
+import { LUXURY_EASE, LuxuryReveal } from '@/components/motion/LuxuryReveal';
 
 export default function ShoppingBagView() {
   const siteData = useSiteData();
@@ -51,6 +47,8 @@ export default function ShoppingBagView() {
     : siteData.template?.structure?.pages || [
       'home',
       'shop',
+      'collections',
+      'wishlist',
       'cart',
       'checkout',
       'about_us',
@@ -58,7 +56,6 @@ export default function ShoppingBagView() {
       'contact',
     ];
   const hasShopPage = requiredPages.includes('shop');
-  const hasServicesPage = requiredPages.includes('services');
 
   const catalogProducts = useMemo(
     () => rawProducts.map((item, idx) => normalizeLoomeProduct(item, idx)),
@@ -70,30 +67,30 @@ export default function ShoppingBagView() {
   const freeDeliveryThreshold = resolveFreeDeliveryThreshold(siteData);
   const hasDeliveryThreshold = freeDeliveryThreshold > 0;
 
-  // Editable page copy
-  const eyebrow = contentText(cartPage.eyebrow) || 'THE ATELIER BAG';
+  // Merchant-editable page copy
+  const eyebrow = contentText(cartPage.eyebrow) || 'SHOPPING CART';
   const heading = contentText(cartPage.heading) || 'Your Shopping Bag';
   const intro =
     contentText(cartPage.intro) ||
-    'Review your curated textile selection, refine quantities, and proceed smoothly to our private WhatsApp checkout.';
+    'Review your selected textiles, adjust quantities, and proceed to checkout.';
   const deliveryNote =
     contentText(cartPage.deliveryNote) ||
-    'Complimentary white-glove delivery on qualifying orders. Custom drapery measurements, fabric availability, and dispatch timing are confirmed personally with our atelier concierge.';
+    'Free island-wide delivery on qualifying orders. Delivery timing and custom sizing are confirmed directly at checkout.';
   const checkoutLabel = contentText(cartPage.checkoutLabel) || 'Proceed to Checkout';
   const continueShoppingLabel =
     contentText(cartPage.continueShoppingLabel) || 'Continue Shopping';
   const assuranceEyebrow =
-    contentText(cartPage.assuranceEyebrow) || 'Atelier Delivery & Care Assurance';
+    contentText(cartPage.assuranceEyebrow) || 'Delivery & Order Assurance';
   const emptyHeading =
-    contentText(cartPage.emptyHeading) || 'Your shopping bag is currently empty';
+    contentText(cartPage.emptyHeading) || 'Your shopping bag is empty';
   const emptyDescription =
     contentText(cartPage.emptyDescription) ||
-    'Discover our Belgian flax drapery, stonewashed European linen bedding, and heirloom fabrics by the yard to begin curating your rooms.';
+    'Browse our linen curtains, stonewashed bedding, and woven cushions to add items to your bag.';
 
   const hasItems = cart.items.length > 0;
   const allInquiryOnly = hasItems && cart.items.every((item) => item.showPrice === false);
   const subtotalDisplay = allInquiryOnly
-    ? 'Upon Inquiry'
+    ? 'Price on Request'
     : formatLoomePrice(cart.subtotal, storeCurrency);
   const deliveryRemaining = hasDeliveryThreshold
     ? Math.max(0, freeDeliveryThreshold - cart.subtotal)
@@ -107,32 +104,32 @@ export default function ShoppingBagView() {
   return (
     <div
       data-preview-page-key="cart"
-      className="loome-surface-cream min-h-[75vh] w-full"
+      className="loome-surface-commerce min-h-[75vh] w-full font-sans"
     >
-      {/* Compact Editorial Breadcrumb Strip */}
-      <div className="border-b border-[#201C1A]/10 bg-[#FAF5EE]/95 dark:border-[#C8A98B]/16 dark:bg-[#201C1A]">
-        <nav className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C9B9AA] sm:px-8 lg:px-12">
+      {/* Compact Breadcrumb Bar */}
+      <div className="border-b border-[#49382D]/10 bg-white/85 dark:border-[#C8A98B]/16 dark:bg-[#201C1A]">
+        <nav className="mx-auto flex max-w-[1260px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6E5B4E] dark:text-[#C9B9AA] sm:px-8 lg:px-10">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6E5B4E] transition-colors hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" className="text-[#C8A98B]">
+          <span aria-hidden="true" data-preview-static="cart-bc-sep-1" className="text-[#B28B65] dark:text-[#C8A98B]">
             /
           </span>
           {hasShopPage && (
             <>
               <button
                 type="button"
-                onClick={() => window.location.assign(withBasePath('/shop'))}
+                onClick={() => window.location.assign(withBasePath('/shop/'))}
                 data-target-page="shop"
-                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6E5B4E] transition-colors hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
               >
                 <span data-preview-field-path="common.navLabels.shop">{shopNavLabel}</span>
               </button>
-              <span aria-hidden="true" className="text-[#C8A98B]">
+              <span aria-hidden="true" data-preview-static="cart-bc-sep-2" className="text-[#B28B65] dark:text-[#C8A98B]">
                 /
               </span>
             </>
@@ -140,108 +137,79 @@ export default function ShoppingBagView() {
           <span
             aria-current="page"
             data-preview-static="cart-breadcrumb-current"
-            className="font-medium text-[#201C1A] dark:text-[#F5EEE6]"
+            className="font-semibold text-[#2C211B] dark:text-[#F5EEE6]"
           >
-            Shopping Bag
+            Cart
           </span>
         </nav>
       </div>
 
-      {/* Editorial Ivory / Champagne Shopping Bag Header */}
+      {/* Compact Cart Header */}
       <section
         data-design-section="cart-hero"
-        className="border-b border-[#201C1A]/10 bg-gradient-to-b from-[#E6D9C9]/85 via-[#F2E9DE] to-[#F2E9DE] dark:border-[#F2E9DE]/10 dark:from-[#2B2320] dark:via-[#201C1A] dark:to-[#191513]"
+        className="mx-auto max-w-[1260px] px-4 pb-5 pt-7 sm:px-8 sm:pt-9 lg:px-10"
       >
-        <div className="mx-auto max-w-[1320px] px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-11">
-          <LuxuryReveal className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
-            <div className="max-w-2xl">
-              <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
-                <EditableText
-                  as="p"
-                  data-preview-field-path="cartPage.eyebrow"
-                  defaultValue={eyebrow}
-                  fontFamily="body"
-                  size="0.6875rem"
-                  weight={600}
-                  transform="uppercase"
-                  letterSpacing="0.26em"
-                  color="primary"
-                  className="m-0"
-                />
-              </div>
-
+        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+          <div>
+            <EditableText
+              as="p"
+              data-preview-field-path="cartPage.eyebrow"
+              defaultValue={eyebrow}
+              fontFamily="body"
+              size="0.6875rem"
+              weight={600}
+              transform="uppercase"
+              letterSpacing="0.22em"
+              color="primary"
+              className="m-0"
+            />
+            <div className="mt-1.5 flex flex-wrap items-baseline gap-3">
               <EditableText
                 as="h1"
                 data-preview-field-path="cartPage.heading"
                 defaultValue={heading}
                 fontFamily="heading"
-                size="clamp(2.2rem, 3.9vw, 3.35rem)"
-                weight={300}
-                lineHeight={1.06}
-                letterSpacing="-0.02em"
+                size="clamp(1.75rem, 3vw, 2.35rem)"
+                weight={800}
+                lineHeight={1.12}
+                letterSpacing="-0.025em"
                 color="heading"
-                className="mt-2.5 mb-0"
-              />
-            </div>
-
-            <div className="max-w-md lg:text-right">
-              <EditableText
-                as="p"
-                data-preview-field-path="cartPage.intro"
-                defaultValue={intro}
-                fontFamily="body"
-                size="0.9rem"
-                lineHeight={1.72}
-                color="muted"
                 className="m-0"
               />
+              {hasItems && (
+                <span
+                  data-preview-static="cart-item-count-badge"
+                  className="rounded-full border border-[#49382D]/14 bg-white px-2.5 py-0.5 text-xs font-semibold text-[#49382D] dark:border-[#C8A98B]/24 dark:bg-[#28211D] dark:text-[#F5EEE6]"
+                >
+                  {cart.totalCount} {cart.totalCount === 1 ? 'item' : 'items'}
+                </span>
+              )}
             </div>
-          </LuxuryReveal>
-
-          {/* Compact 3-Step Atelier Flow Indicator */}
-          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[#201C1A]/10 pt-4 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#5E4E45] dark:border-[#F2E9DE]/10 dark:text-[#C7B6A6]">
-            <span
-              data-preview-static="cart-step-1"
-              className="inline-flex items-center gap-2 font-semibold text-[#201C1A] dark:text-[#F2E9DE]"
-            >
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#201C1A] text-[9px] text-[#F2E9DE] dark:bg-[#C8A98B] dark:text-[#201C1A]">
-                1
-              </span>
-              Shopping Bag
-            </span>
-            <span aria-hidden="true" className="text-[#C8A98B]">
-              /
-            </span>
-            <span data-preview-static="cart-step-2" className="inline-flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#201C1A]/25 text-[9px] dark:border-[#F2E9DE]/25">
-                2
-              </span>
-              Private Checkout
-            </span>
-            <span aria-hidden="true" className="text-[#C8A98B]">
-              /
-            </span>
-            <span data-preview-static="cart-step-3" className="inline-flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#201C1A]/25 text-[9px] dark:border-[#F2E9DE]/25">
-                3
-              </span>
-              WhatsApp Concierge
-            </span>
           </div>
+
+          <EditableText
+            as="p"
+            data-preview-field-path="cartPage.intro"
+            defaultValue={intro}
+            fontFamily="body"
+            size="0.875rem"
+            lineHeight={1.6}
+            color="muted"
+            className="m-0 max-w-md sm:text-right"
+          />
         </div>
       </section>
 
-      {/* Main Shopping Bag Content */}
+      {/* Main Shopping Cart Content */}
       <section
         data-design-section="cart-main"
-        className="mx-auto max-w-[1320px] px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12"
+        className="mx-auto max-w-[1260px] px-4 pb-12 sm:px-8 lg:px-10 lg:pb-14"
       >
         {!hasItems ? (
-          /* Refined Editorial Empty-Cart State */
-          <LuxuryReveal className="mx-auto max-w-xl rounded-xl border border-[#201C1A]/12 border-t-2 border-t-[#C8A98B] bg-[#FAF5EE] px-6 py-12 text-center shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F2E9DE]/12 dark:border-t-[#C8A98B] dark:bg-[#2B2320] sm:px-10 sm:py-14">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#C8A98B]/50 bg-[#F2E9DE] text-[#8D7667] dark:bg-[#191513] dark:text-[#C8A98B]">
-              <ShoppingBag className="h-5 w-5 stroke-[1.4]" />
+          /* Clean White Empty-Cart Card */
+          <LuxuryReveal className="mx-auto max-w-lg rounded-2xl border border-[#49382D]/12 bg-white px-6 py-12 text-center shadow-[0_6px_24px_rgba(73,56,45,0.06)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] sm:px-10">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#B28B65]/30 bg-[#EDE5DA]/75 text-[#B28B65] dark:border-[#C8A98B]/30 dark:bg-[#1A1614] dark:text-[#C8A98B]">
+              <ShoppingBag className="h-6 w-6 stroke-[1.6]" />
             </div>
 
             <div className="mt-5">
@@ -250,77 +218,67 @@ export default function ShoppingBagView() {
                 data-preview-field-path="cartPage.emptyHeading"
                 defaultValue={emptyHeading}
                 fontFamily="heading"
-                size="clamp(1.75rem, 3vw, 2.35rem)"
-                weight={300}
-                lineHeight={1.15}
+                size="clamp(1.35rem, 2.4vw, 1.75rem)"
+                weight={800}
+                lineHeight={1.2}
+                letterSpacing="-0.02em"
                 color="heading"
                 align="center"
                 className="m-0"
               />
             </div>
 
-            <div className="mx-auto mt-3 max-w-md">
+            <div className="mx-auto mt-2.5 max-w-sm">
               <EditableText
                 as="p"
                 data-preview-field-path="cartPage.emptyDescription"
                 defaultValue={emptyDescription}
                 fontFamily="body"
-                size="0.9rem"
-                lineHeight={1.75}
+                size="0.875rem"
+                lineHeight={1.65}
                 color="muted"
                 align="center"
                 className="m-0"
               />
             </div>
 
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href={continueHref}
+            <div className="mt-7 flex justify-center">
+              <button
+                type="button"
+                onClick={() => window.location.assign(continueHref)}
                 data-target-page={hasShopPage ? 'shop' : undefined}
-                data-preview-static="cart-empty-continue-shopping"
-                className="group loome-btn-primary no-underline"
+                data-testid="cart-empty-continue-shopping"
+                className="group inline-flex h-11 items-center justify-center gap-2 rounded-[11px] border-0 bg-[#49382D] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-[#F7F3ED] transition-colors hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]"
               >
-                Continue Shopping
-                <ArrowRight className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
-
-              {hasServicesPage && (
-                <a
-                  href={withBasePath('/services')}
-                  data-target-page="services"
-                  data-preview-static="cart-empty-atelier-services"
-                  className="loome-btn-outline no-underline"
-                >
-                  Atelier Services
-                </a>
-              )}
+                <span data-preview-field-path="cartPage.continueShoppingLabel">
+                  {continueShoppingLabel}
+                </span>
+                <ArrowRight className="h-3.5 w-3.5 stroke-[1.7] transition-transform duration-300 group-hover:translate-x-0.5" />
+              </button>
             </div>
           </LuxuryReveal>
         ) : (
-          /* Active Two-Column Shopping Bag Layout */
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-10 xl:gap-12">
-            {/* Left Column: Curated Cart Items List */}
+          /* Balanced Two-Column Cart Layout with White Cards on Warm Beige Background */
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start lg:gap-8">
+            {/* Left Column: Cart Items Card */}
             <div className="lg:col-span-8">
-              <LuxuryReveal className="rounded-xl border border-[#201C1A]/12 bg-[#FAF5EE] p-5 shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F2E9DE]/12 dark:bg-[#2B2320] sm:p-7 lg:p-8">
-                {/* Table Header */}
-                <div className="flex items-center justify-between border-b border-[#201C1A]/12 pb-3.5 dark:border-[#F2E9DE]/12">
-                  <div className="flex items-baseline gap-3">
-                    <h2 className="m-0 font-serif text-[23px] font-medium tracking-wide text-[#201C1A] dark:text-[#F2E9DE]">
-                      Selected Pieces
-                    </h2>
-                    <span className="rounded-full bg-[#E6D9C9] px-2.5 py-0.5 text-[10.5px] font-medium uppercase tracking-[0.16em] text-[#5E4E45] dark:bg-[#191513] dark:text-[#C7B6A6]">
-                      {cart.totalCount} {cart.totalCount === 1 ? 'Item' : 'Items'}
-                    </span>
-                  </div>
-
-                  <div className="hidden items-center gap-12 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-[#6B5B51] dark:text-[#C7B6A6] sm:flex">
-                    <span>Quantity</span>
-                    <span className="w-24 text-right">Line Total</span>
+              <div
+                data-testid="cart-items-card"
+                className="rounded-2xl border border-[#49382D]/12 bg-white p-5 shadow-[0_6px_24px_rgba(73,56,45,0.06)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] sm:p-6"
+              >
+                {/* Compact Column Header */}
+                <div className="flex items-center justify-between border-b border-[#49382D]/10 pb-3.5 dark:border-[#C8A98B]/16">
+                  <h2 className="m-0 font-heading text-base font-bold tracking-tight text-[#2C211B] dark:text-[#F5EEE6]">
+                    Items in Your Bag
+                  </h2>
+                  <div className="hidden items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6E5B4E] dark:text-[#C9B9AA] sm:flex">
+                    <span className="w-[104px] text-center">Qty</span>
+                    <span className="min-w-[116px] text-right">Total</span>
                   </div>
                 </div>
 
                 {/* Live Cart Rows */}
-                <ul className="m-0 list-none divide-y divide-[#201C1A]/10 p-0 dark:divide-[#F2E9DE]/10">
+                <ul className="m-0 list-none divide-y divide-[#49382D]/10 p-0 dark:divide-[#C8A98B]/14">
                   <AnimatePresence initial={false}>
                     {cart.items.map((item) => {
                       const itemKey = `${item.id}-${item.color || ''}-${item.size || ''}`;
@@ -334,75 +292,63 @@ export default function ShoppingBagView() {
                         <motion.li
                           key={itemKey}
                           layout={!prefersReducedMotion}
-                          initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+                          initial={prefersReducedMotion ? false : { opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={prefersReducedMotion ? undefined : { opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3, ease: LUXURY_EASE }}
-                          className="flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:gap-6"
+                          transition={{ duration: 0.25, ease: LUXURY_EASE }}
+                          className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:gap-5"
                         >
-                          {/* Product Thumbnail + Details */}
+                          {/* Thumbnail + Product Info */}
                           <div className="flex min-w-0 flex-1 gap-4">
                             <a
                               href={detailHref}
-                              className="h-28 w-24 shrink-0 overflow-hidden rounded-xl border border-[#201C1A]/10 bg-[#E6D9C9] dark:border-[#F2E9DE]/10 dark:bg-[#3B302B]"
+                              className="h-24 w-20 shrink-0 overflow-hidden rounded-xl border border-[#49382D]/10 bg-[#EDE5DA]/70 dark:border-[#C8A98B]/16 dark:bg-[#3B302B]"
                             >
                               <img
                                 src={withBasePath(item.image || '/images/prod-curtain-ivory.jpg')}
                                 alt={item.name}
-                                className="h-full w-full object-cover transition-transform duration-700 ease-luxury hover:scale-105"
+                                className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                               />
                             </a>
 
                             <div className="flex min-w-0 flex-1 flex-col justify-center">
                               <a
                                 href={detailHref}
-                                className="font-serif text-[20px] font-medium leading-snug text-[#201C1A] no-underline transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
+                                className="font-heading text-[15px] font-bold leading-snug text-[#2C211B] no-underline transition-colors hover:text-[#B28B65] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
                               >
                                 {item.name}
                               </a>
 
                               {/* Selected Color & Size */}
                               {(item.color || item.size) && (
-                                <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
-                                  {item.color && (
-                                    <span className="font-medium uppercase tracking-[0.14em] text-[#8D7667] dark:text-[#C8A98B]">
-                                      Tone: {item.color}
-                                    </span>
-                                  )}
+                                <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-xs text-[#6E5B4E] dark:text-[#C9B9AA]">
+                                  {item.color && <span>Color: {item.color}</span>}
                                   {item.color && item.size && (
-                                    <span aria-hidden="true" className="text-[#C8A98B]">
+                                    <span aria-hidden="true" className="text-[#B28B65]">
                                       ·
                                     </span>
                                   )}
-                                  {item.size && (
-                                    <span className="text-[#5E4E45] dark:text-[#C7B6A6]">
-                                      Size: {item.size}
-                                    </span>
-                                  )}
+                                  {item.size && <span>Size: {item.size}</span>}
                                 </div>
                               )}
 
-                              {/* Unit Price */}
-                              <div className="mt-1.5 flex items-baseline gap-2 text-xs">
-                                <span className="font-medium tabular-nums text-[#3B302B] dark:text-[#F2E9DE]">
+                              {/* Unit Price + Remove */}
+                              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+                                <span className="whitespace-nowrap font-semibold tabular-nums text-[#49382D] dark:text-[#E8DDD0]">
                                   {item.showPrice === false
-                                    ? 'Price Upon Inquiry'
-                                    : `${formatLoomePrice(item.price, storeCurrency)} each`}
+                                    ? 'Price on Request'
+                                    : formatLoomePrice(item.price, storeCurrency)}
                                 </span>
                                 {hasSavings && item.originalPrice && (
-                                  <span className="tabular-nums text-[#6B5B51] line-through dark:text-[#C7B6A6]">
+                                  <span className="whitespace-nowrap tabular-nums text-[#6E5B4E]/80 line-through dark:text-[#C9B9AA]/70">
                                     {formatLoomePrice(item.originalPrice, storeCurrency)}
                                   </span>
                                 )}
-                              </div>
-
-                              {/* Subtle Remove Action */}
-                              <div className="mt-2.5">
                                 <button
                                   type="button"
                                   onClick={() => cart.removeItem(item.id, item.size, item.color)}
                                   aria-label={`Remove ${item.name} from bag`}
-                                  className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[#6B5B51] transition-colors hover:text-[#9E3F2E] dark:text-[#C7B6A6] dark:hover:text-[#EAA597]"
+                                  className="inline-flex items-center gap-1 border-0 bg-transparent p-0 text-xs font-medium text-[#6E5B4E] transition-colors hover:text-[#A63A2B] dark:text-[#C9B9AA] dark:hover:text-[#F09A8B]"
                                 >
                                   <Trash2 className="h-3.5 w-3.5 stroke-[1.6]" />
                                   Remove
@@ -411,9 +357,9 @@ export default function ShoppingBagView() {
                             </div>
                           </div>
 
-                          {/* Quantity Stepper + Line Total */}
-                          <div className="flex items-center justify-between gap-6 border-t border-[#201C1A]/8 pt-3.5 sm:justify-end sm:border-t-0 sm:pt-0 dark:border-[#F2E9DE]/8">
-                            <div className="inline-flex items-center rounded-xl border border-[#201C1A]/18 bg-[#F2E9DE] dark:border-[#F2E9DE]/20 dark:bg-[#191513]">
+                          {/* Quantity Stepper + Single-Line LKR Line Total */}
+                          <div className="flex items-center justify-between gap-4 border-t border-[#49382D]/8 pt-3 sm:justify-end sm:gap-8 sm:border-t-0 sm:pt-0 dark:border-[#C8A98B]/12">
+                            <div className="inline-flex w-[104px] items-center justify-between overflow-hidden rounded-[10px] border border-[#49382D]/16 bg-[#F7F3ED] dark:border-[#C8A98B]/24 dark:bg-[#1A1614]">
                               <button
                                 type="button"
                                 onClick={() =>
@@ -425,19 +371,13 @@ export default function ShoppingBagView() {
                                   )
                                 }
                                 aria-label={`Decrease quantity for ${item.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-[#201C1A] transition-colors hover:bg-[#E6D9C9] dark:text-[#F2E9DE] dark:hover:bg-[#F2E9DE]/12"
+                                className="flex h-8 w-8 items-center justify-center text-[#49382D] transition-colors hover:bg-[#EDE5DA] dark:text-[#F5EEE6] dark:hover:bg-[#3B302B]"
                               >
-                                <Minus className="h-3.5 w-3.5 stroke-[1.7]" />
+                                <Minus className="h-3.5 w-3.5 stroke-[1.8]" />
                               </button>
-                              <motion.span
-                                key={item.quantity}
-                                initial={prefersReducedMotion ? false : { scale: 0.86, opacity: 0.65 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{ duration: 0.2 }}
-                                className="w-9 text-center text-sm font-semibold tabular-nums text-[#201C1A] dark:text-[#F2E9DE]"
-                              >
+                              <span className="w-8 text-center text-xs font-bold tabular-nums text-[#2C211B] dark:text-[#F5EEE6]">
                                 {item.quantity}
-                              </motion.span>
+                              </span>
                               <button
                                 type="button"
                                 onClick={() =>
@@ -449,16 +389,19 @@ export default function ShoppingBagView() {
                                   )
                                 }
                                 aria-label={`Increase quantity for ${item.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-[#201C1A] transition-colors hover:bg-[#E6D9C9] dark:text-[#F2E9DE] dark:hover:bg-[#F2E9DE]/12"
+                                className="flex h-8 w-8 items-center justify-center text-[#49382D] transition-colors hover:bg-[#EDE5DA] dark:text-[#F5EEE6] dark:hover:bg-[#3B302B]"
                               >
-                                <Plus className="h-3.5 w-3.5 stroke-[1.7]" />
+                                <Plus className="h-3.5 w-3.5 stroke-[1.8]" />
                               </button>
                             </div>
 
-                            <div className="w-24 text-right">
-                              <span className="text-[16px] font-semibold tabular-nums text-[#201C1A] dark:text-[#F2E9DE]">
+                            <div className="min-w-[116px] shrink-0 text-right">
+                              <span
+                                data-preview-static="cart-line-total"
+                                className="whitespace-nowrap font-heading text-[15px] font-extrabold tabular-nums text-[#2C211B] dark:text-[#F5EEE6]"
+                              >
                                 {item.showPrice === false
-                                  ? 'Upon Inquiry'
+                                  ? 'Price on Request'
                                   : formatLoomePrice(item.price * item.quantity, storeCurrency)}
                               </span>
                             </div>
@@ -469,168 +412,150 @@ export default function ShoppingBagView() {
                   </AnimatePresence>
                 </ul>
 
-                {/* Bag Card Footer: Continue Shopping */}
-                <div className="mt-2 flex flex-wrap items-center justify-between gap-4 border-t border-[#201C1A]/10 pt-5 dark:border-[#F2E9DE]/10">
-                  <a
-                    href={continueHref}
+                {/* Single Continue Shopping Link + Clear Bag */}
+                <div className="mt-2 flex flex-wrap items-center justify-between gap-4 border-t border-[#49382D]/10 pt-4 dark:border-[#C8A98B]/16">
+                  <button
+                    type="button"
+                    onClick={() => window.location.assign(continueHref)}
                     data-target-page={hasShopPage ? 'shop' : undefined}
-                    className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#5E4E45] no-underline transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+                    data-testid="cart-continue-shopping"
+                    className="group inline-flex items-center gap-2 border-0 bg-transparent p-0 text-xs font-semibold text-[#49382D] transition-colors hover:text-[#B28B65] dark:text-[#E8DDD0] dark:hover:text-[#C8A98B]"
                   >
-                    <ArrowLeft className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:-translate-x-1" />
-                    Continue Shopping
-                  </a>
+                    <ArrowLeft className="h-3.5 w-3.5 stroke-[1.8] transition-transform duration-300 group-hover:-translate-x-0.5" />
+                    <span data-preview-field-path="cartPage.continueShoppingLabel">
+                      {continueShoppingLabel}
+                    </span>
+                  </button>
 
                   <button
                     type="button"
                     onClick={() => cart.clearCart()}
-                    className="border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6B5B51] underline decoration-[#201C1A]/25 underline-offset-4 transition-colors hover:text-[#9E3F2E] dark:text-[#C7B6A6] dark:hover:text-[#EAA597]"
+                    data-preview-static="cart-clear-btn"
+                    className="border-0 bg-transparent p-0 text-xs font-medium text-[#6E5B4E] underline decoration-[#49382D]/25 underline-offset-4 transition-colors hover:text-[#A63A2B] dark:text-[#C9B9AA] dark:hover:text-[#F09A8B]"
                   >
-                    Clear Bag
+                    Clear Cart
                   </button>
                 </div>
-              </LuxuryReveal>
+              </div>
             </div>
 
-            {/* Right Column: Sticky Refined Order Summary */}
+            {/* Right Column: Prominent Sticky Order Summary Card */}
             <aside className="lg:sticky lg:top-24 lg:col-span-4">
-              <LuxuryReveal
-                delay={0.06}
-                className="rounded-xl border border-[#201C1A]/12 border-t-2 border-t-[#C8A98B] bg-[#FAF5EE] p-6 shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F2E9DE]/12 dark:border-t-[#C8A98B] dark:bg-[#2B2320] xl:p-7"
+              <div
+                data-testid="cart-summary-card"
+                className="rounded-2xl border border-[#49382D]/14 bg-white p-6 shadow-[0_10px_30px_rgba(73,56,45,0.08)] dark:border-[#C8A98B]/24 dark:bg-[#28211D]"
               >
-                <div className="border-b border-[#201C1A]/10 pb-3.5 dark:border-[#F2E9DE]/10">
-                  <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]">
-                    Atelier Estimate
-                  </p>
-                  <h2 className="mt-1 mb-0 font-serif text-[24px] font-medium tracking-wide text-[#201C1A] dark:text-[#F2E9DE]">
-                    Order Summary
-                  </h2>
-                </div>
+                <h2 className="m-0 border-b border-[#49382D]/10 pb-3.5 font-heading text-lg font-extrabold tracking-tight text-[#2C211B] dark:border-[#C8A98B]/16 dark:text-[#F5EEE6]">
+                  Order Summary
+                </h2>
 
-                {/* Merchant-Configurable White-Glove Delivery Threshold */}
+                {/* Free Delivery Progress Bar */}
                 {hasDeliveryThreshold && (
-                  <div className="mt-4 rounded-xl border border-[#3B302B]/12 bg-[#F2E9DE] px-3.5 py-3 dark:border-[#C8A98B]/20 dark:bg-[#1E1917]">
-                    <div className="flex items-center justify-between gap-2 text-[11.5px] font-medium text-[#3B302B] dark:text-[#E6D9C9]">
+                  <div className="mt-4 rounded-xl border border-[#B28B65]/25 bg-[#F7F3ED] px-3.5 py-3 dark:border-[#C8A98B]/22 dark:bg-[#1E1917]">
+                    <div className="flex items-center justify-between gap-2 text-xs font-medium text-[#49382D] dark:text-[#E8DDD0]">
                       <span className="inline-flex items-center gap-1.5">
-                        <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.6] text-[#8D7667] dark:text-[#C8A98B]" />
+                        <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.7] text-[#B28B65] dark:text-[#C8A98B]" />
                         {deliveryRemaining === 0
-                          ? 'Complimentary white-glove delivery unlocked'
-                          : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for complimentary delivery`}
+                          ? 'Free delivery unlocked'
+                          : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for free delivery`}
                       </span>
-                      <span className="tabular-nums font-semibold text-[#8D7667] dark:text-[#C8A98B]">
+                      <span className="shrink-0 tabular-nums font-bold text-[#B28B65] dark:text-[#C8A98B]">
                         {deliveryProgress}%
                       </span>
                     </div>
-                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#E6D9C9] dark:bg-[#3B302B]">
+                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#E8DDD0] dark:bg-[#3B302B]">
                       <motion.div
                         initial={false}
                         animate={{ width: `${deliveryProgress}%` }}
-                        transition={{ duration: 0.45, ease: LUXURY_EASE }}
-                        className="h-full rounded-full bg-[#C8A98B]"
+                        transition={{ duration: 0.4, ease: LUXURY_EASE }}
+                        className="h-full rounded-full bg-[#B28B65] dark:bg-[#C8A98B]"
                       />
                     </div>
                   </div>
                 )}
 
-                {/* Subtotal Breakdown */}
-                <div className="mt-4 rounded-xl bg-[#F2E9DE]/75 px-4 py-4 dark:bg-[#1E1917]">
-                  <div className="space-y-2 text-[13px]">
-                    <div className="flex items-center justify-between text-[#5E4E45] dark:text-[#C9B9AA]">
-                      <span>Items ({cart.totalCount})</span>
-                      <span className="font-semibold tabular-nums text-[#201C1A] dark:text-[#F5EEE6]">
-                        {subtotalDisplay}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between text-[#5E4E45] dark:text-[#C9B9AA]">
-                      <span>Atelier Delivery</span>
-                      <span className="font-semibold text-[#201C1A] dark:text-[#F5EEE6]">
-                        {hasDeliveryThreshold && deliveryRemaining === 0
-                          ? 'Complimentary'
-                          : 'Confirmed at Checkout'}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-3.5 flex items-baseline justify-between border-t border-[#3B302B]/14 pt-3.5 dark:border-[#C8A98B]/20">
-                    <div>
-                      <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] dark:text-[#F5EEE6]">
-                        Estimated Subtotal
-                      </span>
-                      <span className="mt-0.5 block text-[11px] text-[#5E4E45] dark:text-[#C9B9AA]">
-                        Currency: {storeCurrency}
-                      </span>
-                    </div>
-                    <span className="font-heading text-[28px] font-extrabold leading-none tabular-nums text-[#201C1A] dark:text-[#F5EEE6]">
+                {/* Price Breakdown — Strictly Single-Line Totals */}
+                <div className="mt-4 space-y-2.5 text-sm">
+                  <div className="flex items-center justify-between gap-3 text-[#6E5B4E] dark:text-[#C9B9AA]">
+                    <span>Items ({cart.totalCount})</span>
+                    <span className="whitespace-nowrap font-semibold tabular-nums text-[#2C211B] dark:text-[#F5EEE6]">
                       {subtotalDisplay}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3 text-[#6E5B4E] dark:text-[#C9B9AA]">
+                    <span>Delivery</span>
+                    <span className="whitespace-nowrap font-semibold text-[#2C211B] dark:text-[#F5EEE6]">
+                      {hasDeliveryThreshold && deliveryRemaining === 0
+                        ? 'Free'
+                        : 'Calculated at checkout'}
                     </span>
                   </div>
                 </div>
 
-                {/* Primary Checkout CTA + Continue Shopping */}
-                <div className="mt-5 space-y-2.5">
-                  <motion.a
-                    href={withBasePath('/checkout/')}
-                    whileHover={prefersReducedMotion ? undefined : { y: -1 }}
-                    whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
-                    className="group loome-btn-espresso flex h-[52px] w-full no-underline"
+                <div className="mt-4 flex items-baseline justify-between gap-3 border-t border-[#49382D]/12 pt-4 dark:border-[#C8A98B]/18">
+                  <span className="text-sm font-bold text-[#2C211B] dark:text-[#F5EEE6]">
+                    Total
+                  </span>
+                  <span
+                    data-preview-static="cart-subtotal-total"
+                    className="whitespace-nowrap font-heading text-2xl font-extrabold leading-none tabular-nums text-[#2C211B] dark:text-[#F5EEE6]"
                   >
-                    <span>{checkoutLabel}</span>
-                    <ArrowRight className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-1" />
-                  </motion.a>
-
-                  <a
-                    href={continueHref}
-                    data-target-page={hasShopPage ? 'shop' : undefined}
-                    className="loome-btn-outline w-full text-center no-underline"
-                  >
-                    {continueShoppingLabel}
-                  </a>
+                    {subtotalDisplay}
+                  </span>
                 </div>
 
-                <p className="mt-4 mb-0 text-center text-[11.5px] leading-relaxed text-[#5E4E45] dark:text-[#C7B6A6]">
-                  Delivery details and WhatsApp concierge handoff happen on the next step.
+                {/* Prominent Single Primary Checkout CTA */}
+                <div className="mt-5">
+                  <motion.button
+                    type="button"
+                    onClick={() => window.location.assign(withBasePath('/checkout/'))}
+                    data-testid="cart-checkout-cta"
+                    whileHover={prefersReducedMotion ? undefined : { y: -1 }}
+                    whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
+                    className="group flex h-12 w-full items-center justify-center gap-2 rounded-[11px] border-0 bg-[#49382D] px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#F7F3ED] shadow-sm transition-colors hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]"
+                  >
+                    <span data-preview-field-path="cartPage.checkoutLabel">{checkoutLabel}</span>
+                    <ArrowRight className="h-4 w-4 stroke-[1.8] transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </motion.button>
+                </div>
+
+                <p className="mt-3.5 mb-0 text-center text-xs leading-relaxed text-[#6E5B4E] dark:text-[#C9B9AA]">
+                  Delivery details and WhatsApp confirmation happen on the next step.
                 </p>
-              </LuxuryReveal>
+              </div>
             </aside>
           </div>
         )}
       </section>
 
-      {/* Always-Mounted Atelier Delivery & Concierge Assurance Band */}
-      <section className="border-t border-[#201C1A]/10 bg-[#E6D9C9]/70 py-8 dark:border-[#F2E9DE]/10 dark:bg-[#2A2320] sm:py-10">
-        <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-6 px-4 sm:px-8 md:grid-cols-3 lg:px-12">
-          <div className="md:col-span-2">
-            <p className="m-0 inline-flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]">
-              <ShieldCheck className="h-3.5 w-3.5 stroke-[1.6]" />
+      {/* Compact Delivery & Order Assurance Band */}
+      <section className="border-t border-[#49382D]/10 bg-white/70 py-6 dark:border-[#C8A98B]/16 dark:bg-[#201C1A]">
+        <div className="mx-auto flex max-w-[1260px] flex-col justify-between gap-4 px-4 sm:px-8 md:flex-row md:items-center lg:px-10">
+          <div className="max-w-2xl">
+            <p className="m-0 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B28B65] dark:text-[#C8A98B]">
+              <ShieldCheck className="h-3.5 w-3.5 stroke-[1.7]" />
               <span data-preview-field-path="cartPage.assuranceEyebrow">{assuranceEyebrow}</span>
             </p>
-            <div className="mt-2 max-w-2xl">
+            <div className="mt-1.5">
               <EditableText
                 as="p"
                 data-preview-field-path="cartPage.deliveryNote"
                 defaultValue={deliveryNote}
                 fontFamily="body"
-                size="0.875rem"
-                lineHeight={1.75}
+                size="0.8125rem"
+                lineHeight={1.65}
                 color="muted"
                 className="m-0"
               />
             </div>
           </div>
 
-          <div className="flex flex-col justify-center gap-1.5 border-t border-[#201C1A]/12 pt-4 md:border-l md:border-t-0 md:pl-7 md:pt-0 dark:border-[#F2E9DE]/12">
-            <p
-              data-preview-static="cart-currency-label"
-              className="m-0 text-[10.5px] font-semibold uppercase tracking-[0.22em] text-[#3B302B] dark:text-[#F2E9DE]"
-            >
-              Pricing Currency · {storeCurrency}
-            </p>
-            <p
-              data-preview-static="cart-handoff-note"
-              className="m-0 text-[12.5px] leading-relaxed text-[#5E4E45] dark:text-[#C7B6A6]"
-            >
-              Saved automatically in your browser until you finalize via private checkout.
-            </p>
-          </div>
+          <p
+            data-preview-static="cart-handoff-note"
+            className="m-0 shrink-0 text-xs font-medium text-[#6E5B4E] dark:text-[#C9B9AA]"
+          >
+            Prices in {storeCurrency} · Saved automatically in your browser
+          </p>
         </div>
       </section>
     </div>

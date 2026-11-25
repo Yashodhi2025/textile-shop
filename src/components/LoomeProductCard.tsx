@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Check, Heart, ShoppingBag, Star } from 'lucide-react';
+import { Check, Heart, ShoppingBag, Star, Trash2 } from 'lucide-react';
 import { EditableImage, EditableText, useCart } from '@deneb-ui/ui';
 import { platformProductDetailHref, useSiteData } from '@/lib/siteDataContext';
 import {
@@ -15,11 +15,13 @@ import {
 interface LoomeProductCardProps {
   product: LoomeProduct;
   tone?: 'dark' | 'light';
+  showRemoveAction?: boolean;
 }
 
 export default function LoomeProductCard({
   product,
   tone = 'light',
+  showRemoveAction = false,
 }: LoomeProductCardProps) {
   const siteData = useSiteData();
   const cart = useCart();
@@ -177,17 +179,17 @@ export default function LoomeProductCard({
         <div className="mt-2.5 flex flex-wrap items-baseline gap-2">
           <span
             data-preview-field-path={`products[${idx}].price`}
-            className={`text-base font-extrabold tracking-tight ${
+            className={`whitespace-nowrap text-base font-extrabold tracking-tight tabular-nums ${
               isDark ? 'text-[#F5EEE6]' : 'text-[#2C211B] dark:text-[#F5EEE6]'
             }`}
           >
-            {product.showPrice ? formatLoomePrice(product.price, storeCurrency) : 'Upon Inquiry'}
+            {product.showPrice ? formatLoomePrice(product.price, storeCurrency) : 'Price on Request'}
           </span>
           <span
             data-preview-field-path={`products[${idx}].compareAtPrice`}
             className={
               hasSalePrice
-                ? `text-xs font-medium line-through ${
+                ? `whitespace-nowrap text-xs font-medium tabular-nums line-through ${
                     isDark
                       ? 'text-[#C9B9AA]/75'
                       : 'text-[#6E5B4E]/80 dark:text-[#C9B9AA]/75'
@@ -234,8 +236,8 @@ export default function LoomeProductCard({
           })}
         </div>
 
-        {/* Always-Visible Add to Bag Action (no hover required) */}
-        <div className="mt-auto pt-4">
+        {/* Always-Visible Add to Bag Action (+ Optional Remove Action on Wishlist page) */}
+        <div className="mt-auto space-y-2 pt-4">
           <button
             type="button"
             disabled={!product.isAvailable}
@@ -265,6 +267,18 @@ export default function LoomeProductCard({
               </>
             )}
           </button>
+
+          {showRemoveAction && (
+            <button
+              type="button"
+              onClick={() => toggleWishlist(product.id)}
+              data-preview-static="wishlist-card-remove"
+              className="flex h-9 w-full items-center justify-center gap-1.5 rounded-[10px] border border-[#49382D]/16 bg-transparent text-xs font-semibold text-[#6E5B4E] transition-colors hover:border-[#A63A2B]/40 hover:bg-[#A63A2B]/8 hover:text-[#A63A2B] dark:border-[#C8A98B]/22 dark:text-[#C9B9AA] dark:hover:border-[#F09A8B]/50 dark:hover:text-[#F09A8B]"
+            >
+              <Trash2 className="h-3.5 w-3.5 stroke-[1.6]" />
+              <span>Remove</span>
+            </button>
+          )}
         </div>
       </div>
     </article>

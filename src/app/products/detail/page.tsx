@@ -10,9 +10,9 @@ export default function ProductDetailPage() {
   const siteData = useSiteData();
   const requiredPages = Array.isArray(siteData.requiredPages)
     ? siteData.requiredPages
-    : ['home', 'shop', 'about_us', 'services', 'contact'];
+    : ['home', 'shop', 'collections', 'wishlist', 'about_us', 'services', 'contact'];
   const hasShopPage = requiredPages.includes('shop');
-  const backHref = hasShopPage ? '/shop' : '/';
+  const backHref = hasShopPage ? '/shop/' : '/';
 
   return (
     <PlatformProductDetail
@@ -25,30 +25,30 @@ export default function ProductDetailPage() {
         <section
           role="status"
           aria-live="polite"
-          className="loome-surface-espresso bg-[#201C1A] py-16 text-[#F2E9DE] sm:py-24"
+          className="loome-surface-commerce py-10 font-sans sm:py-14"
         >
-          <div className="mx-auto max-w-[1380px] px-4 sm:px-8 lg:px-14">
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-              <div className="lg:col-span-7">
-                <div className="aspect-[4/5] w-full animate-pulse rounded-2xl bg-[#3B302B]/70" />
+          <div className="mx-auto max-w-[1240px] px-4 sm:px-8 lg:px-10">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+              <div className="lg:col-span-6">
+                <div className="h-[400px] w-full animate-pulse rounded-2xl bg-white/80 dark:bg-[#28211D]" />
               </div>
-              <div className="flex flex-col justify-center space-y-5 lg:col-span-5">
+              <div className="flex flex-col justify-center space-y-4 rounded-2xl bg-white p-6 dark:bg-[#28211D] lg:col-span-6">
                 <span
                   data-preview-static="product-detail-loading-eyebrow"
-                  className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]"
+                  className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#B28B65] dark:text-[#C8A98B]"
                 >
-                  Atelier Archive
+                  Loading Product
                 </span>
                 <p
                   data-preview-static="product-detail-loading"
-                  className="m-0 font-heading text-3xl font-extrabold tracking-tight text-[#F2E9DE]"
+                  className="m-0 font-heading text-2xl font-extrabold tracking-tight text-[#2C211B] dark:text-[#F5EEE6]"
                 >
-                  Preparing your textile piece…
+                  Preparing product details…
                 </p>
-                <div className="space-y-3 pt-2">
-                  <div className="h-3 w-3/4 animate-pulse rounded bg-[#3B302B]" />
-                  <div className="h-3 w-full animate-pulse rounded bg-[#3B302B]/80" />
-                  <div className="h-3 w-2/3 animate-pulse rounded bg-[#3B302B]/80" />
+                <div className="space-y-2.5 pt-2">
+                  <div className="h-3 w-3/4 animate-pulse rounded bg-[#EDE5DA] dark:bg-[#3B302B]" />
+                  <div className="h-3 w-full animate-pulse rounded bg-[#EDE5DA]/80 dark:bg-[#3B302B]/80" />
+                  <div className="h-3 w-2/3 animate-pulse rounded bg-[#EDE5DA]/80 dark:bg-[#3B302B]/80" />
                 </div>
               </div>
             </div>
@@ -56,90 +56,94 @@ export default function ProductDetailPage() {
         </section>
       }
       notFoundFallback={
-        <section className="loome-surface-espresso bg-[#201C1A] py-24 text-[#F2E9DE] sm:py-32">
-          <div className="mx-auto flex max-w-[1380px] flex-col items-center px-4 text-center sm:px-8 lg:px-14">
-            <span
-              data-preview-static="product-not-found-eyebrow"
-              className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
-            >
-              <Sparkles className="h-3.5 w-3.5 stroke-[1.6]" />
-              Archive Notice
-            </span>
-            <h1
-              data-preview-static="product-not-found-title"
-              className="mt-4 mb-0 font-heading text-4xl font-extrabold tracking-[-0.025em] sm:text-5xl"
-            >
-              This textile piece could not be found
-            </h1>
-            <p
-              data-preview-static="product-not-found-copy"
-              className="mt-4 max-w-md text-sm leading-relaxed text-[#C7B6A6]"
-            >
-              The weave you are looking for may have been retired from our seasonal archive or moved to a new collection.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              {hasShopPage && (
-                <a
-                  href={withBasePath('/shop')}
-                  data-target-page="shop"
-                  data-preview-static="product-not-found-shop-cta"
-                  className="loome-btn-primary inline-flex items-center gap-2 no-underline"
-                >
-                  <ArrowLeft className="h-3.5 w-3.5 stroke-[1.6]" />
-                  Explore the Shop
-                </a>
-              )}
-              <a
-                href={withBasePath('/')}
-                data-preview-static="product-not-found-home-cta"
-                className="loome-btn-outline inline-flex items-center gap-2 no-underline"
+        <section className="loome-surface-commerce py-16 font-sans sm:py-24">
+          <div className="mx-auto max-w-lg px-4">
+            <div className="rounded-2xl border border-[#49382D]/12 bg-white px-6 py-12 text-center shadow-[0_6px_24px_rgba(73,56,45,0.06)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] sm:px-10">
+              <span
+                data-preview-static="product-not-found-eyebrow"
+                className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B28B65] dark:text-[#C8A98B]"
               >
-                Return Home
-              </a>
+                <Sparkles className="h-3.5 w-3.5 stroke-[1.6]" />
+                Product Not Found
+              </span>
+              <h1
+                data-preview-static="product-not-found-title"
+                className="mt-3 mb-0 font-heading text-2xl font-extrabold tracking-tight text-[#2C211B] dark:text-[#F5EEE6] sm:text-3xl"
+              >
+                This product is no longer available
+              </h1>
+              <p
+                data-preview-static="product-not-found-copy"
+                className="mt-3 text-sm leading-relaxed text-[#6E5B4E] dark:text-[#C9B9AA]"
+              >
+                It may have been removed or moved to another collection. Browse our catalog to find similar textiles.
+              </p>
+              <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+                {hasShopPage && (
+                  <a
+                    href={withBasePath('/shop/')}
+                    data-target-page="shop"
+                    data-preview-static="product-not-found-shop-cta"
+                    className="inline-flex h-11 items-center gap-2 rounded-[11px] bg-[#49382D] px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#F7F3ED] no-underline transition-colors hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A]"
+                  >
+                    <ArrowLeft className="h-3.5 w-3.5 stroke-[1.8]" />
+                    Explore Shop
+                  </a>
+                )}
+                <a
+                  href={withBasePath('/')}
+                  data-preview-static="product-not-found-home-cta"
+                  className="inline-flex h-11 items-center gap-2 rounded-[11px] border border-[#49382D]/20 bg-transparent px-5 text-xs font-semibold uppercase tracking-[0.16em] text-[#49382D] no-underline transition-colors hover:border-[#B28B65] dark:border-[#C8A98B]/30 dark:text-[#F5EEE6]"
+                >
+                  Return Home
+                </a>
+              </div>
             </div>
           </div>
         </section>
       }
       errorFallback={
-        <section className="loome-surface-espresso bg-[#201C1A] py-24 text-[#F2E9DE] sm:py-32">
-          <div className="mx-auto flex max-w-[1380px] flex-col items-center px-4 text-center sm:px-8 lg:px-14">
-            <span
-              data-preview-static="product-error-eyebrow"
-              className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
-            >
-              Temporary Interruption
-            </span>
-            <h1
-              data-preview-static="product-error-title"
-              className="mt-4 mb-0 font-heading text-4xl font-extrabold tracking-[-0.025em] sm:text-5xl"
-            >
-              Unable to load this textile right now
-            </h1>
-            <p
-              data-preview-static="product-error-copy"
-              className="mt-4 max-w-md text-sm leading-relaxed text-[#C7B6A6]"
-            >
-              Please refresh the page or return to our curated catalog while we reconnect to the atelier archive.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={() => window.location.reload()}
-                data-preview-static="product-error-retry-cta"
-                className="loome-btn-primary inline-flex items-center gap-2"
+        <section className="loome-surface-commerce py-16 font-sans sm:py-24">
+          <div className="mx-auto max-w-lg px-4">
+            <div className="rounded-2xl border border-[#49382D]/12 bg-white px-6 py-12 text-center shadow-[0_6px_24px_rgba(73,56,45,0.06)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] sm:px-10">
+              <span
+                data-preview-static="product-error-eyebrow"
+                className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B28B65] dark:text-[#C8A98B]"
               >
-                <RefreshCw className="h-3.5 w-3.5 stroke-[1.6]" />
-                Reload Page
-              </button>
-              <a
-                href={withBasePath(backHref)}
-                data-target-page={hasShopPage ? 'shop' : undefined}
-                data-preview-static="product-error-back-cta"
-                className="loome-btn-outline inline-flex items-center gap-2 no-underline"
+                Temporary Issue
+              </span>
+              <h1
+                data-preview-static="product-error-title"
+                className="mt-3 mb-0 font-heading text-2xl font-extrabold tracking-tight text-[#2C211B] dark:text-[#F5EEE6] sm:text-3xl"
               >
-                <ArrowLeft className="h-3.5 w-3.5 stroke-[1.6]" />
-                {hasShopPage ? 'Return to Shop' : 'Return Home'}
-              </a>
+                Unable to load this product
+              </h1>
+              <p
+                data-preview-static="product-error-copy"
+                className="mt-3 text-sm leading-relaxed text-[#6E5B4E] dark:text-[#C9B9AA]"
+              >
+                Please reload the page or return to the shop to continue browsing.
+              </p>
+              <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  data-preview-static="product-error-retry-cta"
+                  className="inline-flex h-11 items-center gap-2 rounded-[11px] bg-[#49382D] px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#F7F3ED] transition-colors hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A]"
+                >
+                  <RefreshCw className="h-3.5 w-3.5 stroke-[1.8]" />
+                  Reload Page
+                </button>
+                <a
+                  href={withBasePath(backHref)}
+                  data-target-page={hasShopPage ? 'shop' : undefined}
+                  data-preview-static="product-error-back-cta"
+                  className="inline-flex h-11 items-center gap-2 rounded-[11px] border border-[#49382D]/20 bg-transparent px-5 text-xs font-semibold uppercase tracking-[0.16em] text-[#49382D] no-underline transition-colors hover:border-[#B28B65] dark:border-[#C8A98B]/30 dark:text-[#F5EEE6]"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5 stroke-[1.8]" />
+                  {hasShopPage ? 'Return to Shop' : 'Return Home'}
+                </a>
+              </div>
             </div>
           </div>
         </section>

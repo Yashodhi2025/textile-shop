@@ -126,6 +126,11 @@
       "route": "/collections"
     },
     {
+      "id": "wishlist",
+      "label": "Wishlist",
+      "route": "/wishlist"
+    },
+    {
       "id": "cart",
       "label": "Shopping Bag",
       "route": "/cart"
@@ -1059,6 +1064,46 @@
             "key": "atelierCtaLabel",
             "type": "text",
             "label": "Atelier Banner Button Label"
+          }
+        ]
+      },
+      {
+        "id": "wishlistPage",
+        "path": "wishlistPage",
+        "pageKey": "wishlist",
+        "type": "object",
+        "label": "Wishlist Page",
+        "fields": [
+          {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Eyebrow"
+          },
+          {
+            "key": "heading",
+            "type": "text",
+            "label": "Heading",
+            "required": true
+          },
+          {
+            "key": "intro",
+            "type": "textarea",
+            "label": "Introduction"
+          },
+          {
+            "key": "emptyHeading",
+            "type": "text",
+            "label": "Empty Wishlist Heading"
+          },
+          {
+            "key": "emptyDescription",
+            "type": "textarea",
+            "label": "Empty Wishlist Description"
+          },
+          {
+            "key": "emptyCtaLabel",
+            "type": "text",
+            "label": "Empty Wishlist Button Label"
           }
         ]
       },
@@ -2772,11 +2817,11 @@
     ],
     "defaults": {
       "colors": {
-        "primary": "#8D7667",
-        "secondary": "#3B302B",
-        "accent": "#C8A98B",
-        "background": "#201C1A",
-        "text": "#F2E9DE"
+        "primary": "#49382D",
+        "secondary": "#E8DDD0",
+        "accent": "#B28B65",
+        "background": "#F7F3ED",
+        "text": "#49382D"
       },
       "typography": {
         "headingFont": "Manrope",

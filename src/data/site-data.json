@@ -26,6 +26,7 @@
         "home",
         "shop",
         "collections",
+        "wishlist",
         "cart",
         "checkout",
         "journal",
@@ -71,6 +72,7 @@
       "home",
       "shop",
       "collections",
+      "wishlist",
       "cart",
       "checkout",
       "journal",
@@ -949,15 +951,23 @@
       "intro": "Browse our full range of Belgian flax curtains, stonewashed linen bedding, upholstery weaves, cushions, and fabrics by the yard."
     },
     "cartPage": {
-      "eyebrow": "THE ATELIER BAG",
+      "eyebrow": "SHOPPING CART",
       "heading": "Your Shopping Bag",
-      "intro": "Review your curated textile selection, refine quantities, and proceed smoothly to our private WhatsApp checkout.",
-      "deliveryNote": "Complimentary white-glove delivery across Sri Lanka on qualifying orders. Custom drapery measurements, fabric availability, and dispatch timing are confirmed personally with our atelier concierge.",
+      "intro": "Review your selected textiles, adjust quantities, and proceed to checkout.",
+      "deliveryNote": "Free island-wide delivery across Sri Lanka on qualifying orders. Delivery timing and custom sizing are confirmed directly at checkout.",
       "checkoutLabel": "Proceed to Checkout",
       "continueShoppingLabel": "Continue Shopping",
-      "assuranceEyebrow": "Atelier Delivery & Care Assurance",
-      "emptyHeading": "Your shopping bag is currently empty",
-      "emptyDescription": "Discover our Belgian flax drapery, stonewashed European linen bedding, and heirloom fabrics by the yard to begin curating your rooms."
+      "assuranceEyebrow": "Delivery & Order Assurance",
+      "emptyHeading": "Your shopping bag is empty",
+      "emptyDescription": "Browse our linen curtains, stonewashed bedding, and woven accents to add items to your bag."
+    },
+    "wishlistPage": {
+      "eyebrow": "SAVED ITEMS",
+      "heading": "Your Wishlist",
+      "intro": "Keep track of your favorite curtains, bedding, and fabrics and move them to your bag whenever you are ready.",
+      "emptyHeading": "Your wishlist is empty",
+      "emptyDescription": "Tap the heart icon on any product to save it here for easy comparison and future orders.",
+      "emptyCtaLabel": "Explore Shop"
     },
     "checkoutPage": {
       "eyebrow": "THE PRIVATE CHECKOUT",
@@ -972,22 +982,22 @@
       "emptyDescription": "Explore our Belgian flax drapery, stonewashed linen bedding, and heirloom fabrics to begin curating your order."
     },
     "productDetailPage": {
-      "toneLabel": "Tone",
-      "sizeLabel": "Size & Measurement",
+      "toneLabel": "Color",
+      "sizeLabel": "Size",
       "addToBagLabel": "Add to Bag",
-      "whatsappInquireLabel": "Inquire via Atelier Concierge",
+      "whatsappInquireLabel": "Order or Ask via WhatsApp",
       "deliveryTitle": "Island-Wide Delivery",
-      "deliveryNote": "Tracked Sri Lanka delivery & complimentary over threshold",
-      "swatchTitle": "Bespoke Sizing & Swatches",
-      "swatchLinkLabel": "Request complimentary fabric swatches",
-      "specsHeading": "Textile Specifications",
-      "careHeading": "Fabric Care & Longevity",
-      "shippingHeading": "Shipping & Returns",
-      "defaultShippingSummary": "Island-wide tracked delivery across Colombo and all 25 Sri Lankan districts. Standard atelier dispatch within 2–4 business days.",
-      "defaultShippingReturns": "Ready-to-ship textiles may be returned unworn and unwashed in original linen packaging within our store return window. Custom-cut yardage and bespoke drapery are crafted to order.",
-      "relatedEyebrow": "Curated Pairings",
+      "deliveryNote": "Tracked delivery across Sri Lanka",
+      "swatchTitle": "Need Fabric Swatches?",
+      "swatchLinkLabel": "Request complimentary swatches",
+      "specsHeading": "Specifications",
+      "careHeading": "Care",
+      "shippingHeading": "Delivery & Returns",
+      "defaultShippingSummary": "Island-wide tracked delivery across Colombo and all 25 Sri Lankan districts. Standard dispatch within 2–4 business days.",
+      "defaultShippingReturns": "Ready-to-ship textiles may be returned unused and unwashed in original packaging within our return window. Custom-cut yardage and bespoke drapery are made to order.",
+      "relatedEyebrow": "Related Products",
       "relatedHeading": "You May Also Like",
-      "relatedCtaLabel": "View Full Collection"
+      "relatedCtaLabel": "View All Products"
     },
     "about": {
       "eyebrow": "Maison & Heritage",

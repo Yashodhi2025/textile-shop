@@ -51,6 +51,7 @@ type CopyPhase = 'visible' | 'exiting' | 'entering';
 const KNOWN_INTERNAL_PAGES = new Set([
   'shop',
   'collections',
+  'wishlist',
   'cart',
   'checkout',
   'journal',

@@ -30,6 +30,7 @@ export function withBasePath(value?: string | null) {
 export function pageRoute(pageKey: string) {
   if (pageKey === 'home') return '/';
   if (pageKey === 'collections') return '/collections/';
+  if (pageKey === 'wishlist') return '/wishlist/';
   if (pageKey === 'services') return '/services/';
   if (pageKey === 'shop') return '/shop/';
   if (pageKey === 'textile_care') return '/textile-care/';

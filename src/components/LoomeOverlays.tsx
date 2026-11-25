@@ -39,9 +39,6 @@ export default function LoomeOverlays() {
     wishlistIds,
     toggleWishlist,
     isWishlisted,
-    isWishlistOpen,
-    openWishlist,
-    closeWishlist,
     isSearchOpen,
     closeSearch,
     isAccountOpen,
@@ -91,11 +88,10 @@ export default function LoomeOverlays() {
 
   useEffect(() => {
     const anyOpen =
-      isWishlistOpen || isSearchOpen || isAccountOpen || Boolean(quickViewProduct) || cart.isOpen;
+      isSearchOpen || isAccountOpen || Boolean(quickViewProduct) || cart.isOpen;
     if (!anyOpen) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        closeWishlist();
         closeSearch();
         closeAccount();
         closeQuickView();
@@ -105,21 +101,14 @@ export default function LoomeOverlays() {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [
-    isWishlistOpen,
     isSearchOpen,
     isAccountOpen,
     quickViewProduct,
     cart,
-    closeWishlist,
     closeSearch,
     closeAccount,
     closeQuickView,
   ]);
-
-  const wishlistProducts = useMemo(
-    () => products.filter((p) => wishlistIds.includes(p.id)),
-    [products, wishlistIds],
-  );
 
   const searchResults = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -587,123 +576,7 @@ export default function LoomeOverlays() {
         )}
       </AnimatePresence>
 
-      {/* 3. WISHLIST DRAWER */}
-      <AnimatePresence>
-        {isWishlistOpen && (
-          <div className="fixed inset-0 z-50 flex justify-end">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={closeWishlist}
-              className="fixed inset-0 bg-[#120E0C]/68 backdrop-blur-sm"
-            />
-            <motion.aside
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ duration: 0.45, ease: LUXURY_EASE }}
-              aria-label="Saved pieces"
-              className="relative z-10 flex h-full w-full max-w-md flex-col border-l border-[#C8A98B]/20 bg-[#201C1A] text-[#F2E9DE] shadow-2xl"
-            >
-              <div className="flex items-center justify-between border-b border-[#C8A98B]/18 px-6 py-5">
-                <div>
-                  <h2 className="font-heading text-xl font-extrabold tracking-tight text-[#F2E9DE]">
-                    Saved Pieces
-                  </h2>
-                  <p className="mt-0.5 text-[11px] uppercase tracking-[0.18em] text-[#C8A98B]">
-                    {wishlistProducts.length} curated favorites
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  onClick={closeWishlist}
-                  aria-label="Close wishlist"
-                  className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[#C8A98B]/25 text-[#F2E9DE] transition-colors hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A]"
-                >
-                  <X className="h-4 w-4 stroke-[1.6]" />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto px-6 py-5">
-                {wishlistProducts.length === 0 ? (
-                  <div className="flex h-full flex-col items-center justify-center py-16 text-center">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[#C8A98B]/35 bg-[#3B302B]/55 text-[#C8A98B]">
-                      <Heart className="h-6 w-6 stroke-[1.4]" />
-                    </div>
-                    <h3 className="mt-5 font-heading text-2xl font-bold text-[#F2E9DE]">
-                      No saved textiles yet
-                    </h3>
-                    <p className="mt-2 max-w-xs text-sm text-[#C7B6A6]">
-                      Tap the heart on any drapery, bedding, or fabric piece to curate your personal moodboard.
-                    </p>
-                  </div>
-                ) : (
-                  <ul className="divide-y divide-[#C8A98B]/14">
-                    {wishlistProducts.map((product) => (
-                      <li key={product.id} className="flex gap-4 py-5">
-                        <img
-                          src={withBasePath(product.imageUrl)}
-                          alt={product.name}
-                          className="h-24 w-20 shrink-0 rounded-[10px] border border-[#C8A98B]/16 bg-[#3B302B]/50 object-cover"
-                        />
-                        <div className="flex flex-1 flex-col justify-between">
-                          <div>
-                            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C8A98B]">
-                              {product.category}
-                            </p>
-                            <h4 className="mt-0.5 font-heading text-base font-bold leading-snug text-[#F2E9DE]">
-                              {product.name}
-                            </h4>
-                            <p className="mt-1 text-sm font-semibold text-[#F2E9DE]">
-                              {product.showPrice
-                                ? formatLoomePrice(product.price, storeCurrency)
-                                : 'Upon Inquiry'}
-                            </p>
-                          </div>
-                          <div className="mt-3 flex items-center gap-3.5">
-                            <button
-                              type="button"
-                              disabled={!product.isAvailable}
-                              onClick={() => {
-                                if (!product.isAvailable) return;
-                                closeWishlist();
-                                cart.addItem({
-                                  id: product.id,
-                                  name: product.name,
-                                  price: product.price,
-                                  originalPrice: product.compareAtPrice ?? undefined,
-                                  image: product.imageUrl,
-                                  color: product.hasExplicitColors ? product.colors[0]?.name : undefined,
-                                  size: product.sizes[0],
-                                  quantity: 1,
-                                  showPrice: product.showPrice,
-                                });
-                              }}
-                              className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#C8A98B] underline underline-offset-4 transition-colors hover:text-[#F2E9DE] disabled:cursor-not-allowed disabled:opacity-45"
-                            >
-                              {product.isAvailable ? 'Move to Bag' : 'Unavailable'}
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => toggleWishlist(product.id)}
-                              className="text-[11px] uppercase tracking-[0.16em] text-[#C7B6A6] transition-colors hover:text-[#F2E9DE]"
-                            >
-                              Remove
-                            </button>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </motion.aside>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* 4. EDITORIAL SEARCH OVERLAY */}
+      {/* 3. EDITORIAL SEARCH OVERLAY */}
       <AnimatePresence>
         {isSearchOpen && (
           <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-16 sm:p-8 sm:pt-20">
@@ -849,18 +722,18 @@ export default function LoomeOverlays() {
                 </div>
 
                 <div className="mt-6 grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={openWishlist}
-                    className="rounded-xl border border-[#C8A98B]/20 bg-[#2B2320] p-4 text-left transition-colors hover:border-[#C8A98B]/55"
+                  <a
+                    href={withBasePath('/wishlist/')}
+                    onClick={closeAccount}
+                    className="block rounded-xl border border-[#C8A98B]/20 bg-[#2B2320] p-4 text-left no-underline transition-colors hover:border-[#C8A98B]/55"
                   >
                     <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C7B6A6]">
-                      Saved Pieces
+                      Wishlist
                     </p>
                     <p className="mt-1 font-heading text-3xl font-extrabold text-[#F2E9DE]">
                       {wishlistIds.length}
                     </p>
-                  </button>
+                  </a>
                   <a
                     href={withBasePath('/cart/')}
                     onClick={closeAccount}
