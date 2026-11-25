@@ -3,57 +3,64 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
-  --loome-espresso: var(--page-background, #201C1A);
-  --loome-mocha: var(--brand-secondary, #3B302B);
-  --loome-mushroom: var(--brand-primary, #8D7667);
-  --loome-champagne: var(--brand-accent, #C8A98B);
-  --loome-cream: #F2E9DE;
-  --loome-cream-soft: #FAF5EE;
-  --loome-cream-deep: #E6D9C9;
-  --loome-ivory: #F2E9DE;
-  --loome-ivory-soft: #FAF5EE;
-  --loome-ivory-deep: #E6D9C9;
-  --loome-charcoal: #201C1A;
-  --loome-muted: #C7B6A6;
-  --loome-muted-light: #6B5B51;
-  --loome-olive: var(--brand-primary, #8D7667);
-  --loome-gold: var(--brand-accent, #C8A98B);
-  --loome-beige: #E6D9C9;
-  --loome-border: rgba(200, 169, 139, 0.2);
+  color-scheme: light;
+  --loome-ivory: #F7F3ED;
+  --loome-ivory-soft: #FFFFFF;
+  --loome-ivory-deep: #E8DDD0;
+  --loome-cream: #F7F3ED;
+  --loome-cream-soft: #FFFFFF;
+  --loome-cream-deep: #E8DDD0;
+  --loome-beige: #E8DDD0;
+  --loome-walnut: #49382D;
+  --loome-walnut-deep: #2C211B;
+  --loome-caramel: #B28B65;
+  --loome-espresso: #201C1A;
+  --loome-mocha: #3B302B;
+  --loome-mushroom: #8D7667;
+  --loome-champagne: #C8A98B;
+  --loome-charcoal: #2C211B;
+  --loome-muted: #6E5B4E;
+  --loome-muted-light: #6E5B4E;
+  --loome-olive: #8D7667;
+  --loome-gold: #B28B65;
+  --loome-border: rgba(73, 56, 45, 0.14);
   --loome-radius-btn: 11px;
   --loome-radius-card: 16px;
   --heading-font: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --body-font: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --editorial-font: 'Cormorant Garamond', Georgia, serif;
-  --page-background: #201C1A;
-  --page-text: #F2E9DE;
-  --heading-color: #F2E9DE;
-  --muted-text: #C7B6A6;
-  --color-text: #F2E9DE;
-  --color-text-muted: #C7B6A6;
-  --color-border: rgba(200, 169, 139, 0.2);
-  --card-bg: #3B302B;
-  --brand-color: #8D7667;
-  --brand-primary: #8D7667;
-  --brand-secondary: #3B302B;
-  --brand-accent: #C8A98B;
+  --page-background: #F7F3ED;
+  --page-text: #49382D;
+  --heading-color: #2C211B;
+  --muted-text: #6E5B4E;
+  --color-text: #49382D;
+  --color-text-muted: #6E5B4E;
+  --color-border: rgba(73, 56, 45, 0.14);
+  --card-bg: #FFFFFF;
+  --brand-color: #49382D;
+  --brand-primary: #49382D;
+  --brand-secondary: #E8DDD0;
+  --brand-accent: #B28B65;
 }
 
 html.dark,
 .dark {
   color-scheme: dark;
   --loome-espresso: #161311;
-  --loome-mocha: #2A221F;
+  --loome-mocha: #241E1B;
   --loome-border: rgba(200, 169, 139, 0.22);
-  --page-background: #161311;
+  --page-background: #1A1614;
   --page-text: #F5EEE6;
   --heading-color: #F5EEE6;
   --muted-text: #C9B9AA;
   --color-text: #F5EEE6;
   --color-text-muted: #C9B9AA;
   --color-border: rgba(200, 169, 139, 0.22);
-  --card-bg: #2A221F;
+  --card-bg: #28211D;
+  --brand-color: #C8A98B;
+  --brand-primary: #C8A98B;
+  --brand-secondary: #241E1B;
+  --brand-accent: #C8A98B;
 }
 
 * {
@@ -68,8 +75,8 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--page-background, #201C1A);
-  color: var(--page-text, #F2E9DE);
+  background-color: var(--page-background, #F7F3ED);
+  color: var(--page-text, #49382D);
   font-family: var(--body-font, 'Manrope', 'Inter', sans-serif);
   transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
@@ -109,27 +116,50 @@ p {
 
 .site-shell {
   min-height: 100vh;
-  background-color: var(--page-background, #201C1A);
-  color: var(--page-text, #F2E9DE);
+  background-color: var(--page-background, #F7F3ED);
+  color: var(--page-text, #49382D);
   font-size: var(--base-size, 16px);
 }
 
-/* Warm Cream Ivory alternating editorial surface — adapts cleanly in Dark Mode */
-.loome-surface-cream {
-  background-color: var(--loome-cream, #F2E9DE);
-  color: #201C1A;
-  --heading-color: #201C1A;
-  --page-text: #201C1A;
-  --muted-text: #5E4E45;
-  --color-text: #201C1A;
-  --color-text-muted: #5E4E45;
-  --card-bg: #FAF5EE;
-  --brand-primary: #8D7667;
-  --loome-border: rgba(59, 48, 43, 0.16);
+html.dark body,
+.dark body,
+html.dark .site-shell,
+.dark .site-shell {
+  background-color: #1A1614;
+  color: #F5EEE6;
+  --page-background: #1A1614;
+  --page-text: #F5EEE6;
+  --heading-color: #F5EEE6;
+  --muted-text: #C9B9AA;
+  --color-text: #F5EEE6;
+  --color-text-muted: #C9B9AA;
+  --color-border: rgba(200, 169, 139, 0.22);
+  --card-bg: #28211D;
+  --brand-color: #C8A98B;
+  --brand-primary: #C8A98B;
+  --brand-secondary: #241E1B;
+  --brand-accent: #C8A98B;
+}
+
+/* Warm Ivory primary surface — adapts cleanly in Dark Mode */
+.loome-surface-cream,
+.loome-surface-ivory {
+  background-color: var(--loome-ivory, #F7F3ED);
+  color: #49382D;
+  --heading-color: #2C211B;
+  --page-text: #49382D;
+  --muted-text: #6E5B4E;
+  --color-text: #49382D;
+  --color-text-muted: #6E5B4E;
+  --card-bg: #FFFFFF;
+  --brand-primary: #B28B65;
+  --loome-border: rgba(73, 56, 45, 0.14);
 }
 
 html.dark .loome-surface-cream,
-.dark .loome-surface-cream {
+.dark .loome-surface-cream,
+html.dark .loome-surface-ivory,
+.dark .loome-surface-ivory {
   background-color: #1A1614;
   color: #F5EEE6;
   --heading-color: #F5EEE6;
@@ -137,34 +167,82 @@ html.dark .loome-surface-cream,
   --muted-text: #C9B9AA;
   --color-text: #F5EEE6;
   --color-text-muted: #C9B9AA;
-  --card-bg: #2A221F;
+  --card-bg: #28211D;
   --brand-primary: #C8A98B;
-  --loome-border: rgba(200, 169, 139, 0.24);
+  --loome-border: rgba(200, 169, 139, 0.22);
 }
 
-/* Sticky Navbar adaptive frosted surface (valid CSS with color-mix + solid fallback) */
+/* Soft Beige alternating editorial surface — adapts cleanly in Dark Mode */
+.loome-surface-beige {
+  background-color: #E8DDD0;
+  color: #49382D;
+  --heading-color: #2C211B;
+  --page-text: #49382D;
+  --muted-text: #6B584B;
+  --color-text: #49382D;
+  --color-text-muted: #6B584B;
+  --card-bg: #FFFFFF;
+  --brand-primary: #B28B65;
+  --loome-border: rgba(73, 56, 45, 0.15);
+}
+
+html.dark .loome-surface-beige,
+.dark .loome-surface-beige {
+  background-color: #241E1B;
+  color: #F5EEE6;
+  --heading-color: #F5EEE6;
+  --page-text: #F5EEE6;
+  --muted-text: #C9B9AA;
+  --color-text: #F5EEE6;
+  --color-text-muted: #C9B9AA;
+  --card-bg: #2E2622;
+  --brand-primary: #C8A98B;
+  --loome-border: rgba(200, 169, 139, 0.22);
+}
+
+/* Sticky Navbar adaptive frosted surface — warm ivory in Light Mode, deep espresso in Dark Mode */
 .loome-navbar-surface {
-  background-color: #201C1A;
-  background-color: color-mix(in srgb, var(--page-background, #201C1A) 93%, transparent);
-  color: var(--page-text, #F2E9DE);
+  background-color: #F7F3ED;
+  background-color: color-mix(in srgb, #F7F3ED 94%, transparent);
+  color: #49382D;
 }
 
 .loome-navbar-surface-scrolled {
-  background-color: #201C1A;
-  background-color: color-mix(in srgb, var(--page-background, #201C1A) 98%, transparent);
-  color: var(--page-text, #F2E9DE);
+  background-color: #F7F3ED;
+  background-color: color-mix(in srgb, #F7F3ED 98%, transparent);
+  color: #49382D;
 }
 
-/* Deep Espresso primary luxury surface */
+html.dark .loome-navbar-surface,
+.dark .loome-navbar-surface {
+  background-color: #1A1614;
+  background-color: color-mix(in srgb, #1A1614 93%, transparent);
+  color: #F5EEE6;
+}
+
+html.dark .loome-navbar-surface-scrolled,
+.dark .loome-navbar-surface-scrolled {
+  background-color: #1A1614;
+  background-color: color-mix(in srgb, #1A1614 98%, transparent);
+  color: #F5EEE6;
+}
+
+/* Intentional Deep Espresso accent surface (Silk Wave Hero, Featured Banner, Footer) */
 .loome-surface-espresso {
-  background-color: var(--page-background, #201C1A);
-  color: var(--page-text, #F2E9DE);
+  background-color: #201C1A;
+  color: #F2E9DE;
+  --heading-color: #F2E9DE;
+  --page-text: #F2E9DE;
+  --muted-text: #C7B6A6;
 }
 
-/* Dark Mocha secondary luxury surface */
+/* Dark Mocha secondary accent surface */
 .loome-surface-mocha {
-  background-color: var(--brand-secondary, #3B302B);
-  color: var(--page-text, #F2E9DE);
+  background-color: #3B302B;
+  color: #F2E9DE;
+  --heading-color: #F2E9DE;
+  --page-text: #F2E9DE;
+  --muted-text: #C7B6A6;
 }
 
 /* Luxury editorial underline hover animation */
@@ -208,6 +286,7 @@ html.dark .loome-surface-cream,
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }
@@ -220,16 +299,19 @@ html.dark .loome-surface-cream,
     transform-origin: top;
     opacity: 0;
   }
+
   40% {
     transform: scaleY(1);
     transform-origin: top;
     opacity: 1;
   }
+
   60% {
     transform: scaleY(1);
     transform-origin: bottom;
     opacity: 1;
   }
+
   100% {
     transform: scaleY(0);
     transform-origin: bottom;
@@ -247,10 +329,12 @@ html.dark .loome-surface-cream,
     transform: scale(1);
     opacity: 0.7;
   }
+
   70% {
     transform: scale(2.15);
     opacity: 0;
   }
+
   100% {
     transform: scale(2.15);
     opacity: 0;
@@ -267,6 +351,7 @@ html.dark .loome-surface-cream,
     -webkit-mask-position: 0% 50%;
     mask-position: 0% 50%;
   }
+
   100% {
     -webkit-mask-position: 100% 50%;
     mask-position: 100% 50%;
@@ -277,6 +362,7 @@ html.dark .loome-surface-cream,
   0% {
     transform: scale(1.065) translate3d(1.4%, 0, 0);
   }
+
   100% {
     transform: scale(1) translate3d(0, 0, 0);
   }
@@ -286,30 +372,27 @@ html.dark .loome-surface-cream,
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
 }
 
 .loome-fabric-wave-mask {
-  -webkit-mask-image: linear-gradient(
-    106deg,
-    transparent 0%,
-    transparent 33%,
-    rgba(0, 0, 0, 0.28) 43%,
-    rgba(0, 0, 0, 0.84) 53%,
-    #000 63%,
-    #000 100%
-  );
-  mask-image: linear-gradient(
-    106deg,
-    transparent 0%,
-    transparent 33%,
-    rgba(0, 0, 0, 0.28) 43%,
-    rgba(0, 0, 0, 0.84) 53%,
-    #000 63%,
-    #000 100%
-  );
+  -webkit-mask-image: linear-gradient(106deg,
+      transparent 0%,
+      transparent 33%,
+      rgba(0, 0, 0, 0.28) 43%,
+      rgba(0, 0, 0, 0.84) 53%,
+      #000 63%,
+      #000 100%);
+  mask-image: linear-gradient(106deg,
+      transparent 0%,
+      transparent 33%,
+      rgba(0, 0, 0, 0.28) 43%,
+      rgba(0, 0, 0, 0.84) 53%,
+      #000 63%,
+      #000 100%);
   -webkit-mask-size: 300% 100%;
   mask-size: 300% 100%;
   -webkit-mask-repeat: no-repeat;
@@ -336,41 +419,49 @@ html.dark .loome-surface-cream,
 }
 
 @keyframes loomeSilkBreeze1 {
+
   0%,
   100% {
     transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg);
   }
+
   50% {
     transform: translate3d(-1.4%, -1.8%, 0) scale(1.025, 0.985) rotate(-0.55deg);
   }
 }
 
 @keyframes loomeSilkBreeze2 {
+
   0%,
   100% {
     transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg);
   }
+
   50% {
     transform: translate3d(1.6%, -1.3%, 0) scale(1.018, 1.022) rotate(0.48deg);
   }
 }
 
 @keyframes loomeSilkBreeze3 {
+
   0%,
   100% {
     transform: translate3d(0, 0, 0) scale(1, 1);
   }
+
   50% {
     transform: translate3d(-1.8%, 1.2%, 0) scale(1.028, 0.99);
   }
 }
 
 @keyframes loomeSilkGlowBreathe {
+
   0%,
   100% {
     opacity: 0.72;
     transform: translate3d(0, 0, 0) scale(1);
   }
+
   50% {
     opacity: 0.96;
     transform: translate3d(-1.5%, -1.5%, 0) scale(1.05);
@@ -382,12 +473,15 @@ html.dark .loome-surface-cream,
     transform: translate3d(210%, 0, 0) skewX(-8deg);
     opacity: 0;
   }
+
   18% {
     opacity: 0.85;
   }
+
   78% {
     opacity: 0.55;
   }
+
   100% {
     transform: translate3d(-85%, 0, 0) skewX(-8deg);
     opacity: 0;
@@ -398,6 +492,7 @@ html.dark .loome-surface-cream,
   0% {
     transform: scaleX(0);
   }
+
   100% {
     transform: scaleX(1);
   }
@@ -588,8 +683,8 @@ html.dark .loome-btn-espresso:hover,
   color: var(--heading-color, #F2E9DE);
 }
 
-.page-heading > p,
-.split-copy > p {
+.page-heading>p,
+.split-copy>p {
   max-width: 48rem;
   font-size: 1.025rem;
   line-height: 1.8;
@@ -719,11 +814,11 @@ html.dark .loome-btn-espresso:hover,
 .contact-form input,
 .contact-form textarea {
   width: 100%;
-  padding: 0.88rem 1rem;
-  border: 1px solid rgba(200, 169, 139, 0.25);
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(73, 56, 45, 0.2);
   border-radius: var(--loome-radius-btn, 11px);
-  background: rgba(32, 28, 26, 0.45);
-  color: var(--page-text, #F2E9DE);
+  background: #F7F3ED;
+  color: #2C211B;
   font-size: 0.9375rem;
   letter-spacing: 0;
   text-transform: none;
@@ -733,8 +828,25 @@ html.dark .loome-btn-espresso:hover,
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  border-color: var(--brand-accent, #C8A98B);
-  background: rgba(32, 28, 26, 0.75);
+  border-color: #B28B65;
+  background: #FFFFFF;
+}
+
+html.dark .contact-form input,
+html.dark .contact-form textarea,
+.dark .contact-form input,
+.dark .contact-form textarea {
+  border-color: rgba(200, 169, 139, 0.25);
+  background: rgba(32, 28, 26, 0.65);
+  color: #F5EEE6;
+}
+
+html.dark .contact-form input:focus,
+html.dark .contact-form textarea:focus,
+.dark .contact-form input:focus,
+.dark .contact-form textarea:focus {
+  border-color: #C8A98B;
+  background: #201C1A;
 }
 
 .unavailable {
@@ -742,6 +854,7 @@ html.dark .loome-btn-espresso:hover,
 }
 
 @media (max-width: 860px) {
+
   .split,
   .contact-grid {
     grid-template-columns: 1fr;
@@ -773,6 +886,7 @@ html[data-silk-intro='off'] .loome-silk-veil-root {
     opacity: 0;
     transform: translateY(14px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

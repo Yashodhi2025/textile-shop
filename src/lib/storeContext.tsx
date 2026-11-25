@@ -23,6 +23,9 @@ export interface LoomeProduct {
   showPrice: boolean;
   isAvailable: boolean;
   collectionTag?: string;
+  collectionIds: string[];
+  rating?: number | null;
+  reviewCount?: number | null;
   material?: string;
   composition?: string;
   gsm?: string;
@@ -120,6 +123,32 @@ export function normalizeLoomeProduct(rawInput: unknown, index: number): LoomePr
         ? Boolean(customData.showPrice)
         : true;
 
+  const rawRating = raw.rating ?? customData.rating;
+  const parsedRating =
+    rawRating === null || rawRating === undefined || rawRating === ''
+      ? null
+      : Number.parseFloat(String(rawRating));
+  const validRating =
+    parsedRating !== null && Number.isFinite(parsedRating) && parsedRating > 0 && parsedRating <= 5
+      ? Math.round(parsedRating * 10) / 10
+      : null;
+
+  const rawReviewCount = raw.reviewCount ?? customData.reviewCount;
+  const parsedReviewCount =
+    rawReviewCount === null || rawReviewCount === undefined || rawReviewCount === ''
+      ? null
+      : Number.parseInt(String(rawReviewCount), 10);
+  const validReviewCount =
+    parsedReviewCount !== null && Number.isFinite(parsedReviewCount) && parsedReviewCount > 0
+      ? parsedReviewCount
+      : null;
+
+  const collectionIds = [
+    ...splitDelimited(raw.collectionIds),
+    ...splitDelimited(raw.collections),
+    ...splitDelimited(customData.collectionIds),
+  ].filter((value, idx, arr) => arr.indexOf(value) === idx);
+
   return {
     id,
     index,
@@ -135,6 +164,9 @@ export function normalizeLoomeProduct(rawInput: unknown, index: number): LoomePr
     showPrice,
     isAvailable: raw.isAvailable !== false && raw.inStock !== false,
     collectionTag: contentText(raw.collectionTag) || undefined,
+    collectionIds,
+    rating: validRating,
+    reviewCount: validReviewCount,
     material: contentText(raw.material) || contentText(customData.material) || undefined,
     composition: contentText(raw.composition) || contentText(customData.composition) || undefined,
     gsm: contentText(raw.gsm) || contentText(customData.gsm) || undefined,

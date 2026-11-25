@@ -17,16 +17,16 @@ export function ThemeToggle({ className = '', showLabel = false }: ThemeTogglePr
 
   useEffect(() => {
     setMounted(true);
-    const hasDarkClass = document.documentElement.classList.contains('dark');
     const storedTheme = typeof window !== 'undefined' ? localStorage.getItem('deneb-theme') : null;
-    const prefersDark = typeof window !== 'undefined' ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
-
-    const activeDark = storedTheme ? storedTheme === 'dark' : hasDarkClass || prefersDark;
+    // Light Mode is the default unless the visitor explicitly chooses Dark Mode
+    const activeDark = storedTheme === 'dark';
     setIsDark(activeDark);
     if (activeDark) {
       document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.setAttribute('data-theme', 'light');
     }
   }, []);
 
@@ -35,9 +35,11 @@ export function ThemeToggle({ className = '', showLabel = false }: ThemeTogglePr
     setIsDark(nextDark);
     if (nextDark) {
       document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme', 'dark');
       localStorage.setItem('deneb-theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.setAttribute('data-theme', 'light');
       localStorage.setItem('deneb-theme', 'light');
     }
   };

@@ -94,7 +94,13 @@
       "services[*].showPrice",
       "cartPage.checkoutLabel",
       "checkoutPage.submitLabel",
-      "contact.whatsapp"
+      "contact.whatsapp",
+      "products[*].description",
+      "products[*].category",
+      "collectionsPage.collections[*].id",
+      "collectionsPage.collections[*].matchProductIds",
+      "collectionsPage.collections[*].matchCategories",
+      "collectionsPage.collections[*].matchCollectionTag"
     ]
   },
   "siteDataFile": "src/data/site-data.json",
@@ -113,6 +119,11 @@
       "id": "shop",
       "label": "Shop",
       "route": "/shop"
+    },
+    {
+      "id": "collections",
+      "label": "Collections",
+      "route": "/collections"
     },
     {
       "id": "cart",
@@ -156,7 +167,7 @@
     },
     {
       "id": "services",
-      "label": "Collections & Services",
+      "label": "Bespoke Services",
       "route": "/services"
     },
     {
@@ -239,6 +250,11 @@
                 "label": "Shop label"
               },
               {
+                "key": "collections",
+                "type": "text",
+                "label": "Collections label"
+              },
+              {
                 "key": "about_us",
                 "type": "text",
                 "label": "About label"
@@ -246,7 +262,7 @@
               {
                 "key": "services",
                 "type": "text",
-                "label": "Collections / Services label"
+                "label": "Services label"
               },
               {
                 "key": "journal",
@@ -935,6 +951,114 @@
             "key": "intro",
             "type": "textarea",
             "label": "Introduction"
+          }
+        ]
+      },
+      {
+        "id": "collectionsPage",
+        "path": "collectionsPage",
+        "pageKey": "collections",
+        "type": "object",
+        "label": "Collections Page",
+        "fields": [
+          {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Page Eyebrow"
+          },
+          {
+            "key": "heading",
+            "type": "text",
+            "label": "Page Heading",
+            "required": true
+          },
+          {
+            "key": "intro",
+            "type": "textarea",
+            "label": "Page Introduction"
+          },
+          {
+            "key": "collections",
+            "type": "list",
+            "label": "Curated Collections",
+            "itemLabel": "Collection",
+            "minItems": 0,
+            "maxItems": 12,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Stable Collection ID"
+              },
+              {
+                "key": "tag",
+                "type": "text",
+                "label": "Collection Tag"
+              },
+              {
+                "key": "title",
+                "type": "text",
+                "label": "Collection Title",
+                "required": true
+              },
+              {
+                "key": "description",
+                "type": "textarea",
+                "label": "Short Description"
+              },
+              {
+                "key": "imageUrl",
+                "type": "image",
+                "label": "Collection Image",
+                "recommendedWidth": 1600,
+                "recommendedHeight": 1000
+              },
+              {
+                "key": "ctaLabel",
+                "type": "text",
+                "label": "Explore Button Label"
+              },
+              {
+                "key": "href",
+                "type": "url",
+                "label": "Collection Destination URL"
+              },
+              {
+                "key": "matchCategories",
+                "type": "text",
+                "label": "Match Product Categories (comma-separated)"
+              },
+              {
+                "key": "matchProductIds",
+                "type": "text",
+                "label": "Match Specific Product IDs (comma-separated)"
+              },
+              {
+                "key": "matchCollectionTag",
+                "type": "text",
+                "label": "Match Product Tag (e.g. new or bestseller)"
+              }
+            ]
+          },
+          {
+            "key": "atelierEyebrow",
+            "type": "text",
+            "label": "Atelier Banner Eyebrow"
+          },
+          {
+            "key": "atelierHeading",
+            "type": "text",
+            "label": "Atelier Banner Heading"
+          },
+          {
+            "key": "atelierDescription",
+            "type": "textarea",
+            "label": "Atelier Banner Description"
+          },
+          {
+            "key": "atelierCtaLabel",
+            "type": "text",
+            "label": "Atelier Banner Button Label"
           }
         ]
       },
@@ -2171,6 +2295,16 @@
             "key": "showPrice",
             "type": "boolean",
             "label": "Show Price on Storefront"
+          },
+          {
+            "key": "ctaLabel",
+            "type": "text",
+            "label": "Inquiry Button Label"
+          },
+          {
+            "key": "ctaUrl",
+            "type": "url",
+            "label": "Inquiry Button URL"
           }
         ]
       },

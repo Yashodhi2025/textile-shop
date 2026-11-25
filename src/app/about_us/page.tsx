@@ -17,9 +17,9 @@ export default function AboutPage() {
   return (
     <div
       data-preview-page-key="about_us"
-      className="loome-surface-espresso w-full overflow-x-clip bg-[#201C1A] text-[#F2E9DE]"
+      className="loome-surface-ivory w-full overflow-x-clip"
     >
-      {/* Editorial Split Introduction — Compact, Balanced Spacing */}
+      {/* Editorial Split Introduction — Light Warm Ivory */}
       <section
         data-design-section="about"
         className="mx-auto max-w-[1440px] px-4 pb-16 pt-12 sm:px-8 lg:px-14 lg:pb-20 lg:pt-16"
@@ -27,17 +27,17 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
           <LuxuryReveal className="lg:col-span-6">
             <div className="flex items-center gap-3">
-              <span className="h-px w-8 bg-[#C8A98B]" aria-hidden="true" />
+              <span className="h-px w-8 bg-[#B28B65] dark:bg-[#C8A98B]" aria-hidden="true" />
               <EditableText
                 as="p"
                 data-preview-field-path="about.eyebrow"
-                defaultValue={contentText(about.eyebrow) || 'Maison & Heritage'}
+                defaultValue={contentText(about.eyebrow) || 'Our Story'}
                 fontFamily="body"
                 size="0.6875rem"
                 weight={600}
                 transform="uppercase"
-                letterSpacing="0.26em"
-                color="#C8A98B"
+                letterSpacing="0.24em"
+                color="primary"
                 className="m-0"
               />
             </div>
@@ -47,12 +47,12 @@ export default function AboutPage() {
               data-preview-field-path="about.heading"
               defaultValue={contentText(about.heading)}
               fontFamily="heading"
-              size="clamp(2.5rem, 4.5vw, 4rem)"
+              size="clamp(2.4rem, 4.4vw, 3.85rem)"
               weight={800}
-              lineHeight={1.04}
+              lineHeight={1.05}
               letterSpacing="-0.03em"
-              color="#F2E9DE"
-              className="mt-4 mb-0"
+              color="heading"
+              className="mt-3.5 mb-0"
             />
 
             <EditableText
@@ -60,18 +60,18 @@ export default function AboutPage() {
               data-preview-field-path="about.body"
               defaultValue={contentText(about.body)}
               fontFamily="body"
-              size="1rem"
-              lineHeight={1.85}
-              color="#C7B6A6"
-              className="mt-6 mb-0 max-w-xl"
+              size="0.96875rem"
+              lineHeight={1.82}
+              color="muted"
+              className="mt-5 mb-0 max-w-xl"
             />
           </LuxuryReveal>
 
           <LuxuryReveal delay={0.12} className="lg:col-span-6">
-            <div className="group overflow-hidden rounded-2xl border border-[#C8A98B]/20 bg-[#3B302B]/50">
+            <div className="group overflow-hidden rounded-2xl border border-[#49382D]/12 bg-[#E8DDD0]/50 shadow-[0_6px_26px_rgba(73,56,45,0.08)] dark:border-[#C8A98B]/20 dark:bg-[#28211D]">
               <EditableImage
                 className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.04]"
-                src={withBasePath(contentText(about.imageUrl) || '/images/craftsmanship-loom.jpg')}
+                src={contentText(about.imageUrl) || '/images/craftsmanship-loom.jpg'}
                 alt="Textile Atelier"
                 data-preview-field-path="about.imageUrl"
                 radius="none"
@@ -82,10 +82,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Atelier Philosophy & Editorial Collage — Adaptive Cream / Dark Espresso Surface */}
+      {/* Atelier Philosophy & Editorial Collage — Soft Beige Surface */}
       <section
         data-design-section="about-heritage"
-        className="loome-surface-cream w-full border-t border-[#C8A98B]/20 py-16 lg:py-20"
+        className="loome-surface-beige w-full border-t border-[#49382D]/12 py-16 dark:border-[#C8A98B]/16 lg:py-20"
       >
         <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-12 px-4 sm:px-8 lg:grid-cols-12 lg:gap-14 lg:px-14">
           <LuxuryReveal className="space-y-8 lg:col-span-5">

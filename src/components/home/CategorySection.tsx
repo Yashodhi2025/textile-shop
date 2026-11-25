@@ -61,7 +61,7 @@ export default function CategorySection() {
     <section
       id="categories"
       data-design-section="home-categories"
-      className="loome-surface-espresso w-full py-18 sm:py-22 lg:py-26"
+      className="loome-surface-ivory w-full py-16 sm:py-20 lg:py-24"
     >
       <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
         {/* Editorial Section Header */}
@@ -70,13 +70,13 @@ export default function CategorySection() {
             <EditableText
               as="p"
               data-preview-field-path="home.categoriesEyebrow"
-              defaultValue={contentText(home.categoriesEyebrow) || 'CURATED EDITIONS'}
+              defaultValue={contentText(home.categoriesEyebrow) || 'BROWSE CATEGORIES'}
               fontFamily="body"
               size="0.6875rem"
               weight={600}
               transform="uppercase"
-              letterSpacing="0.26em"
-              color="#C8A98B"
+              letterSpacing="0.24em"
+              color="primary"
               className="m-0"
             />
             <EditableText
@@ -84,12 +84,12 @@ export default function CategorySection() {
               data-preview-field-path="home.categoriesHeading"
               defaultValue={contentText(home.categoriesHeading) || 'Shop by Category'}
               fontFamily="heading"
-              size="clamp(2.25rem, 4vw, 3.4rem)"
+              size="clamp(2.2rem, 3.8vw, 3.25rem)"
               weight={800}
-              lineHeight={1.04}
+              lineHeight={1.06}
               letterSpacing="-0.03em"
-              color="#F2E9DE"
-              className="mt-3 mb-0"
+              color="heading"
+              className="mt-2.5 mb-0"
             />
           </div>
           <EditableText
@@ -99,17 +99,17 @@ export default function CategorySection() {
             fontFamily="body"
             size="0.9375rem"
             lineHeight={1.75}
-            color="#C7B6A6"
+            color="muted"
             className="m-0 max-w-md"
           />
         </LuxuryReveal>
 
         {/* Asymmetric Editorial Grid: 2 tall monumental cards on top, 3 architectural cards below */}
-        <div data-preview-list-path="home.categories" className="mt-14">
+        <div data-preview-list-path="home.categories" className="mt-12">
           {categories.length === 0 ? (
             <div
               data-preview-static="categories-empty"
-              className="rounded-2xl border border-dashed border-[#C8A98B]/28 py-16 text-center text-sm text-[#C7B6A6]"
+              className="rounded-2xl border border-dashed border-[#49382D]/20 bg-white/60 py-16 text-center text-sm text-[#6E5B4E] dark:border-[#C8A98B]/28 dark:bg-[#28211D]/50 dark:text-[#C9B9AA]"
             >
               Add categories in your Fivora editor to populate this showcase.
             </div>

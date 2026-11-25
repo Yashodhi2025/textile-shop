@@ -25,6 +25,7 @@
       "pages": [
         "home",
         "shop",
+        "collections",
         "cart",
         "checkout",
         "journal",
@@ -36,31 +37,31 @@
         "contact"
       ],
       "theme": {
-        "primaryColor": "#8D7667",
-        "secondaryColor": "#3B302B",
-        "accentColor": "#C8A98B",
-        "backgroundColor": "#201C1A",
-        "textColor": "#F2E9DE",
-        "headingColor": "#F2E9DE",
-        "mutedTextColor": "#C7B6A6",
+        "primaryColor": "#49382D",
+        "secondaryColor": "#E8DDD0",
+        "accentColor": "#B28B65",
+        "backgroundColor": "#F7F3ED",
+        "textColor": "#49382D",
+        "headingColor": "#2C211B",
+        "mutedTextColor": "#6E5B4E",
         "headingFont": "Manrope",
         "bodyFont": "Manrope",
         "baseSize": "16px",
         "heroMinHeight": "88vh",
         "sectionPadding": "6rem",
         "borderRadius": "12px",
-        "cardBackgroundColor": "#3B302B",
-        "borderColor": "rgba(200, 169, 139, 0.2)",
+        "cardBackgroundColor": "#FFFFFF",
+        "borderColor": "rgba(73, 56, 45, 0.14)",
         "dark": {
-          "backgroundColor": "#161311",
-          "cardBackgroundColor": "#2A221F",
+          "backgroundColor": "#1A1614",
+          "cardBackgroundColor": "#28211D",
           "textColor": "#F5EEE6",
           "headingColor": "#F5EEE6",
           "mutedTextColor": "#C9B9AA",
           "borderColor": "rgba(200, 169, 139, 0.22)",
-          "primaryColor": "#A38B7A",
-          "secondaryColor": "#2A221F",
-          "accentColor": "#D4B89B"
+          "primaryColor": "#C8A98B",
+          "secondaryColor": "#241E1B",
+          "accentColor": "#C8A98B"
         }
       }
     }
@@ -69,6 +70,7 @@
     "requiredPages": [
       "home",
       "shop",
+      "collections",
       "cart",
       "checkout",
       "journal",
@@ -117,7 +119,8 @@
       "navLabels": {
         "home": "Home",
         "shop": "Shop",
-        "services": "Collections",
+        "collections": "Collections",
+        "services": "Services",
         "journal": "Journal",
         "textile_care": "Textile Care",
         "shipping_returns": "Shipping & Returns",
@@ -125,14 +128,14 @@
         "about_us": "About",
         "contact": "Contact"
       },
-      "newsletterEyebrow": "Private Correspondence",
+      "newsletterEyebrow": "Stay Connected",
       "footerHeading": "Letters from the Atelier",
       "newsletterDescription": "Receive private access to seasonal textile editions, complimentary swatch mailings, and architectural interior notes.",
       "newsletterSubscribeLabel": "Join List",
       "newsletterEmailPlaceholder": "Enter your email address",
       "newsletterFootnote": "Thoughtful dispatches only. Unsubscribe effortlessly at any time.",
       "footerTagline": "The Art of Fine Textiles",
-      "footerExploreHeading": "Maison",
+      "footerExploreHeading": "Explore",
       "footerCollectionsHeading": "Collections",
       "footerCollections": [
         {
@@ -167,7 +170,7 @@
         }
       ],
       "footerTradeLabel": "Trade Program",
-      "footerContactHeading": "Atelier & Care",
+      "footerContactHeading": "Contact & Care",
       "footerEmailIcon": "mail",
       "footerPhoneIcon": "phone",
       "footerLocationIcon": "map-pin",
@@ -227,7 +230,7 @@
             "primaryCtaLabel": "Shop Drapery",
             "primaryCtaUrl": "/shop",
             "secondaryCtaLabel": "View Collections",
-            "secondaryCtaUrl": "/services"
+            "secondaryCtaUrl": "/collections"
           },
           {
             "id": "story-heritage-weaves",
@@ -244,7 +247,7 @@
         ]
       },
       "marqueeText": "TIMELESS TEXTURES • THOUGHTFULLY CRAFTED • EVERYDAY LUXURY",
-      "categoriesEyebrow": "CURATED EDITIONS",
+      "categoriesEyebrow": "BROWSE CATEGORIES",
       "categoriesHeading": "Shop by Category",
       "categoriesSummary": "Five foundational textile expressions chosen for tactile richness, architectural drape, and quiet longevity.",
       "categories": [
@@ -310,7 +313,7 @@
         "description": "Sun-warmed limestone neutrals, sage olive merino throws, and translucent linen drapes designed to soften architectural light.",
         "imageUrl": "/images/featured-collection.jpg",
         "ctaLabel": "Discover the Edit",
-        "ctaUrl": "#bestsellers"
+        "ctaUrl": "/shop/?collection=solitude-linen"
       },
       "bestsellersEyebrow": "CLIENT FAVORITES",
       "bestsellersHeading": "Bestsellers",
@@ -355,7 +358,7 @@
           }
         ]
       },
-      "featuresEyebrow": "THE LOOMÉ STANDARD",
+      "featuresEyebrow": "WHY LOOMÉ",
       "featuresHeading": "Crafted to Outlast Seasons",
       "features": [
         {
@@ -371,7 +374,7 @@
           "body": "Restrained architectural palettes in warm ivory, sage olive, beige, and champagne that soften gracefully and remain effortless across decades."
         }
       ],
-      "testimonialsEyebrow": "ATELIER VOICES",
+      "testimonialsEyebrow": "CUSTOMER REVIEWS",
       "testimonialsHeading": "Lived With & Loved",
       "testimonials": [
         {
@@ -941,9 +944,9 @@
       "contactWhatsappMessage": "Hello LOOMÉ Atelier, I have a question from your FAQ page."
     },
     "shopPage": {
-      "eyebrow": "THE COMPLETE ARCHIVE",
+      "eyebrow": "SHOP ALL TEXTILES",
       "heading": "Shop Fine Textiles",
-      "intro": "Explore our complete curation of Belgian flax drapery, stonewashed European linen bedding, architectural upholstery weaves, and atelier fabrics by the yard."
+      "intro": "Browse our full range of Belgian flax curtains, stonewashed linen bedding, upholstery weaves, cushions, and fabrics by the yard."
     },
     "cartPage": {
       "eyebrow": "THE ATELIER BAG",
@@ -1014,15 +1017,15 @@
       ]
     },
     "servicesPage": {
-      "eyebrow": "Bespoke Atelier & Collections",
-      "heading": "Bespoke Collections & Atelier Services",
-      "intro": "Beyond our ready-to-live editions, our textile specialists offer tailored drapery, upholstery sourcing, and trade consultations.",
+      "eyebrow": "Private Atelier",
+      "heading": "Bespoke Textile Services",
+      "intro": "Made-to-measure drapery, complimentary fabric swatch boxes, and personal consultations for homes, villas, and interior design projects.",
       "quoteLabel": "Quote on Request"
     },
     "services": [
       {
         "id": "bespoke-drapery",
-        "name": "Bespoke Architectural Drapery",
+        "name": "Custom Drapery Tailoring",
         "description": "Made-to-measure pinch-pleat and wave-fold curtains tailored precisely to ceiling height, light filtration needs, and window geometry.",
         "imageUrl": "/images/cat-curtains.jpg",
         "price": 28500,
@@ -1032,11 +1035,13 @@
           "Custom Belgian flax & thermal linings",
           "Weighted hand-blindstitched hems",
           "Complimentary virtual measurement guide"
-        ]
+        ],
+        "ctaLabel": "Request Drapery Quote",
+        "ctaUrl": "/contact"
       },
       {
         "id": "swatch-curation",
-        "name": "Curated Swatch Atelier",
+        "name": "Complimentary Fabric Swatches",
         "description": "Experience the weight, slub, and daylight response of our finest weaves in your own space before committing to yardage.",
         "imageUrl": "/images/cat-fabrics.jpg",
         "price": 3500,
@@ -1046,11 +1051,13 @@
           "Up to 10 generous fabric cuttings",
           "Dedicated color harmony notes",
           "Express island-wide presentation box delivery"
-        ]
+        ],
+        "ctaLabel": "Request Swatch Box",
+        "ctaUrl": "/contact"
       },
       {
         "id": "interior-trade",
-        "name": "Trade & Interior Architect Program",
+        "name": "Interior Design Consultations",
         "description": "Dedicated yardage allocations, custom dye lots, and concierge logistics for residential and boutique hospitality projects.",
         "imageUrl": "/images/featured-collection.jpg",
         "showPrice": false,
@@ -1058,11 +1065,13 @@
           "Preferential trade pricing",
           "Fire-retardant hospitality treatments",
           "Dedicated atelier account liaison"
-        ]
+        ],
+        "ctaLabel": "Book a Consultation",
+        "ctaUrl": "/contact"
       }
     ],
     "contact": {
-      "eyebrow": "Private Client Concierge",
+      "eyebrow": "Contact Us",
       "heading": "Visit the Atelier or Inquire",
       "intro": "Whether selecting drapery for a single sunlit room or sourcing yardage for a complete residence, our textile advisors are here to assist.",
       "phone": "+94 11 000 0194",
@@ -1360,7 +1369,66 @@
           }
         ]
       }
-    ]
+    ],
+    "collectionsPage": {
+      "eyebrow": "CURATED COLLECTIONS",
+      "heading": "Signature Textile Collections",
+      "intro": "Thoughtfully paired drapery, bedding, and woven accents curated for serene, light-filled spaces.",
+      "atelierEyebrow": "PRIVATE ATELIER",
+      "atelierHeading": "Need Custom Drapery or Fabric Swatches?",
+      "atelierDescription": "Work directly with our Colombo textile specialists for made-to-measure curtains, custom yardage, and complimentary fabric swatch boxes.",
+      "atelierCtaLabel": "Explore Bespoke Services",
+      "collections": [
+        {
+          "id": "solitude-linen",
+          "tag": "Seasonal Edit",
+          "title": "The Solitude Linen Edit",
+          "description": "Airy Belgian flax drapery, stonewashed duvet sets, and raw-edge table linens in sun-warmed ivory and oat tones.",
+          "imageUrl": "/images/featured-collection.jpg",
+          "ctaLabel": "Explore Collection",
+          "href": "/shop/?collection=solitude-linen",
+          "matchProductIds": "siena-sheer-curtain, valence-flax-duvet, provence-linen-runner",
+          "matchCategories": "",
+          "matchCollectionTag": ""
+        },
+        {
+          "id": "morning-light-drapery",
+          "tag": "Window Drapery",
+          "title": "Morning Light Drapery",
+          "description": "Sheer Belgian flax and heavyweight lined curtains tailored to filter tropical daylight with effortless drape.",
+          "imageUrl": "/images/cat-curtains.jpg",
+          "ctaLabel": "Explore Collection",
+          "href": "/shop/?collection=morning-light-drapery",
+          "matchProductIds": "",
+          "matchCategories": "Curtains",
+          "matchCollectionTag": ""
+        },
+        {
+          "id": "atelier-bedding",
+          "tag": "Bedroom Sanctuary",
+          "title": "Atelier Bedding Suite",
+          "description": "Breathable European flax duvets, 600TC organic cotton sateen sheets, and hand-loomed merino wool throws.",
+          "imageUrl": "/images/cat-bedding.jpg",
+          "ctaLabel": "Explore Collection",
+          "href": "/shop/?collection=atelier-bedding",
+          "matchProductIds": "",
+          "matchCategories": "Bedding",
+          "matchCollectionTag": ""
+        },
+        {
+          "id": "tactile-living",
+          "tag": "Living & Accents",
+          "title": "Tactile Living & Accents",
+          "description": "Washed velvet lumbar cushions, heavyweight herringbone fabrics by the yard, and textured linen table accents.",
+          "imageUrl": "/images/cat-upholstery.jpg",
+          "ctaLabel": "Explore Collection",
+          "href": "/shop/?collection=tactile-living",
+          "matchProductIds": "",
+          "matchCategories": "Upholstery, Cushions, Fabrics",
+          "matchCollectionTag": ""
+        }
+      ]
+    }
   },
   "media": {},
   "seo": null,
@@ -1379,17 +1447,31 @@
     "analyticsUrl": "https://api.fivora.site/site-analytics/page-view"
   },
   "theme": {
-    "primaryColor": "#8D7667",
-    "secondaryColor": "#3B302B",
-    "accentColor": "#C8A98B",
-    "backgroundColor": "#201C1A",
-    "cardBackgroundColor": "#3B302B",
-    "textColor": "#F2E9DE",
-    "borderColor": "rgba(200, 169, 139, 0.2)",
+    "primaryColor": "#49382D",
+    "secondaryColor": "#E8DDD0",
+    "accentColor": "#B28B65",
+    "backgroundColor": "#F7F3ED",
+    "cardBackgroundColor": "#FFFFFF",
+    "textColor": "#49382D",
+    "headingColor": "#2C211B",
+    "mutedTextColor": "#6E5B4E",
+    "borderColor": "rgba(73, 56, 45, 0.14)",
     "headingFont": "Manrope",
     "bodyFont": "Manrope",
     "baseSize": "16px",
     "heroMinHeight": "88vh",
-    "sectionPadding": "6rem"
+    "sectionPadding": "6rem",
+    "borderRadius": "12px",
+    "dark": {
+      "backgroundColor": "#1A1614",
+      "cardBackgroundColor": "#28211D",
+      "textColor": "#F5EEE6",
+      "headingColor": "#F5EEE6",
+      "mutedTextColor": "#C9B9AA",
+      "borderColor": "rgba(200, 169, 139, 0.22)",
+      "primaryColor": "#C8A98B",
+      "secondaryColor": "#241E1B",
+      "accentColor": "#C8A98B"
+    }
   }
 }

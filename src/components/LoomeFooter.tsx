@@ -14,7 +14,8 @@ const PENDING_CATEGORY_KEY = 'loome_pending_category_v1';
 const FOOTER_NAV = [
   { id: 'home', fallbackLabel: 'Home', route: '/' },
   { id: 'shop', fallbackLabel: 'Shop', route: '/shop' },
-  { id: 'services', fallbackLabel: 'Collections', route: '/services' },
+  { id: 'collections', fallbackLabel: 'Collections', route: '/collections' },
+  { id: 'services', fallbackLabel: 'Services', route: '/services' },
   { id: 'journal', fallbackLabel: 'Journal', route: '/journal' },
   { id: 'about_us', fallbackLabel: 'About', route: '/about_us' },
   { id: 'contact', fallbackLabel: 'Contact', route: '/contact' },
@@ -114,6 +115,7 @@ export default function LoomeFooter() {
     : siteData.template?.structure?.pages || [
       'home',
       'shop',
+      'collections',
       'services',
       'journal',
       'textile_care',
@@ -205,8 +207,8 @@ export default function LoomeFooter() {
 
   return (
     <footer data-design-section="footer" className="w-full">
-      {/* Editorial Pre-Footer Newsletter Band — Dark Mocha */}
-      <section className="border-t border-[#C8A98B]/20 bg-[var(--brand-secondary,#3B302B)] px-4 py-20 text-[#F2E9DE] sm:px-8 lg:px-12 lg:py-24">
+      {/* Editorial Pre-Footer Newsletter Band — Rich Dark Mocha */}
+      <section className="border-t border-[#C8A98B]/20 bg-[#2C2420] px-4 py-18 text-[#F2E9DE] sm:px-8 lg:px-12 lg:py-22">
         <div className="mx-auto grid max-w-[1360px] grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-6">
             <EditableText
@@ -321,7 +323,7 @@ export default function LoomeFooter() {
       </section>
 
       {/* Deep Espresso Multi-Column Luxury Footer */}
-      <div className="border-t border-[#C8A98B]/14 bg-[var(--page-background,#201C1A)] px-4 pb-12 pt-20 text-[#F2E9DE] sm:px-8 lg:px-12">
+      <div className="border-t border-[#C8A98B]/14 bg-[#201C1A] px-4 pb-12 pt-18 text-[#F2E9DE] sm:px-8 lg:px-12">
         <div className="mx-auto max-w-[1360px]">
           <div className="grid grid-cols-1 gap-12 border-b border-[#C8A98B]/16 pb-16 md:grid-cols-2 lg:grid-cols-12 lg:gap-10">
             {/* Column 1: Brand Identity */}
@@ -431,6 +433,8 @@ export default function LoomeFooter() {
                       <span data-preview-field-path="common.navLabels.home">{label}</span>
                     ) : item.id === 'shop' ? (
                       <span data-preview-field-path="common.navLabels.shop">{label}</span>
+                    ) : item.id === 'collections' ? (
+                      <span data-preview-field-path="common.navLabels.collections">{label}</span>
                     ) : item.id === 'services' ? (
                       <span data-preview-field-path="common.navLabels.services">{label}</span>
                     ) : item.id === 'journal' ? (

@@ -46,20 +46,20 @@ export default function TestimonialsSection() {
       data-design-section="home-testimonials"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      className="loome-surface-espresso w-full border-b border-[#C8A98B]/16 py-16 sm:py-20 lg:py-24"
+      className="loome-surface-beige w-full border-b border-[#49382D]/10 py-16 dark:border-[#C8A98B]/16 sm:py-20 lg:py-24"
     >
       <div className="mx-auto max-w-[1100px] px-4 sm:px-8 lg:px-14">
         <LuxuryReveal className="text-center">
           <EditableText
             as="p"
             data-preview-field-path="home.testimonialsEyebrow"
-            defaultValue={contentText(home.testimonialsEyebrow) || 'ATELIER VOICES'}
+            defaultValue={contentText(home.testimonialsEyebrow) || 'CUSTOMER REVIEWS'}
             fontFamily="body"
             size="0.6875rem"
             weight={600}
             transform="uppercase"
-            letterSpacing="0.26em"
-            color="#C8A98B"
+            letterSpacing="0.24em"
+            color="primary"
             align="center"
             className="m-0"
           />
@@ -68,22 +68,22 @@ export default function TestimonialsSection() {
             data-preview-field-path="home.testimonialsHeading"
             defaultValue={contentText(home.testimonialsHeading) || 'Lived With & Loved'}
             fontFamily="heading"
-            size="clamp(2.25rem, 3.8vw, 3.2rem)"
+            size="clamp(2.2rem, 3.8vw, 3.15rem)"
             weight={800}
             lineHeight={1.06}
             letterSpacing="-0.03em"
-            color="#F2E9DE"
+            color="heading"
             align="center"
-            className="mt-3 mb-0"
+            className="mt-2.5 mb-0"
           />
         </LuxuryReveal>
 
-        <LuxuryReveal delay={0.1} className="mt-14">
-          <div className="relative mx-auto max-w-3xl rounded-2xl border border-[#C8A98B]/18 bg-[#3B302B]/42 px-6 py-10 text-center sm:px-12 sm:py-12">
+        <LuxuryReveal delay={0.1} className="mt-12">
+          <div className="relative mx-auto max-w-3xl rounded-2xl border border-[#49382D]/12 bg-white px-6 py-10 text-center shadow-[0_6px_26px_rgba(73,56,45,0.06)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] dark:shadow-none sm:px-12 sm:py-12">
             <p
               aria-hidden="true"
               data-preview-static="testimonial-quote-mark"
-              className="pointer-events-none m-0 select-none font-serif text-7xl leading-none text-[#C8A98B]/55"
+              className="pointer-events-none m-0 select-none font-serif text-7xl leading-none text-[#B28B65]/50 dark:text-[#C8A98B]/55"
             >
               &ldquo;
             </p>
@@ -94,7 +94,7 @@ export default function TestimonialsSection() {
               aria-label="5 out of 5 stars"
             >
               {[0, 1, 2, 3, 4].map((star) => (
-                <Star key={star} className="h-3.5 w-3.5 fill-[#C8A98B] text-[#C8A98B]" />
+                <Star key={star} className="h-3.5 w-3.5 fill-[#B28B65] text-[#B28B65] dark:fill-[#C8A98B] dark:text-[#C8A98B]" />
               ))}
             </p>
 
@@ -111,7 +111,7 @@ export default function TestimonialsSection() {
                 {reviews.length === 0 ? (
                   <div
                     data-preview-static="testimonials-empty"
-                    className="w-full shrink-0 rounded-2xl border border-dashed border-[#C8A98B]/25 py-14 text-center text-sm text-[#C7B6A6]"
+                    className="w-full shrink-0 rounded-2xl border border-dashed border-[#49382D]/20 py-14 text-center text-sm text-[#6E5B4E] dark:border-[#C8A98B]/25 dark:text-[#C9B9AA]"
                   >
                     Add client testimonials in your Fivora editor.
                   </div>
@@ -124,7 +124,7 @@ export default function TestimonialsSection() {
                     >
                       <p
                         data-preview-field-path={`home.testimonials[${review.index}].quote`}
-                        className="font-serif text-2xl font-light italic leading-[1.45] text-[#F2E9DE] sm:text-[1.95rem]"
+                        className="font-serif text-2xl font-normal italic leading-[1.45] text-[#2C211B] dark:text-[#F5EEE6] sm:text-[1.9rem]"
                       >
                         &ldquo;{review.quote}&rdquo;
                       </p>
@@ -133,12 +133,12 @@ export default function TestimonialsSection() {
                         <cite className="not-italic">
                           <span
                             data-preview-field-path={`home.testimonials[${review.index}].author`}
-                            className="text-xs font-bold uppercase tracking-[0.22em] text-[#F2E9DE]"
+                            className="text-xs font-bold uppercase tracking-[0.2em] text-[#2C211B] dark:text-[#F5EEE6]"
                           >
                             {review.author}
                           </span>
                         </cite>
-                        <p className="m-0 text-xs text-[#C7B6A6]">
+                        <p className="m-0 text-xs text-[#6E5B4E] dark:text-[#C9B9AA]">
                           <span data-preview-field-path={`home.testimonials[${review.index}].role`}>
                             {review.role}
                           </span>
@@ -153,7 +153,7 @@ export default function TestimonialsSection() {
                         </p>
                         <p
                           data-preview-field-path={`home.testimonials[${review.index}].productMention`}
-                          className="mt-1 m-0 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C8A98B]"
+                          className="mt-1 m-0 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#B28B65] dark:text-[#C8A98B]"
                         >
                           {review.productMention}
                         </p>
@@ -171,7 +171,7 @@ export default function TestimonialsSection() {
                   data-preview-static="testimonial-prev"
                   onClick={() => setActiveIndex((prev) => (prev - 1 + count) % count)}
                   aria-label="Previous testimonial"
-                  className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-[#C8A98B]/30 bg-[#201C1A]/60 text-[#F2E9DE] transition-all hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A]"
+                  className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-[#49382D]/20 bg-[#F7F3ED] text-[#49382D] transition-all hover:border-[#B28B65] hover:bg-[#B28B65] hover:text-white dark:border-[#C8A98B]/30 dark:bg-[#201C1A]/60 dark:text-[#F5EEE6] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
                 >
                   <ChevronLeft className="h-4 w-4 stroke-[1.6]" />
                 </button>
@@ -186,8 +186,8 @@ export default function TestimonialsSection() {
                       onClick={() => setActiveIndex(idx)}
                       className={`h-[3px] rounded-full transition-all duration-300 ${
                         idx === safeIndex
-                          ? 'w-10 bg-[#C8A98B]'
-                          : 'w-5 bg-[#F2E9DE]/25 hover:bg-[#C8A98B]/70'
+                          ? 'w-10 bg-[#B28B65] dark:bg-[#C8A98B]'
+                          : 'w-5 bg-[#49382D]/20 hover:bg-[#B28B65]/70 dark:bg-[#F5EEE6]/25 dark:hover:bg-[#C8A98B]/70'
                       }`}
                     />
                   ))}
@@ -198,7 +198,7 @@ export default function TestimonialsSection() {
                   data-preview-static="testimonial-next"
                   onClick={() => setActiveIndex((prev) => (prev + 1) % count)}
                   aria-label="Next testimonial"
-                  className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-[#C8A98B]/30 bg-[#201C1A]/60 text-[#F2E9DE] transition-all hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A]"
+                  className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-[#49382D]/20 bg-[#F7F3ED] text-[#49382D] transition-all hover:border-[#B28B65] hover:bg-[#B28B65] hover:text-white dark:border-[#C8A98B]/30 dark:bg-[#201C1A]/60 dark:text-[#F5EEE6] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
                 >
                   <ChevronRight className="h-4 w-4 stroke-[1.6]" />
                 </button>

@@ -107,7 +107,7 @@ export default function HomePage() {
         products={newArrivals}
         filterPool={allProducts}
         showCategoryFilter
-        surfaceClassName="loome-surface-cream border-y border-[#3B302B]/12 dark:border-[#C8A98B]/16"
+        surfaceClassName="loome-surface-beige border-y border-[#49382D]/10 dark:border-[#C8A98B]/16"
       />
 
       <CraftsmanshipSection />
@@ -116,19 +116,19 @@ export default function HomePage() {
       <ProductShowcaseSection
         id="bestsellers"
         designSection="home-bestsellers"
-        tone="dark"
+        tone="light"
         headerLeft={
           <>
             <EditableText
               as="p"
               data-preview-field-path="home.bestsellersEyebrow"
-              defaultValue={contentText(home.bestsellersEyebrow) || 'CLIENT FAVORITES'}
+              defaultValue={contentText(home.bestsellersEyebrow) || 'MOST LOVED'}
               fontFamily="body"
               size="0.6875rem"
               weight={600}
               transform="uppercase"
-              letterSpacing="0.26em"
-              color="#C8A98B"
+              letterSpacing="0.24em"
+              color="primary"
               className="m-0"
             />
             <EditableText
@@ -136,12 +136,12 @@ export default function HomePage() {
               data-preview-field-path="home.bestsellersHeading"
               defaultValue={contentText(home.bestsellersHeading) || 'Bestsellers'}
               fontFamily="heading"
-              size="clamp(2.25rem, 4vw, 3.4rem)"
+              size="clamp(2.2rem, 3.8vw, 3.25rem)"
               weight={800}
-              lineHeight={1.04}
+              lineHeight={1.06}
               letterSpacing="-0.03em"
-              color="#F2E9DE"
-              className="mt-3 mb-0"
+              color="heading"
+              className="mt-2.5 mb-0"
             />
           </>
         }
@@ -153,12 +153,12 @@ export default function HomePage() {
             fontFamily="body"
             size="0.9375rem"
             lineHeight={1.75}
-            color="#C7B6A6"
+            color="muted"
             className="m-0 max-w-md lg:text-right"
           />
         }
         products={bestsellers}
-        surfaceClassName="loome-surface-espresso"
+        surfaceClassName="loome-surface-ivory"
       />
 
       <ShopTheLookSection products={allProducts} />

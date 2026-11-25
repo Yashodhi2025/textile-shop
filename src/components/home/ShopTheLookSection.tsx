@@ -89,7 +89,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
       ref={sectionRef}
       id="shop-the-look"
       data-design-section="shop-the-look"
-      className="loome-surface-cream w-full border-y border-[#3B302B]/12 py-16 sm:py-20 lg:py-24"
+      className="loome-surface-beige w-full border-y border-[#49382D]/10 py-16 dark:border-[#C8A98B]/16 sm:py-20 lg:py-24"
     >
       <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
         <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
@@ -248,10 +248,10 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                       <div
                         data-preview-item-path={`home.shopTheLook.hotspots[${spot.index}]`}
                         onClick={() => setActiveIndex(idx)}
-                        className={`group cursor-pointer rounded-2xl border p-4 transition-all duration-400 sm:p-5 ${
+                        className={`group cursor-pointer rounded-2xl border p-4 transition-all duration-300 sm:p-5 ${
                           isSelected
-                            ? 'border-[#8D7667] bg-[#FAF5EE] shadow-[0_12px_30px_rgba(32,28,26,0.08)] dark:border-[#C8A98B] dark:bg-[#2A221F]'
-                            : 'border-[#3B302B]/12 bg-[#FAF5EE]/75 hover:border-[#C8A98B] dark:border-[#C8A98B]/18 dark:bg-[#241D1A] dark:hover:border-[#C8A98B]/55'
+                            ? 'border-[#B28B65] bg-white shadow-[0_8px_24px_rgba(73,56,45,0.08)] dark:border-[#C8A98B] dark:bg-[#28211D]'
+                            : 'border-[#49382D]/12 bg-white/85 hover:border-[#B28B65]/70 dark:border-[#C8A98B]/18 dark:bg-[#241D1A] dark:hover:border-[#C8A98B]/55'
                         }`}
                       >
                         <div className="flex items-start gap-4">
@@ -340,11 +340,11 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
             {hotspots.length > 0 && (
               <div className="pt-5">
                 <a
-                  href="#new-arrivals"
+                  href={withBasePath('/collections/')}
                   data-preview-static="shop-look-explore-all"
-                  className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#201C1A] no-underline transition-colors hover:text-[#8D7667] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
+                  className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#2C211B] no-underline transition-colors hover:text-[#B28B65] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
                 >
-                  Explore Full Collection
+                  Explore Collections
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                 </a>
               </div>

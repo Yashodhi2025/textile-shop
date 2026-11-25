@@ -572,9 +572,11 @@ export default function SilkVeilIntro({
           transition={{ duration: 0.35 }}
           className="absolute bottom-7 right-6 z-20 border-0 border-b border-[#262923]/25 bg-transparent px-0 pb-1 text-[10px] font-medium uppercase tracking-[0.26em] text-[#595C52] transition-colors duration-300 hover:border-[#262923] hover:text-[#262923] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#B59B79] sm:bottom-9 sm:right-10"
         >
-          <span data-preview-field-path={isStage ? 'home.silkIntro.skipLabel' : undefined}>
-            {skipLabel}
-          </span>
+          {isStage ? (
+            <span data-preview-field-path="home.silkIntro.skipLabel">{skipLabel}</span>
+          ) : (
+            <span>{skipLabel}</span>
+          )}
         </motion.button>
       </div>
 

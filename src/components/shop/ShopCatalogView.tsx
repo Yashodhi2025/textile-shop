@@ -6,6 +6,7 @@ import {
   Check,
   ChevronDown,
   RotateCcw,
+  Search,
   SlidersHorizontal,
   X,
 } from 'lucide-react';
@@ -21,6 +22,11 @@ import {
   resolveCategoryQueryId,
   resolveShopCategoryParam,
 } from '@/lib/categoryUtils';
+import {
+  extractCuratedCollections,
+  findCollectionByParam,
+  productMatchesCollection,
+} from '@/lib/collectionUtils';
 import {
   formatLoomePrice,
   normalizeLoomeProduct,
@@ -62,6 +68,10 @@ export default function ShopCatalogView() {
     () => extractHomeCategories(content.home),
     [content.home],
   );
+  const curatedCollections = useMemo(
+    () => extractCuratedCollections(content.collectionsPage),
+    [content.collectionsPage],
+  );
 
   const allProducts = useMemo<LoomeProduct[]>(
     () => rawProducts.map((item, idx) => normalizeLoomeProduct(item, idx)),
@@ -96,6 +106,8 @@ export default function ShopCatalogView() {
     };
   }, [allProducts]);
 
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [activeCollectionId, setActiveCollectionId] = useState<string>('');
   const [selectedMaterial, setSelectedMaterial] = useState<string>('All');
   const [selectedColor, setSelectedColor] = useState<string>('All');
   const [priceBand, setPriceBand] = useState<PriceBand>('all');
@@ -140,8 +152,13 @@ export default function ShopCatalogView() {
     [activeCategory, availableCategoryNames, homeCategories],
   );
 
-  const syncCategoryQueryParam = useCallback(
-    (nextCategory: string) => {
+  const activeCollection = useMemo(
+    () => findCollectionByParam(activeCollectionId, curatedCollections),
+    [activeCollectionId, curatedCollections],
+  );
+
+  const syncShopQueryParams = useCallback(
+    (nextCategory: string, nextCollectionId: string) => {
       if (typeof window === 'undefined') return;
       try {
         const url = new URL(window.location.href);
@@ -150,6 +167,11 @@ export default function ShopCatalogView() {
           url.searchParams.set('category', queryId);
         } else {
           url.searchParams.delete('category');
+        }
+        if (nextCollectionId.trim()) {
+          url.searchParams.set('collection', nextCollectionId.trim());
+        } else {
+          url.searchParams.delete('collection');
         }
         window.history.replaceState(window.history.state, '', url.toString());
       } catch {
@@ -167,16 +189,39 @@ export default function ShopCatalogView() {
         homeCategories,
       );
       setActiveCategory(resolved);
-      syncCategoryQueryParam(resolved);
+      syncShopQueryParams(resolved, activeCollectionId);
     },
-    [availableCategoryNames, homeCategories, setActiveCategory, syncCategoryQueryParam],
+    [
+      availableCategoryNames,
+      homeCategories,
+      setActiveCategory,
+      syncShopQueryParams,
+      activeCollectionId,
+    ],
   );
 
-  // Sync ?category=<stableId> query parameter on mount and browser back/forward
+  const selectCollection = useCallback(
+    (nextCollectionId: string) => {
+      const cleanId = nextCollectionId.trim();
+      setActiveCollectionId(cleanId);
+      syncShopQueryParams(resolvedActiveCategory, cleanId);
+    },
+    [resolvedActiveCategory, syncShopQueryParams],
+  );
+
+  // Sync ?category=<stableId> and ?collection=<stableId> query parameters on mount and browser back/forward
   useEffect(() => {
-    const applyCategoryFromUrl = () => {
+    const applyParamsFromUrl = () => {
       try {
         const params = new URLSearchParams(window.location.search);
+        const urlCollection = params.get('collection');
+        if (urlCollection !== null) {
+          const matchedCol = findCollectionByParam(urlCollection, curatedCollections);
+          setActiveCollectionId(matchedCol ? matchedCol.id : '');
+        } else {
+          setActiveCollectionId('');
+        }
+
         const urlCategory = params.get('category');
         if (urlCategory !== null) {
           const resolved = resolveShopCategoryParam(
@@ -196,10 +241,10 @@ export default function ShopCatalogView() {
       }
     };
 
-    applyCategoryFromUrl();
-    window.addEventListener('popstate', applyCategoryFromUrl);
-    return () => window.removeEventListener('popstate', applyCategoryFromUrl);
-  }, [availableCategoryNames, homeCategories, setActiveCategory]);
+    applyParamsFromUrl();
+    window.addEventListener('popstate', applyParamsFromUrl);
+    return () => window.removeEventListener('popstate', applyParamsFromUrl);
+  }, [availableCategoryNames, homeCategories, curatedCollections, setActiveCategory]);
 
   const materials = useMemo(() => {
     const set = new Set<string>();
@@ -220,12 +265,31 @@ export default function ShopCatalogView() {
 
   // Apply all filters + sorting
   const filteredProducts = useMemo(() => {
+    const normalizedSearch = searchQuery.trim().toLowerCase();
     const list = allProducts.filter((product) => {
+      if (activeCollection && !productMatchesCollection(product, activeCollection)) {
+        return false;
+      }
+
       if (
         resolvedActiveCategory !== 'All' &&
         product.category.toLowerCase() !== resolvedActiveCategory.toLowerCase()
       ) {
         return false;
+      }
+
+      if (normalizedSearch) {
+        const haystack = [
+          product.name,
+          product.category,
+          product.description,
+          product.material,
+          ...product.colors.map((c) => c.name),
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        if (!haystack.includes(normalizedSearch)) return false;
       }
 
       if (
@@ -275,7 +339,9 @@ export default function ShopCatalogView() {
     return sorted;
   }, [
     allProducts,
+    activeCollection,
     resolvedActiveCategory,
+    searchQuery,
     selectedMaterial,
     selectedColor,
     priceBand,
@@ -288,11 +354,25 @@ export default function ShopCatalogView() {
 
   const activeFilters = useMemo(() => {
     const chips: Array<{ key: string; label: string; onRemove: () => void }> = [];
+    if (activeCollection) {
+      chips.push({
+        key: 'collection',
+        label: `Collection: ${activeCollection.title}`,
+        onRemove: () => selectCollection(''),
+      });
+    }
     if (resolvedActiveCategory !== 'All') {
       chips.push({
         key: 'category',
         label: `Category: ${resolvedActiveCategory}`,
         onRemove: () => selectCategory('All'),
+      });
+    }
+    if (searchQuery.trim()) {
+      chips.push({
+        key: 'search',
+        label: `Search: "${searchQuery.trim()}"`,
+        onRemove: () => setSearchQuery(''),
       });
     }
     if (selectedMaterial !== 'All') {
@@ -337,7 +417,9 @@ export default function ShopCatalogView() {
     }
     return chips;
   }, [
+    activeCollection,
     resolvedActiveCategory,
+    searchQuery,
     selectedMaterial,
     selectedColor,
     priceBand,
@@ -348,16 +430,20 @@ export default function ShopCatalogView() {
     inStockOnly,
     storeCurrency,
     selectCategory,
+    selectCollection,
   ]);
 
   const resetAllFilters = () => {
-    selectCategory('All');
+    setActiveCategory('All');
+    setActiveCollectionId('');
+    setSearchQuery('');
     setSelectedMaterial('All');
     setSelectedColor('All');
     setPriceBand('all');
     setMaxPriceCap(null);
     setInStockOnly(false);
     setSortBy('newest');
+    syncShopQueryParams('All', '');
   };
 
   const renderFilterGroups = (idPrefix: string) => (
@@ -379,11 +465,10 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`${idPrefix}-mat-${mat}`}
                 onClick={() => setSelectedMaterial(mat)}
-                className={`rounded-[10px] border px-3 py-1.5 text-[11px] tracking-wide transition-colors ${
-                  active
-                    ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                    : 'border-[#201C1A]/15 bg-transparent text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6]'
-                }`}
+                className={`rounded-[10px] border px-3 py-1.5 text-[11px] tracking-wide transition-colors ${active
+                  ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                  : 'border-[#201C1A]/15 bg-transparent text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6]'
+                  }`}
               >
                 {mat}
               </button>
@@ -405,11 +490,10 @@ export default function ShopCatalogView() {
             type="button"
             data-preview-static={`${idPrefix}-color-all`}
             onClick={() => setSelectedColor('All')}
-            className={`rounded-[10px] border px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] transition-colors ${
-              selectedColor === 'All'
-                ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                : 'border-[#201C1A]/15 text-[#5E4E45] hover:border-[#C8A98B]'
-            }`}
+            className={`rounded-[10px] border px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] transition-colors ${selectedColor === 'All'
+              ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+              : 'border-[#201C1A]/15 text-[#5E4E45] hover:border-[#C8A98B]'
+              }`}
           >
             All
           </button>
@@ -423,11 +507,10 @@ export default function ShopCatalogView() {
                 onClick={() => setSelectedColor(active ? 'All' : swatch.name)}
                 aria-label={`Filter by ${swatch.name}`}
                 title={swatch.name}
-                className={`relative flex h-6 w-6 items-center justify-center rounded-full border transition-transform ${
-                  active
-                    ? 'scale-110 border-[#201C1A] ring-2 ring-[#C8A98B] ring-offset-2 ring-offset-[#F2E9DE] dark:ring-offset-[#3B302B]'
-                    : 'border-[#201C1A]/25 hover:scale-110'
-                }`}
+                className={`relative flex h-6 w-6 items-center justify-center rounded-full border transition-transform ${active
+                  ? 'scale-110 border-[#201C1A] ring-2 ring-[#C8A98B] ring-offset-2 ring-offset-[#F2E9DE] dark:ring-offset-[#3B302B]'
+                  : 'border-[#201C1A]/25 hover:scale-110'
+                  }`}
                 style={{ backgroundColor: swatch.hex }}
               >
                 {active && (
@@ -487,11 +570,10 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`${idPrefix}-band-${band.id}`}
                 onClick={() => setPriceBand(band.id)}
-                className={`rounded-[10px] border px-2.5 py-1 text-[10px] tracking-wide transition-colors ${
-                  active
-                    ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                    : 'border-[#201C1A]/15 text-[#5E4E45] hover:border-[#C8A98B] dark:border-[#F2E9DE]/20 dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]'
-                }`}
+                className={`rounded-[10px] border px-2.5 py-1 text-[10px] tracking-wide transition-colors ${active
+                  ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                  : 'border-[#201C1A]/15 text-[#5E4E45] hover:border-[#C8A98B] dark:border-[#F2E9DE]/20 dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]'
+                  }`}
               >
                 {band.label}
               </button>
@@ -518,14 +600,12 @@ export default function ShopCatalogView() {
         >
           <span>In Stock &amp; Ready to Ship</span>
           <span
-            className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${
-              inStockOnly ? 'bg-[#8D7667]' : 'bg-[#201C1A]/20 dark:bg-[#F2E9DE]/25'
-            }`}
+            className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${inStockOnly ? 'bg-[#8D7667]' : 'bg-[#201C1A]/20 dark:bg-[#F2E9DE]/25'
+              }`}
           >
             <span
-              className={`inline-block h-3.5 w-3.5 rounded-full bg-[#F2E9DE] transition-transform ${
-                inStockOnly ? 'translate-x-[18px]' : 'translate-x-[3px]'
-              }`}
+              className={`inline-block h-3.5 w-3.5 rounded-full bg-[#F2E9DE] transition-transform ${inStockOnly ? 'translate-x-[18px]' : 'translate-x-[3px]'
+                }`}
             />
           </span>
         </button>
@@ -534,26 +614,26 @@ export default function ShopCatalogView() {
   );
 
   return (
-    <div data-preview-page-key="shop" className="loome-surface-espresso w-full overflow-x-clip">
-      {/* 1. Editorial Shop Heading & Introduction — Deep Espresso */}
+    <div data-preview-page-key="shop" className="loome-surface-ivory w-full overflow-x-clip">
+      {/* 1. Light Editorial Shop Heading & Introduction — Warm Ivory */}
       <section
         data-design-section="shop-heading"
-        className="mx-auto max-w-[1440px] px-4 pb-8 pt-12 sm:px-8 lg:px-14 lg:pb-10 lg:pt-16"
+        className="mx-auto max-w-[1440px] px-4 pb-8 pt-10 sm:px-8 lg:px-14 lg:pb-10 lg:pt-14"
       >
         <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3">
-              <span className="h-px w-8 bg-[#C8A98B]" aria-hidden="true" />
+              <span className="h-px w-8 bg-[#B28B65] dark:bg-[#C8A98B]" aria-hidden="true" />
               <EditableText
                 as="p"
                 data-preview-field-path="shopPage.eyebrow"
-                defaultValue={contentText(shopPage.eyebrow) || 'THE COMPLETE ARCHIVE'}
+                defaultValue={contentText(shopPage.eyebrow) || 'SHOP ALL TEXTILES'}
                 fontFamily="body"
                 size="0.6875rem"
                 weight={600}
                 transform="uppercase"
-                letterSpacing="0.26em"
-                color="#C8A98B"
+                letterSpacing="0.24em"
+                color="primary"
                 className="m-0"
               />
             </div>
@@ -563,12 +643,12 @@ export default function ShopCatalogView() {
               data-preview-field-path="shopPage.heading"
               defaultValue={contentText(shopPage.heading) || 'Shop Fine Textiles'}
               fontFamily="heading"
-              size="clamp(2.55rem, 4.6vw, 4.15rem)"
+              size="clamp(2.4rem, 4.4vw, 3.85rem)"
               weight={800}
-              lineHeight={1.03}
+              lineHeight={1.05}
               letterSpacing="-0.03em"
-              color="#F2E9DE"
-              className="mt-4 mb-0"
+              color="heading"
+              className="mt-3.5 mb-0"
             />
           </div>
 
@@ -578,19 +658,19 @@ export default function ShopCatalogView() {
             defaultValue={contentText(shopPage.intro)}
             fontFamily="body"
             size="0.96875rem"
-            lineHeight={1.8}
-            color="#C7B6A6"
+            lineHeight={1.78}
+            color="muted"
             className="m-0 max-w-md lg:text-right"
           />
         </LuxuryReveal>
       </section>
 
-      {/* 2. Premium Category Navigation Ribbon — Dark Mocha */}
+      {/* 2. Category Navigation Ribbon — Soft Beige / Dark Mocha */}
       <section
         data-design-section="shop-categories-nav"
-        className="w-full border-y border-[#C8A98B]/20 bg-[var(--brand-secondary,#3B302B)]"
+        className="loome-surface-beige w-full border-y border-[#49382D]/12 dark:border-[#C8A98B]/20"
       >
-        <div className="mx-auto flex max-w-[1440px] items-center gap-6 overflow-x-auto px-4 py-4 sm:px-8 lg:gap-10 lg:px-14">
+        <div className="mx-auto flex max-w-[1440px] items-center gap-6 overflow-x-auto px-4 py-3.5 sm:px-8 lg:gap-10 lg:px-14">
           {categoryEntries.map((entry) => {
             const isActive =
               resolvedActiveCategory.toLowerCase() === entry.name.toLowerCase();
@@ -600,18 +680,18 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`shop-cat-nav-${entry.name}`}
                 onClick={() => selectCategory(entry.name)}
-                className={`group relative flex shrink-0 items-baseline gap-2 border-0 bg-transparent px-0 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition-colors ${
-                  isActive
-                    ? 'text-[#F2E9DE]'
-                    : 'text-[#C7B6A6] hover:text-[#F2E9DE]'
-                }`}
+                className={`group relative flex shrink-0 items-baseline gap-1.5 border-0 bg-transparent px-0 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${isActive
+                  ? 'text-[#2C211B] dark:text-[#F5EEE6]'
+                  : 'text-[#6E5B4E] hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]'
+                  }`}
               >
                 <span>{entry.name}</span>
-                <span className="text-[10px] font-normal text-[#C8A98B]">({entry.count})</span>
+                <span className="text-[10px] font-medium text-[#B28B65] dark:text-[#C8A98B]">
+                  ({entry.count})
+                </span>
                 <span
-                  className={`absolute inset-x-0 bottom-0 h-[1.5px] bg-[#C8A98B] transition-transform duration-300 ${
-                    isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-                  }`}
+                  className={`absolute inset-x-0 bottom-0 h-[2px] bg-[#B28B65] transition-transform duration-300 dark:bg-[#C8A98B] ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                    }`}
                 />
               </button>
             );
@@ -619,196 +699,274 @@ export default function ShopCatalogView() {
         </div>
       </section>
 
-      {/* 3. Toolbar, Filters, Active Chips & 4-Column Product Grid — Warm Cream Ivory */}
-      <div className="loome-surface-cream w-full">
-        <section
-          data-design-section="shop-catalog"
-          className="mx-auto max-w-[1440px] px-4 py-10 sm:px-8 lg:px-14 lg:py-14"
-        >
-        {/* Filter & Sort Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#3B302B]/14 pb-5 dark:border-[#C8A98B]/20">
-          <div className="flex flex-wrap items-center gap-3 sm:gap-5">
-            {/* Desktop Filter Drawer Toggle */}
-            <button
-              type="button"
-              data-preview-static="shop-desktop-filter-toggle"
-              onClick={() => setDesktopFiltersOpen((v) => !v)}
-              aria-expanded={desktopFiltersOpen}
-              className="hidden items-center gap-2 rounded-[10px] border border-[#3B302B]/25 bg-[#FAF5EE] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] dark:border-[#C8A98B]/30 dark:bg-[#2A221F] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A] lg:inline-flex"
-            >
-              <SlidersHorizontal className="h-3.5 w-3.5 stroke-[1.5]" />
-              <span>{desktopFiltersOpen ? 'Hide Filters' : 'Filters'}</span>
-              {activeFilters.length > 0 && (
-                <span className="ml-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#C8A98B] px-1 text-[9px] font-bold text-[#201C1A]">
-                  {activeFilters.length}
-                </span>
-              )}
-            </button>
-
-            {/* Mobile Filter Drawer Trigger */}
-            <button
-              type="button"
-              data-preview-static="shop-mobile-filter-toggle"
-              onClick={() => setMobileDrawerOpen(true)}
-              className="inline-flex items-center gap-2 rounded-[10px] border border-[#3B302B]/25 bg-[#FAF5EE] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#201C1A] dark:border-[#C8A98B]/30 dark:bg-[#2A221F] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] lg:hidden"
-            >
-              <SlidersHorizontal className="h-3.5 w-3.5 stroke-[1.5]" />
-              <span>Filters</span>
-              {activeFilters.length > 0 && (
-                <span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#C8A98B] px-1 text-[9px] font-bold text-[#201C1A]">
-                  {activeFilters.length}
-                </span>
-              )}
-            </button>
-
-            {/* Live Product Count */}
-            <p
-              data-preview-static="shop-product-count"
-              className="m-0 text-xs tracking-wide text-[#5E4E45] dark:text-[#C9B9AA]"
-            >
-              Showing <strong className="font-semibold text-[#201C1A] dark:text-[#F5EEE6]">{filteredProducts.length}</strong> of{' '}
-              {allProducts.length} {allProducts.length === 1 ? 'piece' : 'pieces'}
-            </p>
-          </div>
-
-          {/* Sort Dropdown */}
-          <div className="flex items-center gap-2.5">
-            <label
-              htmlFor="loome-shop-sort"
-              data-preview-static="shop-sort-label"
-              className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#5E4E45] dark:text-[#C9B9AA]"
-            >
-              Sort
-            </label>
-            <div className="relative">
-              <select
-                id="loome-shop-sort"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as SortOption)}
-                data-preview-static="shop-sort-select"
-                className="appearance-none rounded-[10px] border border-[#3B302B]/22 bg-[#FAF5EE] py-2.5 pl-3.5 pr-9 text-xs font-medium text-[#201C1A] focus:border-[#C8A98B] focus:outline-none dark:border-[#C8A98B]/30 dark:bg-[#2A221F] dark:text-[#F5EEE6]"
-              >
-                <option value="newest">Newest Arrivals</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="bestsellers">Bestsellers</option>
-              </select>
-              <ChevronDown
-                className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 stroke-[1.5] text-[#5E4E45] dark:text-[#C8A98B]"
-                aria-hidden="true"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Desktop Expandable Filter Panel */}
-        <AnimatePresence initial={false}>
-          {desktopFiltersOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.35, ease: LUXURY_EASE }}
-              className="mt-4 hidden overflow-hidden rounded-2xl border border-[#201C1A]/12 bg-[#FAF5EE] dark:border-[#C8A98B]/20 dark:bg-[#2A221F] lg:block"
-            >
-              <div className="p-7">{renderFilterGroups('desktop')}</div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Active Filter Chips Bar */}
-        {activeFilters.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2 pt-5">
-            {activeFilters.map((chip) => (
-              <button
-                key={chip.key}
-                type="button"
-                data-preview-static={`active-chip-${chip.key}`}
-                onClick={chip.onRemove}
-                className="inline-flex items-center gap-2 rounded-[10px] border border-[#C8A98B]/55 bg-[#E6D9C9]/45 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#201C1A] transition-colors hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] dark:bg-[#2A221F] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
-              >
-                <span>{chip.label}</span>
-                <X className="h-3 w-3 stroke-[1.8]" />
-              </button>
-            ))}
-
-            <button
-              type="button"
-              data-preview-static="shop-clear-filters"
-              onClick={resetAllFilters}
-              className="ml-1 inline-flex items-center gap-1.5 border-0 bg-transparent px-2 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#8D7667] underline underline-offset-4 transition-colors hover:text-[#201C1A] dark:text-[#C8A98B]"
-            >
-              <RotateCcw className="h-3 w-3 stroke-[1.6]" />
-              Clear All
-            </button>
-          </div>
-        )}
-
-        {/* Responsive 4-Column Product Grid */}
-        <div
-          data-preview-list-path="products"
-          className="mt-10 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-7"
-        >
-          {allProducts.length === 0 ? (
-            <p
-              data-preview-static="shop-catalog-empty"
-              className="col-span-full border border-dashed border-[#201C1A]/20 py-20 text-center text-sm text-[#5E4E45]"
-            >
-              Add textile products in your Fivora catalog to populate the shop.
-            </p>
-          ) : filteredProducts.length === 0 ? (
-            <div className="col-span-full border border-[#201C1A]/12 bg-[#FAF5EE] px-6 py-20 text-center dark:border-[#F2E9DE]/12 dark:bg-[#3B302B]">
+      {/* 3. Active Collection Context Banner (shown when arriving from /collections/?collection=...) */}
+      {activeCollection && (
+        <div className="border-b border-[#49382D]/10 bg-white dark:border-[#C8A98B]/16 dark:bg-[#241E1B]">
+          <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-4 px-4 py-5 sm:flex-row sm:items-center sm:px-8 lg:px-14">
+            <div className="max-w-2xl">
               <p
-                data-preview-static="shop-empty-eyebrow"
-                className="m-0 text-[10px] font-medium uppercase tracking-[0.26em] text-[#8D7667] dark:text-[#C8A98B]"
+                data-preview-static="shop-active-collection-eyebrow"
+                className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#B28B65] dark:text-[#C8A98B]"
               >
-                No Matching Editions
+                Viewing Collection · {activeCollection.tag}
               </p>
               <h2
-                data-preview-static="shop-empty-heading"
-                className="mt-3 font-serif text-3xl font-light text-[#201C1A] dark:text-[#F2E9DE] sm:text-4xl"
+                data-preview-static="shop-active-collection-title"
+                className="mt-1 mb-0 font-heading text-xl font-extrabold text-[#2C211B] dark:text-[#F5EEE6] sm:text-2xl"
               >
-                No textiles match your current selection
+                {activeCollection.title}
               </h2>
-              <p
-                data-preview-static="shop-empty-copy"
-                className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-[#5E4E45] dark:text-[#C7B6A6]"
-              >
-                Try widening your price range, switching fiber or tone filters, or returning to the full LOOMÉ collection.
-              </p>
-              <div className="mt-7 flex justify-center">
-                <button
-                  type="button"
-                  data-preview-static="shop-empty-reset-btn"
-                  onClick={resetAllFilters}
-                  className="loome-btn-primary"
+              {activeCollection.description && (
+                <p
+                  data-preview-static="shop-active-collection-desc"
+                  className="mt-1 mb-0 text-xs leading-relaxed text-[#6E5B4E] dark:text-[#C9B9AA]"
                 >
-                  <RotateCcw className="h-3.5 w-3.5 stroke-[1.5]" />
-                  Reset All Filters
-                </button>
+                  {activeCollection.description}
+                </p>
+              )}
+            </div>
+            <button
+              type="button"
+              data-preview-static="shop-clear-collection"
+              onClick={() => selectCollection('')}
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-[10px] border border-[#49382D]/20 bg-[#F7F3ED] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#49382D] transition-colors hover:border-[#B28B65] hover:bg-[#49382D] hover:text-[#F7F3ED] dark:border-[#C8A98B]/30 dark:bg-[#28211D] dark:text-[#F5EEE6] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
+            >
+              <X className="h-3.5 w-3.5 stroke-[1.8]" />
+              View All Products
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* 4. Toolbar (Search, Filters, Sort), Active Chips & 4-Column Product Grid — Warm Ivory */}
+      <div className="loome-surface-ivory w-full">
+        <section
+          data-design-section="shop-catalog"
+          className="mx-auto max-w-[1440px] px-4 py-9 sm:px-8 lg:px-14 lg:py-12"
+        >
+          {/* Filter, Search & Sort Toolbar */}
+          <div className="flex flex-col gap-4 border-b border-[#49382D]/12 pb-5 dark:border-[#C8A98B]/20 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+              {/* Desktop Filter Drawer Toggle */}
+              <button
+                type="button"
+                data-preview-static="shop-desktop-filter-toggle"
+                onClick={() => setDesktopFiltersOpen((v) => !v)}
+                aria-expanded={desktopFiltersOpen}
+                className="hidden items-center gap-2 rounded-[10px] border border-[#49382D]/20 bg-white px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#49382D] transition-colors hover:border-[#49382D] hover:bg-[#49382D] hover:text-[#F7F3ED] dark:border-[#C8A98B]/30 dark:bg-[#28211D] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A] lg:inline-flex"
+              >
+                <SlidersHorizontal className="h-3.5 w-3.5 stroke-[1.6]" />
+                <span>{desktopFiltersOpen ? 'Hide Filters' : 'Filters'}</span>
+                {activeFilters.length > 0 && (
+                  <span className="ml-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#B28B65] px-1 text-[9px] font-bold text-white dark:bg-[#C8A98B] dark:text-[#201C1A]">
+                    {activeFilters.length}
+                  </span>
+                )}
+              </button>
+
+              {/* Mobile Filter Drawer Trigger */}
+              <button
+                type="button"
+                data-preview-static="shop-mobile-filter-toggle"
+                onClick={() => setMobileDrawerOpen(true)}
+                className="inline-flex items-center gap-2 rounded-[10px] border border-[#49382D]/20 bg-white px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#49382D] transition-colors hover:border-[#49382D] dark:border-[#C8A98B]/30 dark:bg-[#28211D] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] lg:hidden"
+              >
+                <SlidersHorizontal className="h-3.5 w-3.5 stroke-[1.6]" />
+                <span>Filters</span>
+                {activeFilters.length > 0 && (
+                  <span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#B28B65] px-1 text-[9px] font-bold text-white dark:bg-[#C8A98B] dark:text-[#201C1A]">
+                    {activeFilters.length}
+                  </span>
+                )}
+              </button>
+
+              {/* Live Product Count */}
+              <p
+                data-preview-static="shop-product-count"
+                className="m-0 text-xs tracking-wide text-[#6E5B4E] dark:text-[#C9B9AA]"
+              >
+                Showing{' '}
+                <strong className="font-semibold text-[#2C211B] dark:text-[#F5EEE6]">
+                  {filteredProducts.length}
+                </strong>{' '}
+                of {allProducts.length} {allProducts.length === 1 ? 'product' : 'products'}
+              </p>
+            </div>
+
+            {/* Right: Inline Catalog Search + Sort Dropdown */}
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="relative flex-1 sm:w-64 sm:flex-initial">
+                <Search
+                  aria-hidden="true"
+                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 stroke-[1.6] text-[#6E5B4E] dark:text-[#C8A98B]"
+                />
+                <input
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search textiles..."
+                  aria-label="Search shop products"
+                  data-preview-static="shop-search-input"
+                  className="h-10 w-full rounded-[10px] border border-[#49382D]/18 bg-white pl-9 pr-8 text-xs text-[#2C211B] placeholder:text-[#6E5B4E]/75 focus:border-[#B28B65] focus:outline-none dark:border-[#C8A98B]/28 dark:bg-[#28211D] dark:text-[#F5EEE6] dark:placeholder:text-[#C9B9AA]/70 dark:focus:border-[#C8A98B]"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSearchQuery('')}
+                    aria-label="Clear search"
+                    data-preview-static="shop-search-clear"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 border-0 bg-transparent p-0.5 text-[#6E5B4E] hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2.5">
+                <label
+                  htmlFor="loome-shop-sort"
+                  data-preview-static="shop-sort-label"
+                  className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6E5B4E] dark:text-[#C9B9AA]"
+                >
+                  Sort
+                </label>
+                <div className="relative flex-1 sm:flex-initial">
+                  <select
+                    id="loome-shop-sort"
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value as SortOption)}
+                    data-preview-static="shop-sort-select"
+                    className="h-10 w-full appearance-none rounded-[10px] border border-[#49382D]/18 bg-white pl-3.5 pr-9 text-xs font-medium text-[#2C211B] focus:border-[#B28B65] focus:outline-none dark:border-[#C8A98B]/28 dark:bg-[#28211D] dark:text-[#F5EEE6]"
+                  >
+                    <option value="newest">Newest Arrivals</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="bestsellers">Bestsellers</option>
+                  </select>
+                  <ChevronDown
+                    className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 stroke-[1.6] text-[#6E5B4E] dark:text-[#C8A98B]"
+                    aria-hidden="true"
+                  />
+                </div>
               </div>
             </div>
-          ) : (
-            <AnimatePresence mode="popLayout">
-              {filteredProducts.map((product, idx) => (
-                <motion.div
-                  key={product.id}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.97 }}
-                  transition={{
-                    duration: 0.52,
-                    delay: Math.min(idx * 0.05, 0.25),
-                    ease: LUXURY_EASE,
-                  }}
+          </div>
+
+          {/* Desktop Expandable Filter Panel */}
+          <AnimatePresence initial={false}>
+            {desktopFiltersOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.35, ease: LUXURY_EASE }}
+                className="mt-4 hidden overflow-hidden rounded-2xl border border-[#201C1A]/12 bg-[#FAF5EE] dark:border-[#C8A98B]/20 dark:bg-[#2A221F] lg:block"
+              >
+                <div className="p-7">{renderFilterGroups('desktop')}</div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Active Filter Chips Bar */}
+          {activeFilters.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 pt-5">
+              {activeFilters.map((chip) => (
+                <button
+                  key={chip.key}
+                  type="button"
+                  data-preview-static={`active-chip-${chip.key}`}
+                  onClick={chip.onRemove}
+                  className="inline-flex items-center gap-2 rounded-[10px] border border-[#C8A98B]/55 bg-[#E6D9C9]/45 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#201C1A] transition-colors hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] dark:bg-[#2A221F] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
                 >
-                  <LoomeProductCard product={product} tone="light" />
-                </motion.div>
+                  <span>{chip.label}</span>
+                  <X className="h-3 w-3 stroke-[1.8]" />
+                </button>
               ))}
-            </AnimatePresence>
+
+              <button
+                type="button"
+                data-preview-static="shop-clear-filters"
+                onClick={resetAllFilters}
+                className="ml-1 inline-flex items-center gap-1.5 border-0 bg-transparent px-2 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#8D7667] underline underline-offset-4 transition-colors hover:text-[#201C1A] dark:text-[#C8A98B]"
+              >
+                <RotateCcw className="h-3 w-3 stroke-[1.6]" />
+                Clear All
+              </button>
+            </div>
           )}
-        </div>
+
+          {/* Responsive 4-Column Product Grid */}
+          <div
+            data-preview-list-path="products"
+            className="mt-10 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-7"
+          >
+            {allProducts.length === 0 ? (
+              <p
+                data-preview-static="shop-catalog-empty"
+                className="col-span-full border border-dashed border-[#201C1A]/20 py-20 text-center text-sm text-[#5E4E45]"
+              >
+                Add textile products in your Fivora catalog to populate the shop.
+              </p>
+            ) : filteredProducts.length === 0 ? (
+              <div className="col-span-full border border-[#201C1A]/12 bg-[#FAF5EE] px-6 py-20 text-center dark:border-[#F2E9DE]/12 dark:bg-[#3B302B]">
+                <p
+                  data-preview-static="shop-empty-eyebrow"
+                  className="m-0 text-[10px] font-medium uppercase tracking-[0.26em] text-[#8D7667] dark:text-[#C8A98B]"
+                >
+                  No Matching Editions
+                </p>
+                <h2
+                  data-preview-static="shop-empty-heading"
+                  className="mt-3 font-serif text-3xl font-light text-[#201C1A] dark:text-[#F2E9DE] sm:text-4xl"
+                >
+                  No textiles match your current selection
+                </h2>
+                <p
+                  data-preview-static="shop-empty-copy"
+                  className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-[#5E4E45] dark:text-[#C7B6A6]"
+                >
+                  Try widening your price range, switching fiber or tone filters, or returning to the full LOOMÉ collection.
+                </p>
+                <div className="mt-7 flex justify-center">
+                  <button
+                    type="button"
+                    data-preview-static="shop-empty-reset-btn"
+                    onClick={resetAllFilters}
+                    className="loome-btn-primary"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5 stroke-[1.5]" />
+                    Reset All Filters
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <AnimatePresence mode="popLayout">
+                {filteredProducts.map((product, idx) => (
+                  <motion.div
+                    key={product.id}
+                    layout
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      transition: {
+                        duration: 0.32,
+                        delay: Math.min(idx * 0.03, 0.15),
+                        ease: LUXURY_EASE,
+                      },
+                    }}
+                    exit={{
+                      opacity: 0,
+                      scale: 0.98,
+                      transition: { duration: 0.14, delay: 0, ease: 'easeOut' },
+                    }}
+                  >
+                    <LoomeProductCard product={product} tone="light" />
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            )}
+          </div>
         </section>
       </div>
 
@@ -863,11 +1021,10 @@ export default function ShopCatalogView() {
                           key={entry.name}
                           type="button"
                           onClick={() => selectCategory(entry.name)}
-                          className={`border px-3 py-1.5 text-[11px] tracking-wide transition-colors ${
-                            active
-                              ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                              : 'border-[#201C1A]/15 text-[#5E4E45] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6]'
-                          }`}
+                          className={`border px-3 py-1.5 text-[11px] tracking-wide transition-colors ${active
+                            ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                            : 'border-[#201C1A]/15 text-[#5E4E45] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6]'
+                            }`}
                         >
                           {entry.name} ({entry.count})
                         </button>

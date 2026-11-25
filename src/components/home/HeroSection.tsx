@@ -50,6 +50,7 @@ type CopyPhase = 'visible' | 'exiting' | 'entering';
 
 const KNOWN_INTERNAL_PAGES = new Set([
   'shop',
+  'collections',
   'cart',
   'checkout',
   'journal',
@@ -284,6 +285,7 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
         : siteData.template?.structure?.pages || [
             'home',
             'shop',
+            'collections',
             'cart',
             'checkout',
             'journal',

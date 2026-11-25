@@ -6,36 +6,36 @@ export default function SilkIntroPreviewPage() {
   return (
     <div
       data-preview-page-key="silk_intro_preview"
-      className="w-full bg-[#F2E9DE] text-[#201C1A] dark:bg-[#201C1A] dark:text-[#F2E9DE]"
+      className="flex min-h-screen w-full flex-col justify-between bg-[#F7F3ED] text-[#49382D] dark:bg-[#1A1614] dark:text-[#F5EEE6]"
     >
-      {/* Editorial Preview Header */}
-      <section className="mx-auto max-w-[1360px] px-4 pb-8 pt-12 sm:px-8 lg:px-14 lg:pt-14">
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+      {/* Standalone Silk Intro Editing Header (no storefront navbar, newsletter, or footer) */}
+      <header className="mx-auto w-full max-w-[1360px] px-4 pb-6 pt-8 sm:px-8 lg:px-14">
+        <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
           <div>
             <p
               data-preview-static="silk-preview-eyebrow"
-              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#8D7667] dark:text-[#C8A98B]"
+              className="m-0 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#B28B65] dark:text-[#C8A98B]"
             >
-              LOOMÉ Atelier · Editor Preview
+              Standalone Intro Preview
             </p>
             <h1
               data-preview-static="silk-preview-heading"
-              className="mt-3 mb-0 font-serif text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl"
+              className="mt-2 mb-0 font-heading text-3xl font-extrabold leading-[1.08] tracking-tight text-[#2C211B] dark:text-[#F5EEE6] sm:text-4xl"
             >
-              The Silk Veil Intro
+              Silk Veil Intro
             </h1>
           </div>
           <p
             data-preview-static="silk-preview-copy"
-            className="m-0 max-w-md text-sm leading-[1.8] text-[#5E4E45] dark:text-[#C7B6A6]"
+            className="m-0 max-w-md text-sm leading-relaxed text-[#6E5B4E] dark:text-[#C9B9AA]"
           >
-            Click the wordmark, tagline, silk backdrop, or Skip button directly below to edit. Normal visitors see this intro once per browser session on the homepage.
+            Edit the intro wordmark, tagline, silk image, and skip label below. First-time visitors see this intro once per session on the live storefront.
           </p>
         </div>
-      </section>
+      </header>
 
-      {/* Reusable Silk Veil Stage (paused by default, linked to home.silkIntro) */}
-      <section data-design-section="silk-intro-preview" className="pb-14">
+      {/* Reusable Standalone Silk Veil Stage (linked to home.silkIntro) */}
+      <section data-design-section="silk-intro-preview" className="flex-1 pb-8">
         <SilkVeilIntro mode="stage" />
       </section>
     </div>

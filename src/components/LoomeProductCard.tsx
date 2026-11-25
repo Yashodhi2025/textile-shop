@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Eye, Heart, ShoppingBag } from 'lucide-react';
-import { EditableText, useCart } from '@deneb-ui/ui';
+import { Check, Heart, ShoppingBag, Star } from 'lucide-react';
+import { EditableImage, EditableText, useCart } from '@deneb-ui/ui';
 import { platformProductDetailHref, useSiteData } from '@/lib/siteDataContext';
 import {
   formatLoomePrice,
@@ -11,7 +11,6 @@ import {
   useLoomeStore,
   type LoomeProduct,
 } from '@/lib/storeContext';
-import { withBasePath } from '@/lib/utils';
 
 interface LoomeProductCardProps {
   product: LoomeProduct;
@@ -24,9 +23,10 @@ export default function LoomeProductCard({
 }: LoomeProductCardProps) {
   const siteData = useSiteData();
   const cart = useCart();
-  const { toggleWishlist, isWishlisted, openQuickView } = useLoomeStore();
+  const { toggleWishlist, isWishlisted } = useLoomeStore();
   const prefersReducedMotion = useReducedMotion();
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+  const [justAdded, setJustAdded] = useState(false);
 
   const wishlisted = isWishlisted(product.id);
   const activeColor = product.colors[selectedColorIndex] ?? product.colors[0];
@@ -35,7 +35,17 @@ export default function LoomeProductCard({
   const idx = product.index;
   const isDark = tone === 'dark';
 
-  const handleQuickAdd = () => {
+  const hasValidRating =
+    typeof product.rating === 'number' &&
+    Number.isFinite(product.rating) &&
+    product.rating > 0 &&
+    product.rating <= 5;
+  const hasSalePrice =
+    product.showPrice &&
+    typeof product.compareAtPrice === 'number' &&
+    product.compareAtPrice > product.price;
+
+  const handleAddToBag = () => {
     if (!product.isAvailable) return;
     cart.addItem({
       id: product.id,
@@ -48,136 +58,89 @@ export default function LoomeProductCard({
       quantity: 1,
       showPrice: product.showPrice,
     });
+    setJustAdded(true);
+    window.setTimeout(() => setJustAdded(false), 1600);
   };
 
   return (
     <article
       data-preview-item-path={`products[${idx}]`}
-      className={`group flex h-full flex-col overflow-hidden rounded-2xl border p-3 transition-all duration-500 ease-luxury ${
+      className={`group flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-300 ${
         isDark
-          ? 'border-[#C8A98B]/16 bg-[#2A2320] hover:border-[#C8A98B]/45'
-          : 'border-[#3B302B]/14 bg-[#FAF5EE] hover:border-[#C8A98B]/75 dark:border-[#C8A98B]/20 dark:bg-[#2A221F] dark:hover:border-[#C8A98B]/55'
+          ? 'border-[#C8A98B]/20 bg-[#28211D] shadow-[0_2px_14px_rgba(0,0,0,0.22)] hover:border-[#C8A98B]/50'
+          : 'border-[#49382D]/12 bg-white shadow-[0_2px_12px_rgba(73,56,45,0.05)] hover:border-[#B28B65]/60 hover:shadow-[0_10px_28px_rgba(73,56,45,0.09)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] dark:shadow-none dark:hover:border-[#C8A98B]/50'
       }`}
     >
-      {/* Editorial 3:4 Photography Frame (14px inner radius harmonizing with 16px card) */}
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[12px] bg-[#3B302B]/40">
+      {/* Large 3:4 Product Image Frame */}
+      <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#E8DDD0]/60 dark:bg-[#3B302B]/40">
         <div
           onClick={() => {
             window.location.href = detailHref;
           }}
           className="block h-full w-full cursor-pointer"
         >
-          <img
-            src={withBasePath(product.imageUrl)}
+          <EditableImage
+            id={`products[${idx}].imageUrl`}
+            data-preview-field-path={`products[${idx}].imageUrl`}
+            data-preview-style-target={`products[${idx}].imageUrl`}
+            data-preview-style-type="image"
+            src={product.imageUrl}
+            fallbackSrc="/images/prod-curtain-ivory.jpg"
             alt={product.name}
             loading="lazy"
-            data-preview-field-path={`products[${idx}].imageUrl`}
-            className="h-full w-full object-cover will-change-transform transition-transform duration-[900ms] ease-luxury group-hover:scale-[1.045]"
+            fit="cover"
+            className="h-full w-full object-cover will-change-transform transition-transform duration-700 ease-luxury group-hover:scale-[1.04]"
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#201C1A]/55 via-[#201C1A]/10 to-transparent opacity-40 transition-opacity duration-500 ease-luxury group-hover:opacity-100" />
         </div>
 
-        {/* Top Left Editorial Badge — always visible & clickable in Fivora */}
+        {/* Minimal Top-Left Badge (only rendered visually when set, keeping Fivora field bound) */}
         <span
           data-preview-field-path={`products[${idx}].badge`}
           className={
             product.badge
-              ? 'pointer-events-none absolute left-3 top-3 rounded-[8px] border border-[#C8A98B]/35 bg-[#201C1A]/85 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#F2E9DE] backdrop-blur-md transition-transform duration-500 ease-luxury group-hover:-translate-y-0.5'
-              : 'pointer-events-none absolute left-3 top-3 text-[9px]'
+              ? 'pointer-events-none absolute left-3 top-3 rounded-[8px] bg-[#2C211B]/86 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F7F3ED] backdrop-blur-sm'
+              : 'pointer-events-none absolute left-3 top-3 text-[10px]'
           }
         >
           {product.badge ?? ''}
         </span>
 
-        {/* Top Right Wishlist Toggle */}
+        {/* Always-Visible Wishlist Heart Toggle */}
         <motion.button
           type="button"
-          whileTap={prefersReducedMotion ? undefined : { scale: 0.88 }}
+          whileTap={prefersReducedMotion ? undefined : { scale: 0.9 }}
           onClick={() => toggleWishlist(product.id)}
-          aria-label={wishlisted ? `Remove ${product.name} from wishlist` : `Save ${product.name} to wishlist`}
+          aria-label={
+            wishlisted
+              ? `Remove ${product.name} from wishlist`
+              : `Save ${product.name} to wishlist`
+          }
           aria-pressed={wishlisted}
           data-preview-static="product-wishlist-toggle"
-          className={`absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-[10px] backdrop-blur-md transition-all duration-300 ${
+          className={`absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border shadow-sm backdrop-blur-sm transition-colors duration-200 ${
             wishlisted
-              ? 'bg-[#201C1A] text-[#C8A98B] ring-1 ring-[#C8A98B]/50'
-              : 'bg-[#201C1A]/75 text-[#F2E9DE] opacity-90 hover:bg-[#C8A98B] hover:text-[#201C1A] sm:opacity-0 sm:group-hover:opacity-100 sm:focus:opacity-100'
+              ? 'border-[#B28B65] bg-[#49382D] text-[#F7F3ED] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+              : 'border-[#49382D]/14 bg-white/92 text-[#49382D] hover:border-[#B28B65] hover:bg-[#B28B65] hover:text-white dark:border-[#C8A98B]/28 dark:bg-[#201C1A]/82 dark:text-[#F5EEE6] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]'
           }`}
         >
-          <Heart className={`h-4 w-4 stroke-[1.5] ${wishlisted ? 'fill-[#C8A98B]' : ''}`} />
+          <Heart
+            className={`h-4 w-4 stroke-[1.7] ${wishlisted ? 'fill-current' : ''}`}
+          />
         </motion.button>
-
-        {/* Bottom Slide-Up Quick Action Bar (softly rounded 10px controls) */}
-        <div className="absolute inset-x-2.5 bottom-2.5 flex translate-y-2 items-center gap-1.5 opacity-0 transition-all duration-500 ease-luxury group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
-          <button
-            type="button"
-            onClick={() => openQuickView(product)}
-            data-preview-static="product-quick-view"
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-[10px] bg-[#F2E9DE]/95 px-2.5 py-2.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#201C1A] backdrop-blur-sm transition-colors hover:bg-[#C8A98B]"
-          >
-            <Eye className="h-3.5 w-3.5 stroke-[1.6]" />
-            Quick View
-          </button>
-          <button
-            type="button"
-            disabled={!product.isAvailable}
-            onClick={handleQuickAdd}
-            aria-label={
-              product.isAvailable
-                ? `Add ${product.name} to bag`
-                : `${product.name} is currently unavailable`
-            }
-            data-preview-static="product-quick-add"
-            className={`flex h-[36px] w-[38px] shrink-0 items-center justify-center rounded-[10px] transition-colors ${
-              product.isAvailable
-                ? 'bg-[#201C1A] text-[#F2E9DE] hover:bg-[#C8A98B] hover:text-[#201C1A]'
-                : 'cursor-not-allowed bg-[#201C1A]/40 text-[#F2E9DE]/50'
-            }`}
-          >
-            <ShoppingBag className="h-3.5 w-3.5 stroke-[1.6]" />
-          </button>
-          <a
-            href={detailHref}
-            aria-label={`View details for ${product.name}`}
-            data-preview-static="Open the stable live product detail page"
-            className="flex h-[36px] items-center justify-center rounded-[10px] bg-[#F2E9DE]/95 px-2.5 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#201C1A] no-underline transition-colors hover:bg-[#C8A98B]"
-          >
-            Details
-          </a>
-        </div>
       </div>
 
-      {/* Product Typography & Swatch Details */}
-      <div className="flex flex-1 flex-col px-1.5 pb-1 pt-4">
-        <div className="flex items-center justify-between gap-2">
-          <span
-            data-preview-field-path={`products[${idx}].category`}
-            className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${
-              isDark ? 'text-[#C8A98B]' : 'text-[#8D7667] dark:text-[#C8A98B]'
-            }`}
-          >
-            {product.category}
-          </span>
-          {activeColor && (
-            <span
-              data-preview-static="product-active-tone"
-              className={`text-[10px] tracking-wide ${
-                isDark ? 'text-[#C7B6A6]' : 'text-[#5E4E45] dark:text-[#C9B9AA]'
-              }`}
-            >
-              {activeColor.name}
-            </span>
-          )}
-        </div>
-
+      {/* Clean Card Content: Name, Optional Valid Rating, Prominent LKR Price, Swatches & Always-Visible Add to Bag */}
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
+        {/* Short Product Name */}
         <button
           type="button"
           onClick={() => {
             window.location.href = detailHref;
           }}
-          className={`mt-1.5 block w-full border-0 bg-transparent p-0 text-left transition-colors ${
+          className={`block w-full border-0 bg-transparent p-0 text-left transition-colors ${
             isDark
-              ? 'text-[#F2E9DE] hover:text-[#C8A98B]'
-              : 'text-[#201C1A] hover:text-[#8D7667] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]'
+              ? 'text-[#F5EEE6] hover:text-[#C8A98B]'
+              : 'text-[#2C211B] hover:text-[#B28B65] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]'
           }`}
         >
           <EditableText
@@ -185,88 +148,123 @@ export default function LoomeProductCard({
             data-preview-field-path={`products[${idx}].name`}
             defaultValue={product.name}
             fontFamily="heading"
-            size="1.125rem"
+            size="1rem"
             weight={700}
-            lineHeight={1.28}
+            lineHeight={1.32}
             letterSpacing="-0.015em"
             color="inherit"
-            className="m-0"
+            className="m-0 line-clamp-2 min-h-[2.65rem]"
           />
         </button>
 
-        <EditableText
-          as="p"
-          data-preview-field-path={`products[${idx}].description`}
-          defaultValue={product.description}
-          fontFamily="body"
-          size="0.8125rem"
-          lineHeight={1.65}
-          color={isDark ? '#C7B6A6' : 'muted'}
-          className="mt-1.5 mb-0 line-clamp-2"
-        />
-
-        {/* Price + Interactive Color Swatches Footer */}
-        <div className="mt-auto pt-3.5">
+        {/* Rating — shown ONLY when valid product review data exists */}
+        {hasValidRating && (
           <div
-            className={`flex items-center justify-between gap-3 border-t pt-3.5 ${
-              isDark ? 'border-[#C8A98B]/14' : 'border-[#3B302B]/12 dark:border-[#C8A98B]/18'
+            data-preview-static="product-rating"
+            className="mt-2 flex items-center gap-1.5 text-xs text-[#6E5B4E] dark:text-[#C9B9AA]"
+          >
+            <Star className="h-3.5 w-3.5 fill-[#B28B65] text-[#B28B65] dark:fill-[#C8A98B] dark:text-[#C8A98B]" />
+            <span className="font-semibold text-[#2C211B] dark:text-[#F5EEE6]">
+              {product.rating!.toFixed(1)}
+            </span>
+            {product.reviewCount && (
+              <span className="text-[11px]">({product.reviewCount})</span>
+            )}
+          </div>
+        )}
+
+        {/* Prominent LKR Price + Sale Compare-At Price */}
+        <div className="mt-2.5 flex flex-wrap items-baseline gap-2">
+          <span
+            data-preview-field-path={`products[${idx}].price`}
+            className={`text-base font-extrabold tracking-tight ${
+              isDark ? 'text-[#F5EEE6]' : 'text-[#2C211B] dark:text-[#F5EEE6]'
             }`}
           >
-          <div className="flex items-baseline gap-2">
-            <span
-              data-preview-field-path={`products[${idx}].price`}
-              className={`text-sm font-bold tracking-wide ${
-                isDark ? 'text-[#F2E9DE]' : 'text-[#201C1A] dark:text-[#F5EEE6]'
-              }`}
-            >
-              {product.showPrice ? formatLoomePrice(product.price, storeCurrency) : 'Upon Inquiry'}
-            </span>
-            <span
-              data-preview-field-path={`products[${idx}].compareAtPrice`}
-              className={
-                product.showPrice && product.compareAtPrice
-                  ? `text-xs line-through ${isDark ? 'text-[#C7B6A6]/70' : 'text-[#8D7667] dark:text-[#C9B9AA]/75'}`
-                  : 'inline-block text-xs'
-              }
-            >
-              {product.showPrice && product.compareAtPrice
-                ? formatLoomePrice(product.compareAtPrice, storeCurrency)
-                : ''}
-            </span>
-          </div>
-
-          <div
-            data-preview-list-path={`products[${idx}].colors`}
-            className="flex items-center gap-1.5"
+            {product.showPrice ? formatLoomePrice(product.price, storeCurrency) : 'Upon Inquiry'}
+          </span>
+          <span
+            data-preview-field-path={`products[${idx}].compareAtPrice`}
+            className={
+              hasSalePrice
+                ? `text-xs font-medium line-through ${
+                    isDark
+                      ? 'text-[#C9B9AA]/75'
+                      : 'text-[#6E5B4E]/80 dark:text-[#C9B9AA]/75'
+                  }`
+                : 'inline-block text-xs'
+            }
           >
-            {product.colors.map((swatch, sIdx) => {
-              const selected = sIdx === selectedColorIndex;
-              return (
-                <span
-                  key={`${product.id}-${swatch.name}-${sIdx}`}
-                  data-preview-item-path={`products[${idx}].colors[${sIdx}]`}
-                  className="inline-flex items-center"
-                >
-                  <button
-                    type="button"
-                    data-preview-static={`swatch-${swatch.name}`}
-                    onClick={() => setSelectedColorIndex(sIdx)}
-                    aria-label={`Select ${swatch.name}`}
-                    title={swatch.name}
-                    className={`h-3.5 w-3.5 rounded-full border transition-all ${
-                      selected
-                        ? `scale-110 border-[#C8A98B] ring-1 ring-[#C8A98B] ring-offset-1 ${
-                            isDark ? 'ring-offset-[#2A2320]' : 'ring-offset-[#FAF5EE] dark:ring-offset-[#2A221F]'
-                          }`
-                        : 'border-[#C8A98B]/40 hover:scale-110'
-                    }`}
-                    style={{ backgroundColor: swatch.hex }}
-                  />
-                </span>
-              );
-            })}
-          </div>
-          </div>
+            {hasSalePrice ? formatLoomePrice(product.compareAtPrice!, storeCurrency) : ''}
+          </span>
+        </div>
+
+        {/* Available Color Swatches */}
+        <div
+          data-preview-list-path={`products[${idx}].colors`}
+          className="mt-3 flex items-center gap-2"
+        >
+          {product.colors.map((swatch, sIdx) => {
+            const selected = sIdx === selectedColorIndex;
+            return (
+              <span
+                key={`${product.id}-${swatch.name}-${sIdx}`}
+                data-preview-item-path={`products[${idx}].colors[${sIdx}]`}
+                className="inline-flex items-center"
+              >
+                <button
+                  type="button"
+                  data-preview-static={`swatch-${swatch.name}`}
+                  onClick={() => setSelectedColorIndex(sIdx)}
+                  aria-label={`Select ${swatch.name}`}
+                  title={swatch.name}
+                  className={`h-4 w-4 rounded-full border transition-transform ${
+                    selected
+                      ? `scale-110 border-[#49382D] ring-1 ring-[#B28B65] ring-offset-1 ${
+                          isDark
+                            ? 'ring-offset-[#28211D]'
+                            : 'ring-offset-white dark:ring-offset-[#28211D]'
+                        }`
+                      : 'border-[#49382D]/25 hover:scale-110 dark:border-[#C8A98B]/40'
+                  }`}
+                  style={{ backgroundColor: swatch.hex }}
+                />
+              </span>
+            );
+          })}
+        </div>
+
+        {/* Always-Visible Add to Bag Action (no hover required) */}
+        <div className="mt-auto pt-4">
+          <button
+            type="button"
+            disabled={!product.isAvailable}
+            onClick={handleAddToBag}
+            data-preview-static="product-quick-add"
+            className={`flex h-10 w-full items-center justify-center gap-2 rounded-[10px] text-xs font-semibold uppercase tracking-[0.14em] transition-colors duration-200 ${
+              !product.isAvailable
+                ? 'cursor-not-allowed border border-[#49382D]/15 bg-[#E8DDD0]/60 text-[#6E5B4E] dark:border-[#C8A98B]/20 dark:bg-[#3B302B]/50 dark:text-[#C9B9AA]/60'
+                : justAdded
+                  ? 'bg-[#B28B65] text-white dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                  : isDark
+                    ? 'bg-[#C8A98B] text-[#201C1A] hover:bg-[#D8BFA4]'
+                    : 'bg-[#49382D] text-[#F7F3ED] hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]'
+            }`}
+          >
+            {justAdded ? (
+              <>
+                <Check className="h-3.5 w-3.5 stroke-[2.2]" />
+                <span>Added to Bag</span>
+              </>
+            ) : !product.isAvailable ? (
+              <span>Out of Stock</span>
+            ) : (
+              <>
+                <ShoppingBag className="h-3.5 w-3.5 stroke-[1.75]" />
+                <span>Add to Bag</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
     </article>

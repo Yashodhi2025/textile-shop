@@ -29,9 +29,12 @@ export function withBasePath(value?: string | null) {
 
 export function pageRoute(pageKey: string) {
   if (pageKey === 'home') return '/';
-  if (pageKey === 'textile_care') return '/textile-care';
-  if (pageKey === 'shipping_returns') return '/shipping-returns';
-  return `/${pageKey}`;
+  if (pageKey === 'collections') return '/collections/';
+  if (pageKey === 'services') return '/services/';
+  if (pageKey === 'shop') return '/shop/';
+  if (pageKey === 'textile_care') return '/textile-care/';
+  if (pageKey === 'shipping_returns') return '/shipping-returns/';
+  return `/${pageKey}/`;
 }
 
 export const resolveAsset = withBasePath;
