@@ -249,6 +249,10 @@
         ]
       },
       "marqueeText": "TIMELESS TEXTURES • THOUGHTFULLY CRAFTED • EVERYDAY LUXURY",
+      "marqueeSeparator": "✦",
+      "marqueeEnabled": true,
+      "marqueeSpeedSeconds": 36,
+      "marqueePauseOnHover": true,
       "categoriesEyebrow": "BROWSE CATEGORIES",
       "categoriesHeading": "Shop by Category",
       "categoriesSummary": "Five foundational textile expressions chosen for tactile richness, architectural drape, and quiet longevity.",
@@ -297,12 +301,31 @@
       "productsEyebrow": "SEASONAL ARRIVALS",
       "productsHeading": "New Arrivals",
       "productsSummary": "Fresh from our European partner mills—tactile weaves in warm ivory, stone, sage olive, and champagne.",
+      "productsAllFilterLabel": "All",
+      "productsResetFilterLabel": "View All Arrivals",
       "introEyebrow": "HERITAGE & ATELIER",
       "introTitle": "The Beauty Is in the Details",
       "introBody": "Every LOOMÉ textile begins with long-staple flax grown in Normandy and woven by fourth-generation Belgian artisans. From hand-mitred hems to unbleached selvedge finishes, we obsess over the quiet tactile nuances you feel the moment light touches a room.",
       "craftsmanshipImageUrl": "/images/craftsmanship-loom.jpg",
       "craftsmanshipDetailImageUrl": "/images/craftsmanship-detail.jpg",
       "craftsmanshipCaption": "Shuttle-Woven Belgian Flax · Atelier Loom No. 04",
+      "craftsmanshipMetrics": [
+        {
+          "id": "metric-natural-fibers",
+          "value": "100%",
+          "label": "Natural Flax & Cotton"
+        },
+        {
+          "id": "metric-durability",
+          "value": "10+ Yrs",
+          "label": "Everyday Durability"
+        },
+        {
+          "id": "metric-dyes",
+          "value": "Certified",
+          "label": "Skin-Safe Dyes"
+        }
+      ],
       "demoPreOrderCta": [
         {
           "buttonLabel": "Order Complimentary Swatches",
@@ -325,6 +348,10 @@
         "title": "Shop the Look",
         "subtitle": "The Morning Light Salon — select any marker in the room to inspect the woven pieces composing this space.",
         "imageUrl": "/images/hero-linen.jpg",
+        "inspectCtaLabel": "Inspect Piece",
+        "quickViewLabel": "Quick View",
+        "exploreCtaLabel": "Explore Collections",
+        "exploreCtaUrl": "/collections/",
         "hotspots": [
           {
             "id": "spot-curtains",

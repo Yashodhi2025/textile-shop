@@ -4,7 +4,12 @@ import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Check, Heart, ShoppingBag, Star, Trash2 } from 'lucide-react';
 import { EditableImage, EditableText, useCart } from '@deneb-ui/ui';
-import { platformProductDetailHref, useSiteData } from '@/lib/siteDataContext';
+import {
+  contentObject,
+  contentText,
+  platformProductDetailHref,
+  useSiteData,
+} from '@/lib/siteDataContext';
 import {
   formatLoomePrice,
   resolveLoomeCurrency,
@@ -32,8 +37,13 @@ export default function LoomeProductCard({
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [justAdded, setJustAdded] = useState(false);
 
+  const productDetailPage = contentObject(contentObject(siteData.content).productDetailPage);
+  const addToBagLabel = contentText(productDetailPage.addToBagLabel) || 'Add to Bag';
+
+  const safeColorIndex =
+    product.colors.length > 0 ? Math.min(selectedColorIndex, product.colors.length - 1) : 0;
   const wishlisted = isWishlisted(product.id);
-  const activeColor = product.colors[selectedColorIndex] ?? product.colors[0];
+  const activeColor = product.colors[safeColorIndex] ?? product.colors[0];
   const storeCurrency = resolveLoomeCurrency(siteData, product.currency);
   const detailHref = platformProductDetailHref(product.id);
   const idx = product.index;
@@ -72,14 +82,14 @@ export default function LoomeProductCard({
       className={`group flex h-full flex-col overflow-hidden rounded-2xl border transition-all duration-300 ${
         isDark
           ? 'border-[#C8A98B]/20 bg-[#28211D] shadow-[0_2px_14px_rgba(0,0,0,0.22)] hover:border-[#C8A98B]/50'
-          : 'border-[#49382D]/12 bg-white shadow-[0_2px_12px_rgba(73,56,45,0.05)] hover:border-[#B28B65]/60 hover:shadow-[0_10px_28px_rgba(73,56,45,0.09)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] dark:shadow-none dark:hover:border-[#C8A98B]/50'
+          : 'border-[var(--loome-border)] bg-[var(--card-bg)] shadow-[0_2px_12px_rgba(73,56,44,0.05)] hover:border-[var(--brand-accent)]/70 hover:shadow-[0_10px_28px_rgba(73,56,44,0.09)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] dark:shadow-none dark:hover:border-[#C8A98B]/50'
       }`}
     >
       {/* Product Image Frame — compact 276px height on Wishlist desktop, 3:4 editorial elsewhere */}
       <div
         data-testid={compactMedia ? 'wishlist-card-media' : undefined}
-        className={`relative w-full overflow-hidden bg-[var(--brand-secondary,#E8DDD0)]/60 dark:bg-[#3B302B]/40 ${
-          compactMedia ? 'aspect-[4/3] sm:h-[268px] sm:aspect-auto lg:h-[276px]' : 'aspect-[3/4]'
+        className={`relative w-full overflow-hidden bg-[var(--loome-beige)]/70 dark:bg-[#3B302B]/40 ${
+          compactMedia ? 'aspect-[4/3] sm:h-[268px] sm:aspect-auto lg:h-[276px]' : 'aspect-[4/5]'
         }`}
       >
         <div
@@ -102,13 +112,15 @@ export default function LoomeProductCard({
           />
         </div>
 
-        {/* Minimal Top-Left Badge (only rendered visually when set, keeping Fivora field bound) */}
+        {/* High-Contrast Top-Left Badge — clickable in Fivora visual editor */}
         <span
           data-preview-field-path={`products[${idx}].badge`}
+          data-testid="product-card-badge"
+          onClick={(e) => e.stopPropagation()}
           className={
             product.badge
-              ? 'pointer-events-none absolute left-3 top-3 rounded-[8px] bg-[#2C211B]/86 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F7F3ED] backdrop-blur-sm'
-              : 'pointer-events-none absolute left-3 top-3 text-[10px]'
+              ? 'pointer-events-auto absolute left-3 top-3 z-10 rounded-[8px] border border-[#C8A98B]/55 bg-[#201A17]/95 px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#FAF7F2] shadow-[0_4px_12px_rgba(0,0,0,0.28)] backdrop-blur-sm'
+              : 'pointer-events-none absolute left-3 top-3 text-[10px] opacity-0'
           }
         >
           {product.badge ?? ''}
@@ -126,10 +138,10 @@ export default function LoomeProductCard({
           }
           aria-pressed={wishlisted}
           data-preview-static="product-wishlist-toggle"
-          className={`absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border shadow-sm backdrop-blur-sm transition-colors duration-200 ${
+          className={`absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full border shadow-sm backdrop-blur-sm transition-colors duration-200 ${
             wishlisted
-              ? 'border-[#B28B65] bg-[#49382D] text-[#F7F3ED] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-              : 'border-[#49382D]/14 bg-white/92 text-[#49382D] hover:border-[#B28B65] hover:bg-[#B28B65] hover:text-white dark:border-[#C8A98B]/28 dark:bg-[#201C1A]/82 dark:text-[#F5EEE6] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]'
+              ? 'border-[#B18D69] bg-[#49382C] text-[#F7F4EF] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+              : 'border-[#49382C]/15 bg-white/95 text-[#49382C] hover:border-[#B18D69] hover:bg-[#B18D69] hover:text-white dark:border-[#C8A98B]/28 dark:bg-[#201C1A]/85 dark:text-[#F5EEE6] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]'
           }`}
         >
           <Heart
@@ -138,9 +150,9 @@ export default function LoomeProductCard({
         </motion.button>
       </div>
 
-      {/* Clean Card Content: Name, Optional Valid Rating, Prominent LKR Price, Swatches & Always-Visible Add to Bag */}
+      {/* Clean, Balanced Card Content: Name, Single-Line LKR Price, Swatches + Variant Name & Add to Bag */}
       <div className="flex flex-1 flex-col p-4 sm:p-5">
-        {/* Short Product Name */}
+        {/* Product Name */}
         <button
           type="button"
           onClick={() => {
@@ -149,7 +161,7 @@ export default function LoomeProductCard({
           className={`block w-full border-0 bg-transparent p-0 text-left transition-colors ${
             isDark
               ? 'text-[#F5EEE6] hover:text-[#C8A98B]'
-              : 'text-[#2C211B] hover:text-[#B28B65] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]'
+              : 'text-[var(--heading-color)] hover:text-[var(--brand-accent)] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]'
           }`}
         >
           <EditableText
@@ -157,9 +169,9 @@ export default function LoomeProductCard({
             data-preview-field-path={`products[${idx}].name`}
             defaultValue={product.name}
             fontFamily="heading"
-            size="1rem"
+            size="0.96875rem"
             weight={700}
-            lineHeight={1.32}
+            lineHeight={1.35}
             letterSpacing="-0.015em"
             color="inherit"
             className="m-0 line-clamp-2 min-h-[2.65rem]"
@@ -170,10 +182,10 @@ export default function LoomeProductCard({
         {hasValidRating && (
           <div
             data-preview-static="product-rating"
-            className="mt-2 flex items-center gap-1.5 text-xs text-[#6E5B4E] dark:text-[#C9B9AA]"
+            className="mt-2 flex items-center gap-1.5 text-xs text-[var(--muted-text)]"
           >
-            <Star className="h-3.5 w-3.5 fill-[#B28B65] text-[#B28B65] dark:fill-[#C8A98B] dark:text-[#C8A98B]" />
-            <span className="font-semibold text-[#2C211B] dark:text-[#F5EEE6]">
+            <Star className="h-3.5 w-3.5 fill-[var(--brand-accent)] text-[var(--brand-accent)]" />
+            <span className="font-semibold text-[var(--heading-color)]">
               {product.rating!.toFixed(1)}
             </span>
             {product.reviewCount && (
@@ -182,12 +194,15 @@ export default function LoomeProductCard({
           </div>
         )}
 
-        {/* Prominent LKR Price + Sale Compare-At Price */}
-        <div className="mt-2.5 flex flex-wrap items-baseline gap-2">
+        {/* Single-Line LKR Price + Optional Sale Compare-At Price */}
+        <div
+          data-testid="product-card-price-row"
+          className="mt-2.5 flex flex-nowrap items-baseline gap-2 overflow-hidden"
+        >
           <span
             data-preview-field-path={`products[${idx}].price`}
-            className={`whitespace-nowrap text-base font-extrabold tracking-tight tabular-nums ${
-              isDark ? 'text-[#F5EEE6]' : 'text-[#2C211B] dark:text-[#F5EEE6]'
+            className={`shrink-0 whitespace-nowrap text-[15px] font-extrabold tracking-tight tabular-nums ${
+              isDark ? 'text-[#F5EEE6]' : 'text-[var(--heading-color)] dark:text-[#F5EEE6]'
             }`}
           >
             {product.showPrice ? formatLoomePrice(product.price, storeCurrency) : 'Price on Request'}
@@ -196,51 +211,73 @@ export default function LoomeProductCard({
             data-preview-field-path={`products[${idx}].compareAtPrice`}
             className={
               hasSalePrice
-                ? `whitespace-nowrap text-xs font-medium tabular-nums line-through ${
+                ? `shrink-0 whitespace-nowrap text-xs font-medium tabular-nums line-through ${
                     isDark
-                      ? 'text-[#C9B9AA]/75'
-                      : 'text-[#6E5B4E]/80 dark:text-[#C9B9AA]/75'
+                      ? 'text-[#C9B9AA]/80'
+                      : 'text-[var(--muted-text)]/80 dark:text-[#C9B9AA]/80'
                   }`
-                : 'inline-block text-xs'
+                : 'inline-block shrink-0 text-xs'
             }
           >
             {hasSalePrice ? formatLoomePrice(product.compareAtPrice!, storeCurrency) : ''}
           </span>
         </div>
 
-        {/* Available Color Swatches */}
+        {/* Available Color Swatches + Editable Active Color Name */}
         <div
           data-preview-list-path={`products[${idx}].colors`}
-          className="mt-3 flex items-center gap-2"
+          className="mt-3 flex min-h-[1.5rem] items-center gap-2"
         >
-          {product.colors.map((swatch, sIdx) => {
-            const selected = sIdx === selectedColorIndex;
-            return (
-              <span
-                key={`${product.id}-${swatch.name}-${sIdx}`}
-                data-preview-item-path={`products[${idx}].colors[${sIdx}]`}
-                className="inline-flex items-center"
-              >
-                <button
-                  type="button"
-                  data-preview-static={`swatch-${swatch.name}`}
-                  onClick={() => setSelectedColorIndex(sIdx)}
-                  aria-label={`Select ${swatch.name}`}
-                  title={swatch.name}
-                  className={`h-4 w-4 rounded-full border transition-transform ${
-                    selected
-                      ? `scale-110 border-[#49382D] ring-1 ring-[#B28B65] ring-offset-1 ${
-                          isDark
-                            ? 'ring-offset-[#28211D]'
-                            : 'ring-offset-white dark:ring-offset-[#28211D]'
-                        }`
-                      : 'border-[#49382D]/25 hover:scale-110 dark:border-[#C8A98B]/40'
-                  }`}
-                  style={{ backgroundColor: swatch.hex }}
-                />
-              </span>
-            );
-          })}
+          <div className="flex shrink-0 items-center gap-1.5">
+            {product.colors.map((swatch, sIdx) => {
+              const selected = sIdx === safeColorIndex;
+              return (
+                <span
+                  key={`${product.id}-${swatch.name}-${sIdx}`}
+                  data-preview-item-path={
+                    product.hasExplicitColors ? `products[${idx}].colors[${sIdx}]` : undefined
+                  }
+                  className="inline-flex items-center"
+                >
+                  <button
+                    type="button"
+                    data-testid="product-swatch-btn"
+                    data-preview-field-path={
+                      product.hasExplicitColors ? `products[${idx}].colors[${sIdx}].hex` : undefined
+                    }
+                    onClick={() => setSelectedColorIndex(sIdx)}
+                    aria-label={`Select ${swatch.name}`}
+                    title={swatch.name}
+                    className={`h-4 w-4 rounded-full border transition-transform ${
+                      selected
+                        ? `scale-110 border-[#49382C] ring-1 ring-[#B18D69] ring-offset-1 ${
+                            isDark
+                              ? 'ring-offset-[#28211D]'
+                              : 'ring-offset-white dark:ring-offset-[#28211D]'
+                          }`
+                        : 'border-[#49382C]/25 hover:scale-110 dark:border-[#C8A98B]/40'
+                    }`}
+                    style={{ backgroundColor: swatch.hex }}
+                  />
+                </span>
+              );
+            })}
+          </div>
+          {activeColor && (
+            <span
+              data-testid="product-active-swatch-name"
+              data-preview-field-path={
+                product.hasExplicitColors
+                  ? `products[${idx}].colors[${safeColorIndex}].name`
+                  : undefined
+              }
+              className={`ml-0.5 truncate text-[11.5px] font-medium ${
+                isDark ? 'text-[#C9B9AA]' : 'text-[var(--muted-text)] dark:text-[#C9B9AA]'
+              }`}
+            >
+              {activeColor.name}
+            </span>
+          )}
         </div>
 
         {/* Always-Visible Add to Bag Action (+ Optional Remove Action on Wishlist page) */}
@@ -249,8 +286,8 @@ export default function LoomeProductCard({
             type="button"
             disabled={!product.isAvailable}
             onClick={handleAddToBag}
-            data-preview-static="product-quick-add"
-            className={`flex h-10 w-full items-center justify-center gap-2 rounded-[10px] border-0 text-xs font-bold uppercase tracking-[0.14em] transition-colors duration-200 ${
+            data-testid="product-quick-add"
+            className={`flex h-[42px] w-full items-center justify-center gap-2 rounded-[10px] border-0 px-3 text-xs font-bold uppercase tracking-[0.14em] transition-colors duration-200 ${
               !product.isAvailable
                 ? 'cursor-not-allowed border border-[var(--loome-border)] bg-[var(--loome-beige)]/70 text-[var(--muted-text)]'
                 : justAdded
@@ -270,7 +307,9 @@ export default function LoomeProductCard({
             ) : (
               <>
                 <ShoppingBag className="h-3.5 w-3.5 stroke-[1.75]" />
-                <span>Add to Bag</span>
+                <span data-preview-field-path="productDetailPage.addToBagLabel">
+                  {addToBagLabel}
+                </span>
               </>
             )}
           </button>
@@ -280,7 +319,7 @@ export default function LoomeProductCard({
               type="button"
               onClick={() => toggleWishlist(product.id)}
               data-preview-static="wishlist-card-remove"
-              className="flex h-9 w-full items-center justify-center gap-1.5 rounded-[10px] border border-[#49382D]/16 bg-transparent text-xs font-semibold text-[#6E5B4E] transition-colors hover:border-[#A63A2B]/40 hover:bg-[#A63A2B]/8 hover:text-[#A63A2B] dark:border-[#C8A98B]/22 dark:text-[#C9B9AA] dark:hover:border-[#F09A8B]/50 dark:hover:text-[#F09A8B]"
+              className="flex h-9 w-full items-center justify-center gap-1.5 rounded-[10px] border border-[#49382C]/16 bg-transparent text-xs font-semibold text-[#66584D] transition-colors hover:border-[#A63A2B]/40 hover:bg-[#A63A2B]/8 hover:text-[#A63A2B] dark:border-[#C8A98B]/22 dark:text-[#C9B9AA] dark:hover:border-[#F09A8B]/50 dark:hover:text-[#F09A8B]"
             >
               <Trash2 className="h-3.5 w-3.5 stroke-[1.6]" />
               <span>Remove</span>

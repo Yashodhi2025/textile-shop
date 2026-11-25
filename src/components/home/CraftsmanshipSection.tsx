@@ -14,10 +14,10 @@ import {
   useParallaxActive,
 } from '@/components/motion/LuxuryReveal';
 
-const ATELIER_METRICS = [
-  { value: '100%', label: 'Natural Flax & Cotton' },
-  { value: '10+ Yrs', label: 'Everyday Durability' },
-  { value: 'Certified', label: 'Skin-Safe Dyes' },
+const DEFAULT_METRICS = [
+  { id: 'metric-natural-fibers', value: '100%', label: 'Natural Flax & Cotton' },
+  { id: 'metric-durability', value: '10+ Yrs', label: 'Everyday Durability' },
+  { id: 'metric-dyes', value: 'Certified', label: 'Skin-Safe Dyes' },
 ];
 
 export default function CraftsmanshipSection() {
@@ -42,6 +42,21 @@ export default function CraftsmanshipSection() {
     contentText(home.craftsmanshipDetailImageUrl) || '/images/craftsmanship-detail.jpg';
   const caption =
     contentText(home.craftsmanshipCaption) || 'Shuttle-Woven Belgian Flax · Atelier Loom No. 04';
+
+  const hasExplicitMetrics = Array.isArray(home.craftsmanshipMetrics);
+  const rawMetrics = hasExplicitMetrics
+    ? contentList(home.craftsmanshipMetrics)
+    : DEFAULT_METRICS;
+  const metrics = rawMetrics.map((raw, idx) => {
+    const obj = contentObject(raw);
+    return {
+      index: idx,
+      id: contentText(obj.id) || `craft-metric-${idx}`,
+      value: contentText(obj.value),
+      label: contentText(obj.label),
+    };
+  });
+
   const ctaList = contentList(home.demoPreOrderCta);
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
@@ -67,7 +82,10 @@ export default function CraftsmanshipSection() {
       <div className="mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-10 px-4 sm:px-8 lg:grid-cols-12 lg:gap-12 lg:px-10">
         {/* Left: Layered Editorial Loom & Weave Photography with Curtain Mask & Desktop Parallax */}
         <div className="relative lg:col-span-6">
-          <LuxuryImageReveal tone="ivory" className="overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--loome-beige)]">
+          <LuxuryImageReveal
+            tone="ivory"
+            className="overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--loome-beige)]"
+          >
             <motion.div
               style={parallaxActive ? { y: mainImageY } : undefined}
               className="aspect-square w-full will-change-transform"
@@ -98,12 +116,18 @@ export default function CraftsmanshipSection() {
             </LuxuryImageReveal>
           </motion.div>
 
-          <p
+          <EditableText
+            as="p"
             data-preview-field-path="home.craftsmanshipCaption"
-            className="mt-3.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--brand-accent)]"
-          >
-            {caption}
-          </p>
+            defaultValue={caption}
+            fontFamily="body"
+            size="0.625rem"
+            weight={600}
+            transform="uppercase"
+            letterSpacing="0.2em"
+            color="accent"
+            className="mt-3.5 mb-0"
+          />
         </div>
 
         {/* Right: Luxury Editorial Storytelling */}
@@ -155,23 +179,40 @@ export default function CraftsmanshipSection() {
               />
             </LuxuryStaggerItem>
 
-            {/* Provenance Pillars */}
+            {/* Editable Provenance Metrics */}
             <LuxuryStaggerItem y={18}>
-              <div className="mt-7 grid grid-cols-3 gap-4 border-y border-[var(--loome-border)] py-5">
-                {ATELIER_METRICS.map((metric) => (
-                  <div key={metric.label}>
-                    <p
-                      data-preview-static={`craft-metric-val-${metric.label}`}
-                      className="m-0 font-heading text-lg font-extrabold tracking-tight text-[var(--heading-color)] sm:text-xl"
-                    >
-                      {metric.value}
-                    </p>
-                    <p
-                      data-preview-static={`craft-metric-lbl-${metric.label}`}
-                      className="mt-1 m-0 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--brand-accent)]"
-                    >
-                      {metric.label}
-                    </p>
+              <div
+                data-preview-list-path="home.craftsmanshipMetrics"
+                className="mt-7 grid grid-cols-1 gap-4 border-y border-[var(--loome-border)] py-5 sm:grid-cols-3"
+              >
+                {metrics.map((metric) => (
+                  <div
+                    key={metric.id}
+                    data-preview-item-path={`home.craftsmanshipMetrics[${metric.index}]`}
+                  >
+                    <EditableText
+                      as="p"
+                      data-preview-field-path={`home.craftsmanshipMetrics[${metric.index}].value`}
+                      defaultValue={metric.value}
+                      fontFamily="heading"
+                      size="1.25rem"
+                      weight={800}
+                      letterSpacing="-0.02em"
+                      color="heading"
+                      className="m-0"
+                    />
+                    <EditableText
+                      as="p"
+                      data-preview-field-path={`home.craftsmanshipMetrics[${metric.index}].label`}
+                      defaultValue={metric.label}
+                      fontFamily="body"
+                      size="0.625rem"
+                      weight={600}
+                      transform="uppercase"
+                      letterSpacing="0.16em"
+                      color="accent"
+                      className="mt-1 mb-0"
+                    />
                   </div>
                 ))}
               </div>

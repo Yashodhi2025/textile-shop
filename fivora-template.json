@@ -60,8 +60,16 @@
       "home.fabricStories.backgroundFrom",
       "home.fabricStories.backgroundTo",
       "home.fabricStories.stories[*].id",
+      "home.marqueeEnabled",
+      "home.marqueeSpeedSeconds",
+      "home.marqueePauseOnHover",
+      "home.productsAllFilterLabel",
+      "home.productsResetFilterLabel",
+      "home.craftsmanshipMetrics[*].id",
       "home.categories[*].id",
       "home.testimonials[*].id",
+      "home.shopTheLook.inspectCtaLabel",
+      "home.shopTheLook.quickViewLabel",
       "home.shopTheLook.hotspots[*].id",
       "home.shopTheLook.hotspots[*].productId",
       "home.shopTheLook.hotspots[*].x",
@@ -528,6 +536,26 @@
             "label": "Brand marquee text"
           },
           {
+            "key": "marqueeSeparator",
+            "type": "text",
+            "label": "Marquee separator symbol"
+          },
+          {
+            "key": "marqueeEnabled",
+            "type": "boolean",
+            "label": "Enable marquee scrolling animation"
+          },
+          {
+            "key": "marqueeSpeedSeconds",
+            "type": "number",
+            "label": "Marquee loop duration (seconds)"
+          },
+          {
+            "key": "marqueePauseOnHover",
+            "type": "boolean",
+            "label": "Pause marquee on hover"
+          },
+          {
             "key": "categoriesEyebrow",
             "type": "text",
             "label": "Categories eyebrow"
@@ -599,6 +627,16 @@
             "label": "New Arrivals summary"
           },
           {
+            "key": "productsAllFilterLabel",
+            "type": "text",
+            "label": "New Arrivals 'All' filter label"
+          },
+          {
+            "key": "productsResetFilterLabel",
+            "type": "text",
+            "label": "Reset category filter button label"
+          },
+          {
             "key": "introEyebrow",
             "type": "text",
             "label": "Craftsmanship eyebrow"
@@ -627,6 +665,33 @@
             "key": "craftsmanshipCaption",
             "type": "text",
             "label": "Craftsmanship image caption"
+          },
+          {
+            "key": "craftsmanshipMetrics",
+            "type": "list",
+            "label": "Craftsmanship Statistics",
+            "itemLabel": "Statistic",
+            "minItems": 0,
+            "maxItems": 6,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Metric ID"
+              },
+              {
+                "key": "value",
+                "type": "text",
+                "label": "Metric Value",
+                "required": true
+              },
+              {
+                "key": "label",
+                "type": "text",
+                "label": "Metric Label",
+                "required": true
+              }
+            ]
           },
           {
             "key": "demoPreOrderCta",
@@ -724,6 +789,26 @@
                 "key": "imageUrl",
                 "type": "image",
                 "label": "Room Scene Image"
+              },
+              {
+                "key": "inspectCtaLabel",
+                "type": "text",
+                "label": "Overlay Inspect CTA Label"
+              },
+              {
+                "key": "quickViewLabel",
+                "type": "text",
+                "label": "Quick View Button Label"
+              },
+              {
+                "key": "exploreCtaLabel",
+                "type": "text",
+                "label": "Explore Collections Link Label"
+              },
+              {
+                "key": "exploreCtaUrl",
+                "type": "url",
+                "label": "Explore Collections Link URL"
               },
               {
                 "key": "hotspots",

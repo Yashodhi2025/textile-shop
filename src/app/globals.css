@@ -355,15 +355,24 @@ html.dark .loome-navbar-surface-scrolled,
   transform-origin: left;
 }
 
-/* Seamless marquee animation */
+/* Seamless marquee animation (speed, enabled state & hover pause configurable from Fivora) */
 .loome-marquee-track {
   display: flex;
   width: max-content;
-  animation: loomeMarquee 36s linear infinite;
+  animation: loomeMarquee var(--loome-marquee-duration, 36s) linear infinite;
 }
 
-.loome-marquee-wrap:hover .loome-marquee-track {
+.loome-marquee-pause-hover:hover .loome-marquee-track {
   animation-play-state: paused;
+}
+
+.loome-marquee-static {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 @keyframes loomeMarquee {
