@@ -228,22 +228,22 @@ export default function TextileCareView() {
       className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
     >
       {/* Editorial Breadcrumb Strip */}
-      <div className="border-b border-[#262923]/8 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
-        <nav className="mx-auto flex max-w-[1380px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#55594F] dark:text-[#B6B8AE] sm:px-8 lg:px-14">
+      <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
+        <nav className="mx-auto flex max-w-[1380px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-14">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#55594F] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" className="text-[#B59B79]">
+          <span aria-hidden="true" className="text-[#C8A98B]">
             /
           </span>
           <span
             aria-current="page"
             data-preview-field-path="common.navLabels.textile_care"
-            className="font-medium text-[#262923] dark:text-[#F8F6F1]"
+            className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
           >
             {textileCareNavLabel}
           </span>
@@ -253,13 +253,13 @@ export default function TextileCareView() {
       {/* Editorial Hero & Care Label Advisory */}
       <section
         data-design-section="textile-care-hero"
-        className="border-b border-[#262923]/8 bg-gradient-to-b from-[#F2ECE2]/90 via-[#F8F6F1] to-[#F8F6F1] dark:border-[#F8F6F1]/10 dark:from-[#1F221C] dark:via-[#171915] dark:to-[#171915]"
+        className="border-b border-[#201C1A]/8 bg-gradient-to-b from-[#E6D9C9]/90 via-[#F2E9DE] to-[#F2E9DE] dark:border-[#F2E9DE]/10 dark:from-[#2B2320] dark:via-[#201C1A] dark:to-[#201C1A]"
       >
         <div className="mx-auto max-w-[1380px] px-4 py-12 sm:px-8 sm:py-16 lg:px-14 lg:py-20">
           <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
             <LuxuryReveal className="lg:col-span-7">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-9 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-9 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="textileCarePage.eyebrow"
@@ -301,11 +301,11 @@ export default function TextileCareView() {
 
             {/* Product Care Label Advisory Card */}
             <LuxuryReveal delay={0.12} className="lg:col-span-5">
-              <div className="border border-[#B59B79]/35 bg-[#FCFBF8]/95 p-6 shadow-[0_14px_38px_rgba(38,41,35,0.04)] dark:border-[#B59B79]/30 dark:bg-[#20231D]/90 sm:p-7">
+              <div className="border border-[#C8A98B]/35 bg-[#FAF5EE]/95 p-6 shadow-[0_14px_38px_rgba(38,41,35,0.04)] dark:border-[#C8A98B]/30 dark:bg-[#3B302B]/90 sm:p-7">
                 <div className="flex items-start gap-3.5">
                   <span
                     aria-hidden="true"
-                    className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border border-[#B59B79]/40 bg-[#F2ECE2]/75 text-[#747B65] dark:bg-[#262923] dark:text-[#B59B79]"
+                    className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border border-[#C8A98B]/40 bg-[#E6D9C9]/75 text-[#8D7667] dark:bg-[#201C1A] dark:text-[#C8A98B]"
                   >
                     <ShieldCheck className="h-4 w-4 stroke-[1.6]" />
                   </span>
@@ -344,7 +344,7 @@ export default function TextileCareView() {
         data-design-section="textile-care-fabrics"
         className="mx-auto max-w-[1380px] px-4 py-14 sm:px-8 sm:py-18 lg:px-14 lg:py-22"
       >
-        <LuxuryReveal className="flex flex-col justify-between gap-6 border-b border-[#262923]/10 pb-8 dark:border-[#F8F6F1]/10 md:flex-row md:items-end">
+        <LuxuryReveal className="flex flex-col justify-between gap-6 border-b border-[#201C1A]/10 pb-8 dark:border-[#F2E9DE]/10 md:flex-row md:items-end">
           <div>
             <EditableText
               as="p"
@@ -381,8 +381,8 @@ export default function TextileCareView() {
               onClick={() => setSelectedFabricId('all')}
               className={`cursor-pointer border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${
                 activeFabricId === 'all'
-                  ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] shadow-[0_6px_18px_rgba(38,41,35,0.12)] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#171915]'
-                  : 'border-[#262923]/18 bg-[#FCFBF8] text-[#55594F] hover:border-[#B59B79] hover:text-[#262923] dark:border-[#F8F6F1]/18 dark:bg-[#20231D] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]'
+                  ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] shadow-[0_6px_18px_rgba(38,41,35,0.12)] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                  : 'border-[#201C1A]/18 bg-[#FAF5EE] text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:bg-[#3B302B] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
               }`}
             >
               <EditableText
@@ -410,8 +410,8 @@ export default function TextileCareView() {
                   onClick={() => setSelectedFabricId(fabric.id)}
                   className={`cursor-pointer border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${
                     isActive
-                      ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] shadow-[0_6px_18px_rgba(38,41,35,0.12)] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#171915]'
-                      : 'border-[#262923]/18 bg-[#FCFBF8] text-[#55594F] hover:border-[#B59B79] hover:text-[#262923] dark:border-[#F8F6F1]/18 dark:bg-[#20231D] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]'
+                      ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] shadow-[0_6px_18px_rgba(38,41,35,0.12)] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                      : 'border-[#201C1A]/18 bg-[#FAF5EE] text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:bg-[#3B302B] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
                   }`}
                 >
                   <EditableText
@@ -435,15 +435,15 @@ export default function TextileCareView() {
         {/* Always-mounted list container for Fivora strict validation */}
         <div data-preview-list-path="textileCarePage.fabrics" className="mt-10">
           {fabrics.length === 0 ? (
-            <div className="border border-dashed border-[#262923]/20 px-6 py-16 text-center dark:border-[#F8F6F1]/20">
+            <div className="border border-dashed border-[#201C1A]/20 px-6 py-16 text-center dark:border-[#F2E9DE]/20">
               <p
                 data-preview-static="textile-care-fabrics-empty"
-                className="m-0 text-sm text-[#65685E] dark:text-[#B6B8AE]"
+                className="m-0 text-sm text-[#65685E] dark:text-[#C7B6A6]"
               >
                 Add fabric care categories in your Fivora editor to populate this directory.
               </p>
               {/* Keep step labels mounted in Fivora empty-state */}
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em] text-[#747B65] dark:text-[#B59B79]">
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em] text-[#8D7667] dark:text-[#C8A98B]">
                 <EditableText
                   as="span"
                   data-preview-field-path="textileCarePage.stepWashingLabel"
@@ -546,7 +546,7 @@ export default function TextileCareView() {
                     >
                       {/* Editorial Textile Visual */}
                       <div
-                        className={`relative flex flex-col justify-between bg-[#E8E0D5]/55 dark:bg-[#1B1E18] lg:col-span-5 ${
+                        className={`relative flex flex-col justify-between bg-[#E6D9C9]/55 dark:bg-[#2A2320] lg:col-span-5 ${
                           reverseLayout ? 'lg:order-2' : ''
                         }`}
                       >
@@ -557,10 +557,10 @@ export default function TextileCareView() {
                             data-preview-field-path={`textileCarePage.fabrics[${fabric.index}].imageUrl`}
                             className="h-full w-full object-cover"
                           />
-                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#1E211B]/72 via-[#1E211B]/12 to-transparent" />
+                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#2B2320]/72 via-[#2B2320]/12 to-transparent" />
 
                           {/* Fiber Profile Corner Badge */}
-                          <span className="absolute left-5 top-5 z-10 bg-[#F8F6F1]/92 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-[#262923] backdrop-blur-sm">
+                          <span className="absolute left-5 top-5 z-10 bg-[#F2E9DE]/92 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-[#201C1A] backdrop-blur-sm">
                             <EditableText
                               as="span"
                               data-preview-field-path={`textileCarePage.fabrics[${fabric.index}].fiberProfile`}
@@ -576,7 +576,7 @@ export default function TextileCareView() {
                           </span>
 
                           {/* Quick Summary Overlay Footer */}
-                          <div className="absolute inset-x-0 bottom-0 z-10 p-6 text-[#F8F6F1] sm:p-7">
+                          <div className="absolute inset-x-0 bottom-0 z-10 p-6 text-[#F2E9DE] sm:p-7">
                             <EditableText
                               as="h3"
                               data-preview-field-path={`textileCarePage.fabrics[${fabric.index}].name`}
@@ -585,7 +585,7 @@ export default function TextileCareView() {
                               size="clamp(2rem, 3vw, 2.75rem)"
                               weight={300}
                               lineHeight={1.06}
-                              color="#F8F6F1"
+                              color="#F2E9DE"
                               className="m-0"
                             />
                             <EditableText
@@ -598,8 +598,8 @@ export default function TextileCareView() {
                               color="rgba(248, 246, 241, 0.88)"
                               className="mt-2 mb-0 max-w-md"
                             />
-                            <div className="mt-4 inline-flex items-center gap-2 border-t border-[#F8F6F1]/25 pt-3 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#E8DFC8]">
-                              <Sparkles aria-hidden="true" className="h-3.5 w-3.5 shrink-0 stroke-[1.5] text-[#C9B292]" />
+                            <div className="mt-4 inline-flex items-center gap-2 border-t border-[#F2E9DE]/25 pt-3 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#E8DFC8]">
+                              <Sparkles aria-hidden="true" className="h-3.5 w-3.5 shrink-0 stroke-[1.5] text-[#C8A98B]" />
                               <EditableText
                                 as="span"
                                 data-preview-field-path={`textileCarePage.fabrics[${fabric.index}].quickSummary`}
@@ -625,8 +625,8 @@ export default function TextileCareView() {
                       >
                         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                           {/* 1. Washing */}
-                          <div className="border border-[#262923]/8 bg-[#FAF8F4]/70 p-5 dark:border-[#F8F6F1]/10 dark:bg-[#191C17]">
-                            <div className="flex items-center gap-2.5 text-[#747B65] dark:text-[#B59B79]">
+                          <div className="border border-[#201C1A]/8 bg-[#FAF5EE]/70 p-5 dark:border-[#F2E9DE]/10 dark:bg-[#191C17]">
+                            <div className="flex items-center gap-2.5 text-[#8D7667] dark:text-[#C8A98B]">
                               <Droplets aria-hidden="true" className="h-4 w-4 stroke-[1.6]" />
                               <EditableText
                                 as="h4"
@@ -654,8 +654,8 @@ export default function TextileCareView() {
                           </div>
 
                           {/* 2. Drying */}
-                          <div className="border border-[#262923]/8 bg-[#FAF8F4]/70 p-5 dark:border-[#F8F6F1]/10 dark:bg-[#191C17]">
-                            <div className="flex items-center gap-2.5 text-[#747B65] dark:text-[#B59B79]">
+                          <div className="border border-[#201C1A]/8 bg-[#FAF5EE]/70 p-5 dark:border-[#F2E9DE]/10 dark:bg-[#191C17]">
+                            <div className="flex items-center gap-2.5 text-[#8D7667] dark:text-[#C8A98B]">
                               <Wind aria-hidden="true" className="h-4 w-4 stroke-[1.6]" />
                               <EditableText
                                 as="h4"
@@ -683,8 +683,8 @@ export default function TextileCareView() {
                           </div>
 
                           {/* 3. Ironing & Steaming */}
-                          <div className="border border-[#262923]/8 bg-[#FAF8F4]/70 p-5 dark:border-[#F8F6F1]/10 dark:bg-[#191C17]">
-                            <div className="flex items-center gap-2.5 text-[#747B65] dark:text-[#B59B79]">
+                          <div className="border border-[#201C1A]/8 bg-[#FAF5EE]/70 p-5 dark:border-[#F2E9DE]/10 dark:bg-[#191C17]">
+                            <div className="flex items-center gap-2.5 text-[#8D7667] dark:text-[#C8A98B]">
                               <Flame aria-hidden="true" className="h-4 w-4 stroke-[1.6]" />
                               <EditableText
                                 as="h4"
@@ -712,8 +712,8 @@ export default function TextileCareView() {
                           </div>
 
                           {/* 4. Storage */}
-                          <div className="border border-[#262923]/8 bg-[#FAF8F4]/70 p-5 dark:border-[#F8F6F1]/10 dark:bg-[#191C17]">
-                            <div className="flex items-center gap-2.5 text-[#747B65] dark:text-[#B59B79]">
+                          <div className="border border-[#201C1A]/8 bg-[#FAF5EE]/70 p-5 dark:border-[#F2E9DE]/10 dark:bg-[#191C17]">
+                            <div className="flex items-center gap-2.5 text-[#8D7667] dark:text-[#C8A98B]">
                               <Archive aria-hidden="true" className="h-4 w-4 stroke-[1.6]" />
                               <EditableText
                                 as="h4"
@@ -741,8 +741,8 @@ export default function TextileCareView() {
                           </div>
 
                           {/* 5. Maintenance (Full Width) */}
-                          <div className="border border-[#262923]/8 bg-[#FAF8F4]/70 p-5 dark:border-[#F8F6F1]/10 dark:bg-[#191C17] sm:col-span-2">
-                            <div className="flex items-center gap-2.5 text-[#747B65] dark:text-[#B59B79]">
+                          <div className="border border-[#201C1A]/8 bg-[#FAF5EE]/70 p-5 dark:border-[#F2E9DE]/10 dark:bg-[#191C17] sm:col-span-2">
+                            <div className="flex items-center gap-2.5 text-[#8D7667] dark:text-[#C8A98B]">
                               <Feather aria-hidden="true" className="h-4 w-4 stroke-[1.6]" />
                               <EditableText
                                 as="h4"
@@ -771,7 +771,7 @@ export default function TextileCareView() {
                         </div>
 
                         {/* Atelier Tip Whisper Banner */}
-                        <div className="mt-6 border-t border-[#B59B79]/35 pt-5">
+                        <div className="mt-6 border-t border-[#C8A98B]/35 pt-5">
                           <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:gap-3">
                             <EditableText
                               as="span"
@@ -811,14 +811,14 @@ export default function TextileCareView() {
       {/* Expandable Care-Tip Accordions & Care Icon Legend */}
       <section
         data-design-section="textile-care-tips"
-        className="border-t border-[#262923]/8 bg-[#FAF8F4] py-16 dark:border-[#F8F6F1]/10 dark:bg-[#191C17] sm:py-20 lg:py-24"
+        className="border-t border-[#201C1A]/8 bg-[#FAF5EE] py-16 dark:border-[#F2E9DE]/10 dark:bg-[#191C17] sm:py-20 lg:py-24"
       >
         <div className="mx-auto max-w-[1380px] px-4 sm:px-8 lg:px-14">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
             {/* Left Sticky Editorial Intro + Care Icons Legend */}
             <LuxuryReveal className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="textileCarePage.tipsEyebrow"
@@ -859,8 +859,8 @@ export default function TextileCareView() {
 
               {/* Care Icon Visual Legend */}
               <div className="mt-8 grid grid-cols-2 gap-3">
-                <div className="flex items-center gap-2.5 border border-[#262923]/10 bg-[#FCFBF8] px-3.5 py-3 dark:border-[#F8F6F1]/10 dark:bg-[#20231D]">
-                  <Droplets aria-hidden="true" className="h-4 w-4 shrink-0 stroke-[1.5] text-[#747B65] dark:text-[#B59B79]" />
+                <div className="flex items-center gap-2.5 border border-[#201C1A]/10 bg-[#FAF5EE] px-3.5 py-3 dark:border-[#F2E9DE]/10 dark:bg-[#3B302B]">
+                  <Droplets aria-hidden="true" className="h-4 w-4 shrink-0 stroke-[1.5] text-[#8D7667] dark:text-[#C8A98B]" />
                   <EditableText
                     as="span"
                     data-preview-field-path="textileCarePage.legendWashLabel"
@@ -874,8 +874,8 @@ export default function TextileCareView() {
                   />
                 </div>
 
-                <div className="flex items-center gap-2.5 border border-[#262923]/10 bg-[#FCFBF8] px-3.5 py-3 dark:border-[#F8F6F1]/10 dark:bg-[#20231D]">
-                  <Wind aria-hidden="true" className="h-4 w-4 shrink-0 stroke-[1.5] text-[#747B65] dark:text-[#B59B79]" />
+                <div className="flex items-center gap-2.5 border border-[#201C1A]/10 bg-[#FAF5EE] px-3.5 py-3 dark:border-[#F2E9DE]/10 dark:bg-[#3B302B]">
+                  <Wind aria-hidden="true" className="h-4 w-4 shrink-0 stroke-[1.5] text-[#8D7667] dark:text-[#C8A98B]" />
                   <EditableText
                     as="span"
                     data-preview-field-path="textileCarePage.legendDryLabel"
@@ -889,8 +889,8 @@ export default function TextileCareView() {
                   />
                 </div>
 
-                <div className="flex items-center gap-2.5 border border-[#262923]/10 bg-[#FCFBF8] px-3.5 py-3 dark:border-[#F8F6F1]/10 dark:bg-[#20231D]">
-                  <Flame aria-hidden="true" className="h-4 w-4 shrink-0 stroke-[1.5] text-[#747B65] dark:text-[#B59B79]" />
+                <div className="flex items-center gap-2.5 border border-[#201C1A]/10 bg-[#FAF5EE] px-3.5 py-3 dark:border-[#F2E9DE]/10 dark:bg-[#3B302B]">
+                  <Flame aria-hidden="true" className="h-4 w-4 shrink-0 stroke-[1.5] text-[#8D7667] dark:text-[#C8A98B]" />
                   <EditableText
                     as="span"
                     data-preview-field-path="textileCarePage.legendSteamLabel"
@@ -904,8 +904,8 @@ export default function TextileCareView() {
                   />
                 </div>
 
-                <div className="flex items-center gap-2.5 border border-[#262923]/10 bg-[#FCFBF8] px-3.5 py-3 dark:border-[#F8F6F1]/10 dark:bg-[#20231D]">
-                  <Archive aria-hidden="true" className="h-4 w-4 shrink-0 stroke-[1.5] text-[#747B65] dark:text-[#B59B79]" />
+                <div className="flex items-center gap-2.5 border border-[#201C1A]/10 bg-[#FAF5EE] px-3.5 py-3 dark:border-[#F2E9DE]/10 dark:bg-[#3B302B]">
+                  <Archive aria-hidden="true" className="h-4 w-4 shrink-0 stroke-[1.5] text-[#8D7667] dark:text-[#C8A98B]" />
                   <EditableText
                     as="span"
                     data-preview-field-path="textileCarePage.legendStoreLabel"
@@ -925,12 +925,12 @@ export default function TextileCareView() {
             <div className="lg:col-span-8">
               <div
                 data-preview-list-path="textileCarePage.careTips"
-                className="divide-y divide-[#262923]/12 border-y border-[#262923]/12 dark:divide-[#F8F6F1]/12 dark:border-[#F8F6F1]/12"
+                className="divide-y divide-[#201C1A]/12 border-y border-[#201C1A]/12 dark:divide-[#F2E9DE]/12 dark:border-[#F2E9DE]/12"
               >
                 {careTips.length === 0 ? (
                   <p
                     data-preview-static="textile-care-tips-empty"
-                    className="py-12 text-center text-sm text-[#65685E] dark:text-[#B6B8AE]"
+                    className="py-12 text-center text-sm text-[#65685E] dark:text-[#C7B6A6]"
                   >
                     Add expandable care tips in your Fivora editor.
                   </p>
@@ -975,14 +975,14 @@ export default function TextileCareView() {
                               weight={400}
                               lineHeight={1.25}
                               color="heading"
-                              className="m-0 transition-colors group-hover:text-[#747B65] dark:group-hover:text-[#B59B79]"
+                              className="m-0 transition-colors group-hover:text-[#8D7667] dark:group-hover:text-[#C8A98B]"
                             />
                           </div>
 
                           <span
                             aria-hidden="true"
-                            className={`mt-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#262923]/15 text-[#262923] transition-all duration-300 motion-reduce:transition-none group-hover:border-[#B59B79] dark:border-[#F8F6F1]/18 dark:text-[#F8F6F1] ${
-                              open ? 'rotate-180 bg-[#262923] text-[#F8F6F1] dark:bg-[#B59B79] dark:text-[#171915]' : ''
+                            className={`mt-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#201C1A]/15 text-[#201C1A] transition-all duration-300 motion-reduce:transition-none group-hover:border-[#C8A98B] dark:border-[#F2E9DE]/18 dark:text-[#F2E9DE] ${
+                              open ? 'rotate-180 bg-[#201C1A] text-[#F2E9DE] dark:bg-[#C8A98B] dark:text-[#201C1A]' : ''
                             }`}
                           >
                             <ChevronDown className="h-4 w-4 stroke-[1.6]" />
@@ -1023,13 +1023,13 @@ export default function TextileCareView() {
       {/* Premium Editorial Image & Text Section: Textile Longevity */}
       <section
         data-design-section="textile-care-longevity"
-        className="border-t border-[#262923]/8 bg-[#F2ECE2]/70 py-16 dark:border-[#F8F6F1]/10 dark:bg-[#1C1F19] sm:py-22 lg:py-24"
+        className="border-t border-[#201C1A]/8 bg-[#E6D9C9]/70 py-16 dark:border-[#F2E9DE]/10 dark:bg-[#1C1F19] sm:py-22 lg:py-24"
       >
         <div className="mx-auto max-w-[1380px] px-4 sm:px-8 lg:px-14">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
             {/* Editorial Longevity Image */}
             <div className="lg:col-span-6">
-              <LuxuryImageReveal tone="beige" className="aspect-[4/3] w-full bg-[#E8E0D5]/70">
+              <LuxuryImageReveal tone="beige" className="aspect-[4/3] w-full bg-[#E6D9C9]/70">
                 <img
                   src={withBasePath(longevityImageUrl)}
                   alt={longevityHeading}
@@ -1039,7 +1039,7 @@ export default function TextileCareView() {
                 />
               </LuxuryImageReveal>
               <div className="mt-3.5 flex items-center gap-3">
-                <span aria-hidden="true" className="h-px w-8 bg-[#B59B79]" />
+                <span aria-hidden="true" className="h-px w-8 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="textileCarePage.longevityCaption"
@@ -1058,7 +1058,7 @@ export default function TextileCareView() {
             {/* Editorial Longevity Narrative & Pillars */}
             <LuxuryReveal delay={0.08} className="lg:col-span-6">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-9 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-9 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="textileCarePage.longevityEyebrow"
@@ -1100,7 +1100,7 @@ export default function TextileCareView() {
               {/* Longevity Pillars */}
               <div
                 data-preview-list-path="textileCarePage.longevityPillars"
-                className="mt-9 border-t border-[#262923]/12 pt-7 dark:border-[#F8F6F1]/12"
+                className="mt-9 border-t border-[#201C1A]/12 pt-7 dark:border-[#F2E9DE]/12"
               >
                 {longevityPillars.length > 0 && (
                   <LuxuryStagger className="grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -1142,10 +1142,10 @@ export default function TextileCareView() {
       {/* Editorial Shop Invitation CTA */}
       <section
         data-design-section="textile-care-cta"
-        className="border-t border-[#262923]/8 bg-[#F8F6F1] py-16 dark:border-[#F8F6F1]/10 dark:bg-[#171915] sm:py-20"
+        className="border-t border-[#201C1A]/8 bg-[#F2E9DE] py-16 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A] sm:py-20"
       >
         <div className="mx-auto max-w-[1140px] px-4 sm:px-8 lg:px-14">
-          <LuxuryReveal className="flex flex-col items-center justify-between gap-8 border border-[#262923]/12 bg-[#FCFBF8] px-7 py-12 text-center shadow-[0_18px_50px_rgba(38,41,35,0.04)] dark:border-[#F8F6F1]/12 dark:bg-[#20231D] sm:px-12 md:flex-row md:text-left">
+          <LuxuryReveal className="flex flex-col items-center justify-between gap-8 border border-[#201C1A]/12 bg-[#FAF5EE] px-7 py-12 text-center shadow-[0_18px_50px_rgba(38,41,35,0.04)] dark:border-[#F2E9DE]/12 dark:bg-[#3B302B] sm:px-12 md:flex-row md:text-left">
             <div className="max-w-xl">
               <EditableText
                 as="p"

@@ -27,9 +27,30 @@ export async function generateMetadata(): Promise<Metadata> {
     shop?.logoUrl ||
     "/fivora-icon.svg";
 
+  const firstHeroStory = Array.isArray(sd?.content?.home?.fabricStories?.stories)
+    ? sd.content.home.fabricStories.stories[0]
+    : undefined;
+  const ogImage =
+    (typeof firstHeroStory?.imageUrl === "string" && firstHeroStory.imageUrl.trim()) ||
+    "/images/prod-fabric-herringbone.jpg";
+
+  const isAbsoluteOg = /^https?:\/\//i.test(ogImage);
+
   return {
     title,
     description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      ...(isAbsoluteOg ? { images: [{ url: ogImage, alt: title }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      ...(isAbsoluteOg ? { images: [ogImage] } : {}),
+    },
     icons: {
       icon,
       shortcut: icon,
@@ -48,6 +69,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       ? silkIntro.backgroundImageUrl
       : "/images/silk-veil-bg.jpg",
   );
+  const firstHeroStory = Array.isArray(sd?.content?.home?.fabricStories?.stories)
+    ? sd.content.home.fabricStories.stories[0]
+    : undefined;
+  const heroFirstImageUrl = withBasePath(
+    typeof firstHeroStory?.imageUrl === "string" && firstHeroStory.imageUrl.trim()
+      ? firstHeroStory.imageUrl
+      : "/images/prod-fabric-herringbone.jpg",
+  );
   const basePath = (process.env.NEXT_PUBLIC_SITE_BASE_PATH ?? "").replace(/\/$/, "");
 
   const silkBootScript = `(function(){try{var h=document.documentElement;var p=window.location.pathname||'/';var norm=p.replace(/\\/+$/,'')||'/';var bp=${JSON.stringify(basePath)};var isHome=norm==='/'||(bp&&norm===bp)||norm.endsWith('/index.html');var isSilkPreview=norm.indexOf('/silk-intro-preview')!==-1;var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;var seen=false;try{seen=window.sessionStorage.getItem('loome_silk_veil_seen_v1')==='1';}catch(e){}var inPreview=window.parent!==window||p.indexOf('/template-validation')!==-1||p.indexOf('/template-preview')!==-1||p.indexOf('/preview')!==-1;var enabled=${silkEnabled ? "true" : "false"};if(isSilkPreview){h.setAttribute('data-silk-intro','preview-page');}else if(!isHome){h.setAttribute('data-silk-intro','off');}else if(inPreview){h.setAttribute('data-silk-intro','editor');}else if(!enabled||reduced||seen){h.setAttribute('data-silk-intro','skip');}else{h.setAttribute('data-silk-intro','pending');}}catch(e){}})();`;
@@ -57,6 +86,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <ThemeStyles theme={initialTheme} enableDualMode />
         {silkEnabled && <link rel="preload" as="image" href={silkBgUrl} />}
+        <link rel="preload" as="image" href={heroFirstImageUrl} />
         <script dangerouslySetInnerHTML={{ __html: silkBootScript }} />
       </head>
       <body suppressHydrationWarning>

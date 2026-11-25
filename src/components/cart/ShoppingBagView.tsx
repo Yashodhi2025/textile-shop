@@ -23,6 +23,7 @@ import {
 import {
   formatLoomePrice,
   normalizeLoomeProduct,
+  resolveFreeDeliveryThreshold,
   resolveLoomeCurrency,
 } from '@/lib/storeContext';
 import { withBasePath } from '@/lib/utils';
@@ -31,8 +32,6 @@ import {
   LuxuryHairline,
   LuxuryReveal,
 } from '@/components/motion/LuxuryReveal';
-
-const FREE_DELIVERY_THRESHOLD = 250;
 
 export default function ShoppingBagView() {
   const siteData = useSiteData();
@@ -62,8 +61,10 @@ export default function ShoppingBagView() {
     [rawProducts],
   );
 
-  // Dynamic merchant currency resolution (never hardcoded when merchant currency is set)
+  // Dynamic merchant currency & configurable free-delivery threshold
   const storeCurrency = resolveLoomeCurrency(siteData, catalogProducts[0]?.currency);
+  const freeDeliveryThreshold = resolveFreeDeliveryThreshold(siteData);
+  const hasDeliveryThreshold = freeDeliveryThreshold > 0;
 
   // Editable page copy
   const eyebrow = contentText(cartPage.eyebrow) || 'THE ATELIER BAG';
@@ -86,11 +87,12 @@ export default function ShoppingBagView() {
   const subtotalDisplay = allInquiryOnly
     ? 'Upon Inquiry'
     : formatLoomePrice(cart.subtotal, storeCurrency);
-  const deliveryRemaining = Math.max(0, FREE_DELIVERY_THRESHOLD - cart.subtotal);
-  const deliveryProgress = Math.min(
-    100,
-    Math.round((cart.subtotal / FREE_DELIVERY_THRESHOLD) * 100),
-  );
+  const deliveryRemaining = hasDeliveryThreshold
+    ? Math.max(0, freeDeliveryThreshold - cart.subtotal)
+    : 0;
+  const deliveryProgress = hasDeliveryThreshold
+    ? Math.min(100, Math.round((cart.subtotal / freeDeliveryThreshold) * 100))
+    : 0;
 
   const continueHref = withBasePath(hasShopPage ? '/shop/' : '/');
 
@@ -100,16 +102,16 @@ export default function ShoppingBagView() {
       className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
     >
       {/* Compact Editorial Breadcrumb Strip */}
-      <div className="border-b border-[#262923]/10 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
-        <nav className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#55594F] dark:text-[#B6B8AE] sm:px-8 lg:px-12">
+      <div className="border-b border-[#201C1A]/10 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
+        <nav className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-12">
           <a
             href={withBasePath('/')}
             data-preview-static="cart-breadcrumb-home"
-            className="text-[#55594F] no-underline transition-colors hover:text-[#22251F] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+            className="text-[#5E4E45] no-underline transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
           >
             Home
           </a>
-          <span aria-hidden="true" className="text-[#B59B79]">
+          <span aria-hidden="true" className="text-[#C8A98B]">
             /
           </span>
           {hasShopPage && (
@@ -118,11 +120,11 @@ export default function ShoppingBagView() {
                 href={withBasePath('/shop')}
                 data-target-page="shop"
                 data-preview-static="cart-breadcrumb-shop"
-                className="text-[#55594F] no-underline transition-colors hover:text-[#22251F] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+                className="text-[#5E4E45] no-underline transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
               >
                 Shop
               </a>
-              <span aria-hidden="true" className="text-[#B59B79]">
+              <span aria-hidden="true" className="text-[#C8A98B]">
                 /
               </span>
             </>
@@ -130,7 +132,7 @@ export default function ShoppingBagView() {
           <span
             aria-current="page"
             data-preview-static="cart-breadcrumb-current"
-            className="font-medium text-[#22251F] dark:text-[#F8F6F1]"
+            className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
           >
             Shopping Bag
           </span>
@@ -140,13 +142,13 @@ export default function ShoppingBagView() {
       {/* Editorial Ivory / Champagne Shopping Bag Header */}
       <section
         data-design-section="cart-hero"
-        className="border-b border-[#262923]/10 bg-gradient-to-b from-[#F1EBE0]/85 via-[#F7F4ED] to-[#F6F3EC] dark:border-[#F8F6F1]/10 dark:from-[#1E211B] dark:via-[#171915] dark:to-[#151713]"
+        className="border-b border-[#201C1A]/10 bg-gradient-to-b from-[#E6D9C9]/85 via-[#F2E9DE] to-[#F2E9DE] dark:border-[#F2E9DE]/10 dark:from-[#2B2320] dark:via-[#201C1A] dark:to-[#191513]"
       >
         <div className="mx-auto max-w-[1320px] px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-11">
           <LuxuryReveal className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
             <div className="max-w-2xl">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="cartPage.eyebrow"
@@ -190,30 +192,30 @@ export default function ShoppingBagView() {
           </LuxuryReveal>
 
           {/* Compact 3-Step Atelier Flow Indicator */}
-          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[#262923]/10 pt-4 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#4F5349] dark:border-[#F8F6F1]/10 dark:text-[#C5C7BE]">
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[#201C1A]/10 pt-4 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#5E4E45] dark:border-[#F2E9DE]/10 dark:text-[#C7B6A6]">
             <span
               data-preview-static="cart-step-1"
-              className="inline-flex items-center gap-2 font-semibold text-[#22251F] dark:text-[#F8F6F1]"
+              className="inline-flex items-center gap-2 font-semibold text-[#201C1A] dark:text-[#F2E9DE]"
             >
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#262923] text-[9px] text-[#F8F6F1] dark:bg-[#B59B79] dark:text-[#171915]">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#201C1A] text-[9px] text-[#F2E9DE] dark:bg-[#C8A98B] dark:text-[#201C1A]">
                 1
               </span>
               Shopping Bag
             </span>
-            <span aria-hidden="true" className="text-[#B59B79]">
+            <span aria-hidden="true" className="text-[#C8A98B]">
               /
             </span>
             <span data-preview-static="cart-step-2" className="inline-flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#262923]/25 text-[9px] dark:border-[#F8F6F1]/25">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#201C1A]/25 text-[9px] dark:border-[#F2E9DE]/25">
                 2
               </span>
               Private Checkout
             </span>
-            <span aria-hidden="true" className="text-[#B59B79]">
+            <span aria-hidden="true" className="text-[#C8A98B]">
               /
             </span>
             <span data-preview-static="cart-step-3" className="inline-flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#262923]/25 text-[9px] dark:border-[#F8F6F1]/25">
+              <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[#201C1A]/25 text-[9px] dark:border-[#F2E9DE]/25">
                 3
               </span>
               WhatsApp Concierge
@@ -229,8 +231,8 @@ export default function ShoppingBagView() {
       >
         {!hasItems ? (
           /* Refined Editorial Empty-Cart State */
-          <LuxuryReveal className="mx-auto max-w-xl rounded-[2px] border border-[#262923]/12 border-t-2 border-t-[#B59B79] bg-[#FEFDFB] px-6 py-12 text-center shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F8F6F1]/12 dark:border-t-[#B59B79] dark:bg-[#1E211B] sm:px-10 sm:py-14">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#B59B79]/50 bg-[#F6F3EC] text-[#9E825E] dark:bg-[#151713] dark:text-[#C9B292]">
+          <LuxuryReveal className="mx-auto max-w-xl rounded-xl border border-[#201C1A]/12 border-t-2 border-t-[#C8A98B] bg-[#FAF5EE] px-6 py-12 text-center shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F2E9DE]/12 dark:border-t-[#C8A98B] dark:bg-[#2B2320] sm:px-10 sm:py-14">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[#C8A98B]/50 bg-[#F2E9DE] text-[#8D7667] dark:bg-[#191513] dark:text-[#C8A98B]">
               <ShoppingBag className="h-5 w-5 stroke-[1.4]" />
             </div>
 
@@ -291,26 +293,26 @@ export default function ShoppingBagView() {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start lg:gap-10 xl:gap-12">
             {/* Left Column: Curated Cart Items List */}
             <div className="lg:col-span-8">
-              <LuxuryReveal className="rounded-[2px] border border-[#262923]/12 bg-[#FEFDFB] p-5 shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F8F6F1]/12 dark:bg-[#1E211B] sm:p-7 lg:p-8">
+              <LuxuryReveal className="rounded-xl border border-[#201C1A]/12 bg-[#FAF5EE] p-5 shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F2E9DE]/12 dark:bg-[#2B2320] sm:p-7 lg:p-8">
                 {/* Table Header */}
-                <div className="flex items-center justify-between border-b border-[#262923]/12 pb-3.5 dark:border-[#F8F6F1]/12">
+                <div className="flex items-center justify-between border-b border-[#201C1A]/12 pb-3.5 dark:border-[#F2E9DE]/12">
                   <div className="flex items-baseline gap-3">
-                    <h2 className="m-0 font-serif text-[23px] font-medium tracking-wide text-[#22251F] dark:text-[#F8F6F1]">
+                    <h2 className="m-0 font-serif text-[23px] font-medium tracking-wide text-[#201C1A] dark:text-[#F2E9DE]">
                       Selected Pieces
                     </h2>
-                    <span className="rounded-full bg-[#F4EFE6] px-2.5 py-0.5 text-[10.5px] font-medium uppercase tracking-[0.16em] text-[#4F5349] dark:bg-[#151713] dark:text-[#C5C7BE]">
+                    <span className="rounded-full bg-[#E6D9C9] px-2.5 py-0.5 text-[10.5px] font-medium uppercase tracking-[0.16em] text-[#5E4E45] dark:bg-[#191513] dark:text-[#C7B6A6]">
                       {cart.totalCount} {cart.totalCount === 1 ? 'Item' : 'Items'}
                     </span>
                   </div>
 
-                  <div className="hidden items-center gap-12 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-[#5E6257] dark:text-[#A9ACA2] sm:flex">
+                  <div className="hidden items-center gap-12 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-[#6B5B51] dark:text-[#C7B6A6] sm:flex">
                     <span>Quantity</span>
                     <span className="w-24 text-right">Line Total</span>
                   </div>
                 </div>
 
                 {/* Live Cart Rows */}
-                <ul className="m-0 list-none divide-y divide-[#262923]/10 p-0 dark:divide-[#F8F6F1]/10">
+                <ul className="m-0 list-none divide-y divide-[#201C1A]/10 p-0 dark:divide-[#F2E9DE]/10">
                   <AnimatePresence initial={false}>
                     {cart.items.map((item) => {
                       const itemKey = `${item.id}-${item.color || ''}-${item.size || ''}`;
@@ -334,7 +336,7 @@ export default function ShoppingBagView() {
                           <div className="flex min-w-0 flex-1 gap-4">
                             <a
                               href={detailHref}
-                              className="h-28 w-24 shrink-0 overflow-hidden rounded-[2px] border border-[#262923]/10 bg-[#F0ECE3] dark:border-[#F8F6F1]/10 dark:bg-[#242721]"
+                              className="h-28 w-24 shrink-0 overflow-hidden rounded-xl border border-[#201C1A]/10 bg-[#E6D9C9] dark:border-[#F2E9DE]/10 dark:bg-[#3B302B]"
                             >
                               <img
                                 src={withBasePath(item.image || '/images/prod-curtain-ivory.jpg')}
@@ -346,7 +348,7 @@ export default function ShoppingBagView() {
                             <div className="flex min-w-0 flex-1 flex-col justify-center">
                               <a
                                 href={detailHref}
-                                className="font-serif text-[20px] font-medium leading-snug text-[#22251F] no-underline transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#C9B292]"
+                                className="font-serif text-[20px] font-medium leading-snug text-[#201C1A] no-underline transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
                               >
                                 {item.name}
                               </a>
@@ -355,17 +357,17 @@ export default function ShoppingBagView() {
                               {(item.color || item.size) && (
                                 <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                                   {item.color && (
-                                    <span className="font-medium uppercase tracking-[0.14em] text-[#5C634E] dark:text-[#C9B292]">
+                                    <span className="font-medium uppercase tracking-[0.14em] text-[#8D7667] dark:text-[#C8A98B]">
                                       Tone: {item.color}
                                     </span>
                                   )}
                                   {item.color && item.size && (
-                                    <span aria-hidden="true" className="text-[#B59B79]">
+                                    <span aria-hidden="true" className="text-[#C8A98B]">
                                       ·
                                     </span>
                                   )}
                                   {item.size && (
-                                    <span className="text-[#4F5349] dark:text-[#C5C7BE]">
+                                    <span className="text-[#5E4E45] dark:text-[#C7B6A6]">
                                       Size: {item.size}
                                     </span>
                                   )}
@@ -374,13 +376,13 @@ export default function ShoppingBagView() {
 
                               {/* Unit Price */}
                               <div className="mt-1.5 flex items-baseline gap-2 text-xs">
-                                <span className="font-medium tabular-nums text-[#363A32] dark:text-[#D9DBD3]">
+                                <span className="font-medium tabular-nums text-[#3B302B] dark:text-[#F2E9DE]">
                                   {item.showPrice === false
                                     ? 'Price Upon Inquiry'
                                     : `${formatLoomePrice(item.price, storeCurrency)} each`}
                                 </span>
                                 {hasSavings && item.originalPrice && (
-                                  <span className="tabular-nums text-[#767A6E] line-through dark:text-[#9EA196]">
+                                  <span className="tabular-nums text-[#6B5B51] line-through dark:text-[#C7B6A6]">
                                     {formatLoomePrice(item.originalPrice, storeCurrency)}
                                   </span>
                                 )}
@@ -392,7 +394,7 @@ export default function ShoppingBagView() {
                                   type="button"
                                   onClick={() => cart.removeItem(item.id, item.size, item.color)}
                                   aria-label={`Remove ${item.name} from bag`}
-                                  className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[#6E7166] transition-colors hover:text-[#9E3F2E] dark:text-[#A9ACA2] dark:hover:text-[#EAA597]"
+                                  className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[#6B5B51] transition-colors hover:text-[#9E3F2E] dark:text-[#C7B6A6] dark:hover:text-[#EAA597]"
                                 >
                                   <Trash2 className="h-3.5 w-3.5 stroke-[1.6]" />
                                   Remove
@@ -402,8 +404,8 @@ export default function ShoppingBagView() {
                           </div>
 
                           {/* Quantity Stepper + Line Total */}
-                          <div className="flex items-center justify-between gap-6 border-t border-[#262923]/8 pt-3.5 sm:justify-end sm:border-t-0 sm:pt-0 dark:border-[#F8F6F1]/8">
-                            <div className="inline-flex items-center rounded-[2px] border border-[#262923]/18 bg-[#F6F3EC] dark:border-[#F8F6F1]/20 dark:bg-[#151713]">
+                          <div className="flex items-center justify-between gap-6 border-t border-[#201C1A]/8 pt-3.5 sm:justify-end sm:border-t-0 sm:pt-0 dark:border-[#F2E9DE]/8">
+                            <div className="inline-flex items-center rounded-xl border border-[#201C1A]/18 bg-[#F2E9DE] dark:border-[#F2E9DE]/20 dark:bg-[#191513]">
                               <button
                                 type="button"
                                 onClick={() =>
@@ -415,7 +417,7 @@ export default function ShoppingBagView() {
                                   )
                                 }
                                 aria-label={`Decrease quantity for ${item.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-[#22251F] transition-colors hover:bg-[#E8E0D5] dark:text-[#F8F6F1] dark:hover:bg-[#F8F6F1]/12"
+                                className="flex h-8 w-8 items-center justify-center text-[#201C1A] transition-colors hover:bg-[#E6D9C9] dark:text-[#F2E9DE] dark:hover:bg-[#F2E9DE]/12"
                               >
                                 <Minus className="h-3.5 w-3.5 stroke-[1.7]" />
                               </button>
@@ -424,7 +426,7 @@ export default function ShoppingBagView() {
                                 initial={prefersReducedMotion ? false : { scale: 0.86, opacity: 0.65 }}
                                 animate={{ scale: 1, opacity: 1 }}
                                 transition={{ duration: 0.2 }}
-                                className="w-9 text-center text-sm font-semibold tabular-nums text-[#22251F] dark:text-[#F8F6F1]"
+                                className="w-9 text-center text-sm font-semibold tabular-nums text-[#201C1A] dark:text-[#F2E9DE]"
                               >
                                 {item.quantity}
                               </motion.span>
@@ -439,14 +441,14 @@ export default function ShoppingBagView() {
                                   )
                                 }
                                 aria-label={`Increase quantity for ${item.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-[#22251F] transition-colors hover:bg-[#E8E0D5] dark:text-[#F8F6F1] dark:hover:bg-[#F8F6F1]/12"
+                                className="flex h-8 w-8 items-center justify-center text-[#201C1A] transition-colors hover:bg-[#E6D9C9] dark:text-[#F2E9DE] dark:hover:bg-[#F2E9DE]/12"
                               >
                                 <Plus className="h-3.5 w-3.5 stroke-[1.7]" />
                               </button>
                             </div>
 
                             <div className="w-24 text-right">
-                              <span className="text-[16px] font-semibold tabular-nums text-[#22251F] dark:text-[#F8F6F1]">
+                              <span className="text-[16px] font-semibold tabular-nums text-[#201C1A] dark:text-[#F2E9DE]">
                                 {item.showPrice === false
                                   ? 'Upon Inquiry'
                                   : formatLoomePrice(item.price * item.quantity, storeCurrency)}
@@ -460,11 +462,11 @@ export default function ShoppingBagView() {
                 </ul>
 
                 {/* Bag Card Footer: Continue Shopping */}
-                <div className="mt-2 flex flex-wrap items-center justify-between gap-4 border-t border-[#262923]/10 pt-5 dark:border-[#F8F6F1]/10">
+                <div className="mt-2 flex flex-wrap items-center justify-between gap-4 border-t border-[#201C1A]/10 pt-5 dark:border-[#F2E9DE]/10">
                   <a
                     href={continueHref}
                     data-target-page={hasShopPage ? 'shop' : undefined}
-                    className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#4F5349] no-underline transition-colors hover:text-[#22251F] dark:text-[#C5C7BE] dark:hover:text-[#F8F6F1]"
+                    className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#5E4E45] no-underline transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
                   >
                     <ArrowLeft className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:-translate-x-1" />
                     Continue Shopping
@@ -473,7 +475,7 @@ export default function ShoppingBagView() {
                   <button
                     type="button"
                     onClick={() => cart.clearCart()}
-                    className="border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6E7166] underline decoration-[#262923]/25 underline-offset-4 transition-colors hover:text-[#9E3F2E] dark:text-[#A9ACA2] dark:hover:text-[#EAA597]"
+                    className="border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6B5B51] underline decoration-[#201C1A]/25 underline-offset-4 transition-colors hover:text-[#9E3F2E] dark:text-[#C7B6A6] dark:hover:text-[#EAA597]"
                   >
                     Clear Bag
                   </button>
@@ -485,67 +487,71 @@ export default function ShoppingBagView() {
             <aside className="lg:sticky lg:top-24 lg:col-span-4">
               <LuxuryReveal
                 delay={0.06}
-                className="rounded-[2px] border border-[#262923]/12 border-t-2 border-t-[#B59B79] bg-[#FEFDFB] p-6 shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F8F6F1]/12 dark:border-t-[#B59B79] dark:bg-[#1E211B] xl:p-7"
+                className="rounded-xl border border-[#201C1A]/12 border-t-2 border-t-[#C8A98B] bg-[#FAF5EE] p-6 shadow-[0_14px_42px_rgba(38,41,35,0.045)] dark:border-[#F2E9DE]/12 dark:border-t-[#C8A98B] dark:bg-[#2B2320] xl:p-7"
               >
-                <div className="border-b border-[#262923]/10 pb-3.5 dark:border-[#F8F6F1]/10">
-                  <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#5C634E] dark:text-[#C9B292]">
+                <div className="border-b border-[#201C1A]/10 pb-3.5 dark:border-[#F2E9DE]/10">
+                  <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]">
                     Atelier Estimate
                   </p>
-                  <h2 className="mt-1 mb-0 font-serif text-[24px] font-medium tracking-wide text-[#22251F] dark:text-[#F8F6F1]">
+                  <h2 className="mt-1 mb-0 font-serif text-[24px] font-medium tracking-wide text-[#201C1A] dark:text-[#F2E9DE]">
                     Order Summary
                   </h2>
                 </div>
 
-                {/* White-Glove Delivery Threshold */}
-                <div className="mt-4 rounded-[2px] border border-[#262923]/10 bg-[#F7F4EE] px-3.5 py-3 dark:border-[#F8F6F1]/10 dark:bg-[#151713]">
-                  <div className="flex items-center justify-between gap-2 text-[11.5px] font-medium text-[#3F433A] dark:text-[#D1D3CA]">
-                    <span className="inline-flex items-center gap-1.5">
-                      <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.6] text-[#666D57] dark:text-[#C9B292]" />
-                      {deliveryRemaining === 0
-                        ? 'Complimentary white-glove delivery unlocked'
-                        : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for complimentary delivery`}
-                    </span>
-                    <span className="tabular-nums text-[#5C634E] dark:text-[#C9B292]">
-                      {deliveryProgress}%
-                    </span>
+                {/* Merchant-Configurable White-Glove Delivery Threshold */}
+                {hasDeliveryThreshold && (
+                  <div className="mt-4 rounded-xl border border-[#3B302B]/12 bg-[#F2E9DE] px-3.5 py-3">
+                    <div className="flex items-center justify-between gap-2 text-[11.5px] font-medium text-[#3B302B]">
+                      <span className="inline-flex items-center gap-1.5">
+                        <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.6] text-[#8D7667]" />
+                        {deliveryRemaining === 0
+                          ? 'Complimentary white-glove delivery unlocked'
+                          : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for complimentary delivery`}
+                      </span>
+                      <span className="tabular-nums font-semibold text-[#8D7667]">
+                        {deliveryProgress}%
+                      </span>
+                    </div>
+                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#E6D9C9]">
+                      <motion.div
+                        initial={false}
+                        animate={{ width: `${deliveryProgress}%` }}
+                        transition={{ duration: 0.45, ease: LUXURY_EASE }}
+                        className="h-full rounded-full bg-[#C8A98B]"
+                      />
+                    </div>
                   </div>
-                  <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[#E4DACB] dark:bg-[#2A2D26]">
-                    <motion.div
-                      initial={false}
-                      animate={{ width: `${deliveryProgress}%` }}
-                      transition={{ duration: 0.45, ease: LUXURY_EASE }}
-                      className="h-full bg-[#B59B79]"
-                    />
-                  </div>
-                </div>
+                )}
 
                 {/* Subtotal Breakdown */}
-                <div className="mt-4 rounded-[2px] bg-[#FAF8F3] px-4 py-4 dark:bg-[#171915]">
+                <div className="mt-4 rounded-xl bg-[#F2E9DE]/75 px-4 py-4">
                   <div className="space-y-2 text-[13px]">
-                    <div className="flex items-center justify-between text-[#4F5349] dark:text-[#C5C7BE]">
+                    <div className="flex items-center justify-between text-[#5E4E45]">
                       <span>Items ({cart.totalCount})</span>
-                      <span className="font-medium tabular-nums text-[#22251F] dark:text-[#F8F6F1]">
+                      <span className="font-semibold tabular-nums text-[#201C1A]">
                         {subtotalDisplay}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[#4F5349] dark:text-[#C5C7BE]">
+                    <div className="flex items-center justify-between text-[#5E4E45]">
                       <span>Atelier Delivery</span>
-                      <span className="font-medium text-[#22251F] dark:text-[#F8F6F1]">
-                        {deliveryRemaining === 0 ? 'Complimentary' : 'Confirmed at Checkout'}
+                      <span className="font-semibold text-[#201C1A]">
+                        {hasDeliveryThreshold && deliveryRemaining === 0
+                          ? 'Complimentary'
+                          : 'Confirmed at Checkout'}
                       </span>
                     </div>
                   </div>
 
-                  <div className="mt-3.5 flex items-baseline justify-between border-t border-[#262923]/12 pt-3.5 dark:border-[#F8F6F1]/12">
+                  <div className="mt-3.5 flex items-baseline justify-between border-t border-[#3B302B]/14 pt-3.5">
                     <div>
-                      <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-[#22251F] dark:text-[#F8F6F1]">
+                      <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A]">
                         Estimated Subtotal
                       </span>
-                      <span className="mt-0.5 block text-[11px] text-[#5E6257] dark:text-[#A9ACA2]">
+                      <span className="mt-0.5 block text-[11px] text-[#5E4E45]">
                         Currency: {storeCurrency}
                       </span>
                     </div>
-                    <span className="font-serif text-[30px] font-medium leading-none tabular-nums text-[#22251F] dark:text-[#F8F6F1]">
+                    <span className="font-heading text-[28px] font-extrabold leading-none tabular-nums text-[#201C1A]">
                       {subtotalDisplay}
                     </span>
                   </div>
@@ -557,7 +563,7 @@ export default function ShoppingBagView() {
                     href={withBasePath('/checkout/')}
                     whileHover={prefersReducedMotion ? undefined : { y: -1 }}
                     whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
-                    className="group flex h-[52px] w-full items-center justify-center gap-2.5 rounded-[2px] bg-[#262923] px-6 text-[12px] font-medium uppercase tracking-[0.22em] text-[#F8F6F1] no-underline shadow-[0_8px_22px_rgba(38,41,35,0.12)] transition-all duration-400 hover:bg-[#747B65] dark:bg-[#F8F6F1] dark:text-[#22251F] dark:hover:bg-[#E8E0D5]"
+                    className="group loome-btn-espresso flex h-[52px] w-full no-underline"
                   >
                     <span>{checkoutLabel}</span>
                     <ArrowRight className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-1" />
@@ -572,7 +578,7 @@ export default function ShoppingBagView() {
                   </a>
                 </div>
 
-                <p className="mt-4 mb-0 text-center text-[11.5px] leading-relaxed text-[#55594F] dark:text-[#B6B8AE]">
+                <p className="mt-4 mb-0 text-center text-[11.5px] leading-relaxed text-[#5E4E45] dark:text-[#C7B6A6]">
                   Delivery details and WhatsApp concierge handoff happen on the next step.
                 </p>
               </LuxuryReveal>
@@ -582,12 +588,12 @@ export default function ShoppingBagView() {
       </section>
 
       {/* Always-Mounted Atelier Delivery & Concierge Assurance Band */}
-      <section className="border-t border-[#262923]/10 bg-[#EFEAE0]/70 py-8 dark:border-[#F8F6F1]/10 dark:bg-[#1B1E18] sm:py-10">
+      <section className="border-t border-[#201C1A]/10 bg-[#E6D9C9]/70 py-8 dark:border-[#F2E9DE]/10 dark:bg-[#2A2320] sm:py-10">
         <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-6 px-4 sm:px-8 md:grid-cols-3 lg:px-12">
           <div className="md:col-span-2">
             <p
               data-preview-static="cart-assurance-eyebrow"
-              className="m-0 inline-flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.24em] text-[#5C634E] dark:text-[#C9B292]"
+              className="m-0 inline-flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
             >
               <ShieldCheck className="h-3.5 w-3.5 stroke-[1.6]" />
               Atelier Delivery &amp; Care Assurance
@@ -606,16 +612,16 @@ export default function ShoppingBagView() {
             </div>
           </div>
 
-          <div className="flex flex-col justify-center gap-1.5 border-t border-[#262923]/12 pt-4 md:border-l md:border-t-0 md:pl-7 md:pt-0 dark:border-[#F8F6F1]/12">
+          <div className="flex flex-col justify-center gap-1.5 border-t border-[#201C1A]/12 pt-4 md:border-l md:border-t-0 md:pl-7 md:pt-0 dark:border-[#F2E9DE]/12">
             <p
               data-preview-static="cart-currency-label"
-              className="m-0 text-[10.5px] font-semibold uppercase tracking-[0.22em] text-[#363A32] dark:text-[#D9DBD3]"
+              className="m-0 text-[10.5px] font-semibold uppercase tracking-[0.22em] text-[#3B302B] dark:text-[#F2E9DE]"
             >
               Pricing Currency · {storeCurrency}
             </p>
             <p
               data-preview-static="cart-handoff-note"
-              className="m-0 text-[12.5px] leading-relaxed text-[#4F5349] dark:text-[#C5C7BE]"
+              className="m-0 text-[12.5px] leading-relaxed text-[#5E4E45] dark:text-[#C7B6A6]"
             >
               Saved automatically in your browser until you finalize via private checkout.
             </p>

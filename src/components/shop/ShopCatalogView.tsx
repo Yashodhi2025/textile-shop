@@ -256,7 +256,7 @@ export default function ShopCatalogView() {
       <div>
         <p
           data-preview-static={`${idPrefix}-material-heading`}
-          className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#747B65] dark:text-[#B59B79]"
+          className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
         >
           Material &amp; Fiber
         </p>
@@ -269,10 +269,10 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`${idPrefix}-mat-${mat}`}
                 onClick={() => setSelectedMaterial(mat)}
-                className={`border px-3 py-1.5 text-[11px] tracking-wide transition-colors ${
+                className={`rounded-[10px] border px-3 py-1.5 text-[11px] tracking-wide transition-colors ${
                   active
-                    ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#262923]'
-                    : 'border-[#262923]/15 bg-transparent text-[#595C52] hover:border-[#B59B79] hover:text-[#262923] dark:border-[#F8F6F1]/18 dark:text-[#B6B8AE]'
+                    ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                    : 'border-[#201C1A]/15 bg-transparent text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6]'
                 }`}
               >
                 {mat}
@@ -286,7 +286,7 @@ export default function ShopCatalogView() {
       <div>
         <p
           data-preview-static={`${idPrefix}-color-heading`}
-          className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#747B65] dark:text-[#B59B79]"
+          className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
         >
           Color Palette
         </p>
@@ -295,10 +295,10 @@ export default function ShopCatalogView() {
             type="button"
             data-preview-static={`${idPrefix}-color-all`}
             onClick={() => setSelectedColor('All')}
-            className={`border px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] transition-colors ${
+            className={`rounded-[10px] border px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] transition-colors ${
               selectedColor === 'All'
-                ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#262923]'
-                : 'border-[#262923]/15 text-[#595C52] hover:border-[#B59B79]'
+                ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                : 'border-[#201C1A]/15 text-[#5E4E45] hover:border-[#C8A98B]'
             }`}
           >
             All
@@ -315,13 +315,13 @@ export default function ShopCatalogView() {
                 title={swatch.name}
                 className={`relative flex h-6 w-6 items-center justify-center rounded-full border transition-transform ${
                   active
-                    ? 'scale-110 border-[#262923] ring-2 ring-[#B59B79] ring-offset-2 ring-offset-[#F8F6F1] dark:ring-offset-[#20231D]'
-                    : 'border-[#262923]/25 hover:scale-110'
+                    ? 'scale-110 border-[#201C1A] ring-2 ring-[#C8A98B] ring-offset-2 ring-offset-[#F2E9DE] dark:ring-offset-[#3B302B]'
+                    : 'border-[#201C1A]/25 hover:scale-110'
                 }`}
                 style={{ backgroundColor: swatch.hex }}
               >
                 {active && (
-                  <Check className="h-3 w-3 stroke-[2.5] text-[#262923] drop-shadow-[0_0_2px_rgba(255,255,255,0.9)]" />
+                  <Check className="h-3 w-3 stroke-[2.5] text-[#201C1A] drop-shadow-[0_0_2px_rgba(255,255,255,0.9)]" />
                 )}
               </button>
             );
@@ -334,13 +334,13 @@ export default function ShopCatalogView() {
         <div className="flex items-center justify-between gap-2">
           <p
             data-preview-static={`${idPrefix}-price-heading`}
-            className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#747B65] dark:text-[#B59B79]"
+            className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
           >
             Price Range
           </p>
           <span
             data-preview-static={`${idPrefix}-price-cap`}
-            className="text-[11px] font-medium text-[#262923] dark:text-[#F8F6F1]"
+            className="text-[11px] font-medium text-[#201C1A] dark:text-[#F2E9DE]"
           >
             Up to {formatLoomePrice(effectiveMaxPrice, storeCurrency)}
           </span>
@@ -355,7 +355,7 @@ export default function ShopCatalogView() {
           onChange={(e) => setMaxPriceCap(Number(e.target.value))}
           aria-label="Maximum price"
           data-preview-static={`${idPrefix}-price-slider`}
-          className="mt-3 h-1 w-full cursor-pointer appearance-none bg-[#262923]/20 accent-[#747B65] dark:bg-[#F8F6F1]/20"
+          className="mt-3 h-1 w-full cursor-pointer appearance-none bg-[#201C1A]/20 accent-[#8D7667] dark:bg-[#F2E9DE]/20"
         />
 
         <div className="mt-3 flex flex-wrap gap-1.5">
@@ -377,10 +377,10 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`${idPrefix}-band-${band.id}`}
                 onClick={() => setPriceBand(band.id)}
-                className={`border px-2.5 py-1 text-[10px] tracking-wide transition-colors ${
+                className={`rounded-[10px] border px-2.5 py-1 text-[10px] tracking-wide transition-colors ${
                   active
-                    ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#262923]'
-                    : 'border-[#262923]/15 text-[#595C52] hover:border-[#B59B79]'
+                    ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                    : 'border-[#201C1A]/15 text-[#5E4E45] hover:border-[#C8A98B]'
                 }`}
               >
                 {band.label}
@@ -394,7 +394,7 @@ export default function ShopCatalogView() {
       <div>
         <p
           data-preview-static={`${idPrefix}-availability-heading`}
-          className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#747B65] dark:text-[#B59B79]"
+          className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
         >
           Availability
         </p>
@@ -404,16 +404,16 @@ export default function ShopCatalogView() {
           aria-checked={inStockOnly}
           data-preview-static={`${idPrefix}-instock-toggle`}
           onClick={() => setInStockOnly((v) => !v)}
-          className="mt-3.5 flex w-full items-center justify-between border border-[#262923]/15 bg-[#F8F6F1] px-4 py-3 text-left text-xs text-[#262923] transition-colors hover:border-[#B59B79] dark:border-[#F8F6F1]/18 dark:bg-[#171915] dark:text-[#F8F6F1]"
+          className="mt-3.5 flex w-full items-center justify-between rounded-[11px] border border-[#201C1A]/15 bg-[#F2E9DE] px-4 py-3 text-left text-xs text-[#201C1A] transition-colors hover:border-[#C8A98B] dark:border-[#F2E9DE]/18 dark:bg-[#201C1A] dark:text-[#F2E9DE]"
         >
           <span>In Stock &amp; Ready to Ship</span>
           <span
             className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${
-              inStockOnly ? 'bg-[#747B65]' : 'bg-[#262923]/20 dark:bg-[#F8F6F1]/25'
+              inStockOnly ? 'bg-[#8D7667]' : 'bg-[#201C1A]/20 dark:bg-[#F2E9DE]/25'
             }`}
           >
             <span
-              className={`inline-block h-3.5 w-3.5 rounded-full bg-[#F8F6F1] transition-transform ${
+              className={`inline-block h-3.5 w-3.5 rounded-full bg-[#F2E9DE] transition-transform ${
                 inStockOnly ? 'translate-x-[18px]' : 'translate-x-[3px]'
               }`}
             />
@@ -583,7 +583,7 @@ export default function ShopCatalogView() {
                 <option value="bestsellers">Bestsellers</option>
               </select>
               <ChevronDown
-                className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 stroke-[1.5] text-[#595C52]"
+                className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 stroke-[1.5] text-[#5E4E45]"
                 aria-hidden="true"
               />
             </div>
@@ -598,7 +598,7 @@ export default function ShopCatalogView() {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.35, ease: LUXURY_EASE }}
-              className="hidden overflow-hidden border-b border-[#262923]/10 bg-[#FCFBF8] dark:border-[#F8F6F1]/10 dark:bg-[#20231D] lg:block"
+              className="hidden overflow-hidden border-b border-[#201C1A]/10 bg-[#FAF5EE] dark:border-[#F2E9DE]/10 dark:bg-[#3B302B] lg:block"
             >
               <div className="p-7">{renderFilterGroups('desktop')}</div>
             </motion.div>
@@ -614,7 +614,7 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`active-chip-${chip.key}`}
                 onClick={chip.onRemove}
-                className="inline-flex items-center gap-2 border border-[#B59B79]/55 bg-[#E8E0D5]/45 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#262923] transition-colors hover:border-[#262923] hover:bg-[#262923] hover:text-[#F8F6F1] dark:bg-[#20231D] dark:text-[#F8F6F1]"
+                className="inline-flex items-center gap-2 border border-[#C8A98B]/55 bg-[#E6D9C9]/45 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#201C1A] transition-colors hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] dark:bg-[#3B302B] dark:text-[#F2E9DE]"
               >
                 <span>{chip.label}</span>
                 <X className="h-3 w-3 stroke-[1.8]" />
@@ -625,7 +625,7 @@ export default function ShopCatalogView() {
               type="button"
               data-preview-static="shop-clear-filters"
               onClick={resetAllFilters}
-              className="ml-1 inline-flex items-center gap-1.5 border-0 bg-transparent px-2 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#747B65] underline underline-offset-4 transition-colors hover:text-[#262923] dark:text-[#B59B79]"
+              className="ml-1 inline-flex items-center gap-1.5 border-0 bg-transparent px-2 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#8D7667] underline underline-offset-4 transition-colors hover:text-[#201C1A] dark:text-[#C8A98B]"
             >
               <RotateCcw className="h-3 w-3 stroke-[1.6]" />
               Clear All
@@ -641,27 +641,27 @@ export default function ShopCatalogView() {
           {allProducts.length === 0 ? (
             <p
               data-preview-static="shop-catalog-empty"
-              className="col-span-full border border-dashed border-[#262923]/20 py-20 text-center text-sm text-[#595C52]"
+              className="col-span-full border border-dashed border-[#201C1A]/20 py-20 text-center text-sm text-[#5E4E45]"
             >
               Add textile products in your Fivora catalog to populate the shop.
             </p>
           ) : filteredProducts.length === 0 ? (
-            <div className="col-span-full border border-[#262923]/12 bg-[#FCFBF8] px-6 py-20 text-center dark:border-[#F8F6F1]/12 dark:bg-[#20231D]">
+            <div className="col-span-full border border-[#201C1A]/12 bg-[#FAF5EE] px-6 py-20 text-center dark:border-[#F2E9DE]/12 dark:bg-[#3B302B]">
               <p
                 data-preview-static="shop-empty-eyebrow"
-                className="m-0 text-[10px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+                className="m-0 text-[10px] font-medium uppercase tracking-[0.26em] text-[#8D7667] dark:text-[#C8A98B]"
               >
                 No Matching Editions
               </p>
               <h2
                 data-preview-static="shop-empty-heading"
-                className="mt-3 font-serif text-3xl font-light text-[#262923] dark:text-[#F8F6F1] sm:text-4xl"
+                className="mt-3 font-serif text-3xl font-light text-[#201C1A] dark:text-[#F2E9DE] sm:text-4xl"
               >
                 No textiles match your current selection
               </h2>
               <p
                 data-preview-static="shop-empty-copy"
-                className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-[#595C52] dark:text-[#B6B8AE]"
+                className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-[#5E4E45] dark:text-[#C7B6A6]"
               >
                 Try widening your price range, switching fiber or tone filters, or returning to the full LOOMÉ collection.
               </p>
@@ -710,7 +710,7 @@ export default function ShopCatalogView() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileDrawerOpen(false)}
-              className="fixed inset-0 bg-[#262923]/50 backdrop-blur-sm"
+              className="fixed inset-0 bg-[#201C1A]/50 backdrop-blur-sm"
             />
             <motion.aside
               initial={{ x: '100%' }}
@@ -718,12 +718,12 @@ export default function ShopCatalogView() {
               exit={{ x: '100%' }}
               transition={{ duration: 0.42, ease: LUXURY_EASE }}
               aria-label="Shop filters"
-              className="relative z-10 flex h-full w-[88%] max-w-sm flex-col bg-[#F8F6F1] text-[#262923] shadow-2xl dark:bg-[#171915] dark:text-[#F8F6F1]"
+              className="relative z-10 flex h-full w-[88%] max-w-sm flex-col bg-[#F2E9DE] text-[#201C1A] shadow-2xl dark:bg-[#201C1A] dark:text-[#F2E9DE]"
             >
-              <div className="flex items-center justify-between border-b border-[#262923]/10 px-6 py-5 dark:border-[#F8F6F1]/10">
+              <div className="flex items-center justify-between border-b border-[#201C1A]/10 px-6 py-5 dark:border-[#F2E9DE]/10">
                 <div>
                   <h2 className="m-0 font-serif text-2xl font-normal">Refine Selection</h2>
-                  <p className="mt-0.5 m-0 text-[10px] uppercase tracking-[0.2em] text-[#595C52] dark:text-[#B6B8AE]">
+                  <p className="mt-0.5 m-0 text-[10px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6]">
                     {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'}
                   </p>
                 </div>
@@ -731,7 +731,7 @@ export default function ShopCatalogView() {
                   type="button"
                   onClick={() => setMobileDrawerOpen(false)}
                   aria-label="Close filters"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#262923]/15 dark:border-[#F8F6F1]/20"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#201C1A]/15 dark:border-[#F2E9DE]/20"
                 >
                   <X className="h-4 w-4 stroke-[1.5]" />
                 </button>
@@ -740,7 +740,7 @@ export default function ShopCatalogView() {
               <div className="flex-1 overflow-y-auto px-6 py-6">
                 {/* Category quick select inside mobile drawer */}
                 <div className="mb-8">
-                  <p className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#747B65] dark:text-[#B59B79]">
+                  <p className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]">
                     Category
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -753,8 +753,8 @@ export default function ShopCatalogView() {
                           onClick={() => setActiveCategory(entry.name)}
                           className={`border px-3 py-1.5 text-[11px] tracking-wide transition-colors ${
                             active
-                              ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#262923]'
-                              : 'border-[#262923]/15 text-[#595C52] dark:border-[#F8F6F1]/18 dark:text-[#B6B8AE]'
+                              ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                              : 'border-[#201C1A]/15 text-[#5E4E45] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6]'
                           }`}
                         >
                           {entry.name} ({entry.count})
@@ -767,7 +767,7 @@ export default function ShopCatalogView() {
                 {renderFilterGroups('mobile')}
               </div>
 
-              <div className="flex gap-3 border-t border-[#262923]/10 bg-[#FCFBF8] px-6 py-4 dark:border-[#F8F6F1]/10 dark:bg-[#20231D]">
+              <div className="flex gap-3 border-t border-[#201C1A]/10 bg-[#FAF5EE] px-6 py-4 dark:border-[#F2E9DE]/10 dark:bg-[#3B302B]">
                 <button
                   type="button"
                   onClick={resetAllFilters}

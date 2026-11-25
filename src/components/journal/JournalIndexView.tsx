@@ -141,22 +141,22 @@ export default function JournalIndexView() {
       className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
     >
       {/* Editorial Breadcrumb Strip */}
-      <div className="border-b border-[#262923]/8 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
-        <nav className="mx-auto flex max-w-[1380px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#55594F] dark:text-[#B6B8AE] sm:px-8 lg:px-14">
+      <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
+        <nav className="mx-auto flex max-w-[1380px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-14">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#55594F] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" className="text-[#B59B79]">
+          <span aria-hidden="true" className="text-[#C8A98B]">
             /
           </span>
           <span
             aria-current="page"
             data-preview-field-path="common.navLabels.journal"
-            className="font-medium text-[#262923] dark:text-[#F8F6F1]"
+            className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
           >
             {journalNavLabel}
           </span>
@@ -166,13 +166,13 @@ export default function JournalIndexView() {
       {/* Magazine Editorial Hero */}
       <section
         data-design-section="journal-hero"
-        className="border-b border-[#262923]/8 bg-gradient-to-b from-[#F2ECE2]/85 via-[#F8F6F1] to-[#F8F6F1] dark:border-[#F8F6F1]/10 dark:from-[#1F221C] dark:via-[#171915] dark:to-[#171915]"
+        className="border-b border-[#201C1A]/8 bg-gradient-to-b from-[#E6D9C9]/85 via-[#F2E9DE] to-[#F2E9DE] dark:border-[#F2E9DE]/10 dark:from-[#2B2320] dark:via-[#201C1A] dark:to-[#201C1A]"
       >
         <div className="mx-auto max-w-[1380px] px-4 py-10 sm:px-8 sm:py-14 lg:px-14 lg:py-16">
           <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <div className="max-w-3xl">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-9 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-9 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="journalPage.eyebrow"
@@ -216,15 +216,15 @@ export default function JournalIndexView() {
           </LuxuryReveal>
 
           {/* Editorial Category Navigation Bar */}
-          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[#262923]/10 pt-5 dark:border-[#F8F6F1]/10">
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[#201C1A]/10 pt-5 dark:border-[#F2E9DE]/10">
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
                 onClick={() => setActiveCategoryKey('all')}
                 aria-pressed={effectiveCategoryKey === 'all'}
                 className={`border px-3.5 py-1.5 text-[10.5px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${effectiveCategoryKey === 'all'
-                  ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#171915]'
-                  : 'border-[#262923]/15 bg-transparent text-[#55594F] hover:border-[#B59B79] hover:text-[#262923] dark:border-[#F8F6F1]/18 dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]'
+                  ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                  : 'border-[#201C1A]/15 bg-transparent text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
                   }`}
               >
                 <EditableText
@@ -252,8 +252,8 @@ export default function JournalIndexView() {
                       onClick={() => setActiveCategoryKey(cat.id)}
                       aria-pressed={isActive}
                       className={`border px-3.5 py-1.5 text-[10.5px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${isActive
-                        ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#171915]'
-                        : 'border-[#262923]/15 bg-transparent text-[#55594F] hover:border-[#B59B79] hover:text-[#262923] dark:border-[#F8F6F1]/18 dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]'
+                        ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                        : 'border-[#201C1A]/15 bg-transparent text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
                         }`}
                     >
                       <EditableText
@@ -282,8 +282,8 @@ export default function JournalIndexView() {
                     onClick={() => setActiveCategoryKey(extra.key)}
                     aria-pressed={isActive}
                     className={`border px-3.5 py-1.5 text-[10.5px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${isActive
-                      ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#171915]'
-                      : 'border-[#262923]/15 bg-transparent text-[#55594F] hover:border-[#B59B79] hover:text-[#262923] dark:border-[#F8F6F1]/18 dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]'
+                      ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                      : 'border-[#201C1A]/15 bg-transparent text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
                       }`}
                   >
                     <EditableText
@@ -303,7 +303,7 @@ export default function JournalIndexView() {
               })}
             </div>
 
-            <div className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-[#65685E] dark:text-[#B6B8AE]">
+            <div className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-[#65685E] dark:text-[#C7B6A6]">
               <span data-preview-static="journal-story-count-number" className="tabular-nums">
                 {filteredPosts.length}
               </span>
@@ -347,7 +347,7 @@ export default function JournalIndexView() {
         <div data-preview-list-path="home.journalPosts">
           {filteredPosts.length === 0 ? (
             <div className="space-y-12">
-              <div className="flex items-end justify-between gap-4 border-b border-[#262923]/10 pb-4 dark:border-[#F8F6F1]/10">
+              <div className="flex items-end justify-between gap-4 border-b border-[#201C1A]/10 pb-4 dark:border-[#F2E9DE]/10">
                 <div>
                   <EditableText
                     as="p"
@@ -376,17 +376,17 @@ export default function JournalIndexView() {
                 </div>
               </div>
 
-              <div className="border border-dashed border-[#262923]/20 px-6 py-16 text-center dark:border-[#F8F6F1]/20">
+              <div className="border border-dashed border-[#201C1A]/20 px-6 py-16 text-center dark:border-[#F2E9DE]/20">
                 <p
                   data-preview-static="journal-page-empty"
-                  className="m-0 text-sm text-[#65685E] dark:text-[#B6B8AE]"
+                  className="m-0 text-sm text-[#65685E] dark:text-[#C7B6A6]"
                 >
                   {allPosts.length === 0
                     ? 'Add journal stories in your Fivora editor to populate this editorial archive.'
                     : 'No stories currently belong to this category.'}
                 </p>
 
-                <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em] text-[#747B65] dark:text-[#B59B79]">
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em] text-[#8D7667] dark:text-[#C8A98B]">
                   <EditableText
                     as="span"
                     data-preview-field-path="journalPage.featuredStoryLabel"
@@ -397,9 +397,9 @@ export default function JournalIndexView() {
                     transform="uppercase"
                     letterSpacing="0.2em"
                     color="inherit"
-                    className="inline border border-[#262923]/12 px-2.5 py-1 dark:border-[#F8F6F1]/12"
+                    className="inline border border-[#201C1A]/12 px-2.5 py-1 dark:border-[#F2E9DE]/12"
                   />
-                  <span aria-hidden="true" className="text-[#B59B79]">
+                  <span aria-hidden="true" className="text-[#C8A98B]">
                     ·
                   </span>
                   <EditableText
@@ -414,7 +414,7 @@ export default function JournalIndexView() {
                     color="inherit"
                     className="inline"
                   />
-                  <span aria-hidden="true" className="text-[#B59B79]">
+                  <span aria-hidden="true" className="text-[#C8A98B]">
                     ·
                   </span>
                   <EditableText
@@ -427,7 +427,7 @@ export default function JournalIndexView() {
                     transform="uppercase"
                     letterSpacing="0.2em"
                     color="inherit"
-                    className="inline border-b border-[#262923]/25 pb-0.5 dark:border-[#F8F6F1]/25"
+                    className="inline border-b border-[#201C1A]/25 pb-0.5 dark:border-[#F2E9DE]/25"
                   />
                 </div>
 
@@ -435,7 +435,7 @@ export default function JournalIndexView() {
                   <button
                     type="button"
                     onClick={() => setActiveCategoryKey('all')}
-                    className="mt-6 inline-flex items-center border border-[#262923]/25 bg-transparent px-4 py-2 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:border-[#B59B79] hover:text-[#747B65] dark:border-[#F8F6F1]/25 dark:text-[#F8F6F1]"
+                    className="mt-6 inline-flex items-center border border-[#201C1A]/25 bg-transparent px-4 py-2 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#C8A98B] hover:text-[#8D7667] dark:border-[#F2E9DE]/25 dark:text-[#F2E9DE]"
                   >
                     <EditableText
                       as="span"
@@ -464,7 +464,7 @@ export default function JournalIndexView() {
                   >
                     <div
                       onClick={() => window.location.assign(journalArticleHref(featuredPost.id))}
-                      className="relative block aspect-[16/11] w-full cursor-pointer overflow-hidden bg-[#E8E0D5]/60 lg:col-span-7 lg:aspect-auto lg:min-h-[480px]"
+                      className="relative block aspect-[16/11] w-full cursor-pointer overflow-hidden bg-[#E6D9C9]/60 lg:col-span-7 lg:aspect-auto lg:min-h-[480px]"
                     >
                       <LuxuryImageReveal tone="beige" className="h-full w-full">
                         <img
@@ -476,7 +476,7 @@ export default function JournalIndexView() {
                       </LuxuryImageReveal>
                       <span
                         onClick={(e) => e.stopPropagation()}
-                        className="absolute left-5 top-5 z-20 bg-[#F8F6F1]/92 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-[#262923] backdrop-blur-sm"
+                        className="absolute left-5 top-5 z-20 bg-[#F2E9DE]/92 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-[#201C1A] backdrop-blur-sm"
                       >
                         <EditableText
                           as="span"
@@ -495,7 +495,7 @@ export default function JournalIndexView() {
 
                     <div className="flex flex-col justify-between p-7 sm:p-10 lg:col-span-5 lg:p-12">
                       <div>
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10.5px] font-medium uppercase tracking-[0.22em] text-[#747B65] dark:text-[#B59B79]">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10.5px] font-medium uppercase tracking-[0.22em] text-[#8D7667] dark:text-[#C8A98B]">
                           <EditableText
                             as="span"
                             data-preview-field-path={`home.journalPosts[${featuredPost.index}].category`}
@@ -508,10 +508,10 @@ export default function JournalIndexView() {
                             color="inherit"
                             className="inline"
                           />
-                          <span aria-hidden="true" className="text-[#B59B79]">
+                          <span aria-hidden="true" className="text-[#C8A98B]">
                             ·
                           </span>
-                          <span className="inline-flex items-center gap-1 text-[#595C52] dark:text-[#B6B8AE]">
+                          <span className="inline-flex items-center gap-1 text-[#5E4E45] dark:text-[#C7B6A6]">
                             <Calendar aria-hidden="true" className="h-3 w-3 stroke-[1.5]" />
                             <EditableText
                               as="span"
@@ -526,10 +526,10 @@ export default function JournalIndexView() {
                               className="inline"
                             />
                           </span>
-                          <span aria-hidden="true" className="text-[#B59B79]">
+                          <span aria-hidden="true" className="text-[#C8A98B]">
                             ·
                           </span>
-                          <span className="inline-flex items-center gap-1 text-[#595C52] dark:text-[#B6B8AE]">
+                          <span className="inline-flex items-center gap-1 text-[#5E4E45] dark:text-[#C7B6A6]">
                             <Clock aria-hidden="true" className="h-3 w-3 stroke-[1.5]" />
                             <EditableText
                               as="span"
@@ -549,7 +549,7 @@ export default function JournalIndexView() {
                         <button
                           type="button"
                           onClick={() => window.location.assign(journalArticleHref(featuredPost.id))}
-                          className="mt-4 block w-full border-0 bg-transparent p-0 text-left text-[#262923] transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+                          className="mt-4 block w-full border-0 bg-transparent p-0 text-left text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
                         >
                           <EditableText
                             as="h2"
@@ -565,7 +565,7 @@ export default function JournalIndexView() {
                           />
                         </button>
 
-                        <div className="my-5 h-px w-12 bg-[#B59B79]" aria-hidden="true" />
+                        <div className="my-5 h-px w-12 bg-[#C8A98B]" aria-hidden="true" />
 
                         <EditableText
                           as="p"
@@ -579,8 +579,8 @@ export default function JournalIndexView() {
                         />
                       </div>
 
-                      <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[#262923]/10 pt-5 dark:border-[#F8F6F1]/10">
-                        <div className="inline-flex flex-wrap items-center gap-1.5 text-[11px] uppercase tracking-[0.18em] text-[#595C52] dark:text-[#B6B8AE]">
+                      <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-[#201C1A]/10 pt-5 dark:border-[#F2E9DE]/10">
+                        <div className="inline-flex flex-wrap items-center gap-1.5 text-[11px] uppercase tracking-[0.18em] text-[#5E4E45] dark:text-[#C7B6A6]">
                           <EditableText
                             as="span"
                             data-preview-field-path="journalPage.authorPrefixLabel"
@@ -610,7 +610,7 @@ export default function JournalIndexView() {
                         <button
                           type="button"
                           onClick={() => window.location.assign(journalArticleHref(featuredPost.id))}
-                          className="inline-flex cursor-pointer items-center gap-2 border-0 border-b border-[#262923]/40 bg-transparent px-0 pb-1 pt-0 text-[11px] font-medium uppercase tracking-[0.22em] text-[#262923] transition-colors hover:border-[#B59B79] hover:text-[#747B65] dark:border-[#F8F6F1]/40 dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+                          className="inline-flex cursor-pointer items-center gap-2 border-0 border-b border-[#201C1A]/40 bg-transparent px-0 pb-1 pt-0 text-[11px] font-medium uppercase tracking-[0.22em] text-[#201C1A] transition-colors hover:border-[#C8A98B] hover:text-[#8D7667] dark:border-[#F2E9DE]/40 dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
                         >
                           <EditableText
                             as="span"
@@ -638,7 +638,7 @@ export default function JournalIndexView() {
               {/* 2. Asymmetric Magazine Editorial Grid */}
               {gridPosts.length > 0 && (
                 <div>
-                  <div className="mb-10 flex items-end justify-between gap-4 border-b border-[#262923]/10 pb-4 dark:border-[#F8F6F1]/10">
+                  <div className="mb-10 flex items-end justify-between gap-4 border-b border-[#201C1A]/10 pb-4 dark:border-[#F2E9DE]/10">
                     <div>
                       <EditableText
                         as="p"
@@ -705,7 +705,7 @@ export default function JournalIndexView() {
                             >
                               <div
                                 onClick={() => window.location.assign(journalArticleHref(post.id))}
-                                className={`relative block w-full cursor-pointer overflow-hidden bg-[#E8E0D5]/60 ${aspectClass}`}
+                                className={`relative block w-full cursor-pointer overflow-hidden bg-[#E6D9C9]/60 ${aspectClass}`}
                               >
                                 <LuxuryImageReveal
                                   delay={Math.min(idx * 0.08, 0.24)}
@@ -736,7 +736,7 @@ export default function JournalIndexView() {
                                     color="primary"
                                     className="inline"
                                   />
-                                  <div className="flex flex-wrap items-center gap-2.5 text-[#595C52] dark:text-[#B6B8AE]">
+                                  <div className="flex flex-wrap items-center gap-2.5 text-[#5E4E45] dark:text-[#C7B6A6]">
                                     <EditableText
                                       as="span"
                                       data-preview-field-path={`home.journalPosts[${post.index}].date`}
@@ -749,7 +749,7 @@ export default function JournalIndexView() {
                                       color="inherit"
                                       className="inline"
                                     />
-                                    <span aria-hidden="true" className="text-[#B59B79]">
+                                    <span aria-hidden="true" className="text-[#C8A98B]">
                                       ·
                                     </span>
                                     <span className="inline-flex items-center gap-1">
@@ -773,7 +773,7 @@ export default function JournalIndexView() {
                                 <button
                                   type="button"
                                   onClick={() => window.location.assign(journalArticleHref(post.id))}
-                                  className="mt-3 block w-full border-0 bg-transparent p-0 text-left text-[#262923] transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+                                  className="mt-3 block w-full border-0 bg-transparent p-0 text-left text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
                                 >
                                   <EditableText
                                     as="h3"
@@ -801,8 +801,8 @@ export default function JournalIndexView() {
                                 />
 
                                 <div className="mt-auto pt-5">
-                                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#262923]/8 pt-4 dark:border-[#F8F6F1]/10">
-                                    <div className="inline-flex flex-wrap items-center gap-1.5 text-[10.5px] uppercase tracking-[0.18em] text-[#595C52] dark:text-[#B6B8AE]">
+                                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#201C1A]/8 pt-4 dark:border-[#F2E9DE]/10">
+                                    <div className="inline-flex flex-wrap items-center gap-1.5 text-[10.5px] uppercase tracking-[0.18em] text-[#5E4E45] dark:text-[#C7B6A6]">
                                       <EditableText
                                         as="span"
                                         data-preview-field-path="journalPage.authorPrefixLabel"
@@ -832,7 +832,7 @@ export default function JournalIndexView() {
                                     <button
                                       type="button"
                                       onClick={() => window.location.assign(journalArticleHref(post.id))}
-                                      className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[#262923]/30 bg-transparent px-0 pb-1 pt-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:border-[#B59B79] hover:text-[#747B65] dark:border-[#F8F6F1]/30 dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+                                      className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[#201C1A]/30 bg-transparent px-0 pb-1 pt-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#C8A98B] hover:text-[#8D7667] dark:border-[#F2E9DE]/30 dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
                                     >
                                       <EditableText
                                         as="span"
@@ -868,7 +868,7 @@ export default function JournalIndexView() {
       </section>
 
       {/* Subtle Editorial Material Invitation */}
-      <section className="border-t border-[#262923]/8 bg-[#F2ECE2]/65 py-14 dark:border-[#F8F6F1]/10 dark:bg-[#1C1F19]">
+      <section className="border-t border-[#201C1A]/8 bg-[#E6D9C9]/65 py-14 dark:border-[#F2E9DE]/10 dark:bg-[#1C1F19]">
         <div className="mx-auto flex max-w-[1380px] flex-col items-center justify-between gap-6 px-4 text-center sm:px-8 md:flex-row md:text-left lg:px-14">
           <div>
             <EditableText

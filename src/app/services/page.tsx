@@ -30,18 +30,21 @@ export default function ServicesPage() {
     'USD';
 
   return (
-    <div data-preview-page-key="services" className="w-full overflow-x-clip">
+    <div
+      data-preview-page-key="services"
+      className="loome-surface-espresso w-full overflow-x-clip bg-[#201C1A] text-[#F2E9DE]"
+    >
       {/* Compact Editorial Page Header */}
       <section
         data-design-section="services-heading"
-        className="mx-auto max-w-[1440px] px-4 pb-8 pt-12 sm:px-8 lg:px-14 lg:pb-10 lg:pt-16"
+        className="mx-auto max-w-[1440px] px-4 pb-10 pt-12 sm:px-8 lg:px-14 lg:pb-12 lg:pt-16"
       >
         <LuxuryReveal className="max-w-3xl">
           <div className="flex items-center gap-3">
-            <span className="h-px w-8 bg-[#B59B79]" aria-hidden="true" />
+            <span className="h-px w-8 bg-[#C8A98B]" aria-hidden="true" />
             <p
               data-preview-static="services-eyebrow"
-              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+              className="m-0 text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
             >
               Bespoke Atelier &amp; Collections
             </p>
@@ -52,11 +55,11 @@ export default function ServicesPage() {
             data-preview-field-path="servicesPage.heading"
             defaultValue={contentText(page.heading)}
             fontFamily="heading"
-            size="clamp(2.6rem, 4.6vw, 4.15rem)"
-            weight={300}
+            size="clamp(2.5rem, 4.5vw, 4rem)"
+            weight={800}
             lineHeight={1.04}
-            letterSpacing="-0.02em"
-            color="heading"
+            letterSpacing="-0.03em"
+            color="#F2E9DE"
             className="mt-4 mb-0"
           />
 
@@ -67,16 +70,16 @@ export default function ServicesPage() {
             fontFamily="body"
             size="1rem"
             lineHeight={1.8}
-            color="muted"
+            color="#C7B6A6"
             className="mt-4 mb-0 max-w-2xl"
           />
         </LuxuryReveal>
       </section>
 
-      {/* Services & Bespoke Editions Grid — Flowing Directly Beneath Header */}
+      {/* Services & Bespoke Editions Grid — Warm Cream Ivory Alternating Surface */}
       <section
         data-design-section="services-list"
-        className="w-full border-t border-[#262923]/8 bg-[#E8E0D5]/32 py-12 dark:border-[#F8F6F1]/8 dark:bg-[#20231D] lg:py-16"
+        className="loome-surface-cream w-full border-t border-[#C8A98B]/20 bg-[#F2E9DE] py-14 text-[#201C1A] lg:py-20"
       >
         <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
           <div data-preview-list-path="services">
@@ -109,10 +112,10 @@ export default function ServicesPage() {
                   <LuxuryStaggerItem key={contentText(service.id) || index}>
                     <article
                       data-preview-item-path={`services[${index}]`}
-                      className="group flex h-full flex-col border border-[#262923]/10 bg-[#FCFBF8] transition-all duration-500 hover:-translate-y-1 hover:border-[#B59B79]/60 hover:shadow-[0_18px_40px_rgba(38,41,35,0.06)] dark:border-[#F8F6F1]/10 dark:bg-[#171915]"
+                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#3B302B]/12 bg-[#FAF5EE] transition-all duration-500 hover:-translate-y-1 hover:border-[#C8A98B]/75 hover:shadow-[0_18px_40px_rgba(32,28,26,0.08)]"
                     >
                       {imageUrl && (
-                        <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#E8E0D5]/50">
+                        <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#E6D9C9]/60">
                           <EditableImage
                             src={withBasePath(imageUrl)}
                             alt={contentText(service.name)}
@@ -131,10 +134,11 @@ export default function ServicesPage() {
                           data-preview-field-path={`services[${index}].name`}
                           defaultValue={contentText(service.name)}
                           fontFamily="heading"
-                          size="1.75rem"
-                          weight={400}
+                          size="1.5rem"
+                          weight={800}
                           lineHeight={1.18}
-                          color="heading"
+                          letterSpacing="-0.02em"
+                          color="#201C1A"
                           className="m-0"
                         />
 
@@ -145,23 +149,23 @@ export default function ServicesPage() {
                           fontFamily="body"
                           size="0.875rem"
                           lineHeight={1.75}
-                          color="muted"
+                          color="#5E4E45"
                           className="mt-3 mb-0"
                         />
 
                         {features.length > 0 && (
                           <ul
                             data-preview-list-path={`services[${index}].features`}
-                            className="mt-5 flex list-none flex-col gap-2.5 border-t border-[#262923]/10 p-0 pt-5 dark:border-[#F8F6F1]/10"
+                            className="mt-5 flex list-none flex-col gap-2.5 border-t border-[#3B302B]/12 p-0 pt-5"
                           >
                             {features.map((feature, fIndex) => (
                               <li
                                 key={fIndex}
                                 data-preview-item-path={`services[${index}].features[${fIndex}]`}
-                                className="flex items-start gap-2.5 text-xs leading-relaxed text-[#595C52] dark:text-[#B6B8AE]"
+                                className="flex items-start gap-2.5 text-xs leading-relaxed text-[#5E4E45]"
                               >
                                 <Check
-                                  className="mt-0.5 h-3.5 w-3.5 shrink-0 stroke-[1.75] text-[#747B65] dark:text-[#B59B79]"
+                                  className="mt-0.5 h-3.5 w-3.5 shrink-0 stroke-[1.85] text-[#8D7667]"
                                   aria-hidden="true"
                                 />
                                 <span data-preview-field-path={`services[${index}].features[${fIndex}]`}>
@@ -172,7 +176,7 @@ export default function ServicesPage() {
                           </ul>
                         )}
 
-                        <div className="mt-auto border-t border-[#262923]/10 pt-5 dark:border-[#F8F6F1]/10">
+                        <div className="mt-auto border-t border-[#3B302B]/12 pt-5">
                           {itemShowPrice && (hasNumericPrice || priceLabel) ? (
                             <div className="flex flex-wrap items-baseline gap-2">
                               {hasNumericPrice && (
@@ -182,8 +186,8 @@ export default function ServicesPage() {
                                   defaultValue={formattedPrice}
                                   fontFamily="heading"
                                   size="1.5rem"
-                                  weight={500}
-                                  color="heading"
+                                  weight={800}
+                                  color="#201C1A"
                                 />
                               )}
                               {priceLabel && (
@@ -193,14 +197,14 @@ export default function ServicesPage() {
                                   defaultValue={priceLabel}
                                   fontFamily="body"
                                   size="0.75rem"
-                                  color="muted"
+                                  color="#5E4E45"
                                 />
                               )}
                             </div>
                           ) : !itemShowPrice ? (
                             <span
                               data-preview-static="service-quote-label"
-                              className="inline-block border border-[#B59B79]/45 bg-[#E8E0D5]/40 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#747B65] dark:text-[#B59B79]"
+                              className="inline-block rounded-[9px] border border-[#C8A98B]/55 bg-[#F2E9DE] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#3B302B]"
                             >
                               Quote on Request
                             </span>

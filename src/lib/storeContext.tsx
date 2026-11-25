@@ -35,9 +35,9 @@ export interface LoomeProduct {
 }
 
 const DEFAULT_SWATCHES: LoomeColorSwatch[] = [
-  { name: 'Warm Ivory', hex: '#F8F6F1' },
-  { name: 'Soft Beige', hex: '#E8E0D5' },
-  { name: 'Sage Olive', hex: '#747B65' },
+  { name: 'Cream Ivory', hex: '#F2E9DE' },
+  { name: 'Soft Sand', hex: '#E6D9C9' },
+  { name: 'Warm Mushroom', hex: '#8D7667' },
 ];
 
 export function normalizeLoomeProduct(rawInput: unknown, index: number): LoomeProduct {
@@ -166,6 +166,18 @@ export function resolveLoomeCurrency(siteData: unknown, fallbackCurrency?: strin
     contentText(fallbackCurrency) ||
     'USD'
   );
+}
+
+export function resolveFreeDeliveryThreshold(siteData: unknown): number {
+  const sd = contentObject(siteData);
+  const content = contentObject(sd.content);
+  const common = contentObject(content.common);
+  const shop = contentObject(sd.shop);
+  const raw = common.freeDeliveryThreshold ?? shop.freeDeliveryThreshold;
+  if (raw === undefined || raw === null || raw === '') return 250;
+  const parsed = typeof raw === 'number' ? raw : Number.parseFloat(String(raw));
+  if (!Number.isFinite(parsed)) return 250;
+  return Math.max(0, parsed);
 }
 
 export function formatLoomePrice(amount: number, currency = 'USD'): string {

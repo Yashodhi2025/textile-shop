@@ -6,7 +6,7 @@ export default function SilkIntroPreviewPage() {
   return (
     <div
       data-preview-page-key="silk_intro_preview"
-      className="w-full bg-[#F8F6F1] text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+      className="w-full bg-[#F2E9DE] text-[#201C1A] dark:bg-[#201C1A] dark:text-[#F2E9DE]"
     >
       {/* Editorial Preview Header */}
       <section className="mx-auto max-w-[1360px] px-4 pb-8 pt-12 sm:px-8 lg:px-14 lg:pt-14">
@@ -14,7 +14,7 @@ export default function SilkIntroPreviewPage() {
           <div>
             <p
               data-preview-static="silk-preview-eyebrow"
-              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#8D7667] dark:text-[#C8A98B]"
             >
               LOOMÉ Atelier · Editor Preview
             </p>
@@ -27,7 +27,7 @@ export default function SilkIntroPreviewPage() {
           </div>
           <p
             data-preview-static="silk-preview-copy"
-            className="m-0 max-w-md text-sm leading-[1.8] text-[#595C52] dark:text-[#B6B8AE]"
+            className="m-0 max-w-md text-sm leading-[1.8] text-[#5E4E45] dark:text-[#C7B6A6]"
           >
             Click the wordmark, tagline, silk backdrop, or Skip button directly below to edit. Normal visitors see this intro once per browser session on the homepage.
           </p>

@@ -11,7 +11,10 @@ type SubmitState = 'idle' | 'submitting' | 'success' | 'error';
 export default function ContactPage() {
   const siteData = useSiteData();
   const siteApi = useSiteApi();
-  const contact = contentObject(contentObject(siteData.content).contact);
+  const content = contentObject(siteData.content);
+  const common = contentObject(content.common);
+  const contact = contentObject(content.contact);
+  const siteTitle = contentText(common.websiteTitle) || 'LOOMÉ';
   const [submitState, setSubmitState] = useState<SubmitState>('idle');
   const [statusMessage, setStatusMessage] = useState('');
 
@@ -75,18 +78,21 @@ export default function ContactPage() {
   }
 
   return (
-    <div data-preview-page-key="contact" className="w-full overflow-x-clip">
+    <div
+      data-preview-page-key="contact"
+      className="loome-surface-espresso w-full overflow-x-clip bg-[#201C1A] text-[#F2E9DE]"
+    >
       {/* Compact Editorial Page Header */}
       <section
         data-design-section="contact-heading"
-        className="mx-auto max-w-[1440px] px-4 pb-8 pt-12 sm:px-8 lg:px-14 lg:pb-10 lg:pt-16"
+        className="mx-auto max-w-[1440px] px-4 pb-10 pt-12 sm:px-8 lg:px-14 lg:pb-12 lg:pt-16"
       >
         <LuxuryReveal className="max-w-3xl">
           <div className="flex items-center gap-3">
-            <span className="h-px w-8 bg-[#B59B79]" aria-hidden="true" />
+            <span className="h-px w-8 bg-[#C8A98B]" aria-hidden="true" />
             <p
               data-preview-static="contact-eyebrow"
-              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+              className="m-0 text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
             >
               Private Client Concierge
             </p>
@@ -97,11 +103,11 @@ export default function ContactPage() {
             data-preview-field-path="contact.heading"
             defaultValue={contentText(contact.heading)}
             fontFamily="heading"
-            size="clamp(2.6rem, 4.6vw, 4.15rem)"
-            weight={300}
+            size="clamp(2.5rem, 4.5vw, 4rem)"
+            weight={800}
             lineHeight={1.04}
-            letterSpacing="-0.02em"
-            color="heading"
+            letterSpacing="-0.03em"
+            color="#F2E9DE"
             className="mt-4 mb-0"
           />
 
@@ -112,7 +118,7 @@ export default function ContactPage() {
             fontFamily="body"
             size="1rem"
             lineHeight={1.8}
-            color="muted"
+            color="#C7B6A6"
             className="mt-4 mb-0 max-w-2xl"
           />
         </LuxuryReveal>
@@ -121,15 +127,15 @@ export default function ContactPage() {
       {/* Contact Details + Private Consultation Form */}
       <section
         data-design-section="contact-details"
-        className="w-full border-t border-[#262923]/8 bg-[#E8E0D5]/32 py-12 dark:border-[#F8F6F1]/8 dark:bg-[#20231D] lg:py-16"
+        className="w-full border-t border-[#C8A98B]/16 bg-[#2B2320] py-14 lg:py-20"
       >
         <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-8 px-4 sm:px-8 lg:grid-cols-12 lg:gap-12 lg:px-14">
           <LuxuryReveal className="lg:col-span-5">
             <EditableBox
               stylePath="contact.informationCard"
-              className="border border-[#262923]/12 bg-[#FCFBF8] p-7 dark:border-[#F8F6F1]/12 dark:bg-[#171915] sm:p-9"
+              className="rounded-2xl border border-[#C8A98B]/20 bg-[#201C1A] p-7 sm:p-9"
               balance
-              radius="none"
+              radius="lg"
             >
               <EditableText
                 as="h2"
@@ -137,38 +143,38 @@ export default function ContactPage() {
                 defaultValue={contentText(contact.directInformationTitle ?? 'Atelier Concierge')}
                 placeholder="Add an information heading"
                 fontFamily="heading"
-                size="1.85rem"
-                weight={400}
+                size="1.75rem"
+                weight={800}
                 lineHeight={1.15}
-                color="heading"
+                color="#F2E9DE"
                 className="m-0"
               />
 
-              <div className="mt-6 flex flex-col gap-5 border-t border-[#262923]/10 pt-6 text-sm dark:border-[#F8F6F1]/10">
+              <div className="mt-6 flex flex-col gap-5 border-t border-[#C8A98B]/16 pt-6 text-sm">
                 <div className="flex items-start gap-3.5">
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#B59B79]" aria-hidden="true" />
+                  <Phone className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[#C8A98B]" aria-hidden="true" />
                   <a
                     href={phone ? `tel:${phone}` : ''}
                     data-preview-field-path="contact.phone"
-                    className="font-medium text-[#262923] no-underline transition-colors hover:text-[#747B65] dark:text-[#F8F6F1]"
+                    className="font-medium text-[#F2E9DE] no-underline transition-colors hover:text-[#C8A98B]"
                   >
                     {phone}
                   </a>
                 </div>
 
                 <div className="flex items-start gap-3.5">
-                  <Mail className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#B59B79]" aria-hidden="true" />
+                  <Mail className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[#C8A98B]" aria-hidden="true" />
                   <a
                     href={email ? `mailto:${email}` : ''}
                     data-preview-field-path="contact.email"
-                    className="break-all font-medium text-[#262923] no-underline transition-colors hover:text-[#747B65] dark:text-[#F8F6F1]"
+                    className="break-all font-medium text-[#F2E9DE] no-underline transition-colors hover:text-[#C8A98B]"
                   >
                     {email}
                   </a>
                 </div>
 
                 <div className="flex items-start gap-3.5">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#B59B79]" aria-hidden="true" />
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[#C8A98B]" aria-hidden="true" />
                   <EditableText
                     as="p"
                     data-preview-field-path="contact.address"
@@ -176,21 +182,21 @@ export default function ContactPage() {
                     fontFamily="body"
                     size="0.9rem"
                     lineHeight={1.7}
-                    color="muted"
+                    color="#C7B6A6"
                     className="m-0"
                   />
                 </div>
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-3 border-t border-[#262923]/10 pt-6 dark:border-[#F8F6F1]/10">
+              <div className="mt-8 flex flex-wrap gap-3 border-t border-[#C8A98B]/16 pt-6">
                 <a
                   href={directionsUrl || '#'}
                   data-preview-field-path="contact.directionsUrl"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="loome-btn-outline px-5 py-3 text-[11px]"
+                  className="loome-btn-outline px-5 py-3 text-[11px] no-underline"
                 >
-                  <MapPin className="h-3.5 w-3.5 stroke-[1.5]" aria-hidden="true" />
+                  <MapPin className="h-3.5 w-3.5 stroke-[1.6]" aria-hidden="true" />
                   <span data-preview-field-path="contact.directionsLabel">{directionsLabel}</span>
                 </a>
                 <a
@@ -198,12 +204,12 @@ export default function ContactPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   data-preview-field-path="contact.whatsapp"
-                  className="loome-btn-primary px-5 py-3 text-[11px]"
+                  className="loome-btn-primary px-5 py-3 text-[11px] no-underline"
                 >
                   <span data-preview-field-path="contact.directMessageText">
                     {directMessageText}
                   </span>
-                  <ArrowRight className="h-3.5 w-3.5 stroke-[1.5]" aria-hidden="true" />
+                  <ArrowRight className="h-3.5 w-3.5 stroke-[1.6]" aria-hidden="true" />
                 </a>
               </div>
             </EditableBox>
@@ -212,9 +218,9 @@ export default function ContactPage() {
           <LuxuryReveal delay={0.1} className="lg:col-span-7">
             <EditableBox
               stylePath="contact.formCard"
-              className="border border-[#262923]/12 bg-[#FCFBF8] p-7 dark:border-[#F8F6F1]/12 dark:bg-[#171915] sm:p-9"
+              className="rounded-2xl border border-[#C8A98B]/20 bg-[#201C1A] p-7 sm:p-9"
               balance
-              radius="none"
+              radius="lg"
             >
               <form
                 className="contact-form"
@@ -226,10 +232,10 @@ export default function ContactPage() {
                   data-preview-field-path="contact.formTitle"
                   defaultValue={contentText(contact.formTitle)}
                   fontFamily="heading"
-                  size="1.85rem"
-                  weight={400}
+                  size="1.75rem"
+                  weight={800}
                   lineHeight={1.15}
-                  color="heading"
+                  color="#F2E9DE"
                   className="mb-2"
                 />
 
@@ -242,10 +248,10 @@ export default function ContactPage() {
                       placeholder="Full Name"
                       fontFamily="body"
                       size="0.6875rem"
-                      weight={500}
+                      weight={600}
                       transform="uppercase"
                       letterSpacing="0.18em"
-                      color="muted"
+                      color="#C7B6A6"
                     />
                     <input type="text" name="name" autoComplete="name" required />
                   </label>
@@ -258,10 +264,10 @@ export default function ContactPage() {
                       placeholder="Email Address"
                       fontFamily="body"
                       size="0.6875rem"
-                      weight={500}
+                      weight={600}
                       transform="uppercase"
                       letterSpacing="0.18em"
-                      color="muted"
+                      color="#C7B6A6"
                     />
                     <input type="email" name="email" autoComplete="email" required />
                   </label>
@@ -275,10 +281,10 @@ export default function ContactPage() {
                     placeholder="Message"
                     fontFamily="body"
                     size="0.6875rem"
-                    weight={500}
+                    weight={600}
                     transform="uppercase"
                     letterSpacing="0.18em"
-                    color="muted"
+                    color="#C7B6A6"
                   />
                   <textarea name="message" rows={4} required />
                 </label>
@@ -292,7 +298,7 @@ export default function ContactPage() {
                     <span data-preview-field-path="contact.submitLabel">
                       {contentText(contact.submitLabel)}
                     </span>
-                    <ArrowRight className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1" />
+                    <ArrowRight className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-1" />
                   </button>
                 </div>
 
@@ -300,16 +306,16 @@ export default function ContactPage() {
                   <div
                     role="status"
                     aria-live="polite"
-                    className={`mt-2 flex items-start gap-2.5 border px-4 py-3 text-xs leading-relaxed ${
+                    className={`mt-2 flex items-start gap-2.5 rounded-[11px] border px-4 py-3 text-xs leading-relaxed ${
                       submitState === 'success'
-                        ? 'border-[#747B65]/40 bg-[#F8F6F1] text-[#262923] dark:bg-[#20231D] dark:text-[#F8F6F1]'
-                        : 'border-[#B59B79]/50 bg-[#F8F6F1] text-[#262923] dark:bg-[#20231D] dark:text-[#F8F6F1]'
+                        ? 'border-[#C8A98B]/45 bg-[#3B302B]/70 text-[#F2E9DE]'
+                        : 'border-[#C8A98B]/50 bg-[#3B302B]/70 text-[#F2E9DE]'
                     }`}
                   >
                     {submitState === 'success' ? (
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#747B65]" aria-hidden="true" />
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#C8A98B]" aria-hidden="true" />
                     ) : (
-                      <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#B59B79]" aria-hidden="true" />
+                      <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#C8A98B]" aria-hidden="true" />
                     )}
                     <div className="space-y-1.5">
                       <p className="m-0">{statusMessage}</p>
@@ -317,8 +323,8 @@ export default function ContactPage() {
                         <div className="flex flex-wrap gap-4 pt-0.5">
                           {email && (
                             <a
-                              href={`mailto:${email}?subject=${encodeURIComponent('LOOMÉ Atelier Inquiry')}`}
-                              className="font-medium underline underline-offset-4 hover:text-[#747B65]"
+                              href={`mailto:${email}?subject=${encodeURIComponent(`${siteTitle} Atelier Inquiry`)}`}
+                              className="font-semibold text-[#C8A98B] underline underline-offset-4 hover:text-[#F2E9DE]"
                             >
                               Email {email}
                             </a>
@@ -328,7 +334,7 @@ export default function ContactPage() {
                               href={whatsappHref}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="font-medium underline underline-offset-4 hover:text-[#747B65]"
+                              className="font-semibold text-[#C8A98B] underline underline-offset-4 hover:text-[#F2E9DE]"
                             >
                               Message on WhatsApp
                             </a>

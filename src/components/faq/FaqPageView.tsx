@@ -269,22 +269,22 @@ export default function FaqPageView() {
       className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
     >
       {/* Breadcrumb Strip */}
-      <div className="border-b border-[#262923]/8 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
-        <nav className="mx-auto flex max-w-[1380px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#55594F] dark:text-[#B6B8AE] sm:px-8 lg:px-14">
+      <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
+        <nav className="mx-auto flex max-w-[1380px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-14">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#55594F] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" className="text-[#B59B79]">
+          <span aria-hidden="true" className="text-[#C8A98B]">
             /
           </span>
           <span
             aria-current="page"
             data-preview-field-path="common.navLabels.faq"
-            className="font-medium text-[#262923] dark:text-[#F8F6F1]"
+            className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
           >
             {faqNavLabel}
           </span>
@@ -294,13 +294,13 @@ export default function FaqPageView() {
       {/* 1. Editorial Hero */}
       <section
         data-design-section="faq-hero"
-        className="border-b border-[#262923]/8 bg-gradient-to-b from-[#F2ECE2]/90 via-[#F8F6F1] to-[#F8F6F1] dark:border-[#F8F6F1]/10 dark:from-[#1F221C] dark:via-[#171915] dark:to-[#171915]"
+        className="border-b border-[#201C1A]/8 bg-gradient-to-b from-[#E6D9C9]/90 via-[#F2E9DE] to-[#F2E9DE] dark:border-[#F2E9DE]/10 dark:from-[#2B2320] dark:via-[#201C1A] dark:to-[#201C1A]"
       >
         <div className="mx-auto max-w-[1380px] px-4 py-12 sm:px-8 sm:py-16 lg:px-14 lg:py-20">
           <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <div className="max-w-3xl">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-9 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-9 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="faqPage.eyebrow"
@@ -375,8 +375,8 @@ export default function FaqPageView() {
                   onClick={() => setSelectedCategoryKey('all')}
                   className={`flex cursor-pointer items-center justify-between gap-3 border px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-[0.2em] transition-all duration-300 lg:w-full ${
                     activeCategoryKey === 'all'
-                      ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#171915]'
-                      : 'border-[#262923]/14 bg-[#FCFBF8] text-[#55594F] hover:border-[#B59B79] hover:text-[#262923] dark:border-[#F8F6F1]/14 dark:bg-[#20231D] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]'
+                      ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                      : 'border-[#201C1A]/14 bg-[#FAF5EE] text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/14 dark:bg-[#3B302B] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
                   }`}
                 >
                   <EditableText
@@ -412,8 +412,8 @@ export default function FaqPageView() {
                         onClick={() => setSelectedCategoryKey(cat.id)}
                         className={`flex cursor-pointer items-center justify-between gap-3 border px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-[0.2em] transition-all duration-300 lg:w-full ${
                           isActive
-                            ? 'border-[#262923] bg-[#262923] text-[#F8F6F1] dark:border-[#B59B79] dark:bg-[#B59B79] dark:text-[#171915]'
-                            : 'border-[#262923]/14 bg-[#FCFBF8] text-[#55594F] hover:border-[#B59B79] hover:text-[#262923] dark:border-[#F8F6F1]/14 dark:bg-[#20231D] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]'
+                            ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                            : 'border-[#201C1A]/14 bg-[#FAF5EE] text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/14 dark:bg-[#3B302B] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
                         }`}
                       >
                         <EditableText
@@ -443,7 +443,7 @@ export default function FaqPageView() {
 
             {/* 5. Small Editorial Textile Image Card */}
             <LuxuryReveal delay={0.08} className="overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-[0_12px_34px_rgba(32,28,26,0.04)]">
-              <LuxuryImageReveal tone="ivory" className="aspect-[4/3] w-full bg-[#E8E0D5]/60">
+              <LuxuryImageReveal tone="ivory" className="aspect-[4/3] w-full bg-[#E6D9C9]/60">
                 <img
                   src={withBasePath(editorialImageUrl)}
                   alt={editorialTitle}
@@ -492,9 +492,9 @@ export default function FaqPageView() {
 
           {/* Right Column: Dynamic Count Header, Policy Note & Animated Accordions */}
           <div className="lg:col-span-8">
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#262923]/12 pb-4 dark:border-[#F8F6F1]/12">
-              <div className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-[#595C52] dark:text-[#B6B8AE]">
-                <span data-preview-static="faq-visible-count" className="tabular-nums text-[#262923] dark:text-[#F8F6F1]">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#201C1A]/12 pb-4 dark:border-[#F2E9DE]/12">
+              <div className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-[#5E4E45] dark:text-[#C7B6A6]">
+                <span data-preview-static="faq-visible-count" className="tabular-nums text-[#201C1A] dark:text-[#F2E9DE]">
                   {filteredItems.length}
                 </span>
                 {filteredItems.length === 1 ? (
@@ -529,7 +529,7 @@ export default function FaqPageView() {
               <button
                 type="button"
                 onClick={toggleAllVisible}
-                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#747B65] transition-colors hover:text-[#262923] dark:text-[#B59B79] dark:hover:text-[#F8F6F1]"
+                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#8D7667] transition-colors hover:text-[#201C1A] dark:text-[#C8A98B] dark:hover:text-[#F2E9DE]"
               >
                 {allFilteredOpen ? (
                   <EditableText
@@ -562,7 +562,7 @@ export default function FaqPageView() {
             </div>
 
             {/* Merchant-Configurable Policy Note */}
-            <div className="mt-5 border-l-2 border-l-[#B59B79] bg-[#FAF8F4] px-4 py-3.5 dark:bg-[#1D201A]">
+            <div className="mt-5 border-l-2 border-l-[#C8A98B] bg-[#FAF5EE] px-4 py-3.5 dark:bg-[#1D201A]">
               <EditableText
                 as="p"
                 data-preview-field-path="faqPage.policyNote"
@@ -578,10 +578,10 @@ export default function FaqPageView() {
             {/* Animated Accessible FAQ Accordions */}
             <div data-preview-list-path="faqPage.items" className="mt-6">
               {filteredItems.length === 0 ? (
-                <div className="border border-dashed border-[#262923]/20 px-6 py-16 text-center dark:border-[#F8F6F1]/20">
+                <div className="border border-dashed border-[#201C1A]/20 px-6 py-16 text-center dark:border-[#F2E9DE]/20">
                   <p
                     data-preview-static="faq-empty-message"
-                    className="m-0 text-sm text-[#65685E] dark:text-[#B6B8AE]"
+                    className="m-0 text-sm text-[#65685E] dark:text-[#C7B6A6]"
                   >
                     {items.length === 0
                       ? 'Add FAQ questions and answers in your Fivora editor.'
@@ -591,7 +591,7 @@ export default function FaqPageView() {
                     <button
                       type="button"
                       onClick={() => setSelectedCategoryKey('all')}
-                      className="mt-5 inline-flex cursor-pointer items-center border border-[#262923]/25 bg-transparent px-4 py-2 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:border-[#B59B79] hover:text-[#747B65] dark:border-[#F8F6F1]/25 dark:text-[#F8F6F1]"
+                      className="mt-5 inline-flex cursor-pointer items-center border border-[#201C1A]/25 bg-transparent px-4 py-2 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#C8A98B] hover:text-[#8D7667] dark:border-[#F2E9DE]/25 dark:text-[#F2E9DE]"
                     >
                       <EditableText
                         as="span"
@@ -609,7 +609,7 @@ export default function FaqPageView() {
                   )}
                 </div>
               ) : (
-                <div className="divide-y divide-[#262923]/12 border-b border-[#262923]/12 dark:divide-[#F8F6F1]/12 dark:border-[#F8F6F1]/12">
+                <div className="divide-y divide-[#201C1A]/12 border-b border-[#201C1A]/12 dark:divide-[#F2E9DE]/12 dark:border-[#F2E9DE]/12">
                   <AnimatePresence mode="popLayout">
                     {filteredItems.map((item) => {
                       const open = isItemOpen(item);
@@ -660,15 +660,15 @@ export default function FaqPageView() {
                                 weight={400}
                                 lineHeight={1.25}
                                 color="heading"
-                                className="m-0 transition-colors group-hover:text-[#747B65] dark:group-hover:text-[#B59B79]"
+                                className="m-0 transition-colors group-hover:text-[#8D7667] dark:group-hover:text-[#C8A98B]"
                               />
                             </div>
 
                             <span
                               aria-hidden="true"
-                              className={`mt-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#262923]/15 text-[#262923] transition-all duration-300 motion-reduce:transition-none group-hover:border-[#B59B79] dark:border-[#F8F6F1]/18 dark:text-[#F8F6F1] ${
+                              className={`mt-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#201C1A]/15 text-[#201C1A] transition-all duration-300 motion-reduce:transition-none group-hover:border-[#C8A98B] dark:border-[#F2E9DE]/18 dark:text-[#F2E9DE] ${
                                 open
-                                  ? 'rotate-180 bg-[#262923] text-[#F8F6F1] dark:bg-[#B59B79] dark:text-[#171915]'
+                                  ? 'rotate-180 bg-[#201C1A] text-[#F2E9DE] dark:bg-[#C8A98B] dark:text-[#201C1A]'
                                   : ''
                               }`}
                             >
@@ -711,12 +711,12 @@ export default function FaqPageView() {
       {/* 6. Premium "Still Have Questions?" Contact Section */}
       <section
         data-design-section="faq-contact-cta"
-        className="border-t border-[#262923]/8 bg-[#F2ECE2]/72 py-16 dark:border-[#F8F6F1]/10 dark:bg-[#1C1F19] sm:py-20"
+        className="border-t border-[#201C1A]/8 bg-[#E6D9C9]/72 py-16 dark:border-[#F2E9DE]/10 dark:bg-[#1C1F19] sm:py-20"
       >
         <div className="mx-auto max-w-[1160px] px-4 sm:px-8 lg:px-14">
-          <LuxuryReveal className="border border-[#262923]/12 border-t-2 border-t-[#B59B79] bg-[#FCFBF8] px-7 py-12 text-center shadow-[0_18px_52px_rgba(38,41,35,0.04)] dark:border-[#F8F6F1]/12 dark:border-t-[#B59B79] dark:bg-[#20231D] sm:px-12 sm:py-14">
+          <LuxuryReveal className="border border-[#201C1A]/12 border-t-2 border-t-[#C8A98B] bg-[#FAF5EE] px-7 py-12 text-center shadow-[0_18px_52px_rgba(38,41,35,0.04)] dark:border-[#F2E9DE]/12 dark:border-t-[#C8A98B] dark:bg-[#3B302B] sm:px-12 sm:py-14">
             <div className="flex items-center justify-center gap-3">
-              <LuxuryHairline origin="center" className="h-px w-8 bg-[#B59B79]" />
+              <LuxuryHairline origin="center" className="h-px w-8 bg-[#C8A98B]" />
               <EditableText
                 as="p"
                 data-preview-field-path="faqPage.contactEyebrow"
@@ -729,7 +729,7 @@ export default function FaqPageView() {
                 color="primary"
                 className="m-0"
               />
-              <LuxuryHairline origin="center" className="h-px w-8 bg-[#B59B79]" />
+              <LuxuryHairline origin="center" className="h-px w-8 bg-[#C8A98B]" />
             </div>
 
             <EditableText
@@ -786,7 +786,7 @@ export default function FaqPageView() {
                   type="button"
                   onClick={() => window.location.assign(withBasePath('/contact/'))}
                   data-target-page="contact"
-                  className="inline-flex h-[50px] cursor-pointer items-center justify-center gap-2 border border-[#262923]/30 bg-transparent px-7 text-[11.5px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-all duration-300 hover:border-[#B59B79] hover:text-[#747B65] dark:border-[#F8F6F1]/30 dark:text-[#F8F6F1] dark:hover:border-[#B59B79] dark:hover:text-[#B59B79]"
+                  className="inline-flex h-[50px] cursor-pointer items-center justify-center gap-2 border border-[#201C1A]/30 bg-transparent px-7 text-[11.5px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-all duration-300 hover:border-[#C8A98B] hover:text-[#8D7667] dark:border-[#F2E9DE]/30 dark:text-[#F2E9DE] dark:hover:border-[#C8A98B] dark:hover:text-[#C8A98B]"
                 >
                   <Mail aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.5]" />
                   <EditableText
@@ -806,7 +806,7 @@ export default function FaqPageView() {
                 <span
                   data-target-page="contact"
                   data-preview-field-path="faqPage.contactPageLabel"
-                  className="unavailable inline-flex h-[50px] items-center border border-[#262923]/20 px-7 text-[11.5px] uppercase tracking-[0.2em] text-[#262923]"
+                  className="unavailable inline-flex h-[50px] items-center border border-[#201C1A]/20 px-7 text-[11.5px] uppercase tracking-[0.2em] text-[#201C1A]"
                 >
                   {contactPageLabel}
                 </span>
@@ -817,9 +817,9 @@ export default function FaqPageView() {
               <div
                 role="status"
                 aria-live="polite"
-                className="mx-auto mt-5 inline-flex items-start gap-2.5 border border-[#B59B79]/50 bg-[#F8F6F1] px-4 py-3 text-xs text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+                className="mx-auto mt-5 inline-flex items-start gap-2.5 border border-[#C8A98B]/50 bg-[#F2E9DE] px-4 py-3 text-xs text-[#201C1A] dark:bg-[#201C1A] dark:text-[#F2E9DE]"
               >
-                <AlertCircle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[#B59B79]" />
+                <AlertCircle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[#C8A98B]" />
                 <span>{whatsappFallbackNotice}</span>
               </div>
             )}

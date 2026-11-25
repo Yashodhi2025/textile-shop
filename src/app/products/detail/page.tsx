@@ -25,30 +25,30 @@ export default function ProductDetailPage() {
         <section
           role="status"
           aria-live="polite"
-          className="bg-[#F8F6F1] py-16 text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1] sm:py-24"
+          className="loome-surface-espresso bg-[#201C1A] py-16 text-[#F2E9DE] sm:py-24"
         >
-          <div className="loome-container">
+          <div className="mx-auto max-w-[1380px] px-4 sm:px-8 lg:px-14">
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
               <div className="lg:col-span-7">
-                <div className="aspect-[4/5] w-full animate-pulse bg-[#E8E0D5]/65 dark:bg-[#22251F]" />
+                <div className="aspect-[4/5] w-full animate-pulse rounded-2xl bg-[#3B302B]/70" />
               </div>
               <div className="flex flex-col justify-center space-y-5 lg:col-span-5">
                 <span
                   data-preview-static="product-detail-loading-eyebrow"
-                  className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#747B65] dark:text-[#B59B79]"
+                  className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]"
                 >
-                  LOOMÉ Atelier
+                  Atelier Archive
                 </span>
                 <p
                   data-preview-static="product-detail-loading"
-                  className="m-0 font-serif text-3xl font-light text-[#262923] dark:text-[#F8F6F1]"
+                  className="m-0 font-heading text-3xl font-extrabold tracking-tight text-[#F2E9DE]"
                 >
                   Preparing your textile piece…
                 </p>
                 <div className="space-y-3 pt-2">
-                  <div className="h-3 w-3/4 animate-pulse bg-[#E8E0D5]/70 dark:bg-[#22251F]" />
-                  <div className="h-3 w-full animate-pulse bg-[#E8E0D5]/55 dark:bg-[#22251F]" />
-                  <div className="h-3 w-2/3 animate-pulse bg-[#E8E0D5]/55 dark:bg-[#22251F]" />
+                  <div className="h-3 w-3/4 animate-pulse rounded bg-[#3B302B]" />
+                  <div className="h-3 w-full animate-pulse rounded bg-[#3B302B]/80" />
+                  <div className="h-3 w-2/3 animate-pulse rounded bg-[#3B302B]/80" />
                 </div>
               </div>
             </div>
@@ -56,24 +56,24 @@ export default function ProductDetailPage() {
         </section>
       }
       notFoundFallback={
-        <section className="bg-[#F8F6F1] py-24 text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1] sm:py-32">
-          <div className="loome-container flex flex-col items-center text-center">
+        <section className="loome-surface-espresso bg-[#201C1A] py-24 text-[#F2E9DE] sm:py-32">
+          <div className="mx-auto flex max-w-[1380px] flex-col items-center px-4 text-center sm:px-8 lg:px-14">
             <span
               data-preview-static="product-not-found-eyebrow"
-              className="inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+              className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
             >
-              <Sparkles className="h-3.5 w-3.5 stroke-[1.5]" />
+              <Sparkles className="h-3.5 w-3.5 stroke-[1.6]" />
               Archive Notice
             </span>
             <h1
               data-preview-static="product-not-found-title"
-              className="mt-4 mb-0 font-serif text-4xl font-light tracking-[-0.015em] sm:text-5xl"
+              className="mt-4 mb-0 font-heading text-4xl font-extrabold tracking-[-0.025em] sm:text-5xl"
             >
               This textile piece could not be found
             </h1>
             <p
               data-preview-static="product-not-found-copy"
-              className="mt-4 max-w-md text-sm leading-relaxed text-[#595C52] dark:text-[#B6B8AE]"
+              className="mt-4 max-w-md text-sm leading-relaxed text-[#C7B6A6]"
             >
               The weave you are looking for may have been retired from our seasonal archive or moved to a new collection.
             </p>
@@ -85,7 +85,7 @@ export default function ProductDetailPage() {
                   data-preview-static="product-not-found-shop-cta"
                   className="loome-btn-primary inline-flex items-center gap-2 no-underline"
                 >
-                  <ArrowLeft className="h-3.5 w-3.5 stroke-[1.5]" />
+                  <ArrowLeft className="h-3.5 w-3.5 stroke-[1.6]" />
                   Explore the Shop
                 </a>
               )}
@@ -101,23 +101,23 @@ export default function ProductDetailPage() {
         </section>
       }
       errorFallback={
-        <section className="bg-[#F8F6F1] py-24 text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1] sm:py-32">
-          <div className="loome-container flex flex-col items-center text-center">
+        <section className="loome-surface-espresso bg-[#201C1A] py-24 text-[#F2E9DE] sm:py-32">
+          <div className="mx-auto flex max-w-[1380px] flex-col items-center px-4 text-center sm:px-8 lg:px-14">
             <span
               data-preview-static="product-error-eyebrow"
-              className="text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+              className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
             >
               Temporary Interruption
             </span>
             <h1
               data-preview-static="product-error-title"
-              className="mt-4 mb-0 font-serif text-4xl font-light tracking-[-0.015em] sm:text-5xl"
+              className="mt-4 mb-0 font-heading text-4xl font-extrabold tracking-[-0.025em] sm:text-5xl"
             >
               Unable to load this textile right now
             </h1>
             <p
               data-preview-static="product-error-copy"
-              className="mt-4 max-w-md text-sm leading-relaxed text-[#595C52] dark:text-[#B6B8AE]"
+              className="mt-4 max-w-md text-sm leading-relaxed text-[#C7B6A6]"
             >
               Please refresh the page or return to our curated catalog while we reconnect to the atelier archive.
             </p>
@@ -128,7 +128,7 @@ export default function ProductDetailPage() {
                 data-preview-static="product-error-retry-cta"
                 className="loome-btn-primary inline-flex items-center gap-2"
               >
-                <RefreshCw className="h-3.5 w-3.5 stroke-[1.5]" />
+                <RefreshCw className="h-3.5 w-3.5 stroke-[1.6]" />
                 Reload Page
               </button>
               <a
@@ -137,7 +137,7 @@ export default function ProductDetailPage() {
                 data-preview-static="product-error-back-cta"
                 className="loome-btn-outline inline-flex items-center gap-2 no-underline"
               >
-                <ArrowLeft className="h-3.5 w-3.5 stroke-[1.5]" />
+                <ArrowLeft className="h-3.5 w-3.5 stroke-[1.6]" />
                 {hasShopPage ? 'Return to Shop' : 'Return Home'}
               </a>
             </div>

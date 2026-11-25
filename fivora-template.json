@@ -11,6 +11,7 @@
       "services[*].id",
       "products[*].currency",
       "about.collageImages[*].id",
+      "common.freeDeliveryThreshold",
       "products[*].showPrice",
       "products[*].isPriceRange",
       "products[*].minPrice",
@@ -267,6 +268,12 @@
             "key": "headerCtaLabel",
             "type": "text",
             "label": "Header atelier link label"
+          },
+          {
+            "key": "freeDeliveryThreshold",
+            "type": "number",
+            "label": "Free delivery threshold",
+            "description": "Minimum subtotal for complimentary delivery (set to 0 to hide the threshold progress meter)"
           },
           {
             "key": "navLabels",

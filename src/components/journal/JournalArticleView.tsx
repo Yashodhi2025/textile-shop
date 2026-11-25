@@ -174,35 +174,35 @@ export default function JournalArticleView() {
       className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
     >
       {/* Breadcrumb Strip */}
-      <div className="border-b border-[#262923]/8 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
-        <nav className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#55594F] dark:text-[#B6B8AE] sm:px-8 lg:px-12">
+      <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
+        <nav className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-12">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#55594F] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" className="text-[#B59B79]">
+          <span aria-hidden="true" className="text-[#C8A98B]">
             /
           </span>
           <button
             type="button"
             onClick={() => window.location.assign(backToJournalHref)}
             data-target-page={hasJournalPage ? 'journal' : undefined}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#55594F] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
           >
             <span data-preview-field-path="common.navLabels.journal">{journalNavLabel}</span>
           </button>
           {resolvedArticle && (
             <>
-              <span aria-hidden="true" className="text-[#B59B79]">
+              <span aria-hidden="true" className="text-[#C8A98B]">
                 /
               </span>
               <span
                 aria-current="page"
                 data-preview-field-path={`home.journalPosts[${resolvedArticle.index}].category`}
-                className="font-medium text-[#262923] dark:text-[#F8F6F1]"
+                className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
               >
                 {resolvedArticle.category}
               </span>
@@ -272,15 +272,15 @@ export default function JournalArticleView() {
           </div>
 
           {/* Keep article toolbar & navigation labels mounted in empty-state for Fivora visual editing */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-[#262923]/10 pt-6 text-[11px] uppercase tracking-[0.2em] text-[#595C52] dark:border-[#F8F6F1]/10 dark:text-[#B6B8AE]">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-[#201C1A]/10 pt-6 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:border-[#F2E9DE]/10 dark:text-[#C7B6A6]">
             <button
               type="button"
               onClick={handleCopyShareLink}
-              className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+              className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
             >
               {copiedLink ? (
                 <>
-                  <Check aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.7] text-[#747B65]" />
+                  <Check aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.7] text-[#8D7667]" />
                   <EditableText
                     as="span"
                     data-preview-field-path="journalArticlePage.copiedLinkLabel"
@@ -316,7 +316,7 @@ export default function JournalArticleView() {
             <button
               type="button"
               onClick={handleNativeShare}
-              className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#595C52] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+              className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
             >
               <Share2 aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.5]" />
               <EditableText
@@ -337,7 +337,7 @@ export default function JournalArticleView() {
               type="button"
               onClick={() => window.location.assign(backToJournalHref)}
               data-target-page={hasJournalPage ? 'journal' : undefined}
-              className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#262923] dark:text-[#F8F6F1]"
+              className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#201C1A] dark:text-[#F2E9DE]"
             >
               <ArrowLeft aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.5]" />
               <EditableText
@@ -359,7 +359,7 @@ export default function JournalArticleView() {
                 type="button"
                 onClick={() => window.location.assign(withBasePath('/shop/'))}
                 data-target-page="shop"
-                className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[#B59B79] bg-transparent px-0 pb-0.5 pt-0 text-[11px] uppercase tracking-[0.2em] text-[#747B65] dark:text-[#B59B79]"
+                className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[#C8A98B] bg-transparent px-0 pb-0.5 pt-0 text-[11px] uppercase tracking-[0.2em] text-[#8D7667] dark:text-[#C8A98B]"
               >
                 <EditableText
                   as="span"
@@ -393,7 +393,7 @@ export default function JournalArticleView() {
           className="mx-auto max-w-[1080px] px-4 pb-16 pt-12 sm:px-8 sm:pt-16 lg:px-12 lg:pb-24"
         >
           <LuxuryReveal className="mx-auto max-w-3xl text-center">
-            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] font-medium uppercase tracking-[0.24em] text-[#747B65] dark:text-[#B59B79]">
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]">
               <EditableText
                 as="span"
                 data-preview-field-path={`home.journalPosts[${resolvedArticle.index}].category`}
@@ -406,10 +406,10 @@ export default function JournalArticleView() {
                 color="inherit"
                 className="inline"
               />
-              <span aria-hidden="true" className="text-[#B59B79]">
+              <span aria-hidden="true" className="text-[#C8A98B]">
                 ·
               </span>
-              <span className="inline-flex items-center gap-1 text-[#595C52] dark:text-[#B6B8AE]">
+              <span className="inline-flex items-center gap-1 text-[#5E4E45] dark:text-[#C7B6A6]">
                 <Calendar aria-hidden="true" className="h-3 w-3 stroke-[1.5]" />
                 <EditableText
                   as="span"
@@ -424,10 +424,10 @@ export default function JournalArticleView() {
                   className="inline"
                 />
               </span>
-              <span aria-hidden="true" className="text-[#B59B79]">
+              <span aria-hidden="true" className="text-[#C8A98B]">
                 ·
               </span>
-              <span className="inline-flex items-center gap-1 text-[#595C52] dark:text-[#B6B8AE]">
+              <span className="inline-flex items-center gap-1 text-[#5E4E45] dark:text-[#C7B6A6]">
                 <Clock aria-hidden="true" className="h-3 w-3 stroke-[1.5]" />
                 <EditableText
                   as="span"
@@ -459,7 +459,7 @@ export default function JournalArticleView() {
 
             <LuxuryHairline
               origin="center"
-              className="mx-auto my-6 h-px w-14 bg-[#B59B79]"
+              className="mx-auto my-6 h-px w-14 bg-[#C8A98B]"
             />
 
             <EditableText
@@ -475,7 +475,7 @@ export default function JournalArticleView() {
             />
 
             {/* Author Byline + Shareable Link Actions */}
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.2em] text-[#595C52] dark:text-[#B6B8AE]">
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6]">
               <div className="inline-flex flex-wrap items-center gap-1.5">
                 <EditableText
                   as="span"
@@ -504,18 +504,18 @@ export default function JournalArticleView() {
               </div>
               <span
                 aria-hidden="true"
-                className="h-3 w-px bg-[#262923]/20 dark:bg-[#F8F6F1]/20"
+                className="h-3 w-px bg-[#201C1A]/20 dark:bg-[#F2E9DE]/20"
               />
               <button
                 type="button"
                 onClick={handleCopyShareLink}
-                className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+                className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
               >
                 {copiedLink ? (
                   <>
                     <Check
                       aria-hidden="true"
-                      className="h-3.5 w-3.5 stroke-[1.7] text-[#747B65]"
+                      className="h-3.5 w-3.5 stroke-[1.7] text-[#8D7667]"
                     />
                     <EditableText
                       as="span"
@@ -551,7 +551,7 @@ export default function JournalArticleView() {
               <button
                 type="button"
                 onClick={handleNativeShare}
-                className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#595C52] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+                className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
               >
                 <Share2 aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.5]" />
                 <EditableText
@@ -572,7 +572,7 @@ export default function JournalArticleView() {
 
           {/* Immersive Framed Editorial Hero Image */}
           <div className="mt-10 sm:mt-12">
-            <LuxuryImageReveal tone="beige" className="aspect-[16/9] w-full bg-[#E8E0D5]/60">
+            <LuxuryImageReveal tone="beige" className="aspect-[16/9] w-full bg-[#E6D9C9]/60">
               <img
                 src={withBasePath(resolvedArticle.imageUrl)}
                 alt={resolvedArticle.title}
@@ -593,16 +593,16 @@ export default function JournalArticleView() {
               weight={400}
               lineHeight={1.95}
               color="body"
-              className="m-0 whitespace-pre-line text-[#2F332B] first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:font-serif first-letter:text-5xl first-letter:font-light first-letter:leading-none first-letter:text-[#747B65] dark:text-[#DFE1DA] dark:first-letter:text-[#B59B79]"
+              className="m-0 whitespace-pre-line text-[#2F332B] first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:font-serif first-letter:text-5xl first-letter:font-light first-letter:leading-none first-letter:text-[#8D7667] dark:text-[#DFE1DA] dark:first-letter:text-[#C8A98B]"
             />
 
             {/* Subtle Editorial Signoff & Navigation */}
-            <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[#262923]/12 pt-8 dark:border-[#F8F6F1]/12">
+            <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[#201C1A]/12 pt-8 dark:border-[#F2E9DE]/12">
               <button
                 type="button"
                 onClick={() => window.location.assign(backToJournalHref)}
                 data-target-page={hasJournalPage ? 'journal' : undefined}
-                className="group inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#262923] transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+                className="group inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
               >
                 <ArrowLeft
                   aria-hidden="true"
@@ -627,7 +627,7 @@ export default function JournalArticleView() {
                   type="button"
                   onClick={() => window.location.assign(withBasePath('/shop/'))}
                   data-target-page="shop"
-                  className="group inline-flex cursor-pointer items-center gap-2 border-0 border-b border-[#B59B79] bg-transparent px-0 pb-1 pt-0 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#747B65] transition-colors hover:text-[#262923] dark:text-[#B59B79] dark:hover:text-[#F8F6F1]"
+                  className="group inline-flex cursor-pointer items-center gap-2 border-0 border-b border-[#C8A98B] bg-transparent px-0 pb-1 pt-0 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8D7667] transition-colors hover:text-[#201C1A] dark:text-[#C8A98B] dark:hover:text-[#F2E9DE]"
                 >
                   <EditableText
                     as="span"
@@ -650,7 +650,7 @@ export default function JournalArticleView() {
                 <span
                   data-target-page="shop"
                   data-preview-field-path="journalArticlePage.shopCtaLabel"
-                  className="unavailable inline-flex items-center gap-2 border-b border-[#B59B79] pb-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#747B65]"
+                  className="unavailable inline-flex items-center gap-2 border-b border-[#C8A98B] pb-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8D7667]"
                 >
                   {shopCtaLabel}
                 </span>
@@ -661,7 +661,7 @@ export default function JournalArticleView() {
       )}
 
       {/* Continue Reading — Related Essays (always mounted so section headings stay editable in Fivora empty-state) */}
-      <section className="border-t border-[#262923]/8 bg-[#F2ECE2]/60 py-16 dark:border-[#F8F6F1]/10 dark:bg-[#1B1E18] sm:py-20">
+      <section className="border-t border-[#201C1A]/8 bg-[#E6D9C9]/60 py-16 dark:border-[#F2E9DE]/10 dark:bg-[#2A2320] sm:py-20">
         <div className="mx-auto max-w-[1320px] px-4 sm:px-8 lg:px-14">
           <LuxuryReveal className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
@@ -694,7 +694,7 @@ export default function JournalArticleView() {
               type="button"
               onClick={() => window.location.assign(backToJournalHref)}
               data-target-page={hasJournalPage ? 'journal' : undefined}
-              className="inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.22em] text-[#262923] transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+              className="inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.22em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
             >
               <EditableText
                 as="span"
@@ -722,7 +722,7 @@ export default function JournalArticleView() {
                   >
                     <div
                       onClick={() => window.location.assign(journalArticleHref(rel.id))}
-                      className="relative block aspect-[4/3] w-full cursor-pointer overflow-hidden bg-[#E8E0D5]/60"
+                      className="relative block aspect-[4/3] w-full cursor-pointer overflow-hidden bg-[#E6D9C9]/60"
                     >
                       <img
                         src={withBasePath(rel.imageUrl)}
@@ -764,7 +764,7 @@ export default function JournalArticleView() {
                       <button
                         type="button"
                         onClick={() => window.location.assign(journalArticleHref(rel.id))}
-                        className="mt-2.5 block w-full border-0 bg-transparent p-0 text-left text-[#262923] transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
+                        className="mt-2.5 block w-full border-0 bg-transparent p-0 text-left text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
                       >
                         <EditableText
                           as="h3"
@@ -783,7 +783,7 @@ export default function JournalArticleView() {
                         <button
                           type="button"
                           onClick={() => window.location.assign(journalArticleHref(rel.id))}
-                          className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[#262923]/30 bg-transparent px-0 pb-1 pt-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:border-[#B59B79] hover:text-[#747B65] dark:border-[#F8F6F1]/30 dark:text-[#F8F6F1]"
+                          className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[#201C1A]/30 bg-transparent px-0 pb-1 pt-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#C8A98B] hover:text-[#8D7667] dark:border-[#F2E9DE]/30 dark:text-[#F2E9DE]"
                         >
                           <EditableText
                             as="span"

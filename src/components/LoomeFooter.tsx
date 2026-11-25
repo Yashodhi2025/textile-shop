@@ -249,7 +249,7 @@ export default function LoomeFooter() {
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#C8A98B] text-[#201C1A]">
                   <Check className="h-3 w-3" />
                 </span>
-                <span>You are subscribed to LOOMÉ Atelier correspondence.</span>
+                <span>You are subscribed to {siteTitle} Atelier correspondence.</span>
               </div>
             )}
 
@@ -266,7 +266,7 @@ export default function LoomeFooter() {
                     : 'We could not register your email right now.'}{' '}
                   {contactEmail && (
                     <a
-                      href={`mailto:${contactEmail}?subject=${encodeURIComponent('Newsletter Subscription Request')}&body=${encodeURIComponent(`Please add ${email.trim()} to the LOOMÉ mailing list.`)}`}
+                      href={`mailto:${contactEmail}?subject=${encodeURIComponent('Newsletter Subscription Request')}&body=${encodeURIComponent(`Please add ${email.trim()} to the ${siteTitle} mailing list.`)}`}
                       className="font-medium text-[#C8A98B] underline underline-offset-4 hover:text-[#F2E9DE]"
                     >
                       Email {contactEmail} to join directly
@@ -376,13 +376,13 @@ export default function LoomeFooter() {
                 defaultValue={contentText(common.footerExploreHeading) || 'Maison'}
                 fontFamily="body"
                 size="0.6875rem"
-                weight={500}
+                weight={600}
                 transform="uppercase"
                 letterSpacing="0.24em"
-                color="#B59B79"
+                color="#C8A98B"
                 className="m-0"
               />
-              <ul className="mt-6 space-y-3.5 text-sm text-[#E8E0D5]/80">
+              <ul className="mt-6 space-y-3.5 text-sm text-[#F2E9DE]/80">
                 {FOOTER_NAV.map((item) => {
                   const enabled = item.id === 'home' || requiredPages.includes(item.id);
                   const label = contentText(navLabels[item.id]) || item.fallbackLabel;
@@ -407,7 +407,7 @@ export default function LoomeFooter() {
                           <button
                             type="button"
                             onClick={() => navigate(pageRoute(item.id))}
-                            className="inline-block border-0 bg-transparent p-0 text-left text-inherit transition-colors hover:text-[#B59B79]"
+                            className="inline-block border-0 bg-transparent p-0 text-left text-inherit transition-colors hover:text-[#C8A98B]"
                           >
                             {labelEl}
                           </button>
@@ -425,11 +425,11 @@ export default function LoomeFooter() {
             <div className="lg:col-span-3">
               <h3
                 data-preview-static="footer-collections-heading"
-                className="font-sans text-[11px] font-medium uppercase tracking-[0.24em] text-[#B59B79]"
+                className="font-sans text-[11px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]"
               >
                 Collections
               </h3>
-              <ul className="mt-6 space-y-3.5 text-sm text-[#E8E0D5]/80">
+              <ul className="mt-6 space-y-3.5 text-sm text-[#F2E9DE]/80">
                 {SHOP_SHORTCUTS.map((link) => (
                   <li key={link.label}>
                     <a
@@ -440,7 +440,7 @@ export default function LoomeFooter() {
                         handleShortcutClick(link.category);
                       }}
                       data-preview-static={`footer-shortcut-${link.label}`}
-                      className="inline-block transition-colors hover:text-[#B59B79]"
+                      className="inline-block transition-colors hover:text-[#C8A98B]"
                     >
                       {link.label}
                     </a>
@@ -457,41 +457,41 @@ export default function LoomeFooter() {
                 defaultValue={contentText(common.footerContactHeading) || 'Atelier & Care'}
                 fontFamily="body"
                 size="0.6875rem"
-                weight={500}
+                weight={600}
                 transform="uppercase"
                 letterSpacing="0.24em"
-                color="#B59B79"
+                color="#C8A98B"
                 className="m-0"
               />
-              <div className="mt-6 space-y-4 text-sm text-[#E8E0D5]/80">
+              <div className="mt-6 space-y-4 text-sm text-[#F2E9DE]/80">
                 <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-[#B59B79]">
+                  <span className="mt-0.5 text-[#C8A98B]">
                     <EditableIcon name="mail" fieldPath="common.footerEmailIcon" size={15} />
                   </span>
                   <a
                     href={contactEmail ? `mailto:${contactEmail}` : '#'}
                     data-preview-field-path="contact.email"
-                    className="break-all transition-colors hover:text-[#F8F6F1]"
+                    className="break-all transition-colors hover:text-[#F2E9DE]"
                   >
                     {contactEmail || 'atelier@loometextiles.com'}
                   </a>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-[#B59B79]">
+                  <span className="mt-0.5 text-[#C8A98B]">
                     <EditableIcon name="phone" fieldPath="common.footerPhoneIcon" size={15} />
                   </span>
                   <a
                     href={contactPhone ? `tel:${contactPhone}` : '#'}
                     data-preview-field-path="contact.phone"
-                    className="transition-colors hover:text-[#F8F6F1]"
+                    className="transition-colors hover:text-[#F2E9DE]"
                   >
                     {contactPhone || '+1 (212) 555-0194'}
                   </a>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="mt-0.5 text-[#B59B79]">
+                  <span className="mt-0.5 text-[#C8A98B]">
                     <EditableIcon name="map-pin" fieldPath="common.footerLocationIcon" size={15} />
                   </span>
                   <span data-preview-field-path="contact.address" className="leading-relaxed">
@@ -505,7 +505,7 @@ export default function LoomeFooter() {
                     target="_blank"
                     rel="noopener noreferrer"
                     data-preview-field-path="contact.whatsapp"
-                    className="inline-flex items-center gap-2 border-b border-[#B59B79]/60 pb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-[#B59B79] transition-colors hover:border-[#F8F6F1] hover:text-[#F8F6F1]"
+                    className="inline-flex items-center gap-2 border-b border-[#C8A98B]/60 pb-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#C8A98B] transition-colors hover:border-[#F2E9DE] hover:text-[#F2E9DE]"
                   >
                     <span data-preview-field-path="contact.directMessageText">
                       {directMessageText}
@@ -518,7 +518,7 @@ export default function LoomeFooter() {
           </div>
 
           {/* Bottom Legal & Back-to-Top Row */}
-          <div className="flex flex-col items-center justify-between gap-5 pt-8 text-xs text-[#E8E0D5]/60 sm:flex-row">
+          <div className="flex flex-col items-center justify-between gap-5 pt-8 text-xs text-[#C7B6A6]/80 sm:flex-row">
             <p data-preview-field-path="common.copyright" className="m-0">
               {copyright}
             </p>
@@ -529,7 +529,7 @@ export default function LoomeFooter() {
                   <button
                     type="button"
                     onClick={() => navigate(pageRoute('textile_care'))}
-                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F8F6F1]"
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F2E9DE]"
                   >
                     <span data-preview-field-path="common.navLabels.textile_care">
                       {contentText(navLabels.textile_care) || 'Textile Care'}
@@ -548,7 +548,7 @@ export default function LoomeFooter() {
                   href={withBasePath('/services')}
                   data-target-page="services"
                   data-preview-static="footer-legal-trade"
-                  className="transition-colors hover:text-[#F8F6F1]"
+                  className="transition-colors hover:text-[#F2E9DE]"
                 >
                   Trade Program
                 </a>
@@ -558,7 +558,7 @@ export default function LoomeFooter() {
                   <button
                     type="button"
                     onClick={() => navigate(pageRoute('shipping_returns'))}
-                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F8F6F1]"
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F2E9DE]"
                   >
                     <span data-preview-field-path="common.navLabels.shipping_returns">
                       {contentText(navLabels.shipping_returns) || 'Shipping & Returns'}
@@ -577,7 +577,7 @@ export default function LoomeFooter() {
                   <button
                     type="button"
                     onClick={() => navigate(pageRoute('faq'))}
-                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F8F6F1]"
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F2E9DE]"
                   >
                     <span data-preview-field-path="common.navLabels.faq">
                       {contentText(navLabels.faq) || 'FAQ'}

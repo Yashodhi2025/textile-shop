@@ -62,7 +62,7 @@ export default function CountdownPreviewPage() {
   return (
     <div
       data-preview-page-key="countdown_preview"
-      className="w-full bg-[#F8F6F1] text-[#262923] dark:bg-[#171915] dark:text-[#F8F6F1]"
+      className="w-full bg-[#F2E9DE] text-[#201C1A] dark:bg-[#201C1A] dark:text-[#F2E9DE]"
     >
       <section
         data-design-section="flash-sale"
@@ -72,7 +72,7 @@ export default function CountdownPreviewPage() {
           <div className="lg:col-span-5">
             <p
               data-preview-static="sale-eyebrow"
-              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#747B65] dark:text-[#B59B79]"
+              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#8D7667] dark:text-[#C8A98B]"
             >
               The Seasonal Edit · Limited Time
             </p>
@@ -84,14 +84,14 @@ export default function CountdownPreviewPage() {
             </h1>
             <p
               data-preview-static="sale-description"
-              className="mt-4 max-w-md text-sm leading-[1.85] text-[#595C52] dark:text-[#B6B8AE]"
+              className="mt-4 max-w-md text-sm leading-[1.85] text-[#5E4E45] dark:text-[#C7B6A6]"
             >
               Refresh your rooms with small-batch Belgian flax drapery, stonewashed duvet sets, and hand-loomed throws during our seasonal event.
             </p>
           </div>
 
           <div className="lg:col-span-7">
-            <div className="border border-[#B59B79]/35 bg-[#262923] px-6 py-10 text-center text-[#F8F6F1] sm:px-10 sm:py-12">
+            <div className="border border-[#C8A98B]/35 bg-[#201C1A] px-6 py-10 text-center text-[#F2E9DE] sm:px-10 sm:py-12">
               <EditableText
                 as="h2"
                 data-preview-field-path="home.countdown.heading"
@@ -100,7 +100,7 @@ export default function CountdownPreviewPage() {
                 size="clamp(2rem, 3.8vw, 3rem)"
                 weight={300}
                 lineHeight={1.08}
-                color="#F8F6F1"
+                color="#F2E9DE"
                 align="center"
                 className="m-0"
               />
@@ -112,23 +112,23 @@ export default function CountdownPreviewPage() {
                 fontFamily="body"
                 size="0.9375rem"
                 lineHeight={1.7}
-                color="#E8E0D5"
+                color="#E6D9C9"
                 align="center"
                 className="mx-auto mt-3 mb-0 max-w-lg"
               />
 
               <div className="mx-auto mt-8 grid max-w-lg grid-cols-4 gap-3 sm:gap-4">
                 {units.map((unit) => (
-                  <div key={unit.label} className="border border-[#F8F6F1]/15 bg-[#1C1E19] px-2 py-4">
+                  <div key={unit.label} className="border border-[#F2E9DE]/15 bg-[#1C1E19] px-2 py-4">
                     <span
                       data-preview-static={`countdown-val-${unit.label}`}
-                      className="block font-serif text-3xl font-light tabular-nums text-[#F8F6F1] sm:text-4xl"
+                      className="block font-serif text-3xl font-light tabular-nums text-[#F2E9DE] sm:text-4xl"
                     >
                       {unit.value}
                     </span>
                     <span
                       data-preview-static={`countdown-unit-${unit.label}`}
-                      className="mt-1.5 block text-[10px] uppercase tracking-[0.22em] text-[#B59B79]"
+                      className="mt-1.5 block text-[10px] uppercase tracking-[0.22em] text-[#C8A98B]"
                     >
                       {unit.label}
                     </span>
@@ -136,12 +136,12 @@ export default function CountdownPreviewPage() {
                 ))}
               </div>
 
-              <p className="mt-6 mb-0 text-xs text-[#E8E0D5]/75">
+              <p className="mt-6 mb-0 text-xs text-[#E6D9C9]/75">
                 <span data-preview-static="countdown-ends-label">Ends </span>
                 <span data-preview-field-path="home.countdown.deadline">{deadline}</span>
               </p>
 
-              <p className="mt-2 mb-0 text-xs italic text-[#B59B79]/90">
+              <p className="mt-2 mb-0 text-xs italic text-[#C8A98B]/90">
                 <span data-preview-field-path="home.countdown.expiryMessage">{expiryMessage}</span>
               </p>
 
@@ -159,7 +159,7 @@ export default function CountdownPreviewPage() {
 
             <p
               data-preview-static="sale-terms"
-              className="mt-4 text-center text-xs text-[#595C52] dark:text-[#B6B8AE]"
+              className="mt-4 text-center text-xs text-[#5E4E45] dark:text-[#C7B6A6]"
             >
               Selected editions only. Event concludes at the scheduled deadline above.
             </p>
@@ -169,17 +169,17 @@ export default function CountdownPreviewPage() {
 
       <section
         id="sale-collection"
-        className="border-t border-[#262923]/10 bg-[#E8E0D5]/38 px-4 py-12 text-center dark:border-[#F8F6F1]/10 dark:bg-[#20231D]"
+        className="border-t border-[#201C1A]/10 bg-[#E6D9C9]/38 px-4 py-12 text-center dark:border-[#F2E9DE]/10 dark:bg-[#3B302B]"
       >
         <h2
           data-preview-static="sale-collection-heading"
-          className="font-serif text-3xl font-light text-[#262923] dark:text-[#F8F6F1]"
+          className="font-serif text-3xl font-light text-[#201C1A] dark:text-[#F2E9DE]"
         >
           Considered details. Everyday luxury.
         </h2>
         <p
           data-preview-static="sale-collection-copy"
-          className="mx-auto mt-2 max-w-lg text-sm text-[#595C52] dark:text-[#B6B8AE]"
+          className="mx-auto mt-2 max-w-lg text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
         >
           Explore our seasonal curation of Belgian flax drapery, stonewashed bedding, and hand-loomed throws.
         </p>

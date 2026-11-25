@@ -1,10 +1,10 @@
 {
   "styles": {
     "home.countdown.card": {
-      "backgroundColor": "#262923"
+      "backgroundColor": "#201C1A"
     },
     "home.countdown.text": {
-      "color": "#F8F6F1"
+      "color": "#F2E9DE"
     }
   },
   "project": {
@@ -112,6 +112,7 @@
       "shortDescription": "The Art of Fine Textiles. Architectural drapery, European flax bedding, and heirloom upholstery woven in small batches for calm, luminous spaces.",
       "logoUrl": "/loome-monogram.svg",
       "headerCtaLabel": "Private Atelier",
+      "freeDeliveryThreshold": 250,
       "navLabels": {
         "home": "Home",
         "shop": "Shop",

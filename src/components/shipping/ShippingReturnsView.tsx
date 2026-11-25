@@ -307,22 +307,22 @@ export default function ShippingReturnsView() {
       className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
     >
       {/* Editorial Breadcrumb Strip */}
-      <div className="border-b border-[#262923]/8 bg-[#FAF8F4]/95 dark:border-[#F8F6F1]/10 dark:bg-[#171915]">
-        <nav className="mx-auto flex max-w-[1380px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#55594F] dark:text-[#B6B8AE] sm:px-8 lg:px-14">
+      <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
+        <nav className="mx-auto flex max-w-[1380px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-14">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#55594F] transition-colors hover:text-[#262923] dark:text-[#B6B8AE] dark:hover:text-[#F8F6F1]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" className="text-[#B59B79]">
+          <span aria-hidden="true" className="text-[#C8A98B]">
             /
           </span>
           <span
             aria-current="page"
             data-preview-field-path="common.navLabels.shipping_returns"
-            className="font-medium text-[#262923] dark:text-[#F8F6F1]"
+            className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
           >
             {shippingNavLabel}
           </span>
@@ -332,13 +332,13 @@ export default function ShippingReturnsView() {
       {/* 1. Editorial Hero */}
       <section
         data-design-section="shipping-hero"
-        className="border-b border-[#262923]/8 bg-gradient-to-b from-[#F2ECE2]/90 via-[#F8F6F1] to-[#F8F6F1] dark:border-[#F8F6F1]/10 dark:from-[#1F221C] dark:via-[#171915] dark:to-[#171915]"
+        className="border-b border-[#201C1A]/8 bg-gradient-to-b from-[#E6D9C9]/90 via-[#F2E9DE] to-[#F2E9DE] dark:border-[#F2E9DE]/10 dark:from-[#2B2320] dark:via-[#201C1A] dark:to-[#201C1A]"
       >
         <div className="mx-auto max-w-[1380px] px-4 py-12 sm:px-8 sm:py-16 lg:px-14 lg:py-20">
           <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
             <LuxuryReveal className="lg:col-span-7">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-9 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-9 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="shippingReturnsPage.eyebrow"
@@ -380,11 +380,11 @@ export default function ShippingReturnsView() {
 
             {/* Merchant Policy Notice Card */}
             <LuxuryReveal delay={0.1} className="lg:col-span-5">
-              <div className="border border-[#B59B79]/35 bg-[#FCFBF8]/95 p-6 shadow-[0_14px_38px_rgba(38,41,35,0.04)] dark:border-[#B59B79]/30 dark:bg-[#20231D]/90 sm:p-7">
+              <div className="border border-[#C8A98B]/35 bg-[#FAF5EE]/95 p-6 shadow-[0_14px_38px_rgba(38,41,35,0.04)] dark:border-[#C8A98B]/30 dark:bg-[#3B302B]/90 sm:p-7">
                 <div className="flex items-start gap-3.5">
                   <span
                     aria-hidden="true"
-                    className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border border-[#B59B79]/40 bg-[#F2ECE2]/75 text-[#747B65] dark:bg-[#262923] dark:text-[#B59B79]"
+                    className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border border-[#C8A98B]/40 bg-[#E6D9C9]/75 text-[#8D7667] dark:bg-[#201C1A] dark:text-[#C8A98B]"
                   >
                     <ShieldCheck className="h-4 w-4 stroke-[1.6]" />
                   </span>
@@ -439,7 +439,7 @@ export default function ShippingReturnsView() {
                           color="primary"
                           className="inline"
                         />
-                        <span className="flex h-8 w-8 items-center justify-center border border-[#262923]/10 bg-[#F8F6F1] text-[#747B65] dark:border-[#F8F6F1]/12 dark:bg-[#171915] dark:text-[#B59B79]">
+                        <span className="flex h-8 w-8 items-center justify-center border border-[#201C1A]/10 bg-[#F2E9DE] text-[#8D7667] dark:border-[#F2E9DE]/12 dark:bg-[#201C1A] dark:text-[#C8A98B]">
                           {renderHighlightIcon(card.id, card.index)}
                         </span>
                       </div>
@@ -480,10 +480,10 @@ export default function ShippingReturnsView() {
         data-design-section="shipping-methods"
         className="mx-auto max-w-[1380px] px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24"
       >
-        <LuxuryReveal className="flex flex-col justify-between gap-5 border-b border-[#262923]/10 pb-8 dark:border-[#F8F6F1]/10 lg:flex-row lg:items-end">
+        <LuxuryReveal className="flex flex-col justify-between gap-5 border-b border-[#201C1A]/10 pb-8 dark:border-[#F2E9DE]/10 lg:flex-row lg:items-end">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3">
-              <LuxuryHairline className="h-px w-8 bg-[#B59B79]" />
+              <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
               <EditableText
                 as="p"
                 data-preview-field-path="shippingReturnsPage.shippingEyebrow"
@@ -527,15 +527,15 @@ export default function ShippingReturnsView() {
 
         <div data-preview-list-path="shippingReturnsPage.deliveryMethods" className="mt-10">
           {deliveryMethods.length === 0 ? (
-            <div className="border border-dashed border-[#262923]/20 px-6 py-14 text-center dark:border-[#F8F6F1]/20">
+            <div className="border border-dashed border-[#201C1A]/20 px-6 py-14 text-center dark:border-[#F2E9DE]/20">
               <p
                 data-preview-static="shipping-methods-empty"
-                className="m-0 text-sm text-[#65685E] dark:text-[#B6B8AE]"
+                className="m-0 text-sm text-[#65685E] dark:text-[#C7B6A6]"
               >
                 Add delivery methods in your Fivora editor to display shipping timelines and charges.
               </p>
               {/* Keep shared column labels mounted in empty-state */}
-              <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em] text-[#747B65] dark:text-[#B59B79]">
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em] text-[#8D7667] dark:text-[#C8A98B]">
                 <EditableText
                   as="span"
                   data-preview-field-path="shippingReturnsPage.methodTimelineLabel"
@@ -569,7 +569,7 @@ export default function ShippingReturnsView() {
                 <LuxuryStaggerItem key={method.id}>
                   <article
                     data-preview-item-path={`shippingReturnsPage.deliveryMethods[${method.index}]`}
-                    className="flex h-full flex-col justify-between border border-[#262923]/10 bg-[#FCFBF8] p-7 shadow-[0_14px_40px_rgba(38,41,35,0.035)] dark:border-[#F8F6F1]/12 dark:bg-[#20231D]"
+                    className="flex h-full flex-col justify-between border border-[#201C1A]/10 bg-[#FAF5EE] p-7 shadow-[0_14px_40px_rgba(38,41,35,0.035)] dark:border-[#F2E9DE]/12 dark:bg-[#3B302B]"
                   >
                     <div>
                       <EditableText
@@ -609,11 +609,11 @@ export default function ShippingReturnsView() {
                       />
                     </div>
 
-                    <div className="mt-7 space-y-4 border-t border-[#262923]/10 pt-5 dark:border-[#F8F6F1]/10">
+                    <div className="mt-7 space-y-4 border-t border-[#201C1A]/10 pt-5 dark:border-[#F2E9DE]/10">
                       <div className="flex items-start gap-2.5">
                         <Clock
                           aria-hidden="true"
-                          className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#B59B79]"
+                          className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#C8A98B]"
                         />
                         <div>
                           <EditableText
@@ -645,7 +645,7 @@ export default function ShippingReturnsView() {
                       <div className="flex items-start gap-2.5">
                         <CreditCard
                           aria-hidden="true"
-                          className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#B59B79]"
+                          className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#C8A98B]"
                         />
                         <div>
                           <EditableText
@@ -681,7 +681,7 @@ export default function ShippingReturnsView() {
           )}
         </div>
 
-        <LuxuryReveal delay={0.08} className="mt-8 border-l-2 border-l-[#B59B79] bg-[#FAF8F4] px-5 py-4 dark:bg-[#1D201A]">
+        <LuxuryReveal delay={0.08} className="mt-8 border-l-2 border-l-[#C8A98B] bg-[#FAF5EE] px-5 py-4 dark:bg-[#1D201A]">
           <EditableText
             as="p"
             data-preview-field-path="shippingReturnsPage.shippingFootnote"
@@ -698,14 +698,14 @@ export default function ShippingReturnsView() {
       {/* 4. Interactive Shipping FAQ Accordions */}
       <section
         data-design-section="shipping-faq"
-        className="border-t border-[#262923]/8 bg-[#FAF8F4] py-16 dark:border-[#F8F6F1]/10 dark:bg-[#191C17] sm:py-20 lg:py-24"
+        className="border-t border-[#201C1A]/8 bg-[#FAF5EE] py-16 dark:border-[#F2E9DE]/10 dark:bg-[#191C17] sm:py-20 lg:py-24"
       >
         <div className="mx-auto max-w-[1380px] px-4 sm:px-8 lg:px-14">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
             {/* Left Sticky Editorial Header + Textile Imagery */}
             <LuxuryReveal className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="shippingReturnsPage.faqEyebrow"
@@ -745,7 +745,7 @@ export default function ShippingReturnsView() {
               />
 
               <div className="mt-8">
-                <LuxuryImageReveal tone="ivory" className="aspect-[4/3] w-full bg-[#E8E0D5]/60">
+                <LuxuryImageReveal tone="ivory" className="aspect-[4/3] w-full bg-[#E6D9C9]/60">
                   <img
                     src={withBasePath(faqImageUrl)}
                     alt={faqHeading}
@@ -755,7 +755,7 @@ export default function ShippingReturnsView() {
                   />
                 </LuxuryImageReveal>
                 <div className="mt-3 flex items-center gap-2.5">
-                  <span aria-hidden="true" className="h-px w-7 bg-[#B59B79]" />
+                  <span aria-hidden="true" className="h-px w-7 bg-[#C8A98B]" />
                   <EditableText
                     as="p"
                     data-preview-field-path="shippingReturnsPage.faqImageCaption"
@@ -776,12 +776,12 @@ export default function ShippingReturnsView() {
             <div className="lg:col-span-7">
               <div
                 data-preview-list-path="shippingReturnsPage.shippingFaqs"
-                className="divide-y divide-[#262923]/12 border-y border-[#262923]/12 dark:divide-[#F8F6F1]/12 dark:border-[#F8F6F1]/12"
+                className="divide-y divide-[#201C1A]/12 border-y border-[#201C1A]/12 dark:divide-[#F2E9DE]/12 dark:border-[#F2E9DE]/12"
               >
                 {shippingFaqs.length === 0 ? (
                   <p
                     data-preview-static="shipping-faqs-empty"
-                    className="py-12 text-center text-sm text-[#65685E] dark:text-[#B6B8AE]"
+                    className="py-12 text-center text-sm text-[#65685E] dark:text-[#C7B6A6]"
                   >
                     Add shipping FAQs in your Fivora editor.
                   </p>
@@ -826,15 +826,15 @@ export default function ShippingReturnsView() {
                               weight={400}
                               lineHeight={1.25}
                               color="heading"
-                              className="m-0 transition-colors group-hover:text-[#747B65] dark:group-hover:text-[#B59B79]"
+                              className="m-0 transition-colors group-hover:text-[#8D7667] dark:group-hover:text-[#C8A98B]"
                             />
                           </div>
 
                           <span
                             aria-hidden="true"
-                            className={`mt-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#262923]/15 text-[#262923] transition-all duration-300 motion-reduce:transition-none group-hover:border-[#B59B79] dark:border-[#F8F6F1]/18 dark:text-[#F8F6F1] ${
+                            className={`mt-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#201C1A]/15 text-[#201C1A] transition-all duration-300 motion-reduce:transition-none group-hover:border-[#C8A98B] dark:border-[#F2E9DE]/18 dark:text-[#F2E9DE] ${
                               open
-                                ? 'rotate-180 bg-[#262923] text-[#F8F6F1] dark:bg-[#B59B79] dark:text-[#171915]'
+                                ? 'rotate-180 bg-[#201C1A] text-[#F2E9DE] dark:bg-[#C8A98B] dark:text-[#201C1A]'
                                 : ''
                             }`}
                           >
@@ -876,13 +876,13 @@ export default function ShippingReturnsView() {
       {/* 5. Returns & Exchanges Policy */}
       <section
         data-design-section="shipping-returns-policy"
-        className="border-t border-[#262923]/8 bg-[#F2ECE2]/68 py-16 dark:border-[#F8F6F1]/10 dark:bg-[#1C1F19] sm:py-20 lg:py-24"
+        className="border-t border-[#201C1A]/8 bg-[#E6D9C9]/68 py-16 dark:border-[#F2E9DE]/10 dark:bg-[#1C1F19] sm:py-20 lg:py-24"
       >
         <div className="mx-auto max-w-[1380px] px-4 sm:px-8 lg:px-14">
-          <LuxuryReveal className="flex flex-col justify-between gap-5 border-b border-[#262923]/12 pb-8 dark:border-[#F8F6F1]/12 lg:flex-row lg:items-end">
+          <LuxuryReveal className="flex flex-col justify-between gap-5 border-b border-[#201C1A]/12 pb-8 dark:border-[#F2E9DE]/12 lg:flex-row lg:items-end">
             <div className="max-w-2xl">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="shippingReturnsPage.returnsEyebrow"
@@ -932,7 +932,7 @@ export default function ShippingReturnsView() {
                   <LuxuryStaggerItem key={pillar.id}>
                     <article
                       data-preview-item-path={`shippingReturnsPage.returnPillars[${pillar.index}]`}
-                      className="flex h-full flex-col border border-[#262923]/10 bg-[#FCFBF8] p-7 shadow-[0_14px_38px_rgba(38,41,35,0.03)] dark:border-[#F8F6F1]/12 dark:bg-[#20231D] sm:p-8"
+                      className="flex h-full flex-col border border-[#201C1A]/10 bg-[#FAF5EE] p-7 shadow-[0_14px_38px_rgba(38,41,35,0.03)] dark:border-[#F2E9DE]/12 dark:bg-[#3B302B] sm:p-8"
                     >
                       <EditableText
                         as="span"
@@ -959,7 +959,7 @@ export default function ShippingReturnsView() {
                         className="mt-3 mb-0"
                       />
 
-                      <div className="my-4 h-px w-10 bg-[#B59B79]/70" aria-hidden="true" />
+                      <div className="my-4 h-px w-10 bg-[#C8A98B]/70" aria-hidden="true" />
 
                       <EditableText
                         as="p"
@@ -983,13 +983,13 @@ export default function ShippingReturnsView() {
       {/* 6. Damaged or Incorrect Items Guidance */}
       <section
         data-design-section="shipping-damaged-items"
-        className="border-t border-[#262923]/8 bg-[#F8F6F1] py-16 dark:border-[#F8F6F1]/10 dark:bg-[#171915] sm:py-20 lg:py-24"
+        className="border-t border-[#201C1A]/8 bg-[#F2E9DE] py-16 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A] sm:py-20 lg:py-24"
       >
         <div className="mx-auto max-w-[1380px] px-4 sm:px-8 lg:px-14">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
             <LuxuryReveal className="lg:col-span-7">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#B59B79]" />
+                <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="shippingReturnsPage.damagedEyebrow"
@@ -1036,11 +1036,11 @@ export default function ShippingReturnsView() {
                   <div
                     key={step.id}
                     data-preview-item-path={`shippingReturnsPage.damagedSteps[${step.index}]`}
-                    className="flex items-start gap-4 border border-[#262923]/10 border-l-2 border-l-[#B59B79] bg-[#FCFBF8] p-5 dark:border-[#F8F6F1]/12 dark:border-l-[#B59B79] dark:bg-[#20231D]"
+                    className="flex items-start gap-4 border border-[#201C1A]/10 border-l-2 border-l-[#C8A98B] bg-[#FAF5EE] p-5 dark:border-[#F2E9DE]/12 dark:border-l-[#C8A98B] dark:bg-[#3B302B]"
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center bg-[#F2ECE2] text-[#747B65] dark:bg-[#262923] dark:text-[#B59B79]"
+                      className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center bg-[#E6D9C9] text-[#8D7667] dark:bg-[#201C1A] dark:text-[#C8A98B]"
                     >
                       <PackageCheck className="h-4 w-4 stroke-[1.6]" />
                     </span>
@@ -1085,7 +1085,7 @@ export default function ShippingReturnsView() {
             </LuxuryReveal>
 
             <div className="lg:col-span-5">
-              <LuxuryImageReveal tone="beige" className="aspect-[4/5] w-full bg-[#E8E0D5]/60">
+              <LuxuryImageReveal tone="beige" className="aspect-[4/5] w-full bg-[#E6D9C9]/60">
                 <img
                   src={withBasePath(damagedImageUrl)}
                   alt={damagedHeading}
@@ -1095,7 +1095,7 @@ export default function ShippingReturnsView() {
                 />
               </LuxuryImageReveal>
               <div className="mt-3.5 flex items-center gap-3">
-                <span aria-hidden="true" className="h-px w-8 bg-[#B59B79]" />
+                <span aria-hidden="true" className="h-px w-8 bg-[#C8A98B]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="shippingReturnsPage.damagedImageCaption"
@@ -1117,7 +1117,7 @@ export default function ShippingReturnsView() {
       {/* 7. Full-Width Editorial Textile CTA Section with WhatsApp Concierge */}
       <section
         data-design-section="shipping-whatsapp-cta"
-        className="relative overflow-hidden bg-[#262923] text-[#F8F6F1]"
+        className="relative overflow-hidden bg-[#201C1A] text-[#F2E9DE]"
       >
         <div className="absolute inset-0 h-full w-full">
           <img
@@ -1127,13 +1127,13 @@ export default function ShippingReturnsView() {
             data-preview-field-path="shippingReturnsPage.ctaImageUrl"
             className="h-full w-full object-cover object-center"
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#1B1E18]/90 via-[#1B1E18]/78 to-[#1B1E18]/62" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#2A2320]/90 via-[#2A2320]/78 to-[#2A2320]/62" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-[1380px] px-4 py-20 sm:px-8 sm:py-24 lg:px-14 lg:py-28">
           <LuxuryReveal className="max-w-2xl">
             <div className="flex items-center gap-3">
-              <LuxuryHairline className="h-px w-9 bg-[#C9B292]" />
+              <LuxuryHairline className="h-px w-9 bg-[#C8A98B]" />
               <EditableText
                 as="p"
                 data-preview-field-path="shippingReturnsPage.ctaEyebrow"
@@ -1143,7 +1143,7 @@ export default function ShippingReturnsView() {
                 weight={600}
                 transform="uppercase"
                 letterSpacing="0.28em"
-                color="#C9B292"
+                color="#C8A98B"
                 className="m-0"
               />
             </div>
@@ -1157,7 +1157,7 @@ export default function ShippingReturnsView() {
               weight={300}
               lineHeight={1.06}
               letterSpacing="-0.02em"
-              color="#F8F6F1"
+              color="#F2E9DE"
               className="mt-4 mb-0"
             />
 
@@ -1202,7 +1202,7 @@ export default function ShippingReturnsView() {
                   type="button"
                   onClick={() => window.location.assign(withBasePath('/contact/'))}
                   data-target-page="contact"
-                  className="inline-flex h-[52px] cursor-pointer items-center justify-center gap-2 border border-[#F8F6F1]/50 bg-[#262923]/35 px-7 text-[11.5px] font-medium uppercase tracking-[0.2em] text-[#F8F6F1] backdrop-blur-sm transition-all duration-300 hover:border-[#F8F6F1] hover:bg-[#F8F6F1]/16"
+                  className="inline-flex h-[52px] cursor-pointer items-center justify-center gap-2 border border-[#F2E9DE]/50 bg-[#201C1A]/35 px-7 text-[11.5px] font-medium uppercase tracking-[0.2em] text-[#F2E9DE] backdrop-blur-sm transition-all duration-300 hover:border-[#F2E9DE] hover:bg-[#F2E9DE]/16"
                 >
                   <EditableText
                     as="span"
@@ -1221,7 +1221,7 @@ export default function ShippingReturnsView() {
                 <span
                   data-target-page="contact"
                   data-preview-field-path="shippingReturnsPage.ctaSecondaryLabel"
-                  className="unavailable inline-flex h-[52px] items-center border border-[#F8F6F1]/30 px-7 text-[11.5px] uppercase tracking-[0.2em] text-[#F8F6F1]"
+                  className="unavailable inline-flex h-[52px] items-center border border-[#F2E9DE]/30 px-7 text-[11.5px] uppercase tracking-[0.2em] text-[#F2E9DE]"
                 >
                   {ctaSecondaryLabel}
                 </span>
@@ -1232,9 +1232,9 @@ export default function ShippingReturnsView() {
               <div
                 role="status"
                 aria-live="polite"
-                className="mt-5 inline-flex items-start gap-2.5 border border-[#C9B292]/45 bg-[#1B1E18]/80 px-4 py-3 text-xs text-[#F8F6F1]"
+                className="mt-5 inline-flex items-start gap-2.5 border border-[#C8A98B]/45 bg-[#2A2320]/80 px-4 py-3 text-xs text-[#F2E9DE]"
               >
-                <AlertCircle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[#C9B292]" />
+                <AlertCircle aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-[#C8A98B]" />
                 <span>{whatsappFallbackNotice}</span>
               </div>
             )}
