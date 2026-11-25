@@ -90,12 +90,18 @@ export default function ContactPage() {
         <LuxuryReveal className="max-w-3xl">
           <div className="flex items-center gap-3">
             <span className="h-px w-8 bg-[#C8A98B]" aria-hidden="true" />
-            <p
-              data-preview-static="contact-eyebrow"
-              className="m-0 text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
-            >
-              Private Client Concierge
-            </p>
+            <EditableText
+              as="p"
+              data-preview-field-path="contact.eyebrow"
+              defaultValue={contentText(contact.eyebrow) || 'Private Client Concierge'}
+              fontFamily="body"
+              size="0.6875rem"
+              weight={600}
+              transform="uppercase"
+              letterSpacing="0.26em"
+              color="#C8A98B"
+              className="m-0"
+            />
           </div>
 
           <EditableText

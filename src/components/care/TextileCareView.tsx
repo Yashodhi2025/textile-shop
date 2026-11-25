@@ -225,7 +225,7 @@ export default function TextileCareView() {
   return (
     <div
       data-preview-page-key="textile_care"
-      className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
+      className="loome-surface-cream min-h-[75vh] w-full"
     >
       {/* Editorial Breadcrumb Strip */}
       <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
@@ -435,10 +435,10 @@ export default function TextileCareView() {
         {/* Always-mounted list container for Fivora strict validation */}
         <div data-preview-list-path="textileCarePage.fabrics" className="mt-10">
           {fabrics.length === 0 ? (
-            <div className="border border-dashed border-[#201C1A]/20 px-6 py-16 text-center dark:border-[#F2E9DE]/20">
+            <div className="rounded-2xl border border-dashed border-[#201C1A]/20 px-6 py-16 text-center dark:border-[#F2E9DE]/20">
               <p
                 data-preview-static="textile-care-fabrics-empty"
-                className="m-0 text-sm text-[#65685E] dark:text-[#C7B6A6]"
+                className="m-0 text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
               >
                 Add fabric care categories in your Fivora editor to populate this directory.
               </p>
@@ -542,7 +542,7 @@ export default function TextileCareView() {
                           : { duration: 0.55, ease: LUXURY_EASE }
                       }
                       data-preview-item-path={`textileCarePage.fabrics[${fabric.index}]`}
-                      className="grid grid-cols-1 overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-[0_14px_40px_rgba(32,28,26,0.045)] lg:grid-cols-12"
+                      className="grid grid-cols-1 overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-[0_14px_40px_rgba(32,28,26,0.045)] dark:border-[#C8A98B]/20 dark:bg-[#2A221F] lg:grid-cols-12"
                     >
                       {/* Editorial Textile Visual */}
                       <div
@@ -560,7 +560,7 @@ export default function TextileCareView() {
                           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#2B2320]/72 via-[#2B2320]/12 to-transparent" />
 
                           {/* Fiber Profile Corner Badge */}
-                          <span className="absolute left-5 top-5 z-10 bg-[#F2E9DE]/92 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] text-[#201C1A] backdrop-blur-sm">
+                          <span className="absolute left-5 top-5 z-10 rounded-[9px] bg-[#201C1A]/85 px-3 py-1.5 text-[10px] text-[#F2E9DE] font-medium uppercase tracking-[0.22em] text-[#201C1A] backdrop-blur-sm">
                             <EditableText
                               as="span"
                               data-preview-field-path={`textileCarePage.fabrics[${fabric.index}].fiberProfile`}
@@ -930,7 +930,7 @@ export default function TextileCareView() {
                 {careTips.length === 0 ? (
                   <p
                     data-preview-static="textile-care-tips-empty"
-                    className="py-12 text-center text-sm text-[#65685E] dark:text-[#C7B6A6]"
+                    className="py-12 text-center text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
                   >
                     Add expandable care tips in your Fivora editor.
                   </p>

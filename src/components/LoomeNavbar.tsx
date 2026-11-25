@@ -35,6 +35,7 @@ export default function LoomeNavbar() {
   const siteTitle = contentText(common.websiteTitle) || 'LOOMÉ';
   const logoUrl = contentText(common.logoUrl) || '/loome-monogram.svg';
   const headerCtaLabel = contentText(common.headerCtaLabel) || 'Private Atelier';
+  const mobileTagline = contentText(common.footerTagline) || 'The Art of Fine Textiles';
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
@@ -79,8 +80,8 @@ export default function LoomeNavbar() {
       <header
         data-design-section="navbar"
         className={`sticky top-0 z-40 w-full transition-all duration-500 ${scrolled
-          ? 'border-b border-[#C8A98B]/20 bg-[var(--page-background,#201C1A)]/95 shadow-[0_10px_32px_rgba(12,9,8,0.35)] backdrop-blur-md'
-          : 'border-b border-[#C8A98B]/14 bg-[var(--page-background,#201C1A)]/88 backdrop-blur-sm'
+          ? 'loome-navbar-surface-scrolled border-b border-[#C8A98B]/24 shadow-[0_10px_32px_rgba(12,9,8,0.38)] backdrop-blur-md'
+          : 'loome-navbar-surface border-b border-[#C8A98B]/16 backdrop-blur-md'
           }`}
       >
         <div
@@ -297,7 +298,7 @@ export default function LoomeNavbar() {
                 </div>
 
                 <p className="mt-6 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]">
-                  The Art of Fine Textiles
+                  {mobileTagline}
                 </p>
 
                 <nav className="mt-5 flex flex-col divide-y divide-[#C8A98B]/12">

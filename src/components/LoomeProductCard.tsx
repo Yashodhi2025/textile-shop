@@ -56,7 +56,7 @@ export default function LoomeProductCard({
       className={`group flex h-full flex-col overflow-hidden rounded-2xl border p-3 transition-all duration-500 ease-luxury ${
         isDark
           ? 'border-[#C8A98B]/16 bg-[#2A2320] hover:border-[#C8A98B]/45'
-          : 'border-[#3B302B]/12 bg-[#FAF5EE] hover:border-[#C8A98B]/75'
+          : 'border-[#3B302B]/14 bg-[#FAF5EE] hover:border-[#C8A98B]/75 dark:border-[#C8A98B]/20 dark:bg-[#2A221F] dark:hover:border-[#C8A98B]/55'
       }`}
     >
       {/* Editorial 3:4 Photography Frame (14px inner radius harmonizing with 16px card) */}
@@ -152,7 +152,7 @@ export default function LoomeProductCard({
           <span
             data-preview-field-path={`products[${idx}].category`}
             className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${
-              isDark ? 'text-[#C8A98B]' : 'text-[#8D7667]'
+              isDark ? 'text-[#C8A98B]' : 'text-[#8D7667] dark:text-[#C8A98B]'
             }`}
           >
             {product.category}
@@ -161,7 +161,7 @@ export default function LoomeProductCard({
             <span
               data-preview-static="product-active-tone"
               className={`text-[10px] tracking-wide ${
-                isDark ? 'text-[#C7B6A6]' : 'text-[#6B5B51]'
+                isDark ? 'text-[#C7B6A6]' : 'text-[#5E4E45] dark:text-[#C9B9AA]'
               }`}
             >
               {activeColor.name}
@@ -177,7 +177,7 @@ export default function LoomeProductCard({
           className={`mt-1.5 block w-full border-0 bg-transparent p-0 text-left transition-colors ${
             isDark
               ? 'text-[#F2E9DE] hover:text-[#C8A98B]'
-              : 'text-[#201C1A] hover:text-[#8D7667]'
+              : 'text-[#201C1A] hover:text-[#8D7667] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]'
           }`}
         >
           <EditableText
@@ -201,7 +201,7 @@ export default function LoomeProductCard({
           fontFamily="body"
           size="0.8125rem"
           lineHeight={1.65}
-          color={isDark ? '#C7B6A6' : '#5E4E45'}
+          color={isDark ? '#C7B6A6' : 'muted'}
           className="mt-1.5 mb-0 line-clamp-2"
         />
 
@@ -209,14 +209,14 @@ export default function LoomeProductCard({
         <div className="mt-auto pt-3.5">
           <div
             className={`flex items-center justify-between gap-3 border-t pt-3.5 ${
-              isDark ? 'border-[#C8A98B]/14' : 'border-[#3B302B]/10'
+              isDark ? 'border-[#C8A98B]/14' : 'border-[#3B302B]/12 dark:border-[#C8A98B]/18'
             }`}
           >
           <div className="flex items-baseline gap-2">
             <span
               data-preview-field-path={`products[${idx}].price`}
               className={`text-sm font-bold tracking-wide ${
-                isDark ? 'text-[#F2E9DE]' : 'text-[#201C1A]'
+                isDark ? 'text-[#F2E9DE]' : 'text-[#201C1A] dark:text-[#F5EEE6]'
               }`}
             >
               {product.showPrice ? formatLoomePrice(product.price, storeCurrency) : 'Upon Inquiry'}
@@ -225,7 +225,7 @@ export default function LoomeProductCard({
               data-preview-field-path={`products[${idx}].compareAtPrice`}
               className={
                 product.showPrice && product.compareAtPrice
-                  ? `text-xs line-through ${isDark ? 'text-[#C7B6A6]/70' : 'text-[#8D7667]'}`
+                  ? `text-xs line-through ${isDark ? 'text-[#C7B6A6]/70' : 'text-[#8D7667] dark:text-[#C9B9AA]/75'}`
                   : 'inline-block text-xs'
               }
             >
@@ -256,7 +256,7 @@ export default function LoomeProductCard({
                     className={`h-3.5 w-3.5 rounded-full border transition-all ${
                       selected
                         ? `scale-110 border-[#C8A98B] ring-1 ring-[#C8A98B] ring-offset-1 ${
-                            isDark ? 'ring-offset-[#2A2320]' : 'ring-offset-[#FAF5EE]'
+                            isDark ? 'ring-offset-[#2A2320]' : 'ring-offset-[#FAF5EE] dark:ring-offset-[#2A221F]'
                           }`
                         : 'border-[#C8A98B]/40 hover:scale-110'
                     }`}

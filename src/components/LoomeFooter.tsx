@@ -4,7 +4,8 @@ import { useState, type FormEvent } from 'react';
 import { usePathname } from 'next/navigation';
 import { ArrowRight, ArrowUp, Check, Info } from 'lucide-react';
 import { EditableIcon, EditableText } from '@deneb-ui/ui';
-import { contentObject, contentText, useSiteApi, useSiteData } from '@/lib/siteDataContext';
+import { contentList, contentObject, contentText, useSiteApi, useSiteData } from '@/lib/siteDataContext';
+import { buildShopCategoryHref, slugifyCategoryId } from '@/lib/categoryUtils';
 import { useLoomeStore } from '@/lib/storeContext';
 import { pageRoute, withBasePath } from '@/lib/utils';
 
@@ -18,14 +19,6 @@ const FOOTER_NAV = [
   { id: 'about_us', fallbackLabel: 'About', route: '/about_us' },
   { id: 'contact', fallbackLabel: 'Contact', route: '/contact' },
 ] as const;
-
-const SHOP_SHORTCUTS = [
-  { label: 'Curtains & Drapery', category: 'Curtains' },
-  { label: 'European Flax Bedding', category: 'Bedding' },
-  { label: 'Upholstery Weaves', category: 'Upholstery' },
-  { label: 'Fabrics by the Yard', category: 'Fabrics' },
-  { label: 'Cushions & Throws', category: 'Cushions' },
-];
 
 function renderSocialSvg(platform: string) {
   const key = platform.toLowerCase();
@@ -81,13 +74,32 @@ export default function LoomeFooter() {
   const siteTitle = contentText(common.websiteTitle) || 'LOOMÉ';
   const logoUrl = contentText(common.logoUrl) || '/loome-monogram.svg';
   const shortDescription = contentText(common.shortDescription);
+  const newsletterEyebrow = contentText(common.newsletterEyebrow) || 'Private Correspondence';
   const footerHeading = contentText(common.footerHeading) || 'Letters from the Atelier';
   const newsletterDescription = contentText(common.newsletterDescription);
   const newsletterPlaceholder =
     contentText(common.newsletterEmailPlaceholder) || 'Enter your email address';
   const newsletterButtonLabel = contentText(common.newsletterSubscribeLabel) || 'Join List';
+  const newsletterFootnote =
+    contentText(common.newsletterFootnote) ||
+    'Thoughtful dispatches only. Unsubscribe effortlessly at any time.';
+  const footerTagline = contentText(common.footerTagline) || 'The Art of Fine Textiles';
+  const footerCollectionsHeading = contentText(common.footerCollectionsHeading) || 'Collections';
+  const footerTradeLabel = contentText(common.footerTradeLabel) || 'Trade Program';
   const copyright =
     contentText(common.copyright) || `© ${new Date().getFullYear()} ${siteTitle}. All rights reserved.`;
+
+  const rawFooterCollections = contentList(common.footerCollections);
+  const footerCollections = rawFooterCollections.map((entry, idx) => {
+    const obj = contentObject(entry);
+    return {
+      index: idx,
+      id: contentText(obj.id) || `col-${idx}`,
+      label: contentText(obj.label) || 'Collection',
+      category: contentText(obj.category) || 'All',
+      href: contentText(obj.href) || '/shop',
+    };
+  });
 
   const contactEmail = contentText(contact.email);
   const contactPhone = contentText(contact.phone);
@@ -100,21 +112,21 @@ export default function LoomeFooter() {
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
     : siteData.template?.structure?.pages || [
-        'home',
-        'shop',
-        'services',
-        'journal',
-        'textile_care',
-        'shipping_returns',
-        'faq',
-        'about_us',
-        'contact',
-      ];
+      'home',
+      'shop',
+      'services',
+      'journal',
+      'textile_care',
+      'shipping_returns',
+      'faq',
+      'about_us',
+      'contact',
+    ];
   const hasShopPage = requiredPages.includes('shop');
 
   const configuredNewsletterUrl = contentText(
     (siteApi as Record<string, unknown> | undefined)?.newsletterUrl ??
-      (siteData.api as Record<string, unknown> | undefined)?.newsletterUrl,
+    (siteData.api as Record<string, unknown> | undefined)?.newsletterUrl,
   );
 
   const handleSubscribe = async (e: FormEvent<HTMLFormElement>) => {
@@ -152,6 +164,18 @@ export default function LoomeFooter() {
   const handleShortcutClick = (category: string) => {
     if (isShopPage) {
       setActiveCategory(category);
+      try {
+        const url = new URL(window.location.href);
+        const queryId = slugifyCategoryId(category);
+        if (queryId && queryId !== 'all') {
+          url.searchParams.set('category', queryId);
+        } else {
+          url.searchParams.delete('category');
+        }
+        window.history.replaceState(window.history.state, '', url.toString());
+      } catch {
+        // Ignore history restrictions
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
@@ -172,11 +196,12 @@ export default function LoomeFooter() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const collectionShortcutHref = hasShopPage
-    ? withBasePath('/shop')
-    : isHome
-      ? '#new-arrivals'
-      : `${withBasePath('/')}#new-arrivals`;
+  const resolveCollectionShortcutHref = (category: string) => {
+    if (hasShopPage) {
+      return buildShopCategoryHref(slugifyCategoryId(category));
+    }
+    return isHome ? '#new-arrivals' : `${withBasePath('/')}#new-arrivals`;
+  };
 
   return (
     <footer data-design-section="footer" className="w-full">
@@ -184,12 +209,18 @@ export default function LoomeFooter() {
       <section className="border-t border-[#C8A98B]/20 bg-[var(--brand-secondary,#3B302B)] px-4 py-20 text-[#F2E9DE] sm:px-8 lg:px-12 lg:py-24">
         <div className="mx-auto grid max-w-[1360px] grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-6">
-            <p
-              data-preview-static="newsletter-eyebrow"
-              className="text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
-            >
-              Private Correspondence
-            </p>
+            <EditableText
+              as="p"
+              data-preview-field-path="common.newsletterEyebrow"
+              defaultValue={newsletterEyebrow}
+              fontFamily="body"
+              size="0.6875rem"
+              weight={600}
+              transform="uppercase"
+              letterSpacing="0.26em"
+              color="#C8A98B"
+              className="m-0"
+            />
             <h2
               data-preview-field-path="common.footerHeading"
               className="mt-3 font-heading text-4xl font-extrabold leading-[1.06] tracking-[-0.025em] text-[#F2E9DE] sm:text-5xl"
@@ -276,12 +307,15 @@ export default function LoomeFooter() {
               </div>
             )}
 
-            <p
-              data-preview-static="newsletter-footnote"
-              className="mt-3 text-[11px] tracking-wide text-[#C7B6A6]/80"
-            >
-              Thoughtful dispatches only. Unsubscribe effortlessly at any time.
-            </p>
+            <EditableText
+              as="p"
+              data-preview-field-path="common.newsletterFootnote"
+              defaultValue={newsletterFootnote}
+              fontFamily="body"
+              size="0.6875rem"
+              color="rgba(199, 182, 166, 0.85)"
+              className="mt-3 mb-0 tracking-wide"
+            />
           </div>
         </div>
       </section>
@@ -310,12 +344,18 @@ export default function LoomeFooter() {
                   {siteTitle}
                 </span>
               </button>
-              <p
-                data-preview-static="footer-tagline"
-                className="mt-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]"
-              >
-                The Art of Fine Textiles
-              </p>
+              <EditableText
+                as="p"
+                data-preview-field-path="common.footerTagline"
+                defaultValue={footerTagline}
+                fontFamily="body"
+                size="0.625rem"
+                weight={600}
+                transform="uppercase"
+                letterSpacing="0.24em"
+                color="#C8A98B"
+                className="mt-2 mb-0"
+              />
               <p
                 data-preview-field-path="common.shortDescription"
                 className="mt-5 max-w-sm text-sm leading-relaxed text-[#C7B6A6]"
@@ -421,31 +461,64 @@ export default function LoomeFooter() {
               </ul>
             </div>
 
-            {/* Column 3: Collections Shortcuts — Cross-Page Working Category Links */}
+            {/* Column 3: Collections Shortcuts — Fully Editable Collection Links */}
             <div className="lg:col-span-3">
-              <h3
-                data-preview-static="footer-collections-heading"
-                className="font-sans text-[11px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]"
+              <EditableText
+                as="h3"
+                data-preview-field-path="common.footerCollectionsHeading"
+                defaultValue={footerCollectionsHeading}
+                fontFamily="body"
+                size="0.6875rem"
+                weight={600}
+                transform="uppercase"
+                letterSpacing="0.24em"
+                color="#C8A98B"
+                className="m-0"
+              />
+              <ul
+                data-preview-list-path="common.footerCollections"
+                className="mt-6 space-y-3.5 text-sm text-[#F2E9DE]/82"
               >
-                Collections
-              </h3>
-              <ul className="mt-6 space-y-3.5 text-sm text-[#F2E9DE]/80">
-                {SHOP_SHORTCUTS.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={collectionShortcutHref}
-                      data-target-page={hasShopPage ? 'shop' : undefined}
-                      onClick={(e) => {
-                        if (isShopPage || (!hasShopPage && isHome)) e.preventDefault();
-                        handleShortcutClick(link.category);
-                      }}
-                      data-preview-static={`footer-shortcut-${link.label}`}
-                      className="inline-block transition-colors hover:text-[#C8A98B]"
-                    >
-                      {link.label}
-                    </a>
+                {footerCollections.length === 0 ? (
+                  <li
+                    data-preview-static="footer-collections-empty"
+                    className="text-xs text-[#C7B6A6]/75"
+                  >
+                    Add collection links in your Fivora editor.
                   </li>
-                ))}
+                ) : (
+                  footerCollections.map((link) => {
+                    const isDefaultShopLink = !link.href || /^\/?shop\/?$/i.test(link.href.trim());
+                    const targetHref = isDefaultShopLink
+                      ? resolveCollectionShortcutHref(link.category)
+                      : link.href.startsWith('#') || /^https?:\/\//i.test(link.href)
+                        ? link.href
+                        : withBasePath(link.href);
+                    return (
+                      <li
+                        key={link.id}
+                        data-preview-item-path={`common.footerCollections[${link.index}]`}
+                      >
+                        <a
+                          href={targetHref}
+                          data-preview-field-path={`common.footerCollections[${link.index}].href`}
+                          data-target-page={hasShopPage && isDefaultShopLink ? 'shop' : undefined}
+                          onClick={(e) => {
+                            if (isDefaultShopLink) {
+                              if (isShopPage || (!hasShopPage && isHome)) e.preventDefault();
+                              handleShortcutClick(link.category);
+                            }
+                          }}
+                          className="inline-block no-underline transition-colors hover:text-[#C8A98B]"
+                        >
+                          <span data-preview-field-path={`common.footerCollections[${link.index}].label`}>
+                            {link.label}
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  })
+                )}
               </ul>
             </div>
 
@@ -473,7 +546,7 @@ export default function LoomeFooter() {
                     data-preview-field-path="contact.email"
                     className="break-all transition-colors hover:text-[#F2E9DE]"
                   >
-                    {contactEmail || 'atelier@loometextiles.com'}
+                    {contactEmail || 'demo-atelier@loometextiles.lk'}
                   </a>
                 </div>
 
@@ -486,7 +559,7 @@ export default function LoomeFooter() {
                     data-preview-field-path="contact.phone"
                     className="transition-colors hover:text-[#F2E9DE]"
                   >
-                    {contactPhone || '+1 (212) 555-0194'}
+                    {contactPhone || '+94 11 000 0194'}
                   </a>
                 </div>
 
@@ -495,7 +568,7 @@ export default function LoomeFooter() {
                     <EditableIcon name="map-pin" fieldPath="common.footerLocationIcon" size={15} />
                   </span>
                   <span data-preview-field-path="contact.address" className="leading-relaxed">
-                    {contactAddress || 'SoHo Textile Atelier, New York'}
+                    {contactAddress || 'Demo Showroom — 42 Flower Road, Colombo 07, Sri Lanka'}
                   </span>
                 </div>
 
@@ -543,16 +616,25 @@ export default function LoomeFooter() {
                   </span>
                 )}
               </span>
-              {requiredPages.includes('services') && (
-                <a
-                  href={withBasePath('/services')}
-                  data-target-page="services"
-                  data-preview-static="footer-legal-trade"
-                  className="transition-colors hover:text-[#F2E9DE]"
-                >
-                  Trade Program
-                </a>
-              )}
+              <span data-target-page="services">
+                {requiredPages.includes('services') ? (
+                  <button
+                    type="button"
+                    onClick={() => navigate(pageRoute('services'))}
+                    className="cursor-pointer border-0 bg-transparent p-0 text-xs text-inherit transition-colors hover:text-[#F2E9DE]"
+                  >
+                    <span data-preview-field-path="common.footerTradeLabel">
+                      {footerTradeLabel}
+                    </span>
+                  </button>
+                ) : (
+                  <span className="unavailable">
+                    <span data-preview-field-path="common.footerTradeLabel">
+                      {footerTradeLabel}
+                    </span>
+                  </span>
+                )}
+              </span>
               <span data-target-page="shipping_returns">
                 {requiredPages.includes('shipping_returns') ? (
                   <button

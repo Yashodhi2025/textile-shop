@@ -304,7 +304,7 @@ export default function ShippingReturnsView() {
   return (
     <div
       data-preview-page-key="shipping_returns"
-      className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
+      className="loome-surface-cream min-h-[75vh] w-full"
     >
       {/* Editorial Breadcrumb Strip */}
       <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
@@ -424,7 +424,7 @@ export default function ShippingReturnsView() {
                   <LuxuryStaggerItem key={card.id}>
                     <article
                       data-preview-item-path={`shippingReturnsPage.highlights[${card.index}]`}
-                      className="flex h-full flex-col rounded-2xl border border-[#3B302B]/14 border-t-2 border-t-[#C8A98B] bg-[#FAF5EE] p-7 shadow-[0_12px_34px_rgba(32,28,26,0.04)] transition-all duration-300 hover:border-[#C8A98B] hover:shadow-[0_16px_42px_rgba(32,28,26,0.07)]"
+                      className="flex h-full flex-col rounded-2xl border border-[#3B302B]/14 border-t-2 border-t-[#C8A98B] bg-[#FAF5EE] p-7 shadow-[0_12px_34px_rgba(32,28,26,0.04)] transition-all duration-300 hover:border-[#C8A98B] hover:shadow-[0_16px_42px_rgba(32,28,26,0.07)] dark:border-[#C8A98B]/20 dark:border-t-[#C8A98B] dark:bg-[#2A221F]"
                     >
                       <div className="flex items-center justify-between gap-3">
                         <EditableText
@@ -530,7 +530,7 @@ export default function ShippingReturnsView() {
             <div className="border border-dashed border-[#201C1A]/20 px-6 py-14 text-center dark:border-[#F2E9DE]/20">
               <p
                 data-preview-static="shipping-methods-empty"
-                className="m-0 text-sm text-[#65685E] dark:text-[#C7B6A6]"
+                className="m-0 text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
               >
                 Add delivery methods in your Fivora editor to display shipping timelines and charges.
               </p>
@@ -781,7 +781,7 @@ export default function ShippingReturnsView() {
                 {shippingFaqs.length === 0 ? (
                   <p
                     data-preview-static="shipping-faqs-empty"
-                    className="py-12 text-center text-sm text-[#65685E] dark:text-[#C7B6A6]"
+                    className="py-12 text-center text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
                   >
                     Add shipping FAQs in your Fivora editor.
                   </p>

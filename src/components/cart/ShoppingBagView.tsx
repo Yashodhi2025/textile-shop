@@ -40,19 +40,23 @@ export default function ShoppingBagView() {
   const prefersReducedMotion = useReducedMotion();
 
   const content = contentObject(siteData.content);
+  const common = contentObject(content.common);
+  const navLabels = contentObject(common.navLabels);
   const cartPage = contentObject(content.cartPage);
+  const homeNavLabel = contentText(navLabels.home) || 'Home';
+  const shopNavLabel = contentText(navLabels.shop) || 'Shop';
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
     : siteData.template?.structure?.pages || [
-        'home',
-        'shop',
-        'cart',
-        'checkout',
-        'about_us',
-        'services',
-        'contact',
-      ];
+      'home',
+      'shop',
+      'cart',
+      'checkout',
+      'about_us',
+      'services',
+      'contact',
+    ];
   const hasShopPage = requiredPages.includes('shop');
   const hasServicesPage = requiredPages.includes('services');
 
@@ -76,6 +80,10 @@ export default function ShoppingBagView() {
     contentText(cartPage.deliveryNote) ||
     'Complimentary white-glove delivery on qualifying orders. Custom drapery measurements, fabric availability, and dispatch timing are confirmed personally with our atelier concierge.';
   const checkoutLabel = contentText(cartPage.checkoutLabel) || 'Proceed to Checkout';
+  const continueShoppingLabel =
+    contentText(cartPage.continueShoppingLabel) || 'Continue Shopping';
+  const assuranceEyebrow =
+    contentText(cartPage.assuranceEyebrow) || 'Atelier Delivery & Care Assurance';
   const emptyHeading =
     contentText(cartPage.emptyHeading) || 'Your shopping bag is currently empty';
   const emptyDescription =
@@ -99,31 +107,31 @@ export default function ShoppingBagView() {
   return (
     <div
       data-preview-page-key="cart"
-      className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
+      className="loome-surface-cream min-h-[75vh] w-full"
     >
       {/* Compact Editorial Breadcrumb Strip */}
-      <div className="border-b border-[#201C1A]/10 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
-        <nav className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-12">
-          <a
-            href={withBasePath('/')}
-            data-preview-static="cart-breadcrumb-home"
-            className="text-[#5E4E45] no-underline transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+      <div className="border-b border-[#201C1A]/10 bg-[#FAF5EE]/95 dark:border-[#C8A98B]/16 dark:bg-[#201C1A]">
+        <nav className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C9B9AA] sm:px-8 lg:px-12">
+          <button
+            type="button"
+            onClick={() => window.location.assign(withBasePath('/'))}
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
           >
-            Home
-          </a>
+            <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
+          </button>
           <span aria-hidden="true" className="text-[#C8A98B]">
             /
           </span>
           {hasShopPage && (
             <>
-              <a
-                href={withBasePath('/shop')}
+              <button
+                type="button"
+                onClick={() => window.location.assign(withBasePath('/shop'))}
                 data-target-page="shop"
-                data-preview-static="cart-breadcrumb-shop"
-                className="text-[#5E4E45] no-underline transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
               >
-                Shop
-              </a>
+                <span data-preview-field-path="common.navLabels.shop">{shopNavLabel}</span>
+              </button>
               <span aria-hidden="true" className="text-[#C8A98B]">
                 /
               </span>
@@ -132,7 +140,7 @@ export default function ShoppingBagView() {
           <span
             aria-current="page"
             data-preview-static="cart-breadcrumb-current"
-            className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
+            className="font-medium text-[#201C1A] dark:text-[#F5EEE6]"
           >
             Shopping Bag
           </span>
@@ -500,19 +508,19 @@ export default function ShoppingBagView() {
 
                 {/* Merchant-Configurable White-Glove Delivery Threshold */}
                 {hasDeliveryThreshold && (
-                  <div className="mt-4 rounded-xl border border-[#3B302B]/12 bg-[#F2E9DE] px-3.5 py-3">
-                    <div className="flex items-center justify-between gap-2 text-[11.5px] font-medium text-[#3B302B]">
+                  <div className="mt-4 rounded-xl border border-[#3B302B]/12 bg-[#F2E9DE] px-3.5 py-3 dark:border-[#C8A98B]/20 dark:bg-[#1E1917]">
+                    <div className="flex items-center justify-between gap-2 text-[11.5px] font-medium text-[#3B302B] dark:text-[#E6D9C9]">
                       <span className="inline-flex items-center gap-1.5">
-                        <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.6] text-[#8D7667]" />
+                        <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.6] text-[#8D7667] dark:text-[#C8A98B]" />
                         {deliveryRemaining === 0
                           ? 'Complimentary white-glove delivery unlocked'
                           : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for complimentary delivery`}
                       </span>
-                      <span className="tabular-nums font-semibold text-[#8D7667]">
+                      <span className="tabular-nums font-semibold text-[#8D7667] dark:text-[#C8A98B]">
                         {deliveryProgress}%
                       </span>
                     </div>
-                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#E6D9C9]">
+                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#E6D9C9] dark:bg-[#3B302B]">
                       <motion.div
                         initial={false}
                         animate={{ width: `${deliveryProgress}%` }}
@@ -524,17 +532,17 @@ export default function ShoppingBagView() {
                 )}
 
                 {/* Subtotal Breakdown */}
-                <div className="mt-4 rounded-xl bg-[#F2E9DE]/75 px-4 py-4">
+                <div className="mt-4 rounded-xl bg-[#F2E9DE]/75 px-4 py-4 dark:bg-[#1E1917]">
                   <div className="space-y-2 text-[13px]">
-                    <div className="flex items-center justify-between text-[#5E4E45]">
+                    <div className="flex items-center justify-between text-[#5E4E45] dark:text-[#C9B9AA]">
                       <span>Items ({cart.totalCount})</span>
-                      <span className="font-semibold tabular-nums text-[#201C1A]">
+                      <span className="font-semibold tabular-nums text-[#201C1A] dark:text-[#F5EEE6]">
                         {subtotalDisplay}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[#5E4E45]">
+                    <div className="flex items-center justify-between text-[#5E4E45] dark:text-[#C9B9AA]">
                       <span>Atelier Delivery</span>
-                      <span className="font-semibold text-[#201C1A]">
+                      <span className="font-semibold text-[#201C1A] dark:text-[#F5EEE6]">
                         {hasDeliveryThreshold && deliveryRemaining === 0
                           ? 'Complimentary'
                           : 'Confirmed at Checkout'}
@@ -542,16 +550,16 @@ export default function ShoppingBagView() {
                     </div>
                   </div>
 
-                  <div className="mt-3.5 flex items-baseline justify-between border-t border-[#3B302B]/14 pt-3.5">
+                  <div className="mt-3.5 flex items-baseline justify-between border-t border-[#3B302B]/14 pt-3.5 dark:border-[#C8A98B]/20">
                     <div>
-                      <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A]">
+                      <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] dark:text-[#F5EEE6]">
                         Estimated Subtotal
                       </span>
-                      <span className="mt-0.5 block text-[11px] text-[#5E4E45]">
+                      <span className="mt-0.5 block text-[11px] text-[#5E4E45] dark:text-[#C9B9AA]">
                         Currency: {storeCurrency}
                       </span>
                     </div>
-                    <span className="font-heading text-[28px] font-extrabold leading-none tabular-nums text-[#201C1A]">
+                    <span className="font-heading text-[28px] font-extrabold leading-none tabular-nums text-[#201C1A] dark:text-[#F5EEE6]">
                       {subtotalDisplay}
                     </span>
                   </div>
@@ -574,7 +582,7 @@ export default function ShoppingBagView() {
                     data-target-page={hasShopPage ? 'shop' : undefined}
                     className="loome-btn-outline w-full text-center no-underline"
                   >
-                    Continue Shopping
+                    {continueShoppingLabel}
                   </a>
                 </div>
 
@@ -591,12 +599,9 @@ export default function ShoppingBagView() {
       <section className="border-t border-[#201C1A]/10 bg-[#E6D9C9]/70 py-8 dark:border-[#F2E9DE]/10 dark:bg-[#2A2320] sm:py-10">
         <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-6 px-4 sm:px-8 md:grid-cols-3 lg:px-12">
           <div className="md:col-span-2">
-            <p
-              data-preview-static="cart-assurance-eyebrow"
-              className="m-0 inline-flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
-            >
+            <p className="m-0 inline-flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]">
               <ShieldCheck className="h-3.5 w-3.5 stroke-[1.6]" />
-              Atelier Delivery &amp; Care Assurance
+              <span data-preview-field-path="cartPage.assuranceEyebrow">{assuranceEyebrow}</span>
             </p>
             <div className="mt-2 max-w-2xl">
               <EditableText

@@ -56,7 +56,7 @@ export default function JournalSection() {
               weight={600}
               transform="uppercase"
               letterSpacing="0.26em"
-              color="#8D7667"
+              color="primary"
               className="m-0"
             />
             <EditableText
@@ -68,7 +68,7 @@ export default function JournalSection() {
               weight={800}
               lineHeight={1.04}
               letterSpacing="-0.03em"
-              color="#201C1A"
+              color="heading"
               className="mt-3 mb-0"
             />
           </div>
@@ -80,7 +80,7 @@ export default function JournalSection() {
               fontFamily="body"
               size="0.9375rem"
               lineHeight={1.75}
-              color="#5E4E45"
+              color="muted"
               className="m-0 max-w-md md:text-right"
             />
             {hasJournalPage ? (
@@ -88,7 +88,7 @@ export default function JournalSection() {
                 type="button"
                 onClick={() => window.location.assign(withBasePath('/journal/'))}
                 data-target-page="journal"
-                className="group inline-flex cursor-pointer items-center gap-2 rounded-[10px] border border-[#201C1A]/20 bg-[#FAF5EE] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-all hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE]"
+                className="group inline-flex cursor-pointer items-center gap-2 rounded-[10px] border border-[#201C1A]/20 bg-[#FAF5EE] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-all hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] dark:border-[#C8A98B]/35 dark:bg-[#2A221F] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
               >
                 <EditableText
                   as="span"
@@ -136,13 +136,13 @@ export default function JournalSection() {
                   <LuxuryStaggerItem key={post.id}>
                     <article
                       data-preview-item-path={`home.journalPosts[${post.index}]`}
-                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#3B302B]/12 bg-[#FAF5EE] p-3.5 transition-all duration-500 hover:border-[#C8A98B]"
+                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#3B302B]/12 bg-[#FAF5EE] p-3.5 transition-all duration-500 hover:border-[#C8A98B] dark:border-[#C8A98B]/20 dark:bg-[#2A221F] dark:hover:border-[#C8A98B]/60"
                     >
                       <div
                         onClick={() => {
                           if (hasJournalPage) window.location.assign(storyHref);
                         }}
-                        className="relative block aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-[12px] bg-[#E6D9C9]"
+                        className="relative block aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-[12px] bg-[#E6D9C9] dark:bg-[#3B302B]"
                       >
                         <LuxuryImageReveal
                           delay={Math.min(post.index * 0.1, 0.24)}
@@ -160,7 +160,7 @@ export default function JournalSection() {
                       </div>
 
                       <div className="flex flex-1 flex-col px-2 pb-2 pt-5">
-                        <div className="flex flex-wrap items-center justify-between gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#8D7667]">
+                        <div className="flex flex-wrap items-center justify-between gap-2 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#8D7667] dark:text-[#C8A98B]">
                           <EditableText
                             as="span"
                             data-preview-field-path={`home.journalPosts[${post.index}].category`}
@@ -173,7 +173,7 @@ export default function JournalSection() {
                             color="inherit"
                             className="inline"
                           />
-                          <span className="inline-flex items-center gap-1 text-[#5E4E45]">
+                          <span className="inline-flex items-center gap-1 text-[#5E4E45] dark:text-[#C9B9AA]">
                             <Clock aria-hidden="true" className="h-3 w-3 stroke-[1.5]" />
                             <EditableText
                               as="span"
@@ -195,7 +195,7 @@ export default function JournalSection() {
                           onClick={() => {
                             if (hasJournalPage) window.location.assign(storyHref);
                           }}
-                          className="mt-3 block w-full border-0 bg-transparent p-0 text-left text-[#201C1A] transition-colors hover:text-[#8D7667]"
+                          className="mt-3 block w-full border-0 bg-transparent p-0 text-left text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
                         >
                           <EditableText
                             as="h3"
@@ -218,7 +218,7 @@ export default function JournalSection() {
                           fontFamily="body"
                           size="0.8625rem"
                           lineHeight={1.72}
-                          color="#5E4E45"
+                          color="muted"
                           className="mt-2.5 mb-0"
                         />
 
@@ -229,7 +229,7 @@ export default function JournalSection() {
                               if (hasJournalPage) window.location.assign(storyHref);
                             }}
                             data-target-page={hasJournalPage ? 'journal' : undefined}
-                            className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[#201C1A]/30 bg-transparent px-0 pb-1 pt-0 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#8D7667] hover:text-[#8D7667]"
+                            className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[#201C1A]/30 bg-transparent px-0 pb-1 pt-0 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#8D7667] hover:text-[#8D7667] dark:border-[#C8A98B]/45 dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:text-[#C8A98B]"
                           >
                             <EditableText
                               as="span"

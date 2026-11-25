@@ -33,6 +33,10 @@ import {
   useSiteData,
 } from '@/lib/siteDataContext';
 import {
+  buildShopCategoryHref,
+  slugifyCategoryId,
+} from '@/lib/categoryUtils';
+import {
   formatLoomePrice,
   normalizeLoomeProduct,
   resolveFreeDeliveryThreshold,
@@ -80,12 +84,34 @@ export default function LoomeProductDetailView({
 
   const content = contentObject(siteData.content);
   const common = contentObject(content.common);
+  const navLabels = contentObject(common.navLabels);
   const contact = contentObject(content.contact);
+  const detailCopy = contentObject(content.productDetailPage);
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
     : siteData.template?.structure?.pages || ['home', 'shop', 'about_us', 'services', 'contact'];
   const hasShopPage = requiredPages.includes('shop');
   const hasContactPage = requiredPages.includes('contact');
+
+  const homeNavLabel = contentText(navLabels.home) || 'Home';
+  const shopNavLabel = contentText(navLabels.shop) || 'Shop';
+  const toneLabel = contentText(detailCopy.toneLabel) || 'Tone';
+  const sizeLabel = contentText(detailCopy.sizeLabel) || 'Size & Measurement';
+  const addToBagLabel = contentText(detailCopy.addToBagLabel) || 'Add to Bag';
+  const whatsappInquireLabel =
+    contentText(detailCopy.whatsappInquireLabel) || 'Inquire via Atelier Concierge';
+  const deliveryTitle = contentText(detailCopy.deliveryTitle) || 'Island-Wide Delivery';
+  const deliveryNoteFallback =
+    contentText(detailCopy.deliveryNote) || 'Personal atelier concierge dispatch';
+  const swatchTitle = contentText(detailCopy.swatchTitle) || 'Bespoke Sizing & Swatches';
+  const swatchLinkLabel =
+    contentText(detailCopy.swatchLinkLabel) || 'Request complimentary fabric swatches';
+  const specsHeading = contentText(detailCopy.specsHeading) || 'Textile Specifications';
+  const careHeading = contentText(detailCopy.careHeading) || 'Fabric Care & Longevity';
+  const shippingHeading = contentText(detailCopy.shippingHeading) || 'Shipping & Returns';
+  const relatedEyebrow = contentText(detailCopy.relatedEyebrow) || 'Curated Pairings';
+  const relatedHeading = contentText(detailCopy.relatedHeading) || 'You May Also Like';
+  const relatedCtaLabel = contentText(detailCopy.relatedCtaLabel) || 'View Full Collection';
 
   const storeName = contentText(common.websiteTitle) || 'LOOMÉ';
   const storeCurrency = resolveLoomeCurrency(siteData, normalized.currency);
@@ -188,20 +214,22 @@ export default function LoomeProductDetailView({
 
   const savingsPercent =
     normalized.showPrice &&
-    normalized.compareAtPrice &&
-    normalized.compareAtPrice > normalized.price &&
-    normalized.price > 0
+      normalized.compareAtPrice &&
+      normalized.compareAtPrice > normalized.price &&
+      normalized.price > 0
       ? Math.round(((normalized.compareAtPrice - normalized.price) / normalized.compareAtPrice) * 100)
       : null;
 
   const shippingSummary =
     contentText(rawProduct.shippingSummary) ||
+    contentText(detailCopy.defaultShippingSummary) ||
     (freeDeliveryThreshold > 0
       ? `Complimentary white-glove delivery on orders over ${formatLoomePrice(freeDeliveryThreshold, storeCurrency)}. Standard atelier dispatch within 2–4 business days.`
       : 'White-glove atelier delivery arranged personally at checkout. Standard atelier dispatch within 2–4 business days.');
   const shippingReturns =
     contentText(rawProduct.shippingReturns) ||
-    'Ready-to-ship textiles may be returned unworn and unwashed in original linen packaging within 30 days. Custom-cut yardage and bespoke drapery are crafted to order.';
+    contentText(detailCopy.defaultShippingReturns) ||
+    'Ready-to-ship textiles may be returned unworn and unwashed in original linen packaging within our store return window. Custom-cut yardage and bespoke drapery are crafted to order.';
 
   const whatsappHref = useMemo(() => {
     if (!whatsappNumber) return '';
@@ -259,7 +287,9 @@ export default function LoomeProductDetailView({
     } catch {
       // Ignore restricted storage environments
     }
-    window.location.href = hasShopPage ? withBasePath('/shop') : withBasePath('/#new-arrivals');
+    window.location.href = hasShopPage
+      ? buildShopCategoryHref(slugifyCategoryId(normalized.category))
+      : withBasePath('/#new-arrivals');
   };
 
   const handleAddToBag = () => {
@@ -307,33 +337,33 @@ export default function LoomeProductDetailView({
   };
 
   return (
-    <div className="loome-surface-cream bg-[#F2E9DE] text-[#201C1A]">
+    <div className="loome-surface-cream min-h-[75vh] w-full">
       {/* Breadcrumb Navigation */}
-      <div className="border-b border-[#201C1A]/8 bg-[#F2E9DE]/90 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
+      <div className="border-b border-[#201C1A]/10 bg-[#FAF5EE]/90 dark:border-[#C8A98B]/16 dark:bg-[#201C1A]">
         <nav
           aria-label="Breadcrumb"
-          className="loome-container flex flex-wrap items-center gap-2 py-4 text-[11px] uppercase tracking-[0.2em] text-[#65685E] dark:text-[#C7B6A6]"
+          className="loome-container flex flex-wrap items-center gap-2 py-4 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C9B9AA]"
         >
-          <a
-            href={withBasePath('/')}
-            data-preview-static="breadcrumb-home"
-            className="text-[#65685E] no-underline transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+          <button
+            type="button"
+            onClick={() => window.location.assign(withBasePath('/'))}
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
           >
-            Home
-          </a>
+            <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
+          </button>
           <span aria-hidden="true" className="text-[#C8A98B]">
             /
           </span>
           {hasShopPage && (
             <>
-              <a
-                href={withBasePath('/shop')}
+              <button
+                type="button"
+                onClick={() => window.location.assign(withBasePath('/shop'))}
                 data-target-page="shop"
-                data-preview-static="breadcrumb-shop"
-                className="text-[#65685E] no-underline transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
               >
-                Shop
-              </a>
+                <span data-preview-field-path="common.navLabels.shop">{shopNavLabel}</span>
+              </button>
               <span aria-hidden="true" className="text-[#C8A98B]">
                 /
               </span>
@@ -343,7 +373,7 @@ export default function LoomeProductDetailView({
             type="button"
             onClick={handleCategoryBreadcrumbClick}
             data-preview-static="breadcrumb-category"
-            className="border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#65685E] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+            className="border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
           >
             {normalized.category}
           </button>
@@ -353,7 +383,7 @@ export default function LoomeProductDetailView({
           <span
             aria-current="page"
             data-preview-static="breadcrumb-current"
-            className="max-w-[240px] truncate text-[#201C1A] dark:text-[#F2E9DE] sm:max-w-md"
+            className="max-w-[240px] truncate font-medium text-[#201C1A] dark:text-[#F5EEE6] sm:max-w-md"
           >
             {normalized.name}
           </span>
@@ -387,11 +417,10 @@ export default function LoomeProductDetailView({
                         aria-label={`View image ${gIdx + 1} of ${galleryImages.length}`}
                         data-preview-static={`gallery-thumb-${gIdx}`}
                         onClick={() => setActiveImageIndex(gIdx)}
-                        className={`group relative aspect-[4/5] w-[72px] shrink-0 overflow-hidden bg-[#E6D9C9]/50 transition-all duration-300 sm:w-full dark:bg-[#3B302B] ${
-                          isSelected
-                            ? 'ring-1 ring-[#201C1A] ring-offset-2 ring-offset-[#F2E9DE] dark:ring-[#C8A98B] dark:ring-offset-[#201C1A]'
-                            : 'opacity-70 hover:opacity-100'
-                        }`}
+                        className={`group relative aspect-[4/5] w-[72px] shrink-0 overflow-hidden bg-[#E6D9C9]/50 transition-all duration-300 sm:w-full dark:bg-[#3B302B] ${isSelected
+                          ? 'ring-1 ring-[#201C1A] ring-offset-2 ring-offset-[#F2E9DE] dark:ring-[#C8A98B] dark:ring-offset-[#201C1A]'
+                          : 'opacity-70 hover:opacity-100'
+                          }`}
                       >
                         <img
                           src={withBasePath(imgUrl)}
@@ -500,7 +529,7 @@ export default function LoomeProductDetailView({
 
                 {/* Subtle gallery caption counter when multiple images exist */}
                 {hasMultipleImages && (
-                  <div className="mt-3 flex items-center justify-between text-[11px] uppercase tracking-[0.2em] text-[#65685E] dark:text-[#C7B6A6]">
+                  <div className="mt-3 flex items-center justify-between text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6]">
                     <span data-preview-static="gallery-hint">
                       Hover to inspect texture · Click for full view
                     </span>
@@ -533,7 +562,7 @@ export default function LoomeProductDetailView({
                     <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#C8A98B]" />
                     <span
                       data-preview-static="product-collection-tag"
-                      className="text-[11px] uppercase tracking-[0.2em] text-[#65685E] dark:text-[#C7B6A6]"
+                      className="text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6]"
                     >
                       {normalized.collectionTag}
                     </span>
@@ -569,7 +598,7 @@ export default function LoomeProductDetailView({
                   {normalized.showPrice && normalized.compareAtPrice && (
                     <span
                       data-preview-field-path={`products[${idx}].compareAtPrice`}
-                      className="text-sm text-[#65685E]/80 line-through dark:text-[#C7B6A6]/75"
+                      className="text-sm text-[#5E4E45]/80 line-through dark:text-[#C7B6A6]/75"
                     >
                       {formatLoomePrice(normalized.compareAtPrice, storeCurrency)}
                     </span>
@@ -589,9 +618,8 @@ export default function LoomeProductDetailView({
                   className="inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.18em]"
                 >
                   <span
-                    className={`h-2 w-2 rounded-full ${
-                      normalized.isAvailable ? 'bg-[#8D7667]' : 'bg-[#A1685A]'
-                    }`}
+                    className={`h-2 w-2 rounded-full ${normalized.isAvailable ? 'bg-[#8D7667]' : 'bg-[#A1685A]'
+                      }`}
                   />
                   <span
                     className={
@@ -625,7 +653,7 @@ export default function LoomeProductDetailView({
                   {normalized.material && (
                     <span
                       data-preview-static="product-material-pill"
-                      className="border border-[#201C1A]/12 bg-[#FAF5EE] px-3 py-1.5 text-[11px] tracking-wide text-[#494D44] dark:border-[#F2E9DE]/14 dark:bg-[#3B302B] dark:text-[#D5D6CF]"
+                      className="rounded-[10px] border border-[#201C1A]/14 bg-[#FAF5EE] px-3 py-1.5 text-[11px] font-medium tracking-wide text-[#3B302B] dark:border-[#C8A98B]/24 dark:bg-[#2A221F] dark:text-[#F5EEE6]"
                     >
                       {normalized.material}
                     </span>
@@ -633,7 +661,7 @@ export default function LoomeProductDetailView({
                   {normalized.gsm && (
                     <span
                       data-preview-static="product-gsm-pill"
-                      className="border border-[#201C1A]/12 bg-[#FAF5EE] px-3 py-1.5 text-[11px] tracking-wide text-[#494D44] dark:border-[#F2E9DE]/14 dark:bg-[#3B302B] dark:text-[#D5D6CF]"
+                      className="rounded-[10px] border border-[#201C1A]/14 bg-[#FAF5EE] px-3 py-1.5 text-[11px] font-medium tracking-wide text-[#3B302B] dark:border-[#C8A98B]/24 dark:bg-[#2A221F] dark:text-[#F5EEE6]"
                     >
                       {normalized.gsm}
                     </span>
@@ -646,14 +674,14 @@ export default function LoomeProductDetailView({
                 <div className="mt-7">
                   <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.2em]">
                     <span
-                      data-preview-static="color-swatch-label"
-                      className="font-medium text-[#65685E] dark:text-[#C7B6A6]"
+                      data-preview-field-path="productDetailPage.toneLabel"
+                      className="font-medium text-[#5E4E45] dark:text-[#C9B9AA]"
                     >
-                      Fabric Tone
+                      {toneLabel}
                     </span>
                     <span
                       data-preview-static="color-swatch-value"
-                      className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
+                      className="font-semibold text-[#201C1A] dark:text-[#F5EEE6]"
                     >
                       {activeColor.name}
                     </span>
@@ -677,16 +705,14 @@ export default function LoomeProductDetailView({
                             aria-pressed={selected}
                             title={swatch.name}
                             data-preview-static={`detail-swatch-${sIdx}`}
-                            className={`group flex items-center gap-2.5 border px-3 py-2 text-xs transition-all duration-300 ${
-                              selected
-                                ? 'border-[#201C1A] bg-[#FAF5EE] text-[#201C1A] dark:border-[#C8A98B] dark:bg-[#3B302B] dark:text-[#F2E9DE]'
-                                : 'border-[#201C1A]/14 bg-transparent text-[#5E4E45] hover:border-[#201C1A]/40 dark:border-[#F2E9DE]/16 dark:text-[#C7B6A6] dark:hover:border-[#F2E9DE]/40'
-                            }`}
+                            className={`group flex items-center gap-2.5 border px-3 py-2 text-xs transition-all duration-300 ${selected
+                              ? 'border-[#201C1A] bg-[#FAF5EE] text-[#201C1A] dark:border-[#C8A98B] dark:bg-[#3B302B] dark:text-[#F2E9DE]'
+                              : 'border-[#201C1A]/14 bg-transparent text-[#5E4E45] hover:border-[#201C1A]/40 dark:border-[#F2E9DE]/16 dark:text-[#C7B6A6] dark:hover:border-[#F2E9DE]/40'
+                              }`}
                           >
                             <span
-                              className={`h-4 w-4 rounded-full border border-[#201C1A]/25 transition-transform duration-300 ${
-                                selected ? 'scale-105 ring-1 ring-[#C8A98B] ring-offset-1 ring-offset-[#FAF5EE] dark:ring-offset-[#3B302B]' : ''
-                              }`}
+                              className={`h-4 w-4 rounded-full border border-[#201C1A]/25 transition-transform duration-300 ${selected ? 'scale-105 ring-1 ring-[#C8A98B] ring-offset-1 ring-offset-[#FAF5EE] dark:ring-offset-[#3B302B]' : ''
+                                }`}
                               style={{ backgroundColor: swatch.hex }}
                             />
                             <span className="tracking-wide">{swatch.name}</span>
@@ -704,10 +730,10 @@ export default function LoomeProductDetailView({
                   <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.2em]">
                     <span
                       data-preview-static="size-selector-label"
-                      className="inline-flex items-center gap-1.5 font-medium text-[#65685E] dark:text-[#C7B6A6]"
+                      className="inline-flex items-center gap-1.5 font-medium text-[#5E4E45] dark:text-[#C7B6A6]"
                     >
                       <Ruler className="h-3.5 w-3.5 stroke-[1.5] text-[#8D7667] dark:text-[#C8A98B]" />
-                      Size &amp; Measurement
+                      <span data-preview-field-path="productDetailPage.sizeLabel">{sizeLabel}</span>
                     </span>
                     <span
                       data-preview-static="size-selector-value"
@@ -726,11 +752,10 @@ export default function LoomeProductDetailView({
                           onClick={() => setSelectedSizeIndex(szIdx)}
                           aria-pressed={selected}
                           data-preview-static={`detail-size-${szIdx}`}
-                          className={`rounded-[11px] border px-3.5 py-2.5 text-left text-xs tracking-wide transition-all duration-300 ${
-                            selected
-                              ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#F2E9DE] dark:bg-[#F2E9DE] dark:text-[#201C1A]'
-                              : 'border-[#201C1A]/16 bg-[#FAF5EE] text-[#201C1A] hover:border-[#201C1A]/45 dark:border-[#F2E9DE]/16 dark:bg-[#3B302B] dark:text-[#F2E9DE] dark:hover:border-[#F2E9DE]/45'
-                          }`}
+                          className={`rounded-[11px] border px-3.5 py-2.5 text-left text-xs tracking-wide transition-all duration-300 ${selected
+                            ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#F2E9DE] dark:bg-[#F2E9DE] dark:text-[#201C1A]'
+                            : 'border-[#201C1A]/16 bg-[#FAF5EE] text-[#201C1A] hover:border-[#201C1A]/45 dark:border-[#F2E9DE]/16 dark:bg-[#3B302B] dark:text-[#F2E9DE] dark:hover:border-[#F2E9DE]/45'
+                            }`}
                         >
                           {sizeOption}
                         </button>
@@ -758,7 +783,7 @@ export default function LoomeProductDetailView({
                     <span
                       aria-live="polite"
                       data-preview-static="detail-qty-value"
-                      className="w-8 text-center text-sm font-medium"
+                      className="w-8 text-center text-sm font-semibold tabular-nums text-[#201C1A] dark:text-[#F5EEE6]"
                     >
                       {quantity}
                     </span>
@@ -781,13 +806,12 @@ export default function LoomeProductDetailView({
                     disabled={!normalized.isAvailable}
                     onClick={handleAddToBag}
                     data-preview-static="detail-add-to-bag"
-                    className={`flex h-[50px] flex-1 items-center justify-center gap-2.5 rounded-[11px] px-6 text-[11px] font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:-translate-y-0.5 ${
-                      !normalized.isAvailable
-                        ? 'cursor-not-allowed bg-[#201C1A]/25 text-[#201C1A]/60 dark:bg-[#F2E9DE]/15 dark:text-[#F2E9DE]/50'
-                        : addedFeedback
-                          ? 'bg-[#8D7667] text-[#F2E9DE]'
-                          : 'bg-[#201C1A] text-[#F2E9DE] hover:bg-[#3B302B] dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]'
-                    }`}
+                    className={`flex h-[50px] flex-1 items-center justify-center gap-2.5 rounded-[11px] px-6 text-[11px] font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:-translate-y-0.5 ${!normalized.isAvailable
+                      ? 'cursor-not-allowed bg-[#201C1A]/25 text-[#201C1A]/60 dark:bg-[#F2E9DE]/15 dark:text-[#F2E9DE]/50'
+                      : addedFeedback
+                        ? 'bg-[#8D7667] text-[#F2E9DE]'
+                        : 'bg-[#201C1A] text-[#F2E9DE] hover:bg-[#3B302B] dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]'
+                      }`}
                   >
                     {addedFeedback ? (
                       <>
@@ -797,7 +821,9 @@ export default function LoomeProductDetailView({
                     ) : normalized.isAvailable ? (
                       <>
                         <ShoppingBag className="h-4 w-4 stroke-[1.5]" />
-                        Add to Bag
+                        <span data-preview-field-path="productDetailPage.addToBagLabel">
+                          {addToBagLabel}
+                        </span>
                       </>
                     ) : (
                       'Currently Unavailable'
@@ -816,11 +842,10 @@ export default function LoomeProductDetailView({
                     }
                     aria-pressed={wishlisted}
                     data-preview-static="detail-wishlist-toggle"
-                    className={`flex h-[50px] items-center justify-center gap-2 rounded-[11px] border px-4 text-[11px] font-semibold uppercase tracking-[0.18em] transition-all duration-300 sm:w-[50px] sm:shrink-0 sm:px-0 ${
-                      wishlisted
-                        ? 'border-[#201C1A] bg-[#201C1A] text-[#C8A98B] dark:border-[#C8A98B] dark:bg-[#201C1A]'
-                        : 'border-[#201C1A]/20 bg-[#FAF5EE] text-[#201C1A] hover:border-[#201C1A] dark:border-[#F2E9DE]/20 dark:bg-[#3B302B] dark:text-[#F2E9DE] dark:hover:border-[#F2E9DE]'
-                    }`}
+                    className={`flex h-[50px] items-center justify-center gap-2 rounded-[11px] border px-4 text-[11px] font-semibold uppercase tracking-[0.18em] transition-all duration-300 sm:w-[50px] sm:shrink-0 sm:px-0 ${wishlisted
+                      ? 'border-[#201C1A] bg-[#201C1A] text-[#C8A98B] dark:border-[#C8A98B] dark:bg-[#201C1A]'
+                      : 'border-[#201C1A]/20 bg-[#FAF5EE] text-[#201C1A] hover:border-[#201C1A] dark:border-[#F2E9DE]/20 dark:bg-[#3B302B] dark:text-[#F2E9DE] dark:hover:border-[#F2E9DE]'
+                      }`}
                   >
                     <Heart
                       className={`h-4 w-4 stroke-[1.5] ${wishlisted ? 'fill-[#C8A98B]' : ''}`}
@@ -835,54 +860,70 @@ export default function LoomeProductDetailView({
                     href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    data-preview-static="detail-concierge-whatsapp"
                     className="flex h-[46px] w-full items-center justify-center gap-2 rounded-[11px] border border-[#201C1A]/20 bg-transparent px-5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] no-underline transition-all duration-300 hover:-translate-y-0.5 hover:border-[#201C1A] hover:bg-[#201C1A]/5 dark:border-[#C8A98B]/35 dark:text-[#F2E9DE] dark:hover:border-[#C8A98B] dark:hover:bg-[#3B302B]/70"
                   >
                     <MessageCircle className="h-3.5 w-3.5 stroke-[1.6] text-[#8D7667] dark:text-[#C8A98B]" />
-                    Inquire via Atelier Concierge
+                    <span data-preview-field-path="productDetailPage.whatsappInquireLabel">
+                      {whatsappInquireLabel}
+                    </span>
                   </a>
                 )}
               </div>
 
               {/* Delivery & Atelier Assurance Strip */}
-              <div className="mt-7 grid grid-cols-1 gap-3 border-y border-[#201C1A]/10 py-5 text-xs text-[#5E4E45] dark:border-[#F2E9DE]/12 dark:text-[#C7B6A6] sm:grid-cols-2">
+              <div className="mt-7 grid grid-cols-1 gap-3 border-y border-[#201C1A]/12 py-5 text-xs text-[#5E4E45] dark:border-[#C8A98B]/18 dark:text-[#C9B9AA] sm:grid-cols-2">
                 <div className="flex items-start gap-2.5">
-                  <Truck className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.4] text-[#8D7667] dark:text-[#C8A98B]" />
+                  <Truck className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#8D7667] dark:text-[#C8A98B]" />
                   <div>
-                    <p
-                      data-preview-static="delivery-strip-title"
-                      className="m-0 font-medium text-[#201C1A] dark:text-[#F2E9DE]"
-                    >
-                      White-Glove Delivery
-                    </p>
-                    <p data-preview-static="delivery-strip-note" className="m-0 mt-0.5 leading-relaxed">
-                      {freeDeliveryThreshold > 0
-                        ? `Complimentary over ${formatLoomePrice(freeDeliveryThreshold, storeCurrency)}`
-                        : 'Personal atelier concierge dispatch'}
+                    <EditableText
+                      as="p"
+                      data-preview-field-path="productDetailPage.deliveryTitle"
+                      defaultValue={deliveryTitle}
+                      fontFamily="body"
+                      size="0.75rem"
+                      weight={600}
+                      color="heading"
+                      className="m-0"
+                    />
+                    <p className="m-0 mt-0.5 leading-relaxed">
+                      {freeDeliveryThreshold > 0 ? (
+                        `Complimentary over ${formatLoomePrice(freeDeliveryThreshold, storeCurrency)}`
+                      ) : (
+                        <span data-preview-field-path="productDetailPage.deliveryNote">
+                          {deliveryNoteFallback}
+                        </span>
+                      )}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.4] text-[#8D7667] dark:text-[#C8A98B]" />
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#8D7667] dark:text-[#C8A98B]" />
                   <div>
-                    <p
-                      data-preview-static="swatch-strip-title"
-                      className="m-0 font-medium text-[#201C1A] dark:text-[#F2E9DE]"
-                    >
-                      Bespoke Sizing &amp; Swatches
-                    </p>
-                    <p data-preview-static="swatch-strip-note" className="m-0 mt-0.5 leading-relaxed">
+                    <EditableText
+                      as="p"
+                      data-preview-field-path="productDetailPage.swatchTitle"
+                      defaultValue={swatchTitle}
+                      fontFamily="body"
+                      size="0.75rem"
+                      weight={600}
+                      color="heading"
+                      className="m-0"
+                    />
+                    <p className="m-0 mt-0.5 leading-relaxed">
                       {hasContactPage ? (
                         <a
                           href={withBasePath('/contact')}
                           data-target-page="contact"
-                          data-preview-static="swatch-contact-link"
-                          className="text-[#5E4E45] underline decoration-[#C8A98B] underline-offset-4 transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+                          className="text-[#5E4E45] underline decoration-[#C8A98B] underline-offset-4 transition-colors hover:text-[#201C1A] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
                         >
-                          Request complimentary fabric swatches
+                          <span data-preview-field-path="productDetailPage.swatchLinkLabel">
+                            {swatchLinkLabel}
+                          </span>
                         </a>
                       ) : (
-                        'Crafted to order by our textile specialists'
+                        <span data-preview-field-path="productDetailPage.swatchLinkLabel">
+                          {swatchLinkLabel}
+                        </span>
                       )}
                     </p>
                   </div>
@@ -890,7 +931,7 @@ export default function LoomeProductDetailView({
               </div>
 
               {/* Expandable Product Detail Accordions */}
-              <div className="divide-y divide-[#201C1A]/10 border-b border-[#201C1A]/10 dark:divide-[#F2E9DE]/12 dark:border-[#F2E9DE]/12">
+              <div className="divide-y divide-[#201C1A]/12 border-b border-[#201C1A]/12 dark:divide-[#C8A98B]/18 dark:border-[#C8A98B]/18">
                 {/* 1. Textile Specifications — ONLY rendered when real specs exist */}
                 {hasSpecs && (
                   <div>
@@ -898,14 +939,14 @@ export default function LoomeProductDetailView({
                       type="button"
                       onClick={() => toggleAccordion('specs')}
                       aria-expanded={openAccordion === 'specs'}
-                      data-preview-static="accordion-specs-toggle"
-                      className="flex w-full items-center justify-between py-4 text-left text-[11px] font-medium uppercase tracking-[0.22em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
+                      className="flex w-full items-center justify-between py-4 text-left text-[11px] font-semibold uppercase tracking-[0.22em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
                     >
-                      <span>Textile Specifications</span>
+                      <span data-preview-field-path="productDetailPage.specsHeading">
+                        {specsHeading}
+                      </span>
                       <ChevronDown
-                        className={`h-4 w-4 stroke-[1.5] text-[#8D7667] transition-transform duration-300 dark:text-[#C8A98B] ${
-                          openAccordion === 'specs' ? 'rotate-180' : ''
-                        }`}
+                        className={`h-4 w-4 stroke-[1.5] text-[#8D7667] transition-transform duration-300 dark:text-[#C8A98B] ${openAccordion === 'specs' ? 'rotate-180' : ''
+                          }`}
                       />
                     </button>
                     <AnimatePresence initial={false}>
@@ -921,17 +962,17 @@ export default function LoomeProductDetailView({
                             {textileSpecs.map((spec) => (
                               <div
                                 key={spec.label}
-                                className="flex flex-col justify-between gap-1 border-b border-[#201C1A]/6 pb-2.5 last:border-b-0 last:pb-0 sm:flex-row sm:items-baseline sm:gap-4 dark:border-[#F2E9DE]/8"
+                                className="flex flex-col justify-between gap-1 border-b border-[#201C1A]/8 pb-2.5 last:border-b-0 last:pb-0 sm:flex-row sm:items-baseline sm:gap-4 dark:border-[#C8A98B]/14"
                               >
                                 <dt
                                   data-preview-static={`spec-label-${spec.label}`}
-                                  className="text-[11px] uppercase tracking-[0.18em] text-[#65685E] dark:text-[#C7B6A6]"
+                                  className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#5E4E45] dark:text-[#C9B9AA]"
                                 >
                                   {spec.label}
                                 </dt>
                                 <dd
                                   data-preview-static={`spec-value-${spec.label}`}
-                                  className="m-0 text-sm text-[#201C1A] sm:text-right dark:text-[#F2E9DE]"
+                                  className="m-0 text-sm font-medium text-[#201C1A] sm:text-right dark:text-[#F5EEE6]"
                                 >
                                   {spec.value}
                                 </dd>
@@ -951,14 +992,14 @@ export default function LoomeProductDetailView({
                       type="button"
                       onClick={() => toggleAccordion('care')}
                       aria-expanded={openAccordion === 'care'}
-                      data-preview-static="accordion-care-toggle"
-                      className="flex w-full items-center justify-between py-4 text-left text-[11px] font-medium uppercase tracking-[0.22em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
+                      className="flex w-full items-center justify-between py-4 text-left text-[11px] font-semibold uppercase tracking-[0.22em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
                     >
-                      <span>Care &amp; Longevity</span>
+                      <span data-preview-field-path="productDetailPage.careHeading">
+                        {careHeading}
+                      </span>
                       <ChevronDown
-                        className={`h-4 w-4 stroke-[1.5] text-[#8D7667] transition-transform duration-300 dark:text-[#C8A98B] ${
-                          openAccordion === 'care' ? 'rotate-180' : ''
-                        }`}
+                        className={`h-4 w-4 stroke-[1.5] text-[#8D7667] transition-transform duration-300 dark:text-[#C8A98B] ${openAccordion === 'care' ? 'rotate-180' : ''
+                          }`}
                       />
                     </button>
                     <AnimatePresence initial={false}>
@@ -972,7 +1013,7 @@ export default function LoomeProductDetailView({
                         >
                           <p
                             data-preview-static="product-care-instructions"
-                            className="m-0 pb-5 pt-1 text-sm leading-relaxed text-[#5E4E45] dark:text-[#C7B6A6]"
+                            className="m-0 pb-5 pt-1 text-sm leading-relaxed text-[#5E4E45] dark:text-[#C9B9AA]"
                           >
                             {normalized.careInstructions}
                           </p>
@@ -988,14 +1029,14 @@ export default function LoomeProductDetailView({
                     type="button"
                     onClick={() => toggleAccordion('delivery')}
                     aria-expanded={openAccordion === 'delivery'}
-                    data-preview-static="accordion-delivery-toggle"
-                    className="flex w-full items-center justify-between py-4 text-left text-[11px] font-medium uppercase tracking-[0.22em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
+                    className="flex w-full items-center justify-between py-4 text-left text-[11px] font-semibold uppercase tracking-[0.22em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
                   >
-                    <span>Delivery &amp; Atelier Returns</span>
+                    <span data-preview-field-path="productDetailPage.shippingHeading">
+                      {shippingHeading}
+                    </span>
                     <ChevronDown
-                      className={`h-4 w-4 stroke-[1.5] text-[#8D7667] transition-transform duration-300 dark:text-[#C8A98B] ${
-                        openAccordion === 'delivery' ? 'rotate-180' : ''
-                      }`}
+                      className={`h-4 w-4 stroke-[1.5] text-[#8D7667] transition-transform duration-300 dark:text-[#C8A98B] ${openAccordion === 'delivery' ? 'rotate-180' : ''
+                        }`}
                     />
                   </button>
                   <AnimatePresence initial={false}>
@@ -1007,11 +1048,17 @@ export default function LoomeProductDetailView({
                         transition={{ duration: 0.35, ease: LUXURY_EASE }}
                         className="overflow-hidden"
                       >
-                        <div className="space-y-3 pb-5 pt-1 text-sm leading-relaxed text-[#5E4E45] dark:text-[#C7B6A6]">
-                          <p data-preview-static="product-shipping-summary" className="m-0">
+                        <div className="space-y-3 pb-5 pt-1 text-sm leading-relaxed text-[#5E4E45] dark:text-[#C9B9AA]">
+                          <p
+                            data-preview-field-path="productDetailPage.defaultShippingSummary"
+                            className="m-0"
+                          >
                             {shippingSummary}
                           </p>
-                          <p data-preview-static="product-shipping-returns" className="m-0">
+                          <p
+                            data-preview-field-path="productDetailPage.defaultShippingReturns"
+                            className="m-0"
+                          >
                             {shippingReturns}
                           </p>
                         </div>
@@ -1027,33 +1074,39 @@ export default function LoomeProductDetailView({
 
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
-        <section className="border-t border-[#201C1A]/8 bg-[#F4F0E8]/60 py-16 dark:border-[#F2E9DE]/10 dark:bg-[#2A2320] sm:py-20 lg:py-24">
+        <section className="border-t border-[#201C1A]/10 bg-[#E6D9C9]/45 py-16 dark:border-[#C8A98B]/16 dark:bg-[#201C1A] sm:py-20 lg:py-24">
           <div className="loome-container">
             <LuxuryReveal>
               <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
                 <div>
-                  <span
-                    data-preview-static="related-eyebrow"
-                    className="inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.26em] text-[#8D7667] dark:text-[#C8A98B]"
-                  >
+                  <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.26em] text-[#8D7667] dark:text-[#C8A98B]">
                     <Sparkles className="h-3.5 w-3.5 stroke-[1.5]" />
-                    Curated Pairings
+                    <span data-preview-field-path="productDetailPage.relatedEyebrow">
+                      {relatedEyebrow}
+                    </span>
                   </span>
-                  <h2
-                    data-preview-static="related-heading"
-                    className="mt-2.5 mb-0 font-serif text-3xl font-light tracking-[-0.015em] text-[#201C1A] dark:text-[#F2E9DE] sm:text-4xl"
-                  >
-                    Complementary Atelier Textiles
-                  </h2>
+                  <EditableText
+                    as="h2"
+                    data-preview-field-path="productDetailPage.relatedHeading"
+                    defaultValue={relatedHeading}
+                    fontFamily="heading"
+                    size="clamp(1.85rem, 3.2vw, 2.5rem)"
+                    weight={800}
+                    lineHeight={1.1}
+                    letterSpacing="-0.025em"
+                    color="heading"
+                    className="mt-2.5 mb-0"
+                  />
                 </div>
                 {hasShopPage && (
                   <a
                     href={withBasePath('/shop')}
                     data-target-page="shop"
-                    data-preview-static="related-view-all-shop"
-                    className="inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.22em] text-[#201C1A] no-underline transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
+                    className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#201C1A] no-underline transition-colors hover:text-[#8D7667] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
                   >
-                    Explore All Textiles
+                    <span data-preview-field-path="productDetailPage.relatedCtaLabel">
+                      {relatedCtaLabel}
+                    </span>
                     <ArrowRight className="h-3.5 w-3.5 stroke-[1.5]" />
                   </a>
                 )}

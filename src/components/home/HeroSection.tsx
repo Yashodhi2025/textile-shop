@@ -11,10 +11,22 @@ import {
 } from 'react';
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { EditableText } from '@deneb-ui/ui';
-import { contentList, contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
+import { EditableImage, EditableText } from '@deneb-ui/ui';
+import {
+  contentList,
+  contentObject,
+  contentText,
+  DENEB_PREVIEW_DATA_MESSAGE,
+  DENEB_PREVIEW_FOCUS_MESSAGE,
+  LEGACY_PREVIEW_DATA_MESSAGE,
+  LEGACY_PREVIEW_FOCUS_MESSAGE,
+  PREVIEW_DATA_MESSAGE,
+  PREVIEW_FOCUS_MESSAGE,
+  useSiteData,
+} from '@/lib/siteDataContext';
 import { withBasePath } from '@/lib/utils';
-import { LUXURY_EASE, useParallaxActive } from '@/components/motion/LuxuryReveal';
+import { useParallaxActive } from '@/components/motion/LuxuryReveal';
+import SilkWaveOverlay from '@/components/home/SilkWaveOverlay';
 
 interface HeroSectionProps {
   revealReady?: boolean;
@@ -49,11 +61,139 @@ const KNOWN_INTERNAL_PAGES = new Set([
   'contact',
 ]);
 
+const STORY_PATH_REGEX = /home\.fabricStories\.stories\[(\d+)\]/;
+
 function normalizeColor(raw: string, fallback: string): string {
   const trimmed = raw.trim();
-  if (/^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(trimmed)) return trimmed;
+  if (/^#[0-9a-f]{3}$/i.test(trimmed)) {
+    const [, r, g, b] = trimmed;
+    return `#${r}${r}${g}${g}${b}${b}`;
+  }
+  if (/^#[0-9a-f]{6}$/i.test(trimmed)) return trimmed;
   if (/^(?:rgb|hsl)a?\(/i.test(trimmed)) return trimmed;
   return fallback;
+}
+
+function colorMix(color: string, percent: number): string {
+  return `color-mix(in srgb, ${color} ${percent}%, transparent)`;
+}
+
+/**
+ * Inspects URL query parameters, Fivora Studio bridge cache, and DOM markers to distinguish
+ * interactive Edit mode (autoplay paused, manual navigation active) from Preview mode and
+ * the published storefront (automatic 5s fabric-wave transitions active).
+ */
+function detectRuntimeEditMode(): 'edit' | 'preview' | 'unknown' {
+  if (typeof window === 'undefined') return 'unknown';
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const modeParam = (
+      params.get('mode') ||
+      params.get('editorMode') ||
+      params.get('fivoraMode') ||
+      ''
+    )
+      .trim()
+      .toLowerCase();
+    const editParam = (params.get('edit') || params.get('visualEditor') || '')
+      .trim()
+      .toLowerCase();
+    const previewParam = (params.get('preview') || '').trim().toLowerCase();
+
+    if (
+      modeParam === 'preview' ||
+      editParam === 'false' ||
+      editParam === '0' ||
+      previewParam === 'true' ||
+      previewParam === '1'
+    ) {
+      return 'preview';
+    }
+    if (
+      modeParam === 'edit' ||
+      editParam === 'true' ||
+      editParam === '1'
+    ) {
+      return 'edit';
+    }
+  } catch {
+    // Ignore URL parsing errors
+  }
+
+  try {
+    const html = document.documentElement;
+    const body = document.body;
+    const attrMode = (
+      html.getAttribute('data-fivora-mode') ||
+      html.getAttribute('data-editor-mode') ||
+      body?.getAttribute('data-fivora-mode') ||
+      body?.getAttribute('data-editor-mode') ||
+      ''
+    )
+      .trim()
+      .toLowerCase();
+
+    if (attrMode === 'preview') return 'preview';
+    if (attrMode === 'edit') return 'edit';
+
+    const editFlag =
+      html.getAttribute('data-fivora-edit-mode') ||
+      html.getAttribute('data-edit-mode') ||
+      body?.getAttribute('data-fivora-edit-mode') ||
+      body?.getAttribute('data-edit-mode');
+    if (editFlag === 'true' || editFlag === '1') return 'edit';
+    if (editFlag === 'false' || editFlag === '0') return 'preview';
+
+    if (
+      html.classList.contains('fivora-edit-mode') ||
+      html.classList.contains('deneb-edit-mode') ||
+      body?.classList.contains('fivora-edit-mode') ||
+      body?.classList.contains('deneb-edit-mode') ||
+      Boolean(
+        document.querySelector(
+          '[data-fivora-editor-overlay], [data-fivora-highlight], [data-preview-field-path][contenteditable="true"]',
+        ),
+      )
+    ) {
+      return 'edit';
+    }
+
+    // Inside a Fivora Studio editor iframe, SiteDataProvider populates global/session caches
+    if (window.parent !== window) {
+      const win = window as unknown as Record<string, unknown>;
+      const hasStudioSiteData =
+        Boolean(win.__FIVORA_PREVIEW_SITE_DATA__) ||
+        Boolean(window.sessionStorage.getItem('__FIVORA_PREVIEW_SITE_DATA_CACHE__')) ||
+        Boolean(window.sessionStorage.getItem('__FIVORA_PREVIEW_PARENT_ORIGIN__'));
+      if (hasStudioSiteData) {
+        return 'edit';
+      }
+    }
+  } catch {
+    // Ignore DOM / storage inspection errors
+  }
+
+  return 'unknown';
+}
+
+function extractStoryIndexFromMessage(data: Record<string, unknown>): number | null {
+  const candidates = [
+    data.fieldPath,
+    data.itemPath,
+    data.targetPath,
+    data.selectedPath,
+    data.path,
+  ];
+  for (const value of candidates) {
+    if (typeof value !== 'string') continue;
+    const match = value.match(STORY_PATH_REGEX);
+    if (match) {
+      const idx = Number.parseInt(match[1], 10);
+      if (Number.isFinite(idx) && idx >= 0) return idx;
+    }
+  }
+  return null;
 }
 
 export default function HeroSection({ revealReady = true }: HeroSectionProps) {
@@ -70,7 +210,7 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
     target: sectionRef,
     offset: ['start start', 'end start'],
   });
-  const panelsParallaxY = useTransform(scrollYProgress, [0, 1], ['0%', '5%']);
+  const mediaParallaxY = useTransform(scrollYProgress, [0, 1], ['0%', '6%']);
   const copyParallaxY = useTransform(scrollYProgress, [0, 1], ['0%', '-3%']);
 
   const home = contentObject(contentObject(siteData.content).home);
@@ -78,21 +218,30 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
 
   // Merchant-editable Fabric Stories settings
   const autoplaySetting = fabricStoriesConfig.autoplay !== false;
-  const rawDuration = Number(fabricStoriesConfig.transitionDurationMs);
-  const transitionDurationMs =
-    Number.isFinite(rawDuration) && rawDuration >= 2400 && rawDuration <= 15000
-      ? rawDuration
-      : 5600;
+  const rawInterval = Number(fabricStoriesConfig.transitionDurationMs);
+  const autoplayIntervalMs =
+    Number.isFinite(rawInterval) && rawInterval >= 2400 && rawInterval <= 15000
+      ? rawInterval
+      : 5000;
+
+  const rawSpeed = Number(fabricStoriesConfig.transitionSpeedMs);
+  const transitionSpeedMs =
+    Number.isFinite(rawSpeed) && rawSpeed >= 400 && rawSpeed <= 3200
+      ? rawSpeed
+      : 1400;
+
   const rawStyle = contentText(fabricStoriesConfig.animationStyle).toLowerCase();
-  const animationStyle: 'editorial-drift' | 'crossfade' | 'static' =
+  const animationStyle: 'fabric-wave' | 'crossfade' | 'static' =
     rawStyle === 'static'
       ? 'static'
       : rawStyle === 'crossfade'
         ? 'crossfade'
-        : 'editorial-drift';
-  const rawRadius = Number(fabricStoriesConfig.panelRadius);
-  const panelRadius =
-    Number.isFinite(rawRadius) && rawRadius >= 0 && rawRadius <= 56 ? rawRadius : 30;
+        : 'fabric-wave';
+
+  const overlayColor = normalizeColor(
+    contentText(fabricStoriesConfig.overlayColor),
+    '#C8A98B',
+  );
   const backgroundFrom = normalizeColor(
     contentText(fabricStoriesConfig.backgroundFrom),
     '#201C1A',
@@ -103,8 +252,7 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
   );
 
   const isStaticMode = animationStyle === 'static' || Boolean(prefersReducedMotion);
-  const enableDrift = animationStyle === 'editorial-drift' && !isStaticMode;
-  const enableVerticalStagger = animationStyle === 'editorial-drift' && !isStaticMode;
+  const enableWaveReveal = animationStyle === 'fabric-wave' && !isStaticMode;
 
   const stories = useMemo<FabricStoryItem[]>(
     () =>
@@ -173,27 +321,291 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [previousIndex, setPreviousIndex] = useState<number | null>(null);
+  const [transitionTick, setTransitionTick] = useState(0);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [copyPhase, setCopyPhase] = useState<CopyPhase>('visible');
   const [isPaused, setIsPaused] = useState(false);
   const [isTabHidden, setIsTabHidden] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+
   const displayedIndexRef = useRef(0);
+  const activeIndexRef = useRef(0);
+  const remainingMsRef = useRef(autoplayIntervalMs);
+  const timerStartRef = useRef<number | null>(null);
+  const prevStoriesRef = useRef<FabricStoryItem[]>(stories);
+  const lastControlNavAtRef = useRef(0);
 
   const count = stories.length;
-  const safeIndex = count > 0 ? activeIndex % count : 0;
-  const safeDisplayedIndex = count > 0 ? displayedIndex % count : 0;
+  const safeIndex = count > 0 ? Math.min(activeIndex, count - 1) : 0;
+  const safeDisplayedIndex = count > 0 ? Math.min(displayedIndex, count - 1) : 0;
+  const safePreviousIndex =
+    previousIndex !== null && count > 0 && previousIndex < count
+      ? previousIndex
+      : null;
 
-  // Atomic 3-phase sequential transition: clean exit -> invisible swap -> staggered editorial entrance
+  useEffect(() => {
+    activeIndexRef.current = safeIndex;
+  }, [safeIndex]);
+
+  // Reset remaining interval whenever autoplay duration or active slide changes
+  useEffect(() => {
+    remainingMsRef.current = autoplayIntervalMs;
+  }, [autoplayIntervalMs, safeIndex, transitionTick]);
+
+  const commitStoryChange = useCallback(
+    (nextIndex: number, instant = false) => {
+      if (count <= 1) return;
+      const current = activeIndexRef.current % count;
+      const normalized = ((nextIndex % count) + count) % count;
+      if (normalized === current) return;
+      setPreviousIndex(current);
+      setActiveIndex(normalized);
+      if (instant) {
+        displayedIndexRef.current = normalized;
+        setDisplayedIndex(normalized);
+        setCopyPhase('visible');
+      } else {
+        setTransitionTick((tick) => tick + 1);
+      }
+    },
+    [count],
+  );
+
+  const goNext = useCallback(() => {
+    if (count <= 1) return;
+    commitStoryChange(activeIndexRef.current + 1, isEditMode);
+  }, [count, commitStoryChange, isEditMode]);
+
+  const goPrev = useCallback(() => {
+    if (count <= 1) return;
+    commitStoryChange(activeIndexRef.current - 1, isEditMode);
+  }, [count, commitStoryChange, isEditMode]);
+
+  const triggerManualControl = useCallback(
+    (action: string) => {
+      const now = Date.now();
+      if (now - lastControlNavAtRef.current < 260) return;
+      lastControlNavAtRef.current = now;
+
+      if (action === 'prev') {
+        goPrev();
+        return;
+      }
+      if (action === 'next') {
+        goNext();
+        return;
+      }
+      if (action.startsWith('story-')) {
+        const parsed = Number.parseInt(action.slice('story-'.length), 10);
+        if (Number.isFinite(parsed) && parsed >= 0) {
+          commitStoryChange(parsed, isEditMode);
+        }
+      }
+    },
+    [goPrev, goNext, commitStoryChange, isEditMode],
+  );
+
+  // Window capture-phase listener so 01/02/03, prev/next arrows, and progress bars work
+  // reliably inside Fivora Edit mode even when the visual-editor bridge intercepts document clicks.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const findHeroControl = (target: EventTarget | null): string | null => {
+      const el = target instanceof Element ? target.closest('[data-loome-hero-control]') : null;
+      if (!el || !sectionRef.current?.contains(el)) return null;
+      return el.getAttribute('data-loome-hero-control');
+    };
+
+    const onPointerDownCapture = (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      const action = findHeroControl(e.target);
+      if (!action) return;
+      e.preventDefault();
+      e.stopPropagation();
+      triggerManualControl(action);
+    };
+
+    const onClickCapture = (e: MouseEvent) => {
+      const action = findHeroControl(e.target);
+      if (!action) return;
+      e.preventDefault();
+      e.stopPropagation();
+      // Handles keyboard activation (Enter/Space) and non-pointer synthetic clicks
+      triggerManualControl(action);
+    };
+
+    window.addEventListener('pointerdown', onPointerDownCapture, true);
+    window.addEventListener('click', onClickCapture, true);
+    return () => {
+      window.removeEventListener('pointerdown', onPointerDownCapture, true);
+      window.removeEventListener('click', onClickCapture, true);
+    };
+  }, [triggerManualControl]);
+
+  // Detect Fivora Edit mode vs Preview mode & published storefront, and sync Inspector focus to the active story
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const evaluateMode = () => {
+      const detected = detectRuntimeEditMode();
+      if (detected === 'edit') {
+        setIsEditMode(true);
+      } else if (detected === 'preview') {
+        setIsEditMode(false);
+      }
+    };
+
+    evaluateMode();
+
+    const onMessage = (event: MessageEvent) => {
+      if (event.source !== window.parent) return;
+      const data = event.data;
+      if (!data || typeof data !== 'object') return;
+      const rec = data as Record<string, unknown>;
+      const type = typeof rec.type === 'string' ? rec.type : '';
+
+      // Explicit Edit / Preview mode messages from Fivora Studio host
+      const modeVal = typeof rec.mode === 'string' ? rec.mode.toLowerCase() : '';
+      if (modeVal === 'preview' || rec.editMode === false) {
+        setIsEditMode(false);
+        return;
+      }
+      if (modeVal === 'edit' || rec.editMode === true) {
+        setIsEditMode(true);
+      }
+
+      // Live SiteData updates from Fivora Visual Editor confirm active Edit session
+      // unless the URL/DOM explicitly declares preview mode.
+      const isDataMsg =
+        type === DENEB_PREVIEW_DATA_MESSAGE ||
+        type === PREVIEW_DATA_MESSAGE ||
+        type === LEGACY_PREVIEW_DATA_MESSAGE;
+      if (isDataMsg && detectRuntimeEditMode() !== 'preview') {
+        setIsEditMode(true);
+      }
+
+      // If any Inspector message targets a specific Fabric Story path (focus, select, or style patch),
+      // jump straight to that story so the merchant can see and edit it immediately.
+      const isFocusMsg =
+        type === DENEB_PREVIEW_FOCUS_MESSAGE ||
+        type === PREVIEW_FOCUS_MESSAGE ||
+        type === LEGACY_PREVIEW_FOCUS_MESSAGE;
+      if (isFocusMsg && detectRuntimeEditMode() !== 'preview') {
+        setIsEditMode(true);
+      }
+      const targetStoryIdx = extractStoryIndexFromMessage(rec);
+      if (targetStoryIdx !== null) {
+        commitStoryChange(targetStoryIdx, true);
+      }
+    };
+
+    window.addEventListener('message', onMessage);
+
+    // Watch for Fivora bridge attributes/classes toggled on <html> or <body>
+    const observer = new MutationObserver(() => {
+      evaluateMode();
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: [
+        'class',
+        'data-fivora-mode',
+        'data-editor-mode',
+        'data-fivora-edit-mode',
+        'data-edit-mode',
+      ],
+    });
+    if (document.body) {
+      observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: [
+          'class',
+          'data-fivora-mode',
+          'data-editor-mode',
+          'data-fivora-edit-mode',
+          'data-edit-mode',
+        ],
+      });
+    }
+
+    return () => {
+      window.removeEventListener('message', onMessage);
+      observer.disconnect();
+    };
+  }, [commitStoryChange]);
+
+  // Keep active story valid when merchant adds, removes, reorders, or edits stories in Fivora
+  useEffect(() => {
+    const prev = prevStoriesRef.current;
+    prevStoriesRef.current = stories;
+
+    if (stories.length === 0) {
+      setActiveIndex(0);
+      setDisplayedIndex(0);
+      displayedIndexRef.current = 0;
+      setPreviousIndex(null);
+      return;
+    }
+
+    // Clamp cleanly if a story was deleted
+    if (activeIndexRef.current >= stories.length) {
+      const clamped = stories.length - 1;
+      setActiveIndex(clamped);
+      setDisplayedIndex(clamped);
+      displayedIndexRef.current = clamped;
+      setPreviousIndex(null);
+      return;
+    }
+
+    if (!isEditMode) return;
+
+    // If the merchant just added a new story in Edit mode, show it immediately
+    if (stories.length > prev.length) {
+      const addedIdx = stories.length - 1;
+      setActiveIndex(addedIdx);
+      setDisplayedIndex(addedIdx);
+      displayedIndexRef.current = addedIdx;
+      setCopyPhase('visible');
+      return;
+    }
+
+    // If a non-active story's image or copy was edited in the Inspector, jump to it instantly
+    if (stories.length === prev.length) {
+      for (let i = 0; i < stories.length; i += 1) {
+        const curr = stories[i];
+        const old = prev[i];
+        if (!old) continue;
+        const changed =
+          curr.imageUrl !== old.imageUrl ||
+          curr.heading !== old.heading ||
+          curr.headingAccent !== old.headingAccent ||
+          curr.eyebrow !== old.eyebrow ||
+          curr.description !== old.description ||
+          curr.primaryCtaLabel !== old.primaryCtaLabel ||
+          curr.secondaryCtaLabel !== old.secondaryCtaLabel;
+        if (changed && i !== activeIndexRef.current) {
+          setActiveIndex(i);
+          setDisplayedIndex(i);
+          displayedIndexRef.current = i;
+          setCopyPhase('visible');
+          break;
+        }
+      }
+    }
+  }, [stories, isEditMode]);
+
+  // Synchronized 3-phase copy choreography: soft exit -> clean swap -> staggered fade-up entrance
   useEffect(() => {
     if (count === 0) return;
-    const currentDisplayed = displayedIndexRef.current % count;
+    const currentDisplayed = Math.min(displayedIndexRef.current, count - 1);
 
     if (safeIndex === currentDisplayed) {
       setCopyPhase('visible');
       return;
     }
 
-    if (isStaticMode) {
+    if (isStaticMode || isEditMode) {
       displayedIndexRef.current = safeIndex;
       setDisplayedIndex(safeIndex);
       setCopyPhase('visible');
@@ -204,6 +616,7 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
 
     let rafId1: number | null = null;
     let rafId2: number | null = null;
+    const exitDelayMs = Math.min(280, Math.round(transitionSpeedMs * 0.2));
 
     const swapTimer = window.setTimeout(() => {
       displayedIndexRef.current = safeIndex;
@@ -215,34 +628,14 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
           setCopyPhase('visible');
         });
       });
-    }, 250);
+    }, exitDelayMs);
 
     return () => {
       window.clearTimeout(swapTimer);
       if (rafId1 !== null) window.cancelAnimationFrame(rafId1);
       if (rafId2 !== null) window.cancelAnimationFrame(rafId2);
     };
-  }, [safeIndex, count, isStaticMode]);
-
-  const selectStory = useCallback(
-    (nextIndex: number) => {
-      if (count <= 1) return;
-      const normalized = ((nextIndex % count) + count) % count;
-      if (normalized === safeIndex) return;
-      setActiveIndex(normalized);
-    },
-    [count, safeIndex],
-  );
-
-  const goNext = useCallback(() => {
-    if (count <= 1) return;
-    setActiveIndex((prev) => (prev + 1) % count);
-  }, [count]);
-
-  const goPrev = useCallback(() => {
-    if (count <= 1) return;
-    setActiveIndex((prev) => (prev - 1 + count) % count);
-  }, [count]);
+  }, [safeIndex, count, isStaticMode, isEditMode, transitionSpeedMs]);
 
   // Pause autoplay when browser tab is backgrounded
   useEffect(() => {
@@ -253,34 +646,46 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
     return () => document.removeEventListener('visibilitychange', onVisibilityChange);
   }, []);
 
-  // Autoplay timer — resets cleanly after every manual navigation/swipe and pauses on hover/focus/static/reduced-motion
+  const isAutoplayActive =
+    autoplaySetting &&
+    !isStaticMode &&
+    !isEditMode &&
+    !isPaused &&
+    !isTabHidden &&
+    count > 1 &&
+    shouldAnimateIn;
+
+  // Autoplay timer synchronized with the CSS progress bar so pause-on-hover resumes accurately
   useEffect(() => {
-    if (
-      !autoplaySetting ||
-      isStaticMode ||
-      isPaused ||
-      isTabHidden ||
-      count <= 1 ||
-      !shouldAnimateIn
-    ) {
+    if (!isAutoplayActive) {
+      if (timerStartRef.current !== null) {
+        const elapsed = Date.now() - timerStartRef.current;
+        remainingMsRef.current = Math.max(200, remainingMsRef.current - elapsed);
+        timerStartRef.current = null;
+      }
       return;
     }
-    const timer = window.setTimeout(() => {
-      setActiveIndex((prev) => (prev + 1) % count);
-    }, transitionDurationMs);
-    return () => window.clearTimeout(timer);
-  }, [
-    autoplaySetting,
-    isStaticMode,
-    isPaused,
-    isTabHidden,
-    count,
-    shouldAnimateIn,
-    transitionDurationMs,
-    safeIndex,
-  ]);
 
-  // Focus handling — stays paused while focus moves between internal hero controls
+    const waitMs = Math.max(200, remainingMsRef.current);
+    timerStartRef.current = Date.now();
+
+    const timer = window.setTimeout(() => {
+      timerStartRef.current = null;
+      remainingMsRef.current = autoplayIntervalMs;
+      commitStoryChange(activeIndexRef.current + 1);
+    }, waitMs);
+
+    return () => {
+      window.clearTimeout(timer);
+      if (timerStartRef.current !== null) {
+        const elapsed = Date.now() - timerStartRef.current;
+        remainingMsRef.current = Math.max(200, remainingMsRef.current - elapsed);
+        timerStartRef.current = null;
+      }
+    };
+  }, [isAutoplayActive, autoplayIntervalMs, safeIndex, transitionTick, commitStoryChange]);
+
+  // Focus handling — stays paused while keyboard focus moves between internal hero controls
   const handleBlurCapture = (e: FocusEvent<HTMLElement>) => {
     const nextFocused = e.relatedTarget as Node | null;
     if (!nextFocused || !e.currentTarget.contains(nextFocused)) {
@@ -313,67 +718,46 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
     }
   };
 
-  // Balanced 3-panel cascading depth geometry (0 = Front-Right Active, 1 = Mid, 2 = Back-Left, 3+ = Deep stack)
-  const getPanelSlotStyle = (slot: number) => {
-    if (slot === 0) {
+  const copyEnterDurationMs = Math.min(920, Math.max(520, Math.round(transitionSpeedMs * 0.56)));
+
+  const getCopyPartProps = (isDisplayed: boolean, staggerMs: number) => {
+    if (!isDisplayed || isStaticMode || isEditMode) {
       return {
-        left: '35%',
-        right: '-9%',
-        top: '0%',
-        zIndex: 30,
-        filter: 'brightness(1.04) contrast(1.03)',
-        boxShadow:
-          '-30px 10px 64px rgba(10, 7, 5, 0.78), -8px 0 22px rgba(10, 7, 5, 0.52)',
+        className: 'opacity-100 translate-y-0',
+        style: undefined,
       };
     }
-    if (slot === 1) {
+    if (copyPhase === 'exiting') {
       return {
-        left: '17.5%',
-        right: '21%',
-        top: '5.5%',
-        zIndex: 20,
-        filter: 'brightness(0.84) contrast(1.02) saturate(0.96)',
-        boxShadow:
-          '-22px 8px 46px rgba(10, 7, 5, 0.66), -6px 0 16px rgba(10, 7, 5, 0.45)',
+        className: '-translate-y-2.5 opacity-0',
+        style: {
+          transitionProperty: 'opacity, transform',
+          transitionDuration: '240ms',
+          transitionTimingFunction: 'cubic-bezier(0.4, 0, 1, 1)',
+          transitionDelay: '0ms',
+        },
       };
     }
-    if (slot === 2) {
+    if (copyPhase === 'entering') {
       return {
-        left: '1.5%',
-        right: '38%',
-        top: '11.5%',
-        zIndex: 10,
-        filter: 'brightness(0.68) contrast(1.01) saturate(0.9)',
-        boxShadow: '-16px 6px 34px rgba(10, 7, 5, 0.54)',
+        className: 'translate-y-4 opacity-0',
+        style: {
+          transitionProperty: 'none',
+        },
       };
     }
     return {
-      left: '2%',
-      right: '40%',
-      top: '12.5%',
-      zIndex: 5,
-      filter: 'brightness(0.55)',
-      boxShadow: 'none',
+      className: 'translate-y-0 opacity-100',
+      style: {
+        transitionProperty: 'opacity, transform',
+        transitionDuration: `${copyEnterDurationMs}ms`,
+        transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        transitionDelay: `${staggerMs}ms`,
+      },
     };
   };
 
-  // Compute crisp editorial transition classes for the active slide's staggered elements
-  const getCopyPartClass = (isDisplayed: boolean, delayClass: string) => {
-    if (!isDisplayed || isStaticMode) {
-      return 'opacity-100 translate-y-0 transition-none';
-    }
-    if (copyPhase === 'exiting') {
-      return `${
-        enableVerticalStagger ? '-translate-y-2.5' : 'translate-y-0'
-      } opacity-0 transition-[opacity,transform] duration-[230ms] ease-in`;
-    }
-    if (copyPhase === 'entering') {
-      return `${
-        enableVerticalStagger ? 'translate-y-3.5' : 'translate-y-0'
-      } opacity-0 transition-none`;
-    }
-    return `opacity-100 translate-y-0 transition-[opacity,transform] duration-[580ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${delayClass}`;
-  };
+  const allowParallax = parallaxActive && !isStaticMode && !isEditMode;
 
   return (
     <section
@@ -386,31 +770,17 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       style={{
-        background: `radial-gradient(ellipse 68% 62% at 12% 94%, ${backgroundTo} 0%, transparent 66%), radial-gradient(ellipse 56% 68% at 82% 42%, ${backgroundTo}88 0%, transparent 72%), linear-gradient(125deg, ${backgroundFrom} 0%, #191513 54%, ${backgroundFrom} 100%)`,
+        background: `radial-gradient(ellipse 68% 66% at 14% 24%, ${colorMix(backgroundTo, 40)} 0%, transparent 64%), linear-gradient(120deg, ${backgroundFrom} 0%, #171311 52%, ${backgroundFrom} 100%)`,
       }}
-      className="relative flex min-h-[76vh] w-full items-center overflow-hidden text-[#F2E9DE] lg:min-h-[84vh]"
+      className="relative flex min-h-[640px] w-full items-center overflow-hidden text-[#F2E9DE] sm:min-h-[82vh] lg:min-h-[88vh]"
     >
-      {/* Subtle atmospheric flowing silk light accents along bottom-left */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-28 -left-24 h-[400px] w-[680px] rounded-full opacity-35 blur-3xl"
-        style={{
-          background:
-            'radial-gradient(circle, rgba(141, 118, 103, 0.4) 0%, rgba(59, 48, 43, 0.16) 55%, transparent 76%)',
-        }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#161210]/70 to-transparent"
-      />
-
-      {/* Unified list wrapper for Fivora strict visual editing */}
+      {/* Unified list container (no z-index stacking context so silk overlay layers cleanly between image & copy) */}
       <div
         data-preview-list-path="home.fabricStories.stories"
-        className="relative z-10 w-full"
+        className="relative flex min-h-[640px] w-full items-center sm:min-h-[82vh] lg:min-h-[88vh]"
       >
         {stories.length === 0 ? (
-          <div className="mx-auto max-w-[1440px] px-5 py-28 text-center sm:px-8 lg:px-14">
+          <div className="relative z-30 mx-auto max-w-[1440px] px-5 py-28 text-center sm:px-8 lg:px-14">
             <div
               data-preview-static="fabric-stories-empty"
               className="mx-auto max-w-xl rounded-2xl border border-dashed border-[#C8A98B]/30 bg-[#3B302B]/30 px-8 py-14 text-sm text-[#C7B6A6]"
@@ -419,306 +789,388 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
             </div>
           </div>
         ) : (
-          <div className="grid min-h-[76vh] grid-cols-1 items-center lg:min-h-[84vh] lg:grid-cols-12">
-            {/* LEFT COLUMN: Active-Only Editorial Copy with Zero-Overlap Exit/Enter Choreography */}
-            <motion.div
-              style={parallaxActive && !isStaticMode ? { y: copyParallaxY } : undefined}
-              className="relative z-20 px-5 pb-6 pt-12 sm:px-8 sm:pt-16 lg:col-span-5 lg:py-20 lg:pl-[max(3.5rem,calc((100vw-1440px)/2+3.5rem))] lg:pr-6"
-            >
-              {/* Generous outer negative margin + matching inner slide padding prevents any italic or button shadow clipping */}
-              <div className="-mx-4 overflow-hidden py-3 sm:-mx-5">
+          <>
+            {/* Per-story unified item containers: each story binds BOTH its EditableImage and editorial copy inside data-preview-item-path */}
+            {stories.map((story) => {
+              const isActive = story.index === safeIndex;
+              const isDisplayed = story.index === safeDisplayedIndex;
+              const isOutgoing =
+                safePreviousIndex !== null &&
+                story.index === safePreviousIndex &&
+                !isActive;
+              const shouldPlayWave =
+                isActive && transitionTick > 0 && enableWaveReveal && !isEditMode;
+              const shouldPlayCrossfade =
+                isActive &&
+                transitionTick > 0 &&
+                animationStyle === 'crossfade' &&
+                !isStaticMode &&
+                !isEditMode;
+
+              const layerZIndex = isActive ? 15 : isOutgoing ? 10 : 1;
+
+              const eyebrowAnim = getCopyPartProps(isDisplayed, 0);
+              const headingAnim = getCopyPartProps(isDisplayed, 90);
+              const descAnim = getCopyPartProps(isDisplayed, 180);
+              const ctaAnim = getCopyPartProps(isDisplayed, 270);
+
+              return (
                 <div
-                  style={{
-                    transform: `translate3d(-${safeDisplayedIndex * 100}%, 0, 0)`,
-                  }}
-                  className="flex w-full"
+                  key={story.id}
+                  data-preview-item-path={`home.fabricStories.stories[${story.index}]`}
+                  className="pointer-events-none absolute inset-0"
                 >
-                  {stories.map((story) => {
-                    const isDisplayed = story.index === safeDisplayedIndex;
-
-                    return (
-                      <div
-                        key={story.id}
-                        data-preview-item-path={`home.fabricStories.stories[${story.index}]`}
-                        className="w-full shrink-0 px-4 sm:px-5"
-                      >
-                        {/* Hairline + Tracked Eyebrow */}
-                        <div
-                          className={`flex items-center gap-3.5 ${getCopyPartClass(
-                            isDisplayed,
-                            'delay-0',
-                          )}`}
-                        >
-                          <span
-                            aria-hidden="true"
-                            className="h-px w-9 shrink-0 bg-[#C8A98B]/85"
-                          />
-                          <EditableText
-                            as="p"
-                            data-preview-field-path={`home.fabricStories.stories[${story.index}].eyebrow`}
-                            defaultValue={story.eyebrow}
-                            fontFamily="body"
-                            size="0.6875rem"
-                            weight={600}
-                            transform="uppercase"
-                            letterSpacing="0.26em"
-                            color="#C8A98B"
-                            className="m-0"
-                          />
-                        </div>
-
-                        {/* Dual-Typography Fashion-Editorial Headline */}
-                        <div
-                          className={`mt-5 pr-2 ${getCopyPartClass(
-                            isDisplayed,
-                            'delay-[65ms]',
-                          )}`}
-                        >
-                          <EditableText
-                            as={story.index === 0 ? 'h1' : 'h2'}
-                            data-preview-field-path={`home.fabricStories.stories[${story.index}].heading`}
-                            defaultValue={story.heading}
-                            fontFamily="heading"
-                            size="clamp(2.45rem, 4.7vw, 4.35rem)"
-                            weight={800}
-                            lineHeight={1.02}
-                            letterSpacing="-0.035em"
-                            color="#F2E9DE"
-                            className="m-0"
-                          />
-                          <EditableText
-                            as="p"
-                            data-preview-field-path={`home.fabricStories.stories[${story.index}].headingAccent`}
-                            defaultValue={story.headingAccent}
-                            fontFamily="body"
-                            size="clamp(2.75rem, 5.2vw, 4.85rem)"
-                            weight={400}
-                            lineHeight={0.98}
-                            letterSpacing="-0.01em"
-                            color="#C8A98B"
-                            className="m-0 mt-0.5 pb-1 font-serif italic"
-                          />
-                        </div>
-
-                        {/* Editorial Description */}
-                        <div
-                          className={`mt-5 max-w-[430px] ${getCopyPartClass(
-                            isDisplayed,
-                            'delay-[130ms]',
-                          )}`}
-                        >
-                          <EditableText
-                            as="p"
-                            data-preview-field-path={`home.fabricStories.stories[${story.index}].description`}
-                            defaultValue={story.description}
-                            fontFamily="body"
-                            size="clamp(0.9375rem, 1.05vw, 1.025rem)"
-                            weight={400}
-                            lineHeight={1.76}
-                            color="rgba(242, 233, 222, 0.84)"
-                            className="m-0"
-                          />
-                        </div>
-
-                        {/* Softly Rounded Rectangular CTAs (11px) */}
-                        <div
-                          className={`mt-8 flex flex-wrap items-center gap-3.5 sm:mt-9 ${getCopyPartClass(
-                            isDisplayed,
-                            'delay-[195ms]',
-                          )}`}
-                        >
-                          <a
-                            href={resolveStoryHref(story.primaryCtaUrl)}
-                            tabIndex={isDisplayed ? undefined : -1}
-                            data-preview-field-path={`home.fabricStories.stories[${story.index}].primaryCtaUrl`}
-                            className="group loome-btn-primary h-[48px] px-7 no-underline"
-                          >
-                            <span
-                              data-preview-field-path={`home.fabricStories.stories[${story.index}].primaryCtaLabel`}
-                            >
-                              {story.primaryCtaLabel}
-                            </span>
-                            <ArrowRight
-                              aria-hidden="true"
-                              className="h-3.5 w-3.5 stroke-[1.85] transition-transform duration-300 group-hover:translate-x-1"
-                            />
-                          </a>
-
-                          <a
-                            href={resolveStoryHref(story.secondaryCtaUrl)}
-                            tabIndex={isDisplayed ? undefined : -1}
-                            data-preview-field-path={`home.fabricStories.stories[${story.index}].secondaryCtaUrl`}
-                            className="group inline-flex h-[48px] items-center justify-center rounded-[11px] border border-[#C8A98B]/50 bg-[#201C1A]/50 px-7 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#F2E9DE] no-underline backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8A98B] hover:bg-[#3B302B]/90"
-                          >
-                            <span
-                              data-preview-field-path={`home.fabricStories.stories[${story.index}].secondaryCtaLabel`}
-                            >
-                              {story.secondaryCtaLabel}
-                            </span>
-                          </a>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </motion.div>
-
-            {/* RIGHT COLUMN: 3 Overlapping Curved Dramatic Fabric Panels */}
-            <motion.div
-              style={parallaxActive && !isStaticMode ? { y: panelsParallaxY } : undefined}
-              className="loome-hero-panel-stage relative h-[330px] w-full sm:h-[440px] md:h-[500px] lg:col-span-7 lg:h-[84vh] lg:min-h-[600px]"
-            >
-              {/* Soft espresso feather fade on desktop left boundary so rear panel emerges organically */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-0 z-20 hidden w-20 bg-gradient-to-r from-[#201C1A]/65 via-[#201C1A]/20 to-transparent lg:block"
-              />
-
-              <div className="relative h-full w-full">
-                {stories.map((story) => {
-                  const slot = (story.index - safeIndex + count) % count;
-                  const slotStyle = getPanelSlotStyle(slot);
-                  const isFront = slot === 0;
-                  const floatClass =
-                    enableDrift && slot < 3 ? `loome-fabric-float-${slot}` : '';
-
-                  return (
-                    <motion.div
-                      key={story.id}
-                      onClick={() => {
-                        if (!isFront) selectStory(story.index);
-                      }}
-                      initial={false}
-                      animate={{
-                        left: slotStyle.left,
-                        right: slotStyle.right,
-                        top: slotStyle.top,
-                        zIndex: slotStyle.zIndex,
-                      }}
-                      transition={
-                        isStaticMode
-                          ? { duration: 0 }
-                          : { duration: 0.88, ease: LUXURY_EASE }
-                      }
+                  {/* LAYER 1 (z-1..15): Directly clickable full-bleed textile image with Fabric-Wave Mask Reveal */}
+                  <motion.div
+                    style={{
+                      zIndex: layerZIndex,
+                      ...(allowParallax ? { y: mediaParallaxY } : undefined),
+                    }}
+                    className={`absolute -inset-y-[5%] inset-x-0 overflow-hidden ${
+                      isActive ? 'pointer-events-auto' : 'pointer-events-none'
+                    }`}
+                  >
+                    <div
+                      className="absolute inset-0 lg:left-[18%]"
                       style={{
-                        position: 'absolute',
-                        bottom: '-2%',
-                        transform: 'skewX(var(--loome-panel-skew, -10.5deg))',
-                        transformOrigin: 'bottom left',
-                        borderTopLeftRadius: `${panelRadius}px`,
-                        borderBottomLeftRadius: `${Math.round(panelRadius * 0.5)}px`,
-                        boxShadow: slotStyle.boxShadow,
-                        filter: slotStyle.filter,
-                        willChange: 'left, right, top',
+                        WebkitMaskImage:
+                          'linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.45) 14%, #000 34%, #000 100%)',
+                        maskImage:
+                          'linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.45) 14%, #000 34%, #000 100%)',
                       }}
-                      className={`overflow-hidden bg-[#2A221E] transition-[filter,box-shadow] duration-700 ${
-                        isFront
-                          ? 'cursor-default'
-                          : 'cursor-pointer hover:brightness-95'
-                      }`}
                     >
-                      <div className={`relative h-full w-full ${floatClass}`}>
-                        {/* Oversized counter-skewed wrapper prevents any sheared corner gaps at every viewport ratio */}
-                        <motion.div
-                          initial={false}
-                          animate={{
-                            scale: isStaticMode ? 1.04 : isFront ? 1.02 : 1.08,
-                          }}
-                          transition={
-                            isStaticMode
-                              ? { duration: 0 }
-                              : { duration: 1.25, ease: LUXURY_EASE }
+                      <div
+                        key={isActive ? `reveal-${transitionTick}` : 'resting'}
+                        style={
+                          shouldPlayWave || shouldPlayCrossfade
+                            ? { animationDuration: `${transitionSpeedMs}ms` }
+                            : undefined
+                        }
+                        className={`relative h-full w-full ${
+                          shouldPlayWave
+                            ? 'loome-fabric-wave-mask'
+                            : shouldPlayCrossfade
+                              ? 'loome-fabric-crossfade-in'
+                              : ''
+                        }`}
+                      >
+                        <EditableImage
+                          id={`home.fabricStories.stories[${story.index}].imageUrl`}
+                          data-preview-field-path={`home.fabricStories.stories[${story.index}].imageUrl`}
+                          data-preview-style-target={`home.fabricStories.stories[${story.index}].imageUrl`}
+                          data-preview-style-type="image"
+                          src={story.imageUrl}
+                          fallbackSrc="/images/prod-fabric-herringbone.jpg"
+                          alt={`${story.heading} ${story.headingAccent}`.trim()}
+                          fit="cover"
+                          style={
+                            shouldPlayWave || shouldPlayCrossfade
+                              ? { animationDuration: `${transitionSpeedMs}ms` }
+                              : undefined
                           }
-                          style={{
-                            transform: 'skewX(var(--loome-panel-unskew, 10.5deg))',
-                            transformOrigin: 'center center',
-                          }}
-                          className="absolute -inset-x-[18%] -inset-y-[5%]"
-                        >
-                          <img
-                            src={withBasePath(story.imageUrl)}
-                            alt={`${story.heading} ${story.headingAccent}`.trim()}
-                            data-preview-field-path={`home.fabricStories.stories[${story.index}].imageUrl`}
-                            className="h-full w-full object-cover object-center"
-                          />
-                        </motion.div>
-
-                        {/* Dramatic chiaroscuro edge lighting & warm espresso depth shading */}
-                        <div
-                          aria-hidden="true"
-                          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#171210]/48 via-transparent to-[#171210]/22"
-                        />
-                        <div
-                          aria-hidden="true"
-                          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#171210]/58 via-transparent to-[#201C1A]/18"
-                        />
-                        {/* Delicate curved top-left champagne catchlight rim */}
-                        <div
-                          aria-hidden="true"
-                          style={{ borderTopLeftRadius: `${panelRadius}px` }}
-                          className={`pointer-events-none absolute inset-0 border-l border-t transition-opacity duration-700 ${
-                            isFront
-                              ? 'border-[#C8A98B]/32 opacity-100'
-                              : 'border-[#C8A98B]/14 opacity-80'
+                          className={`h-full w-full object-cover object-center ${
+                            shouldPlayWave || shouldPlayCrossfade
+                              ? 'loome-fabric-image-settle'
+                              : ''
                           }`}
                         />
                       </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
+                    </div>
+                  </motion.div>
 
-              {/* Right-Edge Stacked Circular Navigation Arrows — anchored cleanly to the panel stage */}
-              {count > 1 && (
-                <div className="absolute right-4 top-1/2 z-40 flex -translate-y-1/2 flex-col gap-2.5 sm:right-6 lg:right-8">
-                  <button
-                    type="button"
-                    onClick={goNext}
-                    aria-label="Next fabric story"
-                    data-preview-static="hero-story-next"
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F2E9DE]/38 bg-[#201C1A]/52 text-[#F2E9DE] shadow-[0_8px_24px_rgba(10,7,5,0.4)] backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B] sm:h-11 sm:w-11"
+                  {/* LAYER 3 (z-30): Editorial Copy & Rounded CTAs (outer container pointer-events-none so right image stays directly clickable) */}
+                  <motion.div
+                    style={allowParallax ? { y: copyParallaxY } : undefined}
+                    className="pointer-events-none absolute inset-0 z-30 flex items-center"
                   >
-                    <ChevronRight className="h-4 w-4 stroke-[1.8]" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={goPrev}
-                    aria-label="Previous fabric story"
-                    data-preview-static="hero-story-prev"
-                    className="flex h-10 w-10 items-center justify-center rounded-full border border-[#F2E9DE]/38 bg-[#201C1A]/52 text-[#F2E9DE] shadow-[0_8px_24px_rgba(10,7,5,0.4)] backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B] sm:h-11 sm:w-11"
-                  >
-                    <ChevronLeft className="h-4 w-4 stroke-[1.8]" />
-                  </button>
+                    <div className="pointer-events-none mx-auto w-full max-w-[1440px] px-5 pb-28 pt-16 sm:px-8 sm:pb-32 sm:pt-20 lg:px-14 lg:py-24">
+                      <div
+                        className={`max-w-[560px] ${
+                          isDisplayed ? 'pointer-events-auto' : 'pointer-events-none'
+                        }`}
+                      >
+                        {/* Negative margin + matching inner padding prevents italic swash or button shadow clipping */}
+                        <div className="-mx-4 overflow-hidden py-3 sm:-mx-5">
+                          <div
+                            style={{
+                              transform: `translate3d(${(story.index - safeDisplayedIndex) * 100}%, 0, 0)`,
+                            }}
+                            className="w-full px-4 sm:px-5"
+                          >
+                            {/* Hairline + Tracked Eyebrow */}
+                            <div
+                              style={eyebrowAnim.style}
+                              className={`flex items-center gap-3.5 ${eyebrowAnim.className}`}
+                            >
+                              <span
+                                aria-hidden="true"
+                                style={{ backgroundColor: overlayColor }}
+                                className="h-px w-9 shrink-0 opacity-80"
+                              />
+                              <EditableText
+                                as="p"
+                                data-preview-field-path={`home.fabricStories.stories[${story.index}].eyebrow`}
+                                defaultValue={story.eyebrow}
+                                fontFamily="body"
+                                size="0.6875rem"
+                                weight={600}
+                                transform="uppercase"
+                                letterSpacing="0.26em"
+                                color={overlayColor}
+                                className="m-0"
+                              />
+                            </div>
+
+                            {/* Dual-Typography Fashion-Editorial Headline */}
+                            <div
+                              style={headingAnim.style}
+                              className={`mt-5 pr-2 ${headingAnim.className}`}
+                            >
+                              <EditableText
+                                as={story.index === 0 ? 'h1' : 'h2'}
+                                data-preview-field-path={`home.fabricStories.stories[${story.index}].heading`}
+                                defaultValue={story.heading}
+                                fontFamily="heading"
+                                size="clamp(2.75rem, 5.2vw, 4.9rem)"
+                                weight={800}
+                                lineHeight={1.01}
+                                letterSpacing="-0.035em"
+                                color="#F2E9DE"
+                                className="m-0 drop-shadow-[0_6px_28px_rgba(14,10,8,0.45)]"
+                              />
+                              <EditableText
+                                as="p"
+                                data-preview-field-path={`home.fabricStories.stories[${story.index}].headingAccent`}
+                                defaultValue={story.headingAccent}
+                                fontFamily="body"
+                                size="clamp(3.05rem, 5.8vw, 5.4rem)"
+                                weight={400}
+                                lineHeight={0.96}
+                                letterSpacing="-0.01em"
+                                color={overlayColor}
+                                className="m-0 mt-0.5 pb-1 font-serif italic drop-shadow-[0_6px_24px_rgba(14,10,8,0.45)]"
+                              />
+                            </div>
+
+                            {/* Editorial Description */}
+                            <div
+                              style={descAnim.style}
+                              className={`mt-5 max-w-[430px] ${descAnim.className}`}
+                            >
+                              <EditableText
+                                as="p"
+                                data-preview-field-path={`home.fabricStories.stories[${story.index}].description`}
+                                defaultValue={story.description}
+                                fontFamily="body"
+                                size="clamp(0.9375rem, 1.05vw, 1.025rem)"
+                                weight={400}
+                                lineHeight={1.76}
+                                color="rgba(242, 233, 222, 0.86)"
+                                className="m-0"
+                              />
+                            </div>
+
+                            {/* Softly Rounded Rectangular CTAs (11px) */}
+                            <div
+                              style={ctaAnim.style}
+                              className={`mt-8 flex flex-wrap items-center gap-3.5 sm:mt-9 ${ctaAnim.className}`}
+                            >
+                              <a
+                                href={resolveStoryHref(story.primaryCtaUrl)}
+                                tabIndex={isDisplayed ? undefined : -1}
+                                data-preview-field-path={`home.fabricStories.stories[${story.index}].primaryCtaUrl`}
+                                className="group loome-btn-primary h-[48px] px-7 no-underline"
+                              >
+                                <span
+                                  data-preview-field-path={`home.fabricStories.stories[${story.index}].primaryCtaLabel`}
+                                >
+                                  {story.primaryCtaLabel}
+                                </span>
+                                <ArrowRight
+                                  aria-hidden="true"
+                                  className="h-3.5 w-3.5 stroke-[1.85] transition-transform duration-300 group-hover:translate-x-1"
+                                />
+                              </a>
+
+                              <a
+                                href={resolveStoryHref(story.secondaryCtaUrl)}
+                                tabIndex={isDisplayed ? undefined : -1}
+                                data-preview-field-path={`home.fabricStories.stories[${story.index}].secondaryCtaUrl`}
+                                className="group inline-flex h-[48px] items-center justify-center rounded-[11px] border border-[#C8A98B]/45 bg-[#201C1A]/52 px-7 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#F2E9DE] no-underline backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8A98B] hover:bg-[#3B302B]/90"
+                              >
+                                <span
+                                  data-preview-field-path={`home.fabricStories.stories[${story.index}].secondaryCtaLabel`}
+                                >
+                                  {story.secondaryCtaLabel}
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
                 </div>
-              )}
-            </motion.div>
-          </div>
+              );
+            })}
+
+            {/* ATMOSPHERIC SCRIMS (z-[18], pointer-events-none so clicks always pass through to the active EditableImage) */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-[18]"
+              style={{
+                background: `linear-gradient(96deg, ${backgroundFrom} 0%, ${colorMix(backgroundFrom, 95)} 26%, ${colorMix(backgroundFrom, 77)} 42%, ${colorMix(backgroundFrom, 28)} 60%, rgba(20, 16, 14, 0.14) 84%, rgba(20, 16, 14, 0.32) 100%)`,
+              }}
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-[18] lg:hidden"
+              style={{
+                background: `linear-gradient(180deg, ${colorMix(backgroundFrom, 80)} 0%, ${colorMix(backgroundFrom, 54)} 45%, ${colorMix(backgroundFrom, 85)} 100%)`,
+              }}
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-[18]"
+              style={{
+                background: `radial-gradient(ellipse 46% 42% at 64% 18%, ${colorMix(overlayColor, 16)} 0%, transparent 72%)`,
+              }}
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 top-0 z-[18] h-24 bg-gradient-to-b from-[#161210]/55 to-transparent"
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-0 z-[18] h-32 bg-gradient-to-t from-[#161210]/78 via-[#161210]/30 to-transparent"
+            />
+
+            {/* LAYER 2 (z-20): Separate Reusable Translucent Silk Wave Overlay (pointer-events-none — never blocks image clicks) */}
+            <SilkWaveOverlay
+              overlayColor={overlayColor}
+              baseColor={backgroundFrom}
+              transitionKey={transitionTick}
+              transitionSpeedMs={transitionSpeedMs}
+              isPaused={isPaused || isTabHidden}
+              reducedMotion={isStaticMode}
+              className="z-20"
+            />
+          </>
         )}
       </div>
 
-      {/* Bottom-Center Pagination Dots */}
+      {/* LAYER 4 (z-40): Editorial Slide Controls mounted OUTSIDE data-preview-list-path
+          so clicking 01/02/03, prev/next arrows, or progress bars always switches stories in Fivora Edit mode */}
       {count > 1 && (
-        <div className="absolute bottom-5 left-1/2 z-40 flex -translate-x-1/2 items-center gap-3 rounded-full bg-[#201C1A]/42 px-3.5 py-2 backdrop-blur-sm sm:bottom-7">
-          {stories.map((story) => {
-            const isActive = story.index === safeIndex;
-            return (
-              <button
-                key={story.id}
-                type="button"
-                onClick={() => selectStory(story.index)}
-                aria-label={`View fabric story: ${story.heading} ${story.headingAccent}`}
-                aria-current={isActive ? 'true' : undefined}
-                data-preview-static={`hero-story-dot-${story.index}`}
-                className={`h-2.5 w-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#201C1A] ${
-                  isActive
-                    ? 'scale-110 bg-[#C8A98B] shadow-[0_0_12px_rgba(200,169,139,0.65)]'
-                    : 'border border-[#C8A98B]/55 bg-transparent hover:border-[#C8A98B] hover:bg-[#C8A98B]/30'
-                }`}
-              />
-            );
-          })}
-        </div>
+        <>
+          {/* Right-Edge Vertical Numbered Slide Navigation (01, 02, 03) */}
+          <div className="pointer-events-auto absolute right-5 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-end gap-5 sm:flex sm:right-8 lg:right-[max(3.5rem,calc((100vw-1440px)/2+3.5rem))]">
+            {stories.map((story) => {
+              const isActive = story.index === safeIndex;
+              const labelNumber = String(story.index + 1).padStart(2, '0');
+              return (
+                <button
+                  key={story.id}
+                  type="button"
+                  data-loome-hero-control={`story-${story.index}`}
+                  onClick={() => triggerManualControl(`story-${story.index}`)}
+                  aria-label={`View fabric story ${labelNumber}: ${story.heading} ${story.headingAccent}`}
+                  aria-current={isActive ? 'true' : undefined}
+                  data-preview-static={`hero-story-num-${story.index}`}
+                  className="group flex cursor-pointer flex-col items-end gap-1.5 border-0 bg-transparent p-1 text-right focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B]"
+                >
+                  <span
+                    className={`font-body text-xs tracking-[0.22em] transition-colors duration-300 ${
+                      isActive
+                        ? 'font-semibold text-[#F2E9DE]'
+                        : 'font-normal text-[#F2E9DE]/45 group-hover:text-[#F2E9DE]/85'
+                    }`}
+                  >
+                    {labelNumber}
+                  </span>
+                  <span
+                    aria-hidden="true"
+                    style={{ backgroundColor: overlayColor }}
+                    className={`block h-[1.5px] transition-all duration-500 ${
+                      isActive
+                        ? 'w-5 opacity-100'
+                        : 'w-2.5 opacity-0 group-hover:opacity-60'
+                    }`}
+                  />
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Bottom Controls Bar: Left Manual Arrows + Right Animated Progress Indicators */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-6 z-40 sm:bottom-8 lg:bottom-10">
+            <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-5 sm:px-8 lg:px-14">
+              {/* Bottom-Left Circular Prev / Next Arrows */}
+              <div className="pointer-events-auto flex items-center gap-2.5">
+                <button
+                  type="button"
+                  data-loome-hero-control="prev"
+                  onClick={() => triggerManualControl('prev')}
+                  aria-label="Previous fabric story"
+                  data-preview-static="hero-story-prev"
+                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#F2E9DE]/26 bg-[#201C1A]/52 text-[#F2E9DE] shadow-[0_8px_22px_rgba(10,7,5,0.38)] backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B]"
+                >
+                  <ChevronLeft className="h-4 w-4 stroke-[1.75]" />
+                </button>
+                <button
+                  type="button"
+                  data-loome-hero-control="next"
+                  onClick={() => triggerManualControl('next')}
+                  aria-label="Next fabric story"
+                  data-preview-static="hero-story-next"
+                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#F2E9DE]/26 bg-[#201C1A]/52 text-[#F2E9DE] shadow-[0_8px_22px_rgba(10,7,5,0.38)] backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B]"
+                >
+                  <ChevronRight className="h-4 w-4 stroke-[1.75]" />
+                </button>
+              </div>
+
+              {/* Bottom-Right Animated Progress Bars */}
+              <div className="pointer-events-auto flex items-center gap-2.5 sm:gap-3">
+                {stories.map((story) => {
+                  const isActive = story.index === safeIndex;
+                  const labelNumber = String(story.index + 1).padStart(2, '0');
+                  return (
+                    <button
+                      key={story.id}
+                      type="button"
+                      data-loome-hero-control={`story-${story.index}`}
+                      onClick={() => triggerManualControl(`story-${story.index}`)}
+                      aria-label={`Jump to story ${labelNumber}: ${story.heading} ${story.headingAccent}`}
+                      aria-current={isActive ? 'true' : undefined}
+                      data-preview-static={`hero-story-dot-${story.index}`}
+                      className="group relative flex h-6 w-11 cursor-pointer items-center border-0 bg-transparent p-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#C8A98B] sm:w-16"
+                    >
+                      <span className="relative block h-[2.5px] w-full overflow-hidden rounded-full bg-[#F2E9DE]/24 transition-colors group-hover:bg-[#F2E9DE]/40">
+                        {isActive &&
+                          (autoplaySetting && !isStaticMode && !isEditMode ? (
+                            <span
+                              key={`progress-${safeIndex}-${transitionTick}-${autoplayIntervalMs}`}
+                              style={{
+                                backgroundColor: overlayColor,
+                                animationDuration: `${autoplayIntervalMs}ms`,
+                                animationPlayState: isAutoplayActive ? 'running' : 'paused',
+                              }}
+                              className="loome-hero-progress-fill block h-full w-full rounded-full"
+                            />
+                          ) : (
+                            <span
+                              style={{ backgroundColor: overlayColor }}
+                              className="block h-full w-full rounded-full"
+                            />
+                          ))}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </section>
   );

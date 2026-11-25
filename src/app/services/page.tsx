@@ -24,10 +24,11 @@ export default function ServicesPage() {
   const products = useProducts();
   const firstProductCurrency = contentText(contentObject(products[0]).currency);
   const defaultCurrency =
-    contentText(common.currency) ||
     contentText(shop.currency) ||
+    contentText(common.currency) ||
     firstProductCurrency ||
-    'USD';
+    'LKR';
+  const quoteLabel = contentText(page.quoteLabel) || 'Quote on Request';
 
   return (
     <div
@@ -42,12 +43,18 @@ export default function ServicesPage() {
         <LuxuryReveal className="max-w-3xl">
           <div className="flex items-center gap-3">
             <span className="h-px w-8 bg-[#C8A98B]" aria-hidden="true" />
-            <p
-              data-preview-static="services-eyebrow"
-              className="m-0 text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
-            >
-              Bespoke Atelier &amp; Collections
-            </p>
+            <EditableText
+              as="p"
+              data-preview-field-path="servicesPage.eyebrow"
+              defaultValue={contentText(page.eyebrow) || 'Bespoke Atelier & Collections'}
+              fontFamily="body"
+              size="0.6875rem"
+              weight={600}
+              transform="uppercase"
+              letterSpacing="0.26em"
+              color="#C8A98B"
+              className="m-0"
+            />
           </div>
 
           <EditableText
@@ -76,10 +83,10 @@ export default function ServicesPage() {
         </LuxuryReveal>
       </section>
 
-      {/* Services & Bespoke Editions Grid — Warm Cream Ivory Alternating Surface */}
+      {/* Services & Bespoke Editions Grid — Adaptive Cream / Dark Espresso Surface */}
       <section
         data-design-section="services-list"
-        className="loome-surface-cream w-full border-t border-[#C8A98B]/20 bg-[#F2E9DE] py-14 text-[#201C1A] lg:py-20"
+        className="loome-surface-cream w-full border-t border-[#C8A98B]/20 py-14 lg:py-20"
       >
         <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
           <div data-preview-list-path="services">
@@ -112,10 +119,10 @@ export default function ServicesPage() {
                   <LuxuryStaggerItem key={contentText(service.id) || index}>
                     <article
                       data-preview-item-path={`services[${index}]`}
-                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#3B302B]/12 bg-[#FAF5EE] transition-all duration-500 hover:-translate-y-1 hover:border-[#C8A98B]/75 hover:shadow-[0_18px_40px_rgba(32,28,26,0.08)]"
+                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] transition-all duration-500 hover:-translate-y-1 hover:border-[#C8A98B]/75 hover:shadow-[0_18px_40px_rgba(32,28,26,0.08)] dark:border-[#C8A98B]/22 dark:bg-[#2A221F]"
                     >
                       {imageUrl && (
-                        <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#E6D9C9]/60">
+                        <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#E6D9C9]/60 dark:bg-[#3B302B]/60">
                           <EditableImage
                             src={withBasePath(imageUrl)}
                             alt={contentText(service.name)}
@@ -138,7 +145,7 @@ export default function ServicesPage() {
                           weight={800}
                           lineHeight={1.18}
                           letterSpacing="-0.02em"
-                          color="#201C1A"
+                          color="heading"
                           className="m-0"
                         />
 
@@ -149,23 +156,23 @@ export default function ServicesPage() {
                           fontFamily="body"
                           size="0.875rem"
                           lineHeight={1.75}
-                          color="#5E4E45"
+                          color="muted"
                           className="mt-3 mb-0"
                         />
 
                         {features.length > 0 && (
                           <ul
                             data-preview-list-path={`services[${index}].features`}
-                            className="mt-5 flex list-none flex-col gap-2.5 border-t border-[#3B302B]/12 p-0 pt-5"
+                            className="mt-5 flex list-none flex-col gap-2.5 border-t border-[#3B302B]/12 p-0 pt-5 dark:border-[#C8A98B]/18"
                           >
                             {features.map((feature, fIndex) => (
                               <li
                                 key={fIndex}
                                 data-preview-item-path={`services[${index}].features[${fIndex}]`}
-                                className="flex items-start gap-2.5 text-xs leading-relaxed text-[#5E4E45]"
+                                className="flex items-start gap-2.5 text-xs leading-relaxed text-[#5E4E45] dark:text-[#C9B9AA]"
                               >
                                 <Check
-                                  className="mt-0.5 h-3.5 w-3.5 shrink-0 stroke-[1.85] text-[#8D7667]"
+                                  className="mt-0.5 h-3.5 w-3.5 shrink-0 stroke-[1.85] text-[#8D7667] dark:text-[#C8A98B]"
                                   aria-hidden="true"
                                 />
                                 <span data-preview-field-path={`services[${index}].features[${fIndex}]`}>
@@ -176,7 +183,7 @@ export default function ServicesPage() {
                           </ul>
                         )}
 
-                        <div className="mt-auto border-t border-[#3B302B]/12 pt-5">
+                        <div className="mt-auto border-t border-[#3B302B]/12 pt-5 dark:border-[#C8A98B]/18">
                           {itemShowPrice && (hasNumericPrice || priceLabel) ? (
                             <div className="flex flex-wrap items-baseline gap-2">
                               {hasNumericPrice && (
@@ -187,7 +194,7 @@ export default function ServicesPage() {
                                   fontFamily="heading"
                                   size="1.5rem"
                                   weight={800}
-                                  color="#201C1A"
+                                  color="heading"
                                 />
                               )}
                               {priceLabel && (
@@ -197,16 +204,16 @@ export default function ServicesPage() {
                                   defaultValue={priceLabel}
                                   fontFamily="body"
                                   size="0.75rem"
-                                  color="#5E4E45"
+                                  color="muted"
                                 />
                               )}
                             </div>
                           ) : !itemShowPrice ? (
                             <span
-                              data-preview-static="service-quote-label"
-                              className="inline-block rounded-[9px] border border-[#C8A98B]/55 bg-[#F2E9DE] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#3B302B]"
+                              data-preview-field-path="servicesPage.quoteLabel"
+                              className="inline-block rounded-[10px] border border-[#C8A98B]/55 bg-[#F2E9DE] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#3B302B] dark:bg-[#3B302B] dark:text-[#F5EEE6]"
                             >
-                              Quote on Request
+                              {quoteLabel}
                             </span>
                           ) : null}
                         </div>

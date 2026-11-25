@@ -92,7 +92,7 @@
           "linkUrl": "/contact"
         },
         {
-          "text": "Complimentary White-Glove Delivery on Orders Over $250",
+          "text": "Complimentary White-Glove Delivery on Orders Over Rs. 35,000",
           "badge": "Shipping",
           "icon": "✦",
           "linkLabel": "Shop New Arrivals",
@@ -112,7 +112,8 @@
       "shortDescription": "The Art of Fine Textiles. Architectural drapery, European flax bedding, and heirloom upholstery woven in small batches for calm, luminous spaces.",
       "logoUrl": "/loome-monogram.svg",
       "headerCtaLabel": "Private Atelier",
-      "freeDeliveryThreshold": 250,
+      "currency": "LKR",
+      "freeDeliveryThreshold": 35000,
       "navLabels": {
         "home": "Home",
         "shop": "Shop",
@@ -124,11 +125,48 @@
         "about_us": "About",
         "contact": "Contact"
       },
+      "newsletterEyebrow": "Private Correspondence",
       "footerHeading": "Letters from the Atelier",
       "newsletterDescription": "Receive private access to seasonal textile editions, complimentary swatch mailings, and architectural interior notes.",
       "newsletterSubscribeLabel": "Join List",
       "newsletterEmailPlaceholder": "Enter your email address",
+      "newsletterFootnote": "Thoughtful dispatches only. Unsubscribe effortlessly at any time.",
+      "footerTagline": "The Art of Fine Textiles",
       "footerExploreHeading": "Maison",
+      "footerCollectionsHeading": "Collections",
+      "footerCollections": [
+        {
+          "id": "col-curtains",
+          "label": "Curtains & Drapery",
+          "category": "Curtains",
+          "href": "/shop"
+        },
+        {
+          "id": "col-bedding",
+          "label": "European Flax Bedding",
+          "category": "Bedding",
+          "href": "/shop"
+        },
+        {
+          "id": "col-upholstery",
+          "label": "Upholstery Weaves",
+          "category": "Upholstery",
+          "href": "/shop"
+        },
+        {
+          "id": "col-fabrics",
+          "label": "Fabrics by the Yard",
+          "category": "Fabrics",
+          "href": "/shop"
+        },
+        {
+          "id": "col-cushions",
+          "label": "Cushions & Throws",
+          "category": "Cushions",
+          "href": "/shop"
+        }
+      ],
+      "footerTradeLabel": "Trade Program",
       "footerContactHeading": "Atelier & Care",
       "footerEmailIcon": "mail",
       "footerPhoneIcon": "phone",
@@ -160,9 +198,10 @@
       },
       "fabricStories": {
         "autoplay": true,
-        "transitionDurationMs": 5600,
-        "animationStyle": "editorial-drift",
-        "panelRadius": 28,
+        "transitionDurationMs": 5000,
+        "transitionSpeedMs": 1400,
+        "animationStyle": "fabric-wave",
+        "overlayColor": "#C8A98B",
         "backgroundFrom": "#201C1A",
         "backgroundTo": "#3B302B",
         "stories": [
@@ -214,35 +253,40 @@
           "name": "Curtains",
           "subtitle": "Sheer Belgian flax & thermal architectural drapery",
           "itemCount": "14 Pieces",
-          "imageUrl": "/images/cat-curtains.jpg"
+          "imageUrl": "/images/cat-curtains.jpg",
+          "href": "/shop/?category=curtains"
         },
         {
           "id": "bedding",
           "name": "Bedding",
           "subtitle": "Stonewashed European linen & 600TC organic sateen",
           "itemCount": "18 Pieces",
-          "imageUrl": "/images/cat-bedding.jpg"
+          "imageUrl": "/images/cat-bedding.jpg",
+          "href": "/shop/?category=bedding"
         },
         {
           "id": "upholstery",
           "name": "Upholstery",
           "subtitle": "Heavyweight bouclé, wool blends & tailored weaves",
           "itemCount": "11 Pieces",
-          "imageUrl": "/images/cat-upholstery.jpg"
+          "imageUrl": "/images/cat-upholstery.jpg",
+          "href": "/shop/?category=upholstery"
         },
         {
           "id": "fabrics",
           "name": "Fabrics",
           "subtitle": "By-the-yard atelier bolts for bespoke interiors",
           "itemCount": "24 Weaves",
-          "imageUrl": "/images/cat-fabrics.jpg"
+          "imageUrl": "/images/cat-fabrics.jpg",
+          "href": "/shop/?category=fabrics"
         },
         {
           "id": "cushions",
           "name": "Cushions",
           "subtitle": "Washed velvet, raw silk & hand-stitched linen accents",
           "itemCount": "16 Pieces",
-          "imageUrl": "/images/cat-cushions.jpg"
+          "imageUrl": "/images/cat-cushions.jpg",
+          "href": "/shop/?category=cushions"
         }
       ],
       "productsEyebrow": "SEASONAL ARRIVALS",
@@ -333,25 +377,25 @@
         {
           "id": "rev-1",
           "quote": "The Siena sheer linen curtains transformed our entire living room. The way morning sunlight filters through the Belgian flax weave feels like quiet architecture in motion.",
-          "author": "Camille Laurent",
+          "author": "Dilini Fernando",
           "role": "Principal Interior Architect",
-          "location": "Paris & Geneva",
+          "location": "Colombo 07, Sri Lanka",
           "productMention": "Siena Sheer Belgian Linen Curtain"
         },
         {
           "id": "rev-2",
-          "quote": "We specify LOOMÉ across our residential commissions because the fabric weight, subtle sage olive undertones, and hand-finished stitching rival couture European fabric houses.",
-          "author": "Henrik Lindholm",
-          "role": "Founder, Studio Nord",
-          "location": "Copenhagen",
+          "quote": "We specify LOOMÉ across our residential commissions because the fabric weight, subtle natural undertones, and hand-finished stitching rival bespoke fabric houses.",
+          "author": "Roshan Jayawardena",
+          "role": "Founder, Studio Serendib",
+          "location": "Galle Fort, Sri Lanka",
           "productMention": "Como Herringbone Upholstery Fabric"
         },
         {
           "id": "rev-3",
-          "quote": "Sleeping in the Valence stonewashed flax set feels effortlessly cool in summer and enveloping in winter. After a year of washes it has only grown softer and more luminous.",
-          "author": "Elena Marchetti",
+          "quote": "Sleeping in the Valence stonewashed flax set feels effortlessly cool in tropical humidity and inviting year-round. After months of washes it has only grown softer.",
+          "author": "Nadeesha Senanayake",
           "role": "Creative Director & Collector",
-          "location": "Milan",
+          "location": "Kandy, Sri Lanka",
           "productMention": "Valence Stonewashed Flax Duvet Set"
         }
       ],
@@ -657,27 +701,27 @@
       "deliveryMethods": [
         {
           "id": "standard-courier",
-          "name": "Standard Tracked Courier",
-          "region": "Local & Regional Delivery",
-          "timeline": "Confirmed at dispatch by region",
-          "charge": "Calculated per destination (complimentary on qualifying orders)",
-          "details": "Reliable door-to-door courier delivery with tracking for ready-to-ship bedding sets, cushions, throws, and table linens."
+          "name": "Colombo & Greater Colombo Courier",
+          "region": "Colombo 01–15, Dehiwala, Rajagiriya, Battaramulla & Gampaha",
+          "timeline": "1–3 business days upon dispatch confirmation",
+          "charge": "Rs. 850 flat rate (complimentary on orders over Rs. 35,000)",
+          "details": "Tracked door-to-door courier delivery for ready-to-ship bedding sets, cushions, throws, and table linens across Colombo and suburbs."
         },
         {
           "id": "express-courier",
-          "name": "Express Priority Shipping",
-          "region": "Select Metropolitan Areas",
-          "timeline": "Expedited transit window upon stock confirmation",
-          "charge": "Quoted by parcel weight & destination",
-          "details": "Prioritized atelier preparation and accelerated courier service when your interior installation follows a tighter schedule."
+          "name": "Island-Wide Sri Lanka Courier",
+          "region": "Kandy, Galle, Matara, Negombo, Kurunegala, Jaffna & All 25 Districts",
+          "timeline": "2–5 business days by district",
+          "charge": "From Rs. 1,250 by parcel weight & district (complimentary on qualifying orders)",
+          "details": "Reliable nationwide tracked courier delivery covering all Sri Lankan districts with protective moisture-safe textile wrapping."
         },
         {
           "id": "atelier-white-glove",
-          "name": "Bespoke & White-Glove Delivery",
-          "region": "Custom Drapery & Yardage Bolts",
-          "timeline": "Scheduled upon atelier completion",
+          "name": "Bespoke Drapery & White-Glove Delivery",
+          "region": "Custom Drapery, Yardage Bolts & Hospitality Projects",
+          "timeline": "Scheduled upon atelier finishing",
           "charge": "Quoted individually by our concierge",
-          "details": "Dedicated handling and scheduled appointment delivery for custom-length drapery panels, heavyweight upholstery bolts, and trade orders."
+          "details": "Dedicated handling and scheduled appointment delivery for made-to-measure drapery panels, heavyweight upholstery bolts, and trade orders."
         }
       ],
       "shippingFootnote": "Note: International shipments may be subject to local import duties, customs clearance times, or taxes determined by your destination country.",
@@ -905,8 +949,10 @@
       "eyebrow": "THE ATELIER BAG",
       "heading": "Your Shopping Bag",
       "intro": "Review your curated textile selection, refine quantities, and proceed smoothly to our private WhatsApp checkout.",
-      "deliveryNote": "Complimentary white-glove delivery on qualifying orders. Custom drapery measurements, fabric availability, and dispatch timing are confirmed personally with our atelier concierge.",
+      "deliveryNote": "Complimentary white-glove delivery across Sri Lanka on qualifying orders. Custom drapery measurements, fabric availability, and dispatch timing are confirmed personally with our atelier concierge.",
       "checkoutLabel": "Proceed to Checkout",
+      "continueShoppingLabel": "Continue Shopping",
+      "assuranceEyebrow": "Atelier Delivery & Care Assurance",
       "emptyHeading": "Your shopping bag is currently empty",
       "emptyDescription": "Discover our Belgian flax drapery, stonewashed European linen bedding, and heirloom fabrics by the yard to begin curating your rooms."
     },
@@ -914,12 +960,34 @@
       "eyebrow": "THE PRIVATE CHECKOUT",
       "heading": "Complete Your Atelier Order",
       "intro": "Review your curated textile pieces and share your delivery details below to send your order directly to our concierge via WhatsApp.",
-      "deliveryNote": "Complimentary white-glove delivery on qualifying orders. Availability, bespoke sizing, shipping, and payment are confirmed personally with our atelier concierge via WhatsApp.",
+      "deliveryNote": "Complimentary white-glove delivery across Sri Lanka on qualifying orders. Availability, bespoke sizing, district delivery charges, and payment are confirmed personally with our atelier concierge via WhatsApp.",
       "submitLabel": "Place Order via WhatsApp",
+      "clientSectionHeading": "01. Client Details",
+      "deliverySectionHeading": "02. Delivery Destination",
+      "assuranceEyebrow": "Atelier Delivery & Concierge Policy",
       "emptyHeading": "Your atelier bag is currently empty",
       "emptyDescription": "Explore our Belgian flax drapery, stonewashed linen bedding, and heirloom fabrics to begin curating your order."
     },
+    "productDetailPage": {
+      "toneLabel": "Tone",
+      "sizeLabel": "Size & Measurement",
+      "addToBagLabel": "Add to Bag",
+      "whatsappInquireLabel": "Inquire via Atelier Concierge",
+      "deliveryTitle": "Island-Wide Delivery",
+      "deliveryNote": "Tracked Sri Lanka delivery & complimentary over threshold",
+      "swatchTitle": "Bespoke Sizing & Swatches",
+      "swatchLinkLabel": "Request complimentary fabric swatches",
+      "specsHeading": "Textile Specifications",
+      "careHeading": "Fabric Care & Longevity",
+      "shippingHeading": "Shipping & Returns",
+      "defaultShippingSummary": "Island-wide tracked delivery across Colombo and all 25 Sri Lankan districts. Standard atelier dispatch within 2–4 business days.",
+      "defaultShippingReturns": "Ready-to-ship textiles may be returned unworn and unwashed in original linen packaging within our store return window. Custom-cut yardage and bespoke drapery are crafted to order.",
+      "relatedEyebrow": "Curated Pairings",
+      "relatedHeading": "You May Also Like",
+      "relatedCtaLabel": "View Full Collection"
+    },
     "about": {
+      "eyebrow": "Maison & Heritage",
       "heading": "Woven with Quiet Reverence for Material & Light",
       "body": "Founded as an editorial textile maison, LOOMÉ partners with family-owned weaving mills across Belgium, Northern Italy, and Portugal. We create architectural drapery, tactile bedding, and heirloom fabrics designed to bring calm, warmth, and enduring beauty to everyday living.",
       "imageUrl": "/images/craftsmanship-loom.jpg",
@@ -946,8 +1014,10 @@
       ]
     },
     "servicesPage": {
+      "eyebrow": "Bespoke Atelier & Collections",
       "heading": "Bespoke Collections & Atelier Services",
-      "intro": "Beyond our ready-to-live editions, our textile specialists offer tailored drapery, upholstery sourcing, and trade consultations."
+      "intro": "Beyond our ready-to-live editions, our textile specialists offer tailored drapery, upholstery sourcing, and trade consultations.",
+      "quoteLabel": "Quote on Request"
     },
     "services": [
       {
@@ -955,7 +1025,7 @@
         "name": "Bespoke Architectural Drapery",
         "description": "Made-to-measure pinch-pleat and wave-fold curtains tailored precisely to ceiling height, light filtration needs, and window geometry.",
         "imageUrl": "/images/cat-curtains.jpg",
-        "price": 380,
+        "price": 28500,
         "priceLabel": "starting per panel",
         "showPrice": true,
         "features": [
@@ -969,13 +1039,13 @@
         "name": "Curated Swatch Atelier",
         "description": "Experience the weight, slub, and daylight response of our finest weaves in your own space before committing to yardage.",
         "imageUrl": "/images/cat-fabrics.jpg",
-        "price": 45,
+        "price": 3500,
         "priceLabel": "credited toward order",
         "showPrice": true,
         "features": [
           "Up to 10 generous fabric cuttings",
           "Dedicated color harmony notes",
-          "Express presentation box delivery"
+          "Express island-wide presentation box delivery"
         ]
       },
       {
@@ -992,13 +1062,14 @@
       }
     ],
     "contact": {
+      "eyebrow": "Private Client Concierge",
       "heading": "Visit the Atelier or Inquire",
       "intro": "Whether selecting drapery for a single sunlit room or sourcing yardage for a complete residence, our textile advisors are here to assist.",
-      "phone": "+1 (212) 555-0194",
-      "email": "atelier@loometextiles.com",
-      "address": "48 Mercer Street, Suite 3B, SoHo, New York, NY 10013",
+      "phone": "+94 11 000 0194",
+      "email": "demo-atelier@loometextiles.lk",
+      "address": "Demo Showroom — 42 Flower Road, Cinnamon Gardens, Colombo 07, Sri Lanka",
       "directionsLabel": "Atelier Directions",
-      "directionsUrl": "https://maps.google.com/?q=48+Mercer+Street+New+York",
+      "directionsUrl": "https://maps.google.com/?q=Colombo+07+Sri+Lanka",
       "formTitle": "Private Consultation Request",
       "directInformationTitle": "Atelier Concierge",
       "nameLabel": "Full Name",
@@ -1006,16 +1077,16 @@
       "messageLabel": "Project Details or Swatch Request",
       "submitLabel": "Send Inquiry",
       "directMessageText": "Concierge via WhatsApp",
-      "whatsapp": "+12125550194"
+      "whatsapp": "+94770000194"
     },
     "products": [
       {
         "id": "siena-sheer-curtain",
         "name": "Siena Sheer Belgian Linen Curtain",
         "description": "Airy pinch-pleat sheer drapery loomed from unbleached European flax for soft, diffused daylight and graceful floor pooling.",
-        "price": 245,
-        "compareAtPrice": 290,
-        "currency": "USD",
+        "price": 24500,
+        "compareAtPrice": 29500,
+        "currency": "LKR",
         "imageUrl": "/images/prod-curtain-ivory.jpg",
         "galleryImages": "/images/prod-curtain-ivory.jpg | /images/cat-curtains.jpg | /images/craftsmanship-detail.jpg",
         "category": "Curtains",
@@ -1031,16 +1102,16 @@
         "sizesText": "54\" × 84\" Panel | 54\" × 96\" Panel | 54\" × 108\" Panel | 54\" × 120\" Panel",
         "colors": [
           {
-            "name": "Warm Ivory",
-            "hex": "#F8F6F1"
+            "name": "Cream Ivory",
+            "hex": "#F2E9DE"
           },
           {
             "name": "Oatmeal",
-            "hex": "#E8E0D5"
+            "hex": "#E6D9C9"
           },
           {
-            "name": "Sage Olive",
-            "hex": "#747B65"
+            "name": "Warm Mushroom",
+            "hex": "#8D7667"
           }
         ]
       },
@@ -1048,9 +1119,9 @@
         "id": "valence-flax-duvet",
         "name": "Valence Stonewashed Flax Duvet Set",
         "description": "Pre-washed European linen duvet cover and two shams finished with mother-of-pearl closures and an effortless lived-in drape.",
-        "price": 340,
+        "price": 48500,
         "compareAtPrice": null,
-        "currency": "USD",
+        "currency": "LKR",
         "imageUrl": "/images/prod-duvet-flax.jpg",
         "galleryImages": "/images/prod-duvet-flax.jpg | /images/cat-bedding.jpg | /images/craftsmanship-detail.jpg",
         "category": "Bedding",
@@ -1063,19 +1134,19 @@
         "gsm": "190 GSM",
         "dimensions": "Duvet Cover + 2 Pillow Shams (Mother-of-Pearl Button Closure)",
         "careInstructions": "Machine wash cold on gentle cycle with mild pH-neutral detergent; line dry or tumble dry low.",
-        "sizesText": "Full / Queen | King / Cal King",
+        "sizesText": "Full / Queen | King / Super King",
         "colors": [
           {
             "name": "Warm Beige",
-            "hex": "#E8E0D5"
+            "hex": "#E6D9C9"
           },
           {
-            "name": "Ivory",
-            "hex": "#F8F6F1"
+            "name": "Cream Ivory",
+            "hex": "#F2E9DE"
           },
           {
-            "name": "Charcoal",
-            "hex": "#262923"
+            "name": "Deep Espresso",
+            "hex": "#201C1A"
           }
         ]
       },
@@ -1083,9 +1154,9 @@
         "id": "atelier-merino-throw",
         "name": "Atelier Hand-Loomed Merino Throw",
         "description": "Feather-soft merino wool and cashmere blend throw with hand-twisted fringe, woven in a sculptural subtle rib.",
-        "price": 285,
-        "compareAtPrice": 325,
-        "currency": "USD",
+        "price": 36500,
+        "compareAtPrice": 42000,
+        "currency": "LKR",
         "imageUrl": "/images/prod-throw-boucle.jpg",
         "galleryImages": "/images/prod-throw-boucle.jpg | /images/featured-collection.jpg | /images/craftsmanship-loom.jpg",
         "category": "Bedding",
@@ -1102,15 +1173,15 @@
         "colors": [
           {
             "name": "Champagne",
-            "hex": "#B59B79"
+            "hex": "#C8A98B"
           },
           {
-            "name": "Warm Ivory",
-            "hex": "#F8F6F1"
+            "name": "Cream Ivory",
+            "hex": "#F2E9DE"
           },
           {
-            "name": "Sage Olive",
-            "hex": "#747B65"
+            "name": "Warm Mushroom",
+            "hex": "#8D7667"
           }
         ]
       },
@@ -1118,9 +1189,9 @@
         "id": "verona-velvet-cushion",
         "name": "Verona Washed Velvet Lumbar Cushion",
         "description": "Matte cotton-viscose washed velvet finished with a crisp flange border and responsibly sourced feather-down insert.",
-        "price": 125,
+        "price": 12500,
         "compareAtPrice": null,
-        "currency": "USD",
+        "currency": "LKR",
         "imageUrl": "/images/prod-cushion-olive.jpg",
         "galleryImages": "/images/prod-cushion-olive.jpg | /images/cat-cushions.jpg | /images/cat-upholstery.jpg",
         "category": "Cushions",
@@ -1136,16 +1207,16 @@
         "sizesText": "Lumbar (14\" × 24\") | Square (20\" × 20\") | Euro (24\" × 24\")",
         "colors": [
           {
-            "name": "Sage Olive",
-            "hex": "#747B65"
+            "name": "Dark Mocha",
+            "hex": "#3B302B"
           },
           {
             "name": "Champagne",
-            "hex": "#B59B79"
+            "hex": "#C8A98B"
           },
           {
             "name": "Warm Taupe",
-            "hex": "#9E9180"
+            "hex": "#8D7667"
           }
         ]
       },
@@ -1153,9 +1224,9 @@
         "id": "como-herringbone-fabric",
         "name": "Como Heavyweight Herringbone Fabric",
         "description": "Architectural upholstery yardage featuring a crisp Italian herringbone weave engineered for 60,000+ Martindale rub durability.",
-        "price": 165,
+        "price": 14800,
         "compareAtPrice": null,
-        "currency": "USD",
+        "currency": "LKR",
         "imageUrl": "/images/prod-fabric-herringbone.jpg",
         "galleryImages": "/images/prod-fabric-herringbone.jpg | /images/cat-fabrics.jpg | /images/cat-upholstery.jpg",
         "category": "Fabrics",
@@ -1175,12 +1246,12 @@
             "hex": "#C8BEB0"
           },
           {
-            "name": "Charcoal",
-            "hex": "#262923"
+            "name": "Deep Espresso",
+            "hex": "#201C1A"
           },
           {
             "name": "Sand Beige",
-            "hex": "#E8E0D5"
+            "hex": "#E6D9C9"
           }
         ]
       },
@@ -1188,9 +1259,9 @@
         "id": "solstice-thermal-drapery",
         "name": "Solstice Heavy Linen Drapery Panel",
         "description": "Double-lined architectural linen drapery offering acoustic softness, thermal insulation, and tailored sculptural folds.",
-        "price": 310,
-        "compareAtPrice": 360,
-        "currency": "USD",
+        "price": 34500,
+        "compareAtPrice": 39500,
+        "currency": "LKR",
         "imageUrl": "/images/prod-curtain-blackout.jpg",
         "galleryImages": "/images/prod-curtain-blackout.jpg | /images/cat-curtains.jpg | /images/hero-linen.jpg",
         "category": "Curtains",
@@ -1207,15 +1278,15 @@
         "colors": [
           {
             "name": "Sand Taupe",
-            "hex": "#CBB8A0"
+            "hex": "#C8A98B"
           },
           {
-            "name": "Ivory Plaster",
-            "hex": "#F8F6F1"
+            "name": "Cream Ivory",
+            "hex": "#F2E9DE"
           },
           {
-            "name": "Deep Olive",
-            "hex": "#5D6350"
+            "name": "Dark Mocha",
+            "hex": "#3B302B"
           }
         ]
       },
@@ -1223,9 +1294,9 @@
         "id": "lumiere-sateen-sheets",
         "name": "Lumière 600TC Organic Sateen Sheet Set",
         "description": "Lustrous long-staple organic cotton sateen with champagne satin-stitch hem detailing for cool, fluid comfort.",
-        "price": 295,
+        "price": 39500,
         "compareAtPrice": null,
-        "currency": "USD",
+        "currency": "LKR",
         "imageUrl": "/images/prod-bedsheet-sateen.jpg",
         "galleryImages": "/images/prod-bedsheet-sateen.jpg | /images/cat-bedding.jpg | /images/craftsmanship-detail.jpg",
         "category": "Bedding",
@@ -1238,29 +1309,29 @@
         "gsm": "145 GSM",
         "dimensions": "Fitted Sheet (16 in Deep Pocket), Flat Sheet & 2 Pillowcases",
         "careInstructions": "Machine wash warm on gentle cycle; tumble dry low and remove promptly for a smooth finish.",
-        "sizesText": "Queen Set | King Set | Cal King Set",
+        "sizesText": "Queen Set | King Set | Super King Set",
         "colors": [
           {
             "name": "Pearl Ivory",
-            "hex": "#F8F6F1"
+            "hex": "#F2E9DE"
           },
           {
             "name": "Champagne",
-            "hex": "#B59B79"
+            "hex": "#C8A98B"
           },
           {
             "name": "Warm Beige",
-            "hex": "#E8E0D5"
+            "hex": "#E6D9C9"
           }
         ]
       },
       {
         "id": "provence-linen-runner",
         "name": "Provence Raw-Edge Linen Table Runner",
-        "description": "Generously weighted heirloom flax table runner framed with woven sage stripes and delicate hand-frayed selvedge edges.",
-        "price": 110,
-        "compareAtPrice": 135,
-        "currency": "USD",
+        "description": "Generously weighted heirloom flax table runner framed with woven champagne stripes and delicate hand-frayed selvedge edges.",
+        "price": 11800,
+        "compareAtPrice": 14500,
+        "currency": "LKR",
         "imageUrl": "/images/prod-table-runner.jpg",
         "galleryImages": "/images/prod-table-runner.jpg | /images/cat-fabrics.jpg | /images/craftsmanship-loom.jpg",
         "category": "Upholstery",
@@ -1277,15 +1348,15 @@
         "colors": [
           {
             "name": "Natural Flax",
-            "hex": "#E8E0D5"
+            "hex": "#E6D9C9"
           },
           {
-            "name": "Sage Olive",
-            "hex": "#747B65"
+            "name": "Warm Mushroom",
+            "hex": "#8D7667"
           },
           {
-            "name": "Warm Ivory",
-            "hex": "#F8F6F1"
+            "name": "Cream Ivory",
+            "hex": "#F2E9DE"
           }
         ]
       }

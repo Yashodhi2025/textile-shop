@@ -1,9 +1,9 @@
 'use client';
 
-import { useMemo, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { useLoomeStore, type LoomeProduct } from '@/lib/storeContext';
+import type { LoomeProduct } from '@/lib/storeContext';
 import LoomeProductCard from '@/components/LoomeProductCard';
 import { LUXURY_EASE, LuxuryHairline, LuxuryReveal } from '@/components/motion/LuxuryReveal';
 
@@ -30,7 +30,7 @@ export default function ProductShowcaseSection({
   surfaceClassName = '',
   tone = 'light',
 }: ProductShowcaseSectionProps) {
-  const { activeCategory, setActiveCategory } = useLoomeStore();
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const prefersReducedMotion = useReducedMotion();
   const isDark = tone === 'dark';
 
@@ -43,6 +43,14 @@ export default function ProductShowcaseSection({
     });
     return ['All', ...Array.from(unique)];
   }, [sourcePool]);
+
+  const activeCategory = useMemo(() => {
+    if (selectedCategory === 'All') return 'All';
+    const matched = categories.find(
+      (cat) => cat.toLowerCase() === selectedCategory.toLowerCase(),
+    );
+    return matched ?? 'All';
+  }, [categories, selectedCategory]);
 
   const displayedProducts = useMemo(() => {
     if (!showCategoryFilter || activeCategory === 'All') return products;
@@ -72,15 +80,15 @@ export default function ProductShowcaseSection({
                       key={cat}
                       type="button"
                       data-preview-static={`category-tab-${cat}`}
-                      onClick={() => setActiveCategory(cat)}
+                      onClick={() => setSelectedCategory(cat)}
                       className={`rounded-[10px] border px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] transition-all duration-300 ${
                         isActive
                           ? isDark
                             ? 'border-[#C8A98B] bg-[#C8A98B] text-[#201C1A]'
-                            : 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE]'
+                            : 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
                           : isDark
                             ? 'border-[#C8A98B]/25 bg-transparent text-[#C7B6A6] hover:border-[#C8A98B] hover:text-[#F2E9DE]'
-                            : 'border-[#3B302B]/20 bg-[#FAF5EE] text-[#5E4E45] hover:border-[#8D7667] hover:text-[#201C1A]'
+                            : 'border-[#3B302B]/20 bg-[#FAF5EE] text-[#5E4E45] hover:border-[#8D7667] hover:text-[#201C1A] dark:border-[#C8A98B]/25 dark:bg-[#2A221F] dark:text-[#C9B9AA] dark:hover:border-[#C8A98B] dark:hover:text-[#F5EEE6]'
                       }`}
                     >
                       {cat}
@@ -148,7 +156,7 @@ export default function ProductShowcaseSection({
             <button
               type="button"
               data-preview-static="reset-category-filter"
-              onClick={() => setActiveCategory('All')}
+              onClick={() => setSelectedCategory('All')}
               className={`group inline-flex items-center gap-2 rounded-[10px] border px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition-all ${
                 isDark
                   ? 'border-[#C8A98B]/40 text-[#F2E9DE] hover:border-[#C8A98B] hover:bg-[#C8A98B] hover:text-[#201C1A]'

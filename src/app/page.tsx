@@ -75,7 +75,7 @@ export default function HomePage() {
               weight={600}
               transform="uppercase"
               letterSpacing="0.26em"
-              color="#8D7667"
+              color="primary"
               className="m-0"
             />
             <EditableText
@@ -87,7 +87,7 @@ export default function HomePage() {
               weight={800}
               lineHeight={1.04}
               letterSpacing="-0.03em"
-              color="#201C1A"
+              color="heading"
               className="mt-3 mb-0"
             />
           </>
@@ -100,14 +100,14 @@ export default function HomePage() {
             fontFamily="body"
             size="0.9375rem"
             lineHeight={1.75}
-            color="#5E4E45"
+            color="muted"
             className="m-0 max-w-md lg:text-right"
           />
         }
         products={newArrivals}
         filterPool={allProducts}
         showCategoryFilter
-        surfaceClassName="loome-surface-cream border-y border-[#3B302B]/12"
+        surfaceClassName="loome-surface-cream border-y border-[#3B302B]/12 dark:border-[#C8A98B]/16"
       />
 
       <CraftsmanshipSection />

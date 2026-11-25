@@ -266,7 +266,7 @@ export default function FaqPageView() {
   return (
     <div
       data-preview-page-key="faq"
-      className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
+      className="loome-surface-cream min-h-[75vh] w-full"
     >
       {/* Breadcrumb Strip */}
       <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
@@ -442,7 +442,7 @@ export default function FaqPageView() {
             </div>
 
             {/* 5. Small Editorial Textile Image Card */}
-            <LuxuryReveal delay={0.08} className="overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-[0_12px_34px_rgba(32,28,26,0.04)]">
+            <LuxuryReveal delay={0.08} className="overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-[0_12px_34px_rgba(32,28,26,0.04)] dark:border-[#C8A98B]/20 dark:bg-[#2A221F]">
               <LuxuryImageReveal tone="ivory" className="aspect-[4/3] w-full bg-[#E6D9C9]/60">
                 <img
                   src={withBasePath(editorialImageUrl)}
@@ -578,10 +578,10 @@ export default function FaqPageView() {
             {/* Animated Accessible FAQ Accordions */}
             <div data-preview-list-path="faqPage.items" className="mt-6">
               {filteredItems.length === 0 ? (
-                <div className="border border-dashed border-[#201C1A]/20 px-6 py-16 text-center dark:border-[#F2E9DE]/20">
+                <div className="rounded-2xl border border-dashed border-[#201C1A]/20 px-6 py-16 text-center dark:border-[#F2E9DE]/20">
                   <p
                     data-preview-static="faq-empty-message"
-                    className="m-0 text-sm text-[#65685E] dark:text-[#C7B6A6]"
+                    className="m-0 text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
                   >
                     {items.length === 0
                       ? 'Add FAQ questions and answers in your Fivora editor.'

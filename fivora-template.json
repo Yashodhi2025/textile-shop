@@ -5,6 +5,7 @@
     "contractVersion": 1,
     "mode": "strict",
     "controlOnlyPaths": [
+      "common.currency",
       "common.newsletterDescription",
       "products[*].id",
       "products[*].isAvailable",
@@ -12,6 +13,28 @@
       "products[*].currency",
       "about.collageImages[*].id",
       "common.freeDeliveryThreshold",
+      "common.footerCollections[*].id",
+      "common.footerCollections[*].category",
+      "productDetailPage.toneLabel",
+      "productDetailPage.sizeLabel",
+      "productDetailPage.addToBagLabel",
+      "productDetailPage.whatsappInquireLabel",
+      "productDetailPage.deliveryTitle",
+      "productDetailPage.deliveryNote",
+      "productDetailPage.swatchTitle",
+      "productDetailPage.swatchLinkLabel",
+      "productDetailPage.specsHeading",
+      "productDetailPage.careHeading",
+      "productDetailPage.shippingHeading",
+      "productDetailPage.defaultShippingSummary",
+      "productDetailPage.defaultShippingReturns",
+      "productDetailPage.relatedEyebrow",
+      "productDetailPage.relatedHeading",
+      "productDetailPage.relatedCtaLabel",
+      "cartPage.continueShoppingLabel",
+      "checkoutPage.clientSectionHeading",
+      "checkoutPage.deliverySectionHeading",
+      "servicesPage.quoteLabel",
       "products[*].showPrice",
       "products[*].isPriceRange",
       "products[*].minPrice",
@@ -31,8 +54,9 @@
       "home.silkIntro.durationMs",
       "home.fabricStories.autoplay",
       "home.fabricStories.transitionDurationMs",
+      "home.fabricStories.transitionSpeedMs",
       "home.fabricStories.animationStyle",
-      "home.fabricStories.panelRadius",
+      "home.fabricStories.overlayColor",
       "home.fabricStories.backgroundFrom",
       "home.fabricStories.backgroundTo",
       "home.fabricStories.stories[*].id",
@@ -160,87 +184,6 @@
     "version": 1,
     "sections": [
       {
-        "id": "silk_intro_preview",
-        "path": "home.silkIntro",
-        "pageKey": "silk_intro_preview",
-        "type": "object",
-        "label": "Silk Veil Intro",
-        "fields": [
-          {
-            "key": "enabled",
-            "type": "boolean",
-            "label": "Enable Silk Veil Intro"
-          },
-          {
-            "key": "brandTitle",
-            "type": "text",
-            "label": "Intro Wordmark"
-          },
-          {
-            "key": "tagline",
-            "type": "text",
-            "label": "Intro Tagline"
-          },
-          {
-            "key": "backgroundImageUrl",
-            "type": "image",
-            "label": "Silk Veil Background Image",
-            "recommendedWidth": 1920,
-            "recommendedHeight": 1080
-          },
-          {
-            "key": "skipLabel",
-            "type": "text",
-            "label": "Skip Button Label"
-          },
-          {
-            "key": "durationMs",
-            "type": "number",
-            "label": "Intro Duration (ms)"
-          }
-        ]
-      },
-      {
-        "id": "countdown_preview",
-        "path": "home.countdown",
-        "pageKey": "countdown_preview",
-        "type": "object",
-        "label": "Flash Sale Countdown",
-        "fields": [
-          {
-            "key": "heading",
-            "type": "text",
-            "label": "Heading"
-          },
-          {
-            "key": "subtitle",
-            "type": "text",
-            "label": "Subtitle"
-          },
-          {
-            "key": "deadline",
-            "type": "text",
-            "label": "Sale end date and time (ISO)",
-            "placeholder": "2026-12-15T23:59+05:30"
-          },
-          {
-            "key": "expiryMessage",
-            "type": "textarea",
-            "label": "Expiry message"
-          },
-          {
-            "key": "ctaLabel",
-            "type": "text",
-            "label": "CTA label"
-          },
-          {
-            "key": "ctaUrl",
-            "type": "url",
-            "label": "CTA URL"
-          }
-        ]
-      },
-      {
         "id": "common",
         "path": "common",
         "type": "object",
@@ -268,6 +211,11 @@
             "key": "headerCtaLabel",
             "type": "text",
             "label": "Header atelier link label"
+          },
+          {
+            "key": "currency",
+            "type": "text",
+            "label": "Default store currency code (e.g. LKR, USD, EUR)"
           },
           {
             "key": "freeDeliveryThreshold",
@@ -328,6 +276,11 @@
             ]
           },
           {
+            "key": "newsletterEyebrow",
+            "type": "text",
+            "label": "Newsletter eyebrow"
+          },
+          {
             "key": "footerHeading",
             "type": "text",
             "label": "Newsletter & Footer heading"
@@ -348,9 +301,59 @@
             "label": "Newsletter description"
           },
           {
+            "key": "newsletterFootnote",
+            "type": "text",
+            "label": "Newsletter footnote"
+          },
+          {
+            "key": "footerTagline",
+            "type": "text",
+            "label": "Footer brand tagline"
+          },
+          {
             "key": "footerExploreHeading",
             "type": "text",
             "label": "Footer navigation heading"
+          },
+          {
+            "key": "footerCollectionsHeading",
+            "type": "text",
+            "label": "Footer collections heading"
+          },
+          {
+            "key": "footerCollections",
+            "type": "list",
+            "label": "Footer collection shortcuts",
+            "itemLabel": "Collection Link",
+            "minItems": 0,
+            "maxItems": 8,
+            "fields": [
+              {
+                "key": "id",
+                "type": "text",
+                "label": "Link ID"
+              },
+              {
+                "key": "label",
+                "type": "text",
+                "label": "Collection Name"
+              },
+              {
+                "key": "category",
+                "type": "text",
+                "label": "Filter Category"
+              },
+              {
+                "key": "href",
+                "type": "url",
+                "label": "Destination URL"
+              }
+            ]
+          },
+          {
+            "key": "footerTradeLabel",
+            "type": "text",
+            "label": "Footer Trade Program label"
           },
           {
             "key": "footerContactHeading",
@@ -405,15 +408,21 @@
                 "label": "Autoplay Interval (ms)"
               },
               {
-                "key": "animationStyle",
-                "type": "text",
-                "label": "Animation Style (editorial-drift, crossfade, or static)",
-                "placeholder": "editorial-drift"
+                "key": "transitionSpeedMs",
+                "type": "number",
+                "label": "Transition Speed (ms)"
               },
               {
-                "key": "panelRadius",
-                "type": "number",
-                "label": "Fabric Panel Curve Radius (px)"
+                "key": "animationStyle",
+                "type": "text",
+                "label": "Animation Style (fabric-wave, crossfade, or static)",
+                "placeholder": "fabric-wave"
+              },
+              {
+                "key": "overlayColor",
+                "type": "text",
+                "label": "Silk Wave Overlay Color (hex)",
+                "placeholder": "#C8A98B"
               },
               {
                 "key": "backgroundFrom",
@@ -465,8 +474,8 @@
                     "key": "imageUrl",
                     "type": "image",
                     "label": "Fabric Image",
-                    "recommendedWidth": 1200,
-                    "recommendedHeight": 1600
+                    "recommendedWidth": 1920,
+                    "recommendedHeight": 1080
                   },
                   {
                     "key": "primaryCtaLabel",
@@ -545,6 +554,11 @@
                 "key": "imageUrl",
                 "type": "image",
                 "label": "Category Image"
+              },
+              {
+                "key": "href",
+                "type": "url",
+                "label": "Category Link"
               }
             ]
           },
@@ -958,6 +972,16 @@
             "label": "Proceed to Checkout Button Label"
           },
           {
+            "key": "continueShoppingLabel",
+            "type": "text",
+            "label": "Continue Shopping Label"
+          },
+          {
+            "key": "assuranceEyebrow",
+            "type": "text",
+            "label": "Assurance Band Eyebrow"
+          },
+          {
             "key": "emptyHeading",
             "type": "text",
             "label": "Empty Bag Heading"
@@ -1001,6 +1025,21 @@
             "key": "submitLabel",
             "type": "text",
             "label": "WhatsApp Submit Button Label"
+          },
+          {
+            "key": "clientSectionHeading",
+            "type": "text",
+            "label": "Client Details Section Heading"
+          },
+          {
+            "key": "deliverySectionHeading",
+            "type": "text",
+            "label": "Delivery Destination Section Heading"
+          },
+          {
+            "key": "assuranceEyebrow",
+            "type": "text",
+            "label": "Assurance Band Eyebrow"
           },
           {
             "key": "emptyHeading",
@@ -1983,6 +2022,11 @@
         "label": "About Page",
         "fields": [
           {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Eyebrow"
+          },
+          {
             "key": "heading",
             "type": "text",
             "label": "Heading",
@@ -2050,6 +2094,11 @@
         "label": "Collections & Services Page",
         "fields": [
           {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Eyebrow"
+          },
+          {
             "key": "heading",
             "type": "text",
             "label": "Heading",
@@ -2059,6 +2108,11 @@
             "key": "intro",
             "type": "textarea",
             "label": "Introduction"
+          },
+          {
+            "key": "quoteLabel",
+            "type": "text",
+            "label": "Quote on request badge label"
           }
         ]
       },
@@ -2127,6 +2181,11 @@
         "type": "object",
         "label": "Contact Page",
         "fields": [
+          {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Eyebrow"
+          },
           {
             "key": "heading",
             "type": "text",
@@ -2202,6 +2261,95 @@
             "key": "whatsapp",
             "type": "tel",
             "label": "WhatsApp"
+          }
+        ]
+      },
+      {
+        "id": "productDetailPage",
+        "path": "productDetailPage",
+        "pageKey": "shop",
+        "type": "object",
+        "label": "Product Detail Labels & Delivery",
+        "fields": [
+          {
+            "key": "toneLabel",
+            "type": "text",
+            "label": "Color / Tone Label"
+          },
+          {
+            "key": "sizeLabel",
+            "type": "text",
+            "label": "Size & Measurement Label"
+          },
+          {
+            "key": "addToBagLabel",
+            "type": "text",
+            "label": "Add to Bag Button Label"
+          },
+          {
+            "key": "whatsappInquireLabel",
+            "type": "text",
+            "label": "WhatsApp Inquiry Button Label"
+          },
+          {
+            "key": "deliveryTitle",
+            "type": "text",
+            "label": "Delivery Highlight Heading"
+          },
+          {
+            "key": "deliveryNote",
+            "type": "text",
+            "label": "Delivery Highlight Fallback Note"
+          },
+          {
+            "key": "swatchTitle",
+            "type": "text",
+            "label": "Swatches Highlight Heading"
+          },
+          {
+            "key": "swatchLinkLabel",
+            "type": "text",
+            "label": "Request Swatches Link Label"
+          },
+          {
+            "key": "specsHeading",
+            "type": "text",
+            "label": "Specifications Accordion Heading"
+          },
+          {
+            "key": "careHeading",
+            "type": "text",
+            "label": "Care Instructions Accordion Heading"
+          },
+          {
+            "key": "shippingHeading",
+            "type": "text",
+            "label": "Shipping & Returns Accordion Heading"
+          },
+          {
+            "key": "defaultShippingSummary",
+            "type": "textarea",
+            "label": "Default Shipping Summary"
+          },
+          {
+            "key": "defaultShippingReturns",
+            "type": "textarea",
+            "label": "Default Returns Policy Summary"
+          },
+          {
+            "key": "relatedEyebrow",
+            "type": "text",
+            "label": "Related Products Eyebrow"
+          },
+          {
+            "key": "relatedHeading",
+            "type": "text",
+            "label": "Related Products Heading"
+          },
+          {
+            "key": "relatedCtaLabel",
+            "type": "text",
+            "label": "Related Products CTA Label"
           }
         ]
       },
@@ -2343,6 +2491,87 @@
                 "label": "Color Hex"
               }
             ]
+          }
+        ]
+      },
+      {
+        "id": "silk_intro_preview",
+        "path": "home.silkIntro",
+        "pageKey": "silk_intro_preview",
+        "type": "object",
+        "label": "Silk Veil Intro",
+        "fields": [
+          {
+            "key": "enabled",
+            "type": "boolean",
+            "label": "Enable Silk Veil Intro"
+          },
+          {
+            "key": "brandTitle",
+            "type": "text",
+            "label": "Intro Wordmark"
+          },
+          {
+            "key": "tagline",
+            "type": "text",
+            "label": "Intro Tagline"
+          },
+          {
+            "key": "backgroundImageUrl",
+            "type": "image",
+            "label": "Silk Veil Background Image",
+            "recommendedWidth": 1920,
+            "recommendedHeight": 1080
+          },
+          {
+            "key": "skipLabel",
+            "type": "text",
+            "label": "Skip Button Label"
+          },
+          {
+            "key": "durationMs",
+            "type": "number",
+            "label": "Intro Duration (ms)"
+          }
+        ]
+      },
+      {
+        "id": "countdown_preview",
+        "path": "home.countdown",
+        "pageKey": "countdown_preview",
+        "type": "object",
+        "label": "Flash Sale Countdown",
+        "fields": [
+          {
+            "key": "heading",
+            "type": "text",
+            "label": "Heading"
+          },
+          {
+            "key": "subtitle",
+            "type": "text",
+            "label": "Subtitle"
+          },
+          {
+            "key": "deadline",
+            "type": "text",
+            "label": "Sale end date and time (ISO)",
+            "placeholder": "2026-12-15T23:59+05:30"
+          },
+          {
+            "key": "expiryMessage",
+            "type": "textarea",
+            "label": "Expiry message"
+          },
+          {
+            "key": "ctaLabel",
+            "type": "text",
+            "label": "CTA label"
+          },
+          {
+            "key": "ctaUrl",
+            "type": "url",
+            "label": "CTA URL"
           }
         ]
       },

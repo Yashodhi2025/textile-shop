@@ -103,7 +103,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
               weight={600}
               transform="uppercase"
               letterSpacing="0.26em"
-              color="#8D7667"
+              color="primary"
               className="m-0"
             />
             <EditableText
@@ -115,7 +115,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
               weight={800}
               lineHeight={1.04}
               letterSpacing="-0.03em"
-              color="#201C1A"
+              color="heading"
               className="mt-3 mb-0"
             />
           </div>
@@ -126,7 +126,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
             fontFamily="body"
             size="0.9375rem"
             lineHeight={1.75}
-            color="#5E4E45"
+            color="muted"
             className="m-0 max-w-md"
           />
         </LuxuryReveal>
@@ -250,13 +250,13 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                         onClick={() => setActiveIndex(idx)}
                         className={`group cursor-pointer rounded-2xl border p-4 transition-all duration-400 sm:p-5 ${
                           isSelected
-                            ? 'border-[#8D7667] bg-[#FAF5EE] shadow-[0_12px_30px_rgba(32,28,26,0.08)]'
-                            : 'border-[#3B302B]/12 bg-[#FAF5EE]/70 hover:border-[#C8A98B]'
+                            ? 'border-[#8D7667] bg-[#FAF5EE] shadow-[0_12px_30px_rgba(32,28,26,0.08)] dark:border-[#C8A98B] dark:bg-[#2A221F]'
+                            : 'border-[#3B302B]/12 bg-[#FAF5EE]/75 hover:border-[#C8A98B] dark:border-[#C8A98B]/18 dark:bg-[#241D1A] dark:hover:border-[#C8A98B]/55'
                         }`}
                       >
                         <div className="flex items-start gap-4">
                           {product && (
-                            <div className="h-24 w-20 shrink-0 overflow-hidden rounded-[11px] bg-[#E6D9C9]">
+                            <div className="h-24 w-20 shrink-0 overflow-hidden rounded-[11px] bg-[#E6D9C9] dark:bg-[#3B302B]">
                               <img
                                 src={withBasePath(product.imageUrl)}
                                 alt={product.name}
@@ -268,7 +268,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
 
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center justify-between gap-2">
-                              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8D7667]">
+                              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8D7667] dark:text-[#C8A98B]">
                                 <span data-preview-static="shop-look-num">0{idx + 1} · </span>
                                 <span data-preview-field-path={`home.shopTheLook.hotspots[${spot.index}].label`}>
                                   {spot.label}
@@ -277,7 +277,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                               {product && product.showPrice && (
                                 <span
                                   data-preview-static="shop-look-price"
-                                  className="text-sm font-bold text-[#201C1A]"
+                                  className="text-sm font-bold text-[#201C1A] dark:text-[#F5EEE6]"
                                 >
                                   {formatLoomePrice(product.price, storeCurrency)}
                                 </span>
@@ -287,7 +287,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                             {product && (
                               <h3
                                 data-preview-static="shop-look-product-title"
-                                className="mt-1 m-0 font-heading text-lg font-bold leading-snug text-[#201C1A]"
+                                className="mt-1 m-0 font-heading text-lg font-bold leading-snug text-[#201C1A] dark:text-[#F5EEE6]"
                               >
                                 {product.name}
                               </h3>
@@ -295,7 +295,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
 
                             <p
                               data-preview-field-path={`home.shopTheLook.hotspots[${spot.index}].note`}
-                              className="mt-1 m-0 text-xs leading-relaxed text-[#5E4E45]"
+                              className="mt-1 m-0 text-xs leading-relaxed text-[#5E4E45] dark:text-[#C9B9AA]"
                             >
                               {spot.note}
                             </p>
@@ -309,7 +309,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                                     e.stopPropagation();
                                     handleAddPiece(product);
                                   }}
-                                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#201C1A] px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F2E9DE] transition-all hover:bg-[#3B302B] hover:text-[#C8A98B]"
+                                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#201C1A] px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F2E9DE] transition-all hover:bg-[#3B302B] hover:text-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]"
                                 >
                                   <ShoppingBag className="h-3 w-3 stroke-[1.6]" />
                                   Add to Bag
@@ -321,7 +321,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                                     e.stopPropagation();
                                     openQuickView(product);
                                   }}
-                                  className="inline-flex items-center gap-1 rounded-[10px] border border-[#3B302B]/20 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#3B302B] transition-colors hover:border-[#201C1A] hover:text-[#201C1A]"
+                                  className="inline-flex items-center gap-1 rounded-[10px] border border-[#3B302B]/25 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#3B302B] transition-colors hover:border-[#201C1A] hover:text-[#201C1A] dark:border-[#C8A98B]/35 dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:text-[#C8A98B]"
                                 >
                                   <Eye className="h-3 w-3 stroke-[1.6]" />
                                   Quick View
@@ -342,7 +342,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                 <a
                   href="#new-arrivals"
                   data-preview-static="shop-look-explore-all"
-                  className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#201C1A] no-underline transition-colors hover:text-[#8D7667]"
+                  className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#201C1A] no-underline transition-colors hover:text-[#8D7667] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
                 >
                   Explore Full Collection
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />

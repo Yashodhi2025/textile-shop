@@ -28,12 +28,18 @@ export default function AboutPage() {
           <LuxuryReveal className="lg:col-span-6">
             <div className="flex items-center gap-3">
               <span className="h-px w-8 bg-[#C8A98B]" aria-hidden="true" />
-              <p
-                data-preview-static="about-eyebrow"
-                className="m-0 text-[11px] font-semibold uppercase tracking-[0.26em] text-[#C8A98B]"
-              >
-                Maison &amp; Heritage
-              </p>
+              <EditableText
+                as="p"
+                data-preview-field-path="about.eyebrow"
+                defaultValue={contentText(about.eyebrow) || 'Maison & Heritage'}
+                fontFamily="body"
+                size="0.6875rem"
+                weight={600}
+                transform="uppercase"
+                letterSpacing="0.26em"
+                color="#C8A98B"
+                className="m-0"
+              />
             </div>
 
             <EditableText
@@ -76,10 +82,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Atelier Philosophy & Editorial Collage — Warm Cream Ivory Alternating Surface */}
+      {/* Atelier Philosophy & Editorial Collage — Adaptive Cream / Dark Espresso Surface */}
       <section
         data-design-section="about-heritage"
-        className="loome-surface-cream w-full border-t border-[#C8A98B]/20 bg-[#F2E9DE] py-16 text-[#201C1A] lg:py-20"
+        className="loome-surface-cream w-full border-t border-[#C8A98B]/20 py-16 lg:py-20"
       >
         <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-12 px-4 sm:px-8 lg:grid-cols-12 lg:gap-14 lg:px-14">
           <LuxuryReveal className="space-y-8 lg:col-span-5">
@@ -93,7 +99,7 @@ export default function AboutPage() {
                 weight={800}
                 lineHeight={1.08}
                 letterSpacing="-0.025em"
-                color="#201C1A"
+                color="heading"
                 className="m-0"
               />
               <EditableText
@@ -103,12 +109,12 @@ export default function AboutPage() {
                 fontFamily="body"
                 size="0.9375rem"
                 lineHeight={1.8}
-                color="#5E4E45"
+                color="muted"
                 className="mt-3 mb-0"
               />
             </div>
 
-            <div className="border-t border-[#3B302B]/14 pt-7">
+            <div className="border-t border-[#3B302B]/14 pt-7 dark:border-[#C8A98B]/20">
               <EditableText
                 as="h3"
                 data-preview-field-path="about.historyHeading"
@@ -117,7 +123,7 @@ export default function AboutPage() {
                 size="1.65rem"
                 weight={700}
                 lineHeight={1.2}
-                color="#201C1A"
+                color="heading"
                 className="m-0"
               />
               <EditableText
@@ -127,7 +133,7 @@ export default function AboutPage() {
                 fontFamily="body"
                 size="0.9375rem"
                 lineHeight={1.85}
-                color="#5E4E45"
+                color="muted"
                 className="mt-3 mb-0"
               />
             </div>
@@ -146,7 +152,7 @@ export default function AboutPage() {
                   <LuxuryStaggerItem key={item.id || index}>
                     <figure
                       data-preview-item-path={`about.collageImages[${index}]`}
-                      className="group relative m-0 overflow-hidden rounded-2xl border border-[#3B302B]/12 bg-[#FAF5EE] shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#C8A98B]/70"
+                      className="group relative m-0 overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#C8A98B]/70 dark:border-[#C8A98B]/22 dark:bg-[#2A221F]"
                     >
                       <div className="aspect-[4/5] overflow-hidden">
                         <img
@@ -157,7 +163,7 @@ export default function AboutPage() {
                           className="h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.06]"
                         />
                       </div>
-                      <figcaption className="border-t border-[#3B302B]/10 px-4 py-3 text-xs font-medium tracking-wide text-[#201C1A]">
+                      <figcaption className="border-t border-[#3B302B]/10 px-4 py-3 text-xs font-medium tracking-wide text-[#201C1A] dark:border-[#C8A98B]/18 dark:text-[#F5EEE6]">
                         <span data-preview-field-path={`about.collageImages[${index}].caption`}>
                           {item.caption || ''}
                         </span>

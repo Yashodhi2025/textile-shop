@@ -28,6 +28,7 @@ import {
   normalizeLoomeProduct,
   resolveFreeDeliveryThreshold,
   resolveLoomeCurrency,
+  SRI_LANKAN_DISTRICTS,
 } from '@/lib/storeContext';
 import { withBasePath } from '@/lib/utils';
 import {
@@ -100,21 +101,24 @@ export default function PrivateCheckoutView() {
 
   const content = contentObject(siteData.content);
   const common = contentObject(content.common);
+  const navLabels = contentObject(common.navLabels);
   const contact = contentObject(content.contact);
   const checkoutPage = contentObject(content.checkoutPage);
   const shopMeta = contentObject((siteData as Record<string, unknown>).shop);
   const merchantMeta = contentObject((siteData as Record<string, unknown>).merchant);
+  const homeNavLabel = contentText(navLabels.home) || 'Home';
+  const shopNavLabel = contentText(navLabels.shop) || 'Shop';
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
     : siteData.template?.structure?.pages || [
-        'home',
-        'shop',
-        'checkout',
-        'about_us',
-        'services',
-        'contact',
-      ];
+      'home',
+      'shop',
+      'checkout',
+      'about_us',
+      'services',
+      'contact',
+    ];
   const hasShopPage = requiredPages.includes('shop');
   const hasServicesPage = requiredPages.includes('services');
   const hasContactPage = requiredPages.includes('contact');
@@ -157,6 +161,12 @@ export default function PrivateCheckoutView() {
     contentText(checkoutPage.deliveryNote) ||
     'Complimentary white-glove delivery on qualifying orders. Availability, bespoke sizing, shipping, and payment are confirmed personally with our atelier concierge via WhatsApp.';
   const submitLabel = contentText(checkoutPage.submitLabel) || 'Place Order via WhatsApp';
+  const clientSectionHeading =
+    contentText(checkoutPage.clientSectionHeading) || '01. Client Details';
+  const deliverySectionHeading =
+    contentText(checkoutPage.deliverySectionHeading) || '02. Delivery Destination';
+  const assuranceEyebrow =
+    contentText(checkoutPage.assuranceEyebrow) || 'Atelier Delivery & Concierge Policy';
   const emptyHeading =
     contentText(checkoutPage.emptyHeading) || 'Your atelier bag is currently empty';
   const emptyDescription =
@@ -204,8 +214,8 @@ export default function PrivateCheckoutView() {
       nextErrors.fullName = 'Please enter your full name.';
     }
     const phoneDigits = form.phone.replace(/[^\d]/g, '');
-    if (phoneDigits.length < 7) {
-      nextErrors.phone = 'Please enter a valid contact phone number.';
+    if (phoneDigits.length < 9) {
+      nextErrors.phone = 'Please enter a valid contact phone number (e.g. +94 77 000 0194).';
     }
     if (form.email.trim()) {
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
@@ -217,7 +227,10 @@ export default function PrivateCheckoutView() {
       nextErrors.address = 'Please enter your street address for delivery.';
     }
     if (form.city.trim().length < 2) {
-      nextErrors.city = 'Please enter your city.';
+      nextErrors.city = 'Please enter your district or city (e.g. Colombo, Kandy, Galle).';
+    }
+    if (form.postalCode.trim() && !/^[A-Za-z0-9\s-]{4,10}$/.test(form.postalCode.trim())) {
+      nextErrors.postalCode = 'Please enter a valid postal code (e.g. 00700).';
     }
     return nextErrors;
   };
@@ -443,20 +456,22 @@ export default function PrivateCheckoutView() {
   );
 
   const renderTotalsBlock = () => (
-    <div className="mt-4 space-y-4 border-t border-[#3B302B]/14 pt-4">
+    <div className="mt-4 space-y-4 border-t border-[#3B302B]/14 pt-4 dark:border-[#C8A98B]/20">
       {/* Merchant-Configurable White-Glove Delivery Progress */}
       {hasDeliveryThreshold && (
-        <div className="rounded-xl border border-[#3B302B]/12 bg-[#F2E9DE] px-3.5 py-3">
-          <div className="flex items-center justify-between gap-2 text-[11.5px] font-medium text-[#3B302B]">
+        <div className="rounded-xl border border-[#3B302B]/12 bg-[#F2E9DE] px-3.5 py-3 dark:border-[#C8A98B]/20 dark:bg-[#1E1917]">
+          <div className="flex items-center justify-between gap-2 text-[11.5px] font-medium text-[#3B302B] dark:text-[#E6D9C9]">
             <span className="inline-flex items-center gap-1.5">
-              <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.6] text-[#8D7667]" />
+              <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.6] text-[#8D7667] dark:text-[#C8A98B]" />
               {deliveryRemaining === 0
                 ? 'Complimentary white-glove delivery unlocked'
                 : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for complimentary delivery`}
             </span>
-            <span className="tabular-nums font-semibold text-[#8D7667]">{deliveryProgress}%</span>
+            <span className="tabular-nums font-semibold text-[#8D7667] dark:text-[#C8A98B]">
+              {deliveryProgress}%
+            </span>
           </div>
-          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#E6D9C9]">
+          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#E6D9C9] dark:bg-[#3B302B]">
             <motion.div
               initial={false}
               animate={{ width: `${deliveryProgress}%` }}
@@ -468,19 +483,17 @@ export default function PrivateCheckoutView() {
       )}
 
       {/* Price Breakdown Inset */}
-      <div className="rounded-xl bg-[#F2E9DE]/75 px-4 py-4">
+      <div className="rounded-xl bg-[#F2E9DE]/75 px-4 py-4 dark:bg-[#1E1917]">
         <div className="space-y-2 text-[13px]">
-          <div className="flex items-center justify-between text-[#5E4E45]">
-            <span>
-              Items ({cart.totalCount})
-            </span>
-            <span className="font-semibold tabular-nums text-[#201C1A]">
+          <div className="flex items-center justify-between text-[#5E4E45] dark:text-[#C9B9AA]">
+            <span>Items ({cart.totalCount})</span>
+            <span className="font-semibold tabular-nums text-[#201C1A] dark:text-[#F5EEE6]">
               {subtotalDisplay}
             </span>
           </div>
-          <div className="flex items-center justify-between text-[#5E4E45]">
+          <div className="flex items-center justify-between text-[#5E4E45] dark:text-[#C9B9AA]">
             <span>Atelier Delivery</span>
-            <span className="font-semibold text-[#201C1A]">
+            <span className="font-semibold text-[#201C1A] dark:text-[#F5EEE6]">
               {hasDeliveryThreshold && deliveryRemaining === 0
                 ? 'Complimentary'
                 : 'Confirmed via Concierge'}
@@ -488,22 +501,22 @@ export default function PrivateCheckoutView() {
           </div>
         </div>
 
-        <div className="mt-3.5 flex items-baseline justify-between border-t border-[#3B302B]/14 pt-3.5">
+        <div className="mt-3.5 flex items-baseline justify-between border-t border-[#3B302B]/14 pt-3.5 dark:border-[#C8A98B]/20">
           <div>
-            <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A]">
+            <span className="block text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] dark:text-[#F5EEE6]">
               Estimated Subtotal
             </span>
-            <span className="mt-0.5 block text-[11px] text-[#5E4E45]">
+            <span className="mt-0.5 block text-[11px] text-[#5E4E45] dark:text-[#C9B9AA]">
               Currency: {storeCurrency}
             </span>
           </div>
-          <span className="font-heading text-[28px] font-extrabold leading-none tabular-nums text-[#201C1A]">
+          <span className="font-heading text-[28px] font-extrabold leading-none tabular-nums text-[#201C1A] dark:text-[#F5EEE6]">
             {subtotalDisplay}
           </span>
         </div>
       </div>
 
-      <p className="m-0 text-[12px] leading-relaxed text-[#5E4E45]">
+      <p className="m-0 text-[12px] leading-relaxed text-[#5E4E45] dark:text-[#C9B9AA]">
         No online payment is charged here. Final availability, custom drapery sizing, and delivery timing are confirmed with our atelier concierge on WhatsApp.
       </p>
     </div>
@@ -512,31 +525,31 @@ export default function PrivateCheckoutView() {
   return (
     <div
       data-preview-page-key="checkout"
-      className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
+      className="loome-surface-cream min-h-[75vh] w-full"
     >
       {/* Compact Editorial Breadcrumb Strip */}
-      <div className="border-b border-[#201C1A]/10 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
-        <nav className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-12">
-          <a
-            href={withBasePath('/')}
-            data-preview-static="checkout-breadcrumb-home"
-            className="text-[#5E4E45] no-underline transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+      <div className="border-b border-[#201C1A]/10 bg-[#FAF5EE]/95 dark:border-[#C8A98B]/16 dark:bg-[#201C1A]">
+        <nav className="mx-auto flex max-w-[1320px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C9B9AA] sm:px-8 lg:px-12">
+          <button
+            type="button"
+            onClick={() => window.location.assign(withBasePath('/'))}
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
           >
-            Home
-          </a>
+            <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
+          </button>
           <span aria-hidden="true" className="text-[#C8A98B]">
             /
           </span>
           {hasShopPage && (
             <>
-              <a
-                href={withBasePath('/shop')}
+              <button
+                type="button"
+                onClick={() => window.location.assign(withBasePath('/shop'))}
                 data-target-page="shop"
-                data-preview-static="checkout-breadcrumb-shop"
-                className="text-[#5E4E45] no-underline transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
               >
-                Shop
-              </a>
+                <span data-preview-field-path="common.navLabels.shop">{shopNavLabel}</span>
+              </button>
               <span aria-hidden="true" className="text-[#C8A98B]">
                 /
               </span>
@@ -545,7 +558,7 @@ export default function PrivateCheckoutView() {
           <span
             aria-current="page"
             data-preview-static="checkout-breadcrumb-current"
-            className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
+            className="font-medium text-[#201C1A] dark:text-[#F5EEE6]"
           >
             Private Checkout
           </span>
@@ -729,9 +742,8 @@ export default function PrivateCheckoutView() {
                     {subtotalDisplay}
                   </span>
                   <ChevronDown
-                    className={`h-4 w-4 stroke-[1.6] text-[#8D7667] transition-transform duration-300 dark:text-[#C8A98B] ${
-                      mobileSummaryOpen ? 'rotate-180' : ''
-                    }`}
+                    className={`h-4 w-4 stroke-[1.6] text-[#8D7667] transition-transform duration-300 dark:text-[#C8A98B] ${mobileSummaryOpen ? 'rotate-180' : ''
+                      }`}
                   />
                 </div>
               </button>
@@ -766,8 +778,11 @@ export default function PrivateCheckoutView() {
                     {/* Section 1: Client Details */}
                     <LuxuryStaggerItem y={12}>
                       <div className="flex items-center justify-between border-b border-[#201C1A]/10 pb-3 dark:border-[#F2E9DE]/10">
-                        <h2 className="m-0 font-serif text-[23px] font-medium tracking-wide text-[#201C1A] dark:text-[#F2E9DE]">
-                          01. Client Details
+                        <h2
+                          data-preview-field-path="checkoutPage.clientSectionHeading"
+                          className="m-0 font-serif text-[23px] font-medium tracking-wide text-[#201C1A] dark:text-[#F2E9DE]"
+                        >
+                          {clientSectionHeading}
                         </h2>
                         <span className="text-[10.5px] font-medium uppercase tracking-[0.18em] text-[#8D7667] dark:text-[#C8A98B]">
                           * Required
@@ -790,13 +805,12 @@ export default function PrivateCheckoutView() {
                             required
                             value={form.fullName}
                             onChange={(e) => updateField('fullName', e.target.value)}
-                            placeholder="Camille Laurent"
+                            placeholder="Ananya Perera"
                             aria-invalid={Boolean(errors.fullName)}
-                            className={`${INPUT_BASE_CLASS} ${
-                              errors.fullName
-                                ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
-                                : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
-                            }`}
+                            className={`${INPUT_BASE_CLASS} ${errors.fullName
+                              ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                              : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
+                              }`}
                           />
                           {errors.fullName && (
                             <p
@@ -824,13 +838,12 @@ export default function PrivateCheckoutView() {
                             required
                             value={form.phone}
                             onChange={(e) => updateField('phone', e.target.value)}
-                            placeholder="+1 (212) 555-0194"
+                            placeholder="+94 77 000 0194"
                             aria-invalid={Boolean(errors.phone)}
-                            className={`${INPUT_BASE_CLASS} ${
-                              errors.phone
-                                ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
-                                : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
-                            }`}
+                            className={`${INPUT_BASE_CLASS} ${errors.phone
+                              ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                              : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
+                              }`}
                           />
                           {errors.phone && (
                             <p
@@ -860,13 +873,12 @@ export default function PrivateCheckoutView() {
                             autoComplete="email"
                             value={form.email}
                             onChange={(e) => updateField('email', e.target.value)}
-                            placeholder="client@example.com"
+                            placeholder="client@example.lk"
                             aria-invalid={Boolean(errors.email)}
-                            className={`${INPUT_BASE_CLASS} ${
-                              errors.email
-                                ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
-                                : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
-                            }`}
+                            className={`${INPUT_BASE_CLASS} ${errors.email
+                              ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                              : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
+                              }`}
                           />
                           {errors.email && (
                             <p
@@ -884,8 +896,11 @@ export default function PrivateCheckoutView() {
                     {/* Section 2: Delivery Destination */}
                     <LuxuryStaggerItem y={12}>
                       <div className="border-b border-[#201C1A]/10 pb-3 dark:border-[#F2E9DE]/10">
-                        <h2 className="m-0 font-serif text-[23px] font-medium tracking-wide text-[#201C1A] dark:text-[#F2E9DE]">
-                          02. Delivery Destination
+                        <h2
+                          data-preview-field-path="checkoutPage.deliverySectionHeading"
+                          className="m-0 font-serif text-[23px] font-medium tracking-wide text-[#201C1A] dark:text-[#F2E9DE]"
+                        >
+                          {deliverySectionHeading}
                         </h2>
                       </div>
 
@@ -905,13 +920,12 @@ export default function PrivateCheckoutView() {
                             required
                             value={form.address}
                             onChange={(e) => updateField('address', e.target.value)}
-                            placeholder="48 Mercer Street, Apartment 4B"
+                            placeholder="42 Barnes Place, Colombo 07"
                             aria-invalid={Boolean(errors.address)}
-                            className={`${INPUT_BASE_CLASS} ${
-                              errors.address
-                                ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
-                                : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
-                            }`}
+                            className={`${INPUT_BASE_CLASS} ${errors.address
+                              ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                              : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
+                              }`}
                           />
                           {errors.address && (
                             <p
@@ -929,24 +943,29 @@ export default function PrivateCheckoutView() {
                             htmlFor="checkout-city"
                             className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#3B302B] dark:text-[#F2E9DE]"
                           >
-                            City *
+                            District / City *
                           </label>
                           <input
                             id="checkout-city"
                             name="city"
                             type="text"
+                            list="sl-districts-list"
                             autoComplete="address-level2"
                             required
                             value={form.city}
                             onChange={(e) => updateField('city', e.target.value)}
-                            placeholder="New York"
+                            placeholder="Colombo"
                             aria-invalid={Boolean(errors.city)}
-                            className={`${INPUT_BASE_CLASS} ${
-                              errors.city
-                                ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
-                                : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
-                            }`}
+                            className={`${INPUT_BASE_CLASS} ${errors.city
+                              ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                              : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
+                              }`}
                           />
+                          <datalist id="sl-districts-list">
+                            {SRI_LANKAN_DISTRICTS.map((district) => (
+                              <option key={district} value={district} />
+                            ))}
+                          </datalist>
                           {errors.city && (
                             <p
                               role="alert"
@@ -975,9 +994,22 @@ export default function PrivateCheckoutView() {
                             autoComplete="postal-code"
                             value={form.postalCode}
                             onChange={(e) => updateField('postalCode', e.target.value)}
-                            placeholder="10013"
-                            className={`${INPUT_BASE_CLASS} border-[#201C1A]/22 dark:border-[#F2E9DE]/22`}
+                            placeholder="00700"
+                            aria-invalid={Boolean(errors.postalCode)}
+                            className={`${INPUT_BASE_CLASS} ${errors.postalCode
+                              ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
+                              : 'border-[#201C1A]/22 dark:border-[#F2E9DE]/22'
+                              }`}
                           />
+                          {errors.postalCode && (
+                            <p
+                              role="alert"
+                              className="mt-1.5 mb-0 flex items-center gap-1.5 text-xs font-medium text-[#9E3F2E] dark:text-[#EAA597]"
+                            >
+                              <AlertCircle className="h-3.5 w-3.5 shrink-0 stroke-[1.75]" />
+                              {errors.postalCode}
+                            </p>
+                          )}
                         </div>
 
                         <div className="sm:col-span-2">
@@ -1047,11 +1079,10 @@ export default function PrivateCheckoutView() {
                             ? { scale: 0.99 }
                             : undefined
                         }
-                        className={`group flex h-[54px] w-full items-center justify-center gap-3 rounded-[11px] px-8 text-[12px] font-semibold uppercase tracking-[0.2em] shadow-[0_10px_26px_rgba(32,28,26,0.16)] transition-all duration-300 ${
-                          hasConfiguredWhatsapp
-                            ? 'bg-[#201C1A] text-[#F2E9DE] hover:bg-[#3B302B] hover:shadow-[0_12px_28px_rgba(32,28,26,0.24)]'
-                            : 'cursor-not-allowed bg-[#201C1A]/25 text-[#201C1A]/55 shadow-none'
-                        }`}
+                        className={`group flex h-[54px] w-full items-center justify-center gap-3 rounded-[11px] px-8 text-[12px] font-semibold uppercase tracking-[0.2em] shadow-[0_10px_26px_rgba(32,28,26,0.16)] transition-all duration-300 ${hasConfiguredWhatsapp
+                          ? 'bg-[#201C1A] text-[#F2E9DE] hover:bg-[#3B302B] hover:shadow-[0_12px_28px_rgba(32,28,26,0.24)] dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]'
+                          : 'cursor-not-allowed bg-[#201C1A]/25 text-[#201C1A]/55 shadow-none dark:bg-[#F2E9DE]/15 dark:text-[#F2E9DE]/45'
+                          }`}
                       >
                         <MessageCircle className="h-4 w-4 stroke-[1.6]" />
                         <span>{submitLabel}</span>
@@ -1141,12 +1172,9 @@ export default function PrivateCheckoutView() {
       <section className="border-t border-[#201C1A]/10 bg-[#E6D9C9]/70 py-8 dark:border-[#F2E9DE]/10 dark:bg-[#2A2320] sm:py-10">
         <div className="mx-auto grid max-w-[1320px] grid-cols-1 gap-6 px-4 sm:px-8 md:grid-cols-3 lg:px-12">
           <div className="md:col-span-2">
-            <p
-              data-preview-static="checkout-assurance-eyebrow"
-              className="m-0 inline-flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
-            >
+            <p className="m-0 inline-flex items-center gap-2 text-[10.5px] font-semibold uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]">
               <ShieldCheck className="h-3.5 w-3.5 stroke-[1.6]" />
-              Atelier Delivery &amp; Concierge Policy
+              <span data-preview-field-path="checkoutPage.assuranceEyebrow">{assuranceEyebrow}</span>
             </p>
             <div className="mt-2 max-w-2xl">
               <EditableText

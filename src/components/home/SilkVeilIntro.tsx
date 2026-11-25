@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { Eye, EyeOff, Play, RotateCcw, Sparkles } from 'lucide-react';
-import { EditableText } from '@deneb-ui/ui';
+import { Play, RotateCcw, Sparkles } from 'lucide-react';
+import { EditableImage, EditableText } from '@deneb-ui/ui';
 import {
   contentObject,
   contentText,
@@ -22,7 +22,7 @@ import { LUXURY_EASE } from '@/components/motion/LuxuryReveal';
 const INTRO_STORAGE_KEY = 'loome_silk_veil_seen_v1';
 
 type IntroPhase =
-  | 'ssr'
+  | 'idle'
   | 'editor-paused'
   | 'entering'
   | 'holding'
@@ -32,7 +32,7 @@ type IntroPhase =
   | 'done';
 
 interface SilkVeilIntroProps {
-  /** 'overlay' runs full-viewport on `/`; 'stage' renders inline for `/silk-intro-preview`. */
+  /** 'overlay' runs once per session for live visitors on `/`; 'stage' renders inline for `/silk-intro-preview`. */
   mode?: 'overlay' | 'stage';
   onIntroStart?: () => void;
   onVeilLift?: () => void;
@@ -56,19 +56,17 @@ export default function SilkVeilIntro({
   const siteData = useSiteData();
   const prefersReducedMotion = useReducedMotion();
 
-  // Start in 'ssr' so server HTML and initial client render match 100% with zero
-  // homepage flash before hydration (visibility on repeat/reduced-motion visits is
-  // handled before first paint by the <head> boot script + globals.css).
-  const [phase, setPhase] = useState<IntroPhase>('ssr');
-  const [isEditorMode, setIsEditorMode] = useState(isStage);
-  const [editorDismissed, setEditorDismissed] = useState(false);
+  // In overlay mode (`/`), start idle (returns null during SSR & in Fivora Editor/Preview)
+  // so selecting Home in Fivora's page dropdown ALWAYS opens the actual homepage directly.
+  // Live storefront first-visit flash is prevented by html[data-silk-intro='pending'] in globals.css.
+  const [phase, setPhase] = useState<IntroPhase>(isStage ? 'editor-paused' : 'idle');
   const [isSkipping, setIsSkipping] = useState(false);
   const [previewRunId, setPreviewRunId] = useState(0);
 
   const timersRef = useRef<number[]>([]);
   const prevOverflowRef = useRef<string>('');
   const liftedRef = useRef(false);
-  const editorModeRef = useRef(isStage);
+  const lastStageActionAtRef = useRef(0);
 
   const home = contentObject(contentObject(siteData.content).home);
   const common = contentObject(contentObject(siteData.content).common);
@@ -108,7 +106,7 @@ export default function SilkVeilIntro({
   }, []);
 
   const setHtmlIntroState = useCallback(
-    (state: 'pending' | 'editor' | 'skip' | 'done') => {
+    (state: 'pending' | 'skip' | 'done') => {
       if (!isStage && typeof document !== 'undefined') {
         document.documentElement.setAttribute('data-silk-intro', state);
       }
@@ -128,12 +126,12 @@ export default function SilkVeilIntro({
       liftedRef.current = true;
       clearTimers();
       restoreScroll();
-      setHtmlIntroState(editorModeRef.current ? 'editor' : 'done');
+      setHtmlIntroState('done');
       setIsSkipping(fast);
       setPhase('lifting');
       onVeilLift?.();
 
-      if (!editorModeRef.current && !isStage) {
+      if (!isStage) {
         try {
           window.sessionStorage.setItem(INTRO_STORAGE_KEY, '1');
         } catch {
@@ -143,14 +141,7 @@ export default function SilkVeilIntro({
 
       const liftDuration = fast ? 480 : 960;
       const finishTimer = window.setTimeout(() => {
-        if (isStage) {
-          setPhase('stage-complete');
-        } else if (editorModeRef.current) {
-          setEditorDismissed(true);
-          setPhase('editor-paused');
-        } else {
-          setPhase('done');
-        }
+        setPhase(isStage ? 'stage-complete' : 'done');
       }, liftDuration);
       timersRef.current.push(finishTimer);
     },
@@ -162,9 +153,7 @@ export default function SilkVeilIntro({
       clearTimers();
       liftedRef.current = false;
       setIsSkipping(false);
-      setEditorDismissed(false);
 
-      // Scale hold/fade/lift milestones cleanly around configured totalDurationMs (~2800ms)
       const liftDuration = 960;
       const elapsed =
         accountForPreHydration && typeof performance !== 'undefined'
@@ -186,29 +175,31 @@ export default function SilkVeilIntro({
     [clearTimers, onIntroStart, totalDurationMs, triggerLift],
   );
 
-  // Detect Fivora visual editor / preview mode via official @deneb-ui/ui APIs
-  // and initialize either persistent paused mode or once-per-session playback.
+  // Initialize playback:
+  // - Stage mode (`/silk-intro-preview`): always opens paused & ready for Fivora editing.
+  // - Overlay mode (`/`): NEVER activates inside Fivora Editor/Preview; plays once per session for live visitors.
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // Dedicated `/silk-intro-preview` stage always opens paused & ready for editing
     if (isStage) {
-      editorModeRef.current = true;
-      setIsEditorMode(true);
       setPhase('editor-paused');
       return () => {
         clearTimers();
       };
     }
 
-    const inEditor = isPreviewValidation(siteData);
-    editorModeRef.current = inEditor;
+    const pathname = window.location.pathname || '';
+    const inFivoraOrPreview =
+      isPreviewValidation(siteData) ||
+      window.parent !== window ||
+      pathname.includes('/template-validation') ||
+      pathname.includes('/template-preview') ||
+      pathname.includes('/preview');
 
-    if (inEditor) {
-      setIsEditorMode(true);
-      setHtmlIntroState('editor');
+    if (inFivoraOrPreview) {
+      setHtmlIntroState('skip');
       restoreScroll();
-      setPhase('editor-paused');
+      setPhase('done');
       onVeilLift?.();
       return;
     }
@@ -251,7 +242,7 @@ export default function SilkVeilIntro({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isStage]);
 
-  // Listen for live DENEB / Fivora editor postMessage events in overlay mode
+  // Safety guard: if any Fivora editor/preview message arrives in overlay mode, immediately dismiss & unmount
   useEffect(() => {
     if (isStage || typeof window === 'undefined') return;
     const onMessage = (event: MessageEvent) => {
@@ -262,46 +253,34 @@ export default function SilkVeilIntro({
           ? (data as { type: string }).type
           : '';
       if (!PREVIEW_MESSAGE_TYPES.has(msgType)) return;
-      if (!editorModeRef.current) {
-        editorModeRef.current = true;
-        clearTimers();
-        restoreScroll();
-        setIsEditorMode(true);
-        setHtmlIntroState('editor');
-        setPhase('editor-paused');
-        onVeilLift?.();
-      }
+      clearTimers();
+      restoreScroll();
+      setHtmlIntroState('skip');
+      setPhase('done');
+      onVeilLift?.();
     };
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
   }, [clearTimers, isStage, onVeilLift, restoreScroll, setHtmlIntroState]);
 
-  // Allow Escape key to skip intro (normal mode) or dismiss veil (overlay editor mode)
+  // Allow Escape key to skip intro for live storefront visitors
   useEffect(() => {
-    if (isStage || phase === 'done' || phase === 'lifting' || editorDismissed) return;
+    if (isStage || phase === 'idle' || phase === 'done' || phase === 'lifting') return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== 'Escape') return;
-      if (editorModeRef.current) {
-        clearTimers();
-        restoreScroll();
-        setEditorDismissed(true);
-        setPhase('editor-paused');
-        onVeilLift?.();
-      } else {
+      if (e.key === 'Escape') {
         triggerLift(true);
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [clearTimers, editorDismissed, isStage, onVeilLift, phase, restoreScroll, triggerLift]);
+  }, [isStage, phase, triggerLift]);
 
-  // Shared preview controls
-  const handlePreviewAnimation = () => {
+  const handlePreviewAnimation = useCallback(() => {
     setPreviewRunId((id) => id + 1);
     schedulePlayback(false);
-  };
+  }, [schedulePlayback]);
 
-  const handleResetPreview = () => {
+  const handleResetPreview = useCallback(() => {
     clearTimers();
     restoreScroll();
     liftedRef.current = false;
@@ -310,62 +289,63 @@ export default function SilkVeilIntro({
     } catch {
       // Ignore restricted storage environments
     }
-    setEditorDismissed(false);
     setIsSkipping(false);
     setPreviewRunId((id) => id + 1);
     setPhase('editor-paused');
-    if (!isStage) {
-      onVeilLift?.();
-    }
-  };
+  }, [clearTimers, restoreScroll]);
 
-  const handleEditorDismiss = () => {
-    clearTimers();
-    restoreScroll();
-    liftedRef.current = false;
-    setEditorDismissed(true);
-    setPhase('editor-paused');
-    onVeilLift?.();
-  };
+  // Ensure Preview Animation / Reset Preview buttons on `/silk-intro-preview` work even in Fivora Edit mode
+  useEffect(() => {
+    if (!isStage || typeof window === 'undefined') return;
 
-  // Normal visitor finished — completely unmount
-  if (!isStage && !isEditorMode && phase === 'done') {
+    const triggerAction = (action: string) => {
+      const now = Date.now();
+      if (now - lastStageActionAtRef.current < 260) return;
+      lastStageActionAtRef.current = now;
+      if (action === 'play') handlePreviewAnimation();
+      else if (action === 'reset') handleResetPreview();
+    };
+
+    const onPointerDownCapture = (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      const el = (e.target as Element | null)?.closest?.('[data-loome-silk-control]');
+      if (!el) return;
+      const action = el.getAttribute('data-loome-silk-control');
+      if (!action) return;
+      e.preventDefault();
+      e.stopPropagation();
+      triggerAction(action);
+    };
+
+    const onClickCapture = (e: MouseEvent) => {
+      const el = (e.target as Element | null)?.closest?.('[data-loome-silk-control]');
+      if (!el) return;
+      const action = el.getAttribute('data-loome-silk-control');
+      if (!action) return;
+      e.preventDefault();
+      e.stopPropagation();
+      triggerAction(action);
+    };
+
+    window.addEventListener('pointerdown', onPointerDownCapture, true);
+    window.addEventListener('click', onClickCapture, true);
+    return () => {
+      window.removeEventListener('pointerdown', onPointerDownCapture, true);
+      window.removeEventListener('click', onClickCapture, true);
+    };
+  }, [isStage, handlePreviewAnimation, handleResetPreview]);
+
+  // Overlay mode (`/`): remain completely unmounted during SSR, in Fivora Editor/Preview, and once finished
+  if (!isStage && (phase === 'idle' || phase === 'done')) {
     return null;
   }
 
-  // Overlay editor mode with veil manually dismissed — compact non-blocking re-open bar
-  if (!isStage && isEditorMode && editorDismissed) {
-    return (
-      <div className="fixed bottom-5 left-5 z-[60] flex flex-wrap items-center gap-2 border border-[#262923]/18 bg-[#F8F6F1]/95 px-3.5 py-2 text-[#262923] shadow-[0_12px_32px_rgba(38,41,35,0.16)] backdrop-blur-md dark:border-[#F8F6F1]/20 dark:bg-[#20231D]/95 dark:text-[#F8F6F1]">
-        <button
-          type="button"
-          onClick={handleResetPreview}
-          data-preview-static="silk-editor-reopen"
-          className="inline-flex items-center gap-1.5 border-0 bg-transparent px-1.5 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:text-[#747B65] dark:text-[#F8F6F1] dark:hover:text-[#B59B79]"
-        >
-          <Eye className="h-3.5 w-3.5 stroke-[1.6]" />
-          Edit Silk Veil
-        </button>
-        <span aria-hidden="true" className="h-3.5 w-px bg-[#262923]/20 dark:bg-[#F8F6F1]/20" />
-        <button
-          type="button"
-          onClick={handlePreviewAnimation}
-          data-preview-static="silk-editor-replay-pill"
-          className="inline-flex items-center gap-1.5 border-0 bg-transparent px-1.5 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#747B65] transition-colors hover:text-[#262923] dark:text-[#B59B79] dark:hover:text-[#F8F6F1]"
-        >
-          <Play className="h-3 w-3 stroke-[1.75]" />
-          Preview Animation
-        </button>
-      </div>
-    );
-  }
-
   const isLifting = phase === 'lifting' || phase === 'stage-complete';
-  const isPausedFrame = phase === 'ssr' || phase === 'editor-paused';
+  const isPausedFrame = phase === 'editor-paused';
   const isAnimatingFlow =
     phase === 'entering' || phase === 'holding' || phase === 'fading-copy' || phase === 'lifting';
   const showCopy =
-    phase === 'ssr' || phase === 'editor-paused' || phase === 'entering' || phase === 'holding';
+    phase === 'editor-paused' || phase === 'entering' || phase === 'holding';
   const isReplaying = previewRunId > 0 && isAnimatingFlow && !prefersReducedMotion;
 
   const silkVeilPanel = (
@@ -408,7 +388,7 @@ export default function SilkVeilIntro({
           }}
         />
 
-        {/* Primary Lightweight Floating Silk Veil — paused in editor/stage mode, drifting organically on playback */}
+        {/* Primary Lightweight Floating Silk Veil — editable on /silk-intro-preview stage */}
         <motion.div
           initial={
             isReplaying ? { scale: 1.07, x: '-1.8%', y: '1.6%', rotate: -0.6 } : false
@@ -425,13 +405,27 @@ export default function SilkVeilIntro({
           }
           className="absolute -inset-8 will-change-transform"
         >
-          <img
-            src={withBasePath(backgroundImageUrl)}
-            alt="LOOMÉ floating champagne-ivory silk veil"
-            loading="eager"
-            data-preview-field-path="home.silkIntro.backgroundImageUrl"
-            className="h-full w-full object-cover object-center opacity-[0.94]"
-          />
+          {isStage ? (
+            <EditableImage
+              id="home.silkIntro.backgroundImageUrl"
+              data-preview-field-path="home.silkIntro.backgroundImageUrl"
+              data-preview-style-target="home.silkIntro.backgroundImageUrl"
+              data-preview-style-type="image"
+              src={backgroundImageUrl}
+              fallbackSrc="/images/silk-veil-bg.jpg"
+              alt="LOOMÉ floating champagne-ivory silk veil"
+              loading="eager"
+              fit="cover"
+              className="h-full w-full object-cover object-center opacity-[0.94]"
+            />
+          ) : (
+            <img
+              src={withBasePath(backgroundImageUrl)}
+              alt="LOOMÉ floating champagne-ivory silk veil"
+              loading="eager"
+              className="h-full w-full object-cover object-center opacity-[0.94]"
+            />
+          )}
         </motion.div>
 
         {/* Gossamer Counter-Drifting Organza Echo Layer — translucent floating depth */}
@@ -455,7 +449,7 @@ export default function SilkVeilIntro({
           <img
             src={withBasePath(backgroundImageUrl)}
             alt=""
-            data-preview-static="silk-veil-echo-layer"
+            data-preview-static={isStage ? 'silk-veil-echo-layer' : undefined}
             className="h-full w-full -scale-x-100 object-cover object-center blur-[3px] mix-blend-soft-light"
           />
         </motion.div>
@@ -503,7 +497,7 @@ export default function SilkVeilIntro({
           }}
         />
 
-        {/* Centered Editorial Wordmark & Tagline (fully editable via Fivora) */}
+        {/* Centered Editorial Wordmark & Tagline */}
         <motion.div
           initial={isReplaying ? { opacity: 0, y: 14 } : false}
           animate={showCopy ? { opacity: 1, y: 0 } : { opacity: 0, y: -10 }}
@@ -515,19 +509,25 @@ export default function SilkVeilIntro({
           className={`${isStage ? '' : 'loome-silk-veil-copy '}relative z-10 flex flex-col items-center px-6 text-center`}
         >
           <div id="loome-silk-veil-title">
-            <EditableText
-              as="span"
-              data-preview-field-path="home.silkIntro.brandTitle"
-              defaultValue={brandTitle}
-              fontFamily="heading"
-              size="clamp(2.85rem, 6.4vw, 4.9rem)"
-              weight={300}
-              lineHeight={1}
-              letterSpacing="0.34em"
-              color="#262923"
-              align="center"
-              className="inline-block pl-[0.34em]"
-            />
+            {isStage ? (
+              <EditableText
+                as="span"
+                data-preview-field-path="home.silkIntro.brandTitle"
+                defaultValue={brandTitle}
+                fontFamily="heading"
+                size="clamp(2.85rem, 6.4vw, 4.9rem)"
+                weight={300}
+                lineHeight={1}
+                letterSpacing="0.34em"
+                color="#262923"
+                align="center"
+                className="inline-block pl-[0.34em]"
+              />
+            ) : (
+              <span className="inline-block pl-[0.34em] font-heading text-[clamp(2.85rem,6.4vw,4.9rem)] font-light leading-none tracking-[0.34em] text-[#262923]">
+                {brandTitle}
+              </span>
+            )}
           </div>
 
           <motion.span
@@ -542,90 +542,40 @@ export default function SilkVeilIntro({
             className="my-5 block h-px w-16 bg-[#B59B79]"
           />
 
-          <EditableText
-            as="p"
-            data-preview-field-path="home.silkIntro.tagline"
-            defaultValue={tagline}
-            fontFamily="body"
-            size="0.75rem"
-            weight={500}
-            transform="uppercase"
-            letterSpacing="0.32em"
-            color="#595C52"
-            align="center"
-            className="m-0"
-          />
+          {isStage ? (
+            <EditableText
+              as="p"
+              data-preview-field-path="home.silkIntro.tagline"
+              defaultValue={tagline}
+              fontFamily="body"
+              size="0.75rem"
+              weight={500}
+              transform="uppercase"
+              letterSpacing="0.32em"
+              color="#595C52"
+              align="center"
+              className="m-0"
+            />
+          ) : (
+            <p className="m-0 text-center font-body text-xs font-medium uppercase tracking-[0.32em] text-[#595C52]">
+              {tagline}
+            </p>
+          )}
         </motion.div>
 
-        {/* Understated Skip Intro Action (merchant-editable label) */}
+        {/* Understated Skip Intro Action */}
         <motion.button
           type="button"
-          onClick={() =>
-            isStage
-              ? triggerLift(true)
-              : isEditorMode
-                ? handleEditorDismiss()
-                : triggerLift(true)
-          }
+          onClick={() => triggerLift(true)}
           initial={false}
           animate={isLifting ? { opacity: 0 } : { opacity: 1 }}
           transition={{ duration: 0.35 }}
           className="absolute bottom-7 right-6 z-20 border-0 border-b border-[#262923]/25 bg-transparent px-0 pb-1 text-[10px] font-medium uppercase tracking-[0.26em] text-[#595C52] transition-colors duration-300 hover:border-[#262923] hover:text-[#262923] focus:outline-none focus-visible:ring-1 focus-visible:ring-[#B59B79] sm:bottom-9 sm:right-10"
         >
-          <span data-preview-field-path="home.silkIntro.skipLabel">{skipLabel}</span>
+          <span data-preview-field-path={isStage ? 'home.silkIntro.skipLabel' : undefined}>
+            {skipLabel}
+          </span>
         </motion.button>
-
-        {/* Overlay Editor Controls — mounted ONLY in overlay Fivora editor mode */}
-        {!isStage && isEditorMode && !isLifting && (
-          <div className="absolute bottom-6 left-1/2 z-30 flex -translate-x-1/2 flex-wrap items-center justify-center gap-2 border border-[#262923]/15 bg-[#F8F6F1]/95 px-4 py-2 text-[#262923] shadow-[0_14px_36px_rgba(38,41,35,0.14)] backdrop-blur-md sm:bottom-8">
-            <span
-              data-preview-static="silk-editor-status"
-              className="inline-flex items-center gap-1.5 pr-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#747B65]"
-            >
-              <Sparkles className="h-3 w-3 stroke-[1.6]" />
-              {!isEnabled
-                ? 'Intro Disabled on Live Site'
-                : isPausedFrame
-                  ? 'Silk Veil Editor · Paused'
-                  : 'Playing Preview…'}
-            </span>
-
-            <span
-              aria-hidden="true"
-              className="hidden h-3.5 w-px bg-[#262923]/18 sm:inline-block"
-            />
-
-            <button
-              type="button"
-              onClick={handlePreviewAnimation}
-              data-preview-static="silk-editor-play"
-              className="inline-flex items-center gap-1.5 border border-[#262923]/20 bg-[#262923] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-[#F8F6F1] transition-colors hover:bg-[#747B65]"
-            >
-              <Play className="h-3 w-3 stroke-[1.75]" />
-              Preview Animation
-            </button>
-
-            <button
-              type="button"
-              onClick={handleResetPreview}
-              data-preview-static="silk-editor-reset"
-              className="inline-flex items-center gap-1.5 border border-[#262923]/20 bg-transparent px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-[#262923] transition-colors hover:border-[#262923] hover:bg-[#262923]/6"
-            >
-              <RotateCcw className="h-3 w-3 stroke-[1.6]" />
-              Reset Preview
-            </button>
-
-            <button
-              type="button"
-              onClick={handleEditorDismiss}
-              data-preview-static="silk-editor-dismiss"
-              className="inline-flex items-center gap-1.5 border border-transparent bg-transparent px-2.5 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-[#595C52] transition-colors hover:text-[#262923]"
-            >
-              <EyeOff className="h-3 w-3 stroke-[1.6]" />
-              Dismiss to Edit Page
-            </button>
-          </div>
-        )}
       </div>
 
       {/* Gossamer Trailing Silk Edge — softens the veil's upward dissolve */}
@@ -640,12 +590,12 @@ export default function SilkVeilIntro({
     </motion.div>
   );
 
-  // Overlay mode (used on `/`)
+  // Overlay mode (live storefront visitors on `/`)
   if (!isStage) {
     return silkVeilPanel;
   }
 
-  // Stage mode (used on `/silk-intro-preview` dedicated Fivora preview page)
+  // Stage mode (dedicated `/silk-intro-preview` Fivora preview & editing page)
   return (
     <div className="w-full">
       {/* Live Interactive Silk Veil Stage with Hero Reveal Backdrop Behind */}
@@ -706,9 +656,10 @@ export default function SilkVeilIntro({
         <div className="flex flex-wrap items-center justify-center gap-2.5">
           <button
             type="button"
+            data-loome-silk-control="play"
             onClick={handlePreviewAnimation}
             data-preview-static="silk-stage-play"
-            className="inline-flex items-center gap-2 border border-[#262923] bg-[#262923] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#F8F6F1] transition-colors hover:border-[#747B65] hover:bg-[#747B65] dark:border-[#F8F6F1] dark:bg-[#F8F6F1] dark:text-[#262923] dark:hover:bg-[#E8E0D5]"
+            className="inline-flex items-center gap-2 rounded-[10px] border border-[#262923] bg-[#262923] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#F8F6F1] transition-colors hover:border-[#747B65] hover:bg-[#747B65] dark:border-[#F8F6F1] dark:bg-[#F8F6F1] dark:text-[#262923] dark:hover:bg-[#E8E0D5]"
           >
             <Play className="h-3.5 w-3.5 stroke-[1.75]" />
             Preview Animation
@@ -716,9 +667,10 @@ export default function SilkVeilIntro({
 
           <button
             type="button"
+            data-loome-silk-control="reset"
             onClick={handleResetPreview}
             data-preview-static="silk-stage-reset"
-            className="inline-flex items-center gap-2 border border-[#262923]/25 bg-transparent px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:border-[#262923] hover:bg-[#262923]/6 dark:border-[#F8F6F1]/25 dark:text-[#F8F6F1] dark:hover:border-[#F8F6F1]"
+            className="inline-flex items-center gap-2 rounded-[10px] border border-[#262923]/25 bg-transparent px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[#262923] transition-colors hover:border-[#262923] hover:bg-[#262923]/6 dark:border-[#F8F6F1]/25 dark:text-[#F8F6F1] dark:hover:border-[#F8F6F1]"
           >
             <RotateCcw className="h-3.5 w-3.5 stroke-[1.6]" />
             Reset Preview

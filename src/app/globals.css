@@ -114,7 +114,7 @@ p {
   font-size: var(--base-size, 16px);
 }
 
-/* Warm Cream Ivory alternating editorial surface */
+/* Warm Cream Ivory alternating editorial surface — adapts cleanly in Dark Mode */
 .loome-surface-cream {
   background-color: var(--loome-cream, #F2E9DE);
   color: #201C1A;
@@ -124,7 +124,35 @@ p {
   --color-text: #201C1A;
   --color-text-muted: #5E4E45;
   --card-bg: #FAF5EE;
-  --loome-border: rgba(59, 48, 43, 0.14);
+  --brand-primary: #8D7667;
+  --loome-border: rgba(59, 48, 43, 0.16);
+}
+
+html.dark .loome-surface-cream,
+.dark .loome-surface-cream {
+  background-color: #1A1614;
+  color: #F5EEE6;
+  --heading-color: #F5EEE6;
+  --page-text: #F5EEE6;
+  --muted-text: #C9B9AA;
+  --color-text: #F5EEE6;
+  --color-text-muted: #C9B9AA;
+  --card-bg: #2A221F;
+  --brand-primary: #C8A98B;
+  --loome-border: rgba(200, 169, 139, 0.24);
+}
+
+/* Sticky Navbar adaptive frosted surface (valid CSS with color-mix + solid fallback) */
+.loome-navbar-surface {
+  background-color: #201C1A;
+  background-color: color-mix(in srgb, var(--page-background, #201C1A) 93%, transparent);
+  color: var(--page-text, #F2E9DE);
+}
+
+.loome-navbar-surface-scrolled {
+  background-color: #201C1A;
+  background-color: color-mix(in srgb, var(--page-background, #201C1A) 98%, transparent);
+  color: var(--page-text, #F2E9DE);
 }
 
 /* Deep Espresso primary luxury surface */
@@ -233,49 +261,181 @@ p {
   animation: loomeHotspotPulse 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
-/* Fabric Stories gentle organic float (GPU-accelerated, reduced-motion safe) */
-.loome-hero-panel-stage {
-  --loome-panel-skew: -7deg;
-  --loome-panel-unskew: 7deg;
-}
-
-@media (min-width: 640px) {
-  .loome-hero-panel-stage {
-    --loome-panel-skew: -10.5deg;
-    --loome-panel-unskew: 10.5deg;
+/* Fabric Stories: seamless fabric-wave mask reveal, silk breeze motion & progress indicator */
+@keyframes loomeFabricWaveReveal {
+  0% {
+    -webkit-mask-position: 0% 50%;
+    mask-position: 0% 50%;
+  }
+  100% {
+    -webkit-mask-position: 100% 50%;
+    mask-position: 100% 50%;
   }
 }
 
-@keyframes loomeFabricFloatA {
+@keyframes loomeFabricImageSettle {
+  0% {
+    transform: scale(1.065) translate3d(1.4%, 0, 0);
+  }
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes loomeFabricCrossfadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.loome-fabric-wave-mask {
+  -webkit-mask-image: linear-gradient(
+    106deg,
+    transparent 0%,
+    transparent 33%,
+    rgba(0, 0, 0, 0.28) 43%,
+    rgba(0, 0, 0, 0.84) 53%,
+    #000 63%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    106deg,
+    transparent 0%,
+    transparent 33%,
+    rgba(0, 0, 0, 0.28) 43%,
+    rgba(0, 0, 0, 0.84) 53%,
+    #000 63%,
+    #000 100%
+  );
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: 100% 50%;
+  mask-position: 100% 50%;
+  animation-name: loomeFabricWaveReveal;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+  will-change: mask-position, -webkit-mask-position;
+}
+
+.loome-fabric-image-settle {
+  animation-name: loomeFabricImageSettle;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+  will-change: transform;
+}
+
+.loome-fabric-crossfade-in {
+  animation-name: loomeFabricCrossfadeIn;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+}
+
+@keyframes loomeSilkBreeze1 {
   0%,
   100% {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg);
   }
   50% {
-    transform: translate3d(0, -6px, 0);
+    transform: translate3d(-1.4%, -1.8%, 0) scale(1.025, 0.985) rotate(-0.55deg);
   }
 }
 
-@keyframes loomeFabricFloatB {
+@keyframes loomeSilkBreeze2 {
   0%,
   100% {
-    transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0) scale(1, 1) rotate(0deg);
   }
   50% {
-    transform: translate3d(0, 5px, 0);
+    transform: translate3d(1.6%, -1.3%, 0) scale(1.018, 1.022) rotate(0.48deg);
   }
 }
 
-.loome-fabric-float-0 {
-  animation: loomeFabricFloatA 8.4s ease-in-out infinite;
+@keyframes loomeSilkBreeze3 {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1, 1);
+  }
+  50% {
+    transform: translate3d(-1.8%, 1.2%, 0) scale(1.028, 0.99);
+  }
 }
 
-.loome-fabric-float-1 {
-  animation: loomeFabricFloatB 9.6s ease-in-out infinite;
+@keyframes loomeSilkGlowBreathe {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 0.96;
+    transform: translate3d(-1.5%, -1.5%, 0) scale(1.05);
+  }
 }
 
-.loome-fabric-float-2 {
-  animation: loomeFabricFloatA 10.8s ease-in-out infinite;
+@keyframes loomeSilkTransitionCrest {
+  0% {
+    transform: translate3d(210%, 0, 0) skewX(-8deg);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.85;
+  }
+  78% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate3d(-85%, 0, 0) skewX(-8deg);
+    opacity: 0;
+  }
+}
+
+@keyframes loomeHeroProgress {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.loome-silk-breeze-1 {
+  animation: loomeSilkBreeze1 14s ease-in-out infinite;
+  will-change: transform;
+}
+
+.loome-silk-breeze-2 {
+  animation: loomeSilkBreeze2 17.5s ease-in-out infinite;
+  will-change: transform;
+}
+
+.loome-silk-breeze-3 {
+  animation: loomeSilkBreeze3 11.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.loome-silk-glow-breathe {
+  animation: loomeSilkGlowBreathe 13s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.loome-silk-transition-crest {
+  animation-name: loomeSilkTransitionCrest;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+}
+
+.loome-hero-progress-fill {
+  transform-origin: left center;
+  animation-name: loomeHeroProgress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  will-change: transform;
 }
 
 /* Luxury CTA buttons — softly rounded rectangular corners (11px), champagne highlights & hover lift */
@@ -335,6 +495,20 @@ p {
   transform: translateY(-2px);
 }
 
+html.dark .loome-btn-espresso,
+.dark .loome-btn-espresso {
+  background-color: var(--brand-accent, #C8A98B);
+  border-color: var(--brand-accent, #C8A98B);
+  color: #201C1A;
+}
+
+html.dark .loome-btn-espresso:hover,
+.dark .loome-btn-espresso:hover {
+  background-color: #D8BFA4;
+  border-color: #D8BFA4;
+  color: #201C1A;
+}
+
 .loome-btn-ivory {
   display: inline-flex;
   align-items: center;
@@ -373,7 +547,7 @@ p {
   text-transform: uppercase;
   background-color: transparent;
   color: var(--page-text, #F2E9DE);
-  border: 1px solid color-mix(in srgb, var(--brand-accent, #C8A98B) 55%, transparent);
+  border: 1px solid color-mix(in srgb, var(--page-text, #F2E9DE) 32%, transparent);
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -574,9 +748,18 @@ p {
   }
 }
 
-/* Silk Veil Intro: pre-hydration zero-flash state coordination */
+/* Silk Veil Intro: pre-hydration zero-flash curtain for live published storefront visitors only */
 html[data-silk-intro='pending'] body {
   overflow: hidden;
+}
+
+html[data-silk-intro='pending'] body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  pointer-events: none;
+  background: radial-gradient(ellipse 110% 88% at 50% 48%, #FCFBF8 0%, #F5F0E7 48%, #EBE1D2 100%);
 }
 
 html[data-silk-intro='skip'] .loome-silk-veil-root,
@@ -610,9 +793,15 @@ html[data-silk-intro='pending'] .loome-silk-veil-copy {
   .loome-scroll-line,
   .loome-hotspot-ring,
   .loome-silk-veil-copy,
-  .loome-fabric-float-0,
-  .loome-fabric-float-1,
-  .loome-fabric-float-2 {
+  .loome-fabric-wave-mask,
+  .loome-fabric-image-settle,
+  .loome-fabric-crossfade-in,
+  .loome-silk-breeze-1,
+  .loome-silk-breeze-2,
+  .loome-silk-breeze-3,
+  .loome-silk-glow-breathe,
+  .loome-silk-transition-crest,
+  .loome-hero-progress-fill {
     animation: none !important;
   }
 

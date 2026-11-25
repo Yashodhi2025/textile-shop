@@ -127,7 +127,7 @@ export function normalizeLoomeProduct(rawInput: unknown, index: number): LoomePr
     description: contentText(raw.description),
     price,
     compareAtPrice: parsedCompare && parsedCompare > 0 ? parsedCompare : null,
-    currency: contentText(raw.currency) || 'USD',
+    currency: contentText(raw.currency) || 'LKR',
     imageUrl: primaryImage,
     gallery: Array.from(gallerySet),
     category: contentText(raw.category) || 'Textiles',
@@ -153,6 +153,34 @@ export function normalizeLoomeProduct(rawInput: unknown, index: number): LoomePr
   };
 }
 
+export const SRI_LANKAN_DISTRICTS: readonly string[] = [
+  'Colombo',
+  'Gampaha',
+  'Kalutara',
+  'Kandy',
+  'Matale',
+  'Nuwara Eliya',
+  'Galle',
+  'Matara',
+  'Hambantota',
+  'Jaffna',
+  'Kilinochchi',
+  'Mannar',
+  'Vavuniya',
+  'Mullaitivu',
+  'Batticaloa',
+  'Ampara',
+  'Trincomalee',
+  'Kurunegala',
+  'Puttalam',
+  'Anuradhapura',
+  'Polonnaruwa',
+  'Badulla',
+  'Moneragala',
+  'Ratnapura',
+  'Kegalle',
+] as const;
+
 export function resolveLoomeCurrency(siteData: unknown, fallbackCurrency?: string): string {
   const sd = contentObject(siteData);
   const content = contentObject(sd.content);
@@ -164,7 +192,7 @@ export function resolveLoomeCurrency(siteData: unknown, fallbackCurrency?: strin
     contentText(common.currency) ||
     contentText(merchant.currency) ||
     contentText(fallbackCurrency) ||
-    'USD'
+    'LKR'
   );
 }
 
@@ -174,24 +202,31 @@ export function resolveFreeDeliveryThreshold(siteData: unknown): number {
   const common = contentObject(content.common);
   const shop = contentObject(sd.shop);
   const raw = common.freeDeliveryThreshold ?? shop.freeDeliveryThreshold;
-  if (raw === undefined || raw === null || raw === '') return 250;
+  if (raw === undefined || raw === null || raw === '') return 35000;
   const parsed = typeof raw === 'number' ? raw : Number.parseFloat(String(raw));
-  if (!Number.isFinite(parsed)) return 250;
+  if (!Number.isFinite(parsed)) return 35000;
   return Math.max(0, parsed);
 }
 
-export function formatLoomePrice(amount: number, currency = 'USD'): string {
-  const code = (currency || 'USD').toUpperCase();
+export function formatLoomePrice(amount: number, currency = 'LKR'): string {
+  const code = (currency || 'LKR').trim().toUpperCase();
+  const formatted = amount.toLocaleString('en-US', {
+    minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2,
+  });
+  if (code === 'LKR' || code === 'RS' || code === 'RS.') {
+    return `Rs. ${formatted}`;
+  }
   if (code === 'USD' || code === '$') {
-    return `$${amount.toLocaleString('en-US', {
-      minimumFractionDigits: amount % 1 === 0 ? 0 : 2,
-      maximumFractionDigits: 2,
-    })}`;
+    return `$${formatted}`;
   }
   if (code === 'EUR' || code === '€') {
-    return `€${amount.toLocaleString('en-US')}`;
+    return `€${formatted}`;
   }
-  return `${code} ${amount.toLocaleString('en-US')}`;
+  if (code === 'GBP' || code === '£') {
+    return `£${formatted}`;
+  }
+  return `${code} ${formatted}`;
 }
 
 interface LoomeStoreContextValue {
@@ -236,9 +271,12 @@ export function LoomeStoreProvider({ children }: { children: React.ReactNode }) 
           setWishlistIds(parsed.filter((item): item is string => typeof item === 'string'));
         }
       }
+      const hasUrlCategory = new URLSearchParams(window.location.search).has('category');
       const pendingCategory = window.sessionStorage.getItem(PENDING_CATEGORY_KEY);
       if (pendingCategory) {
-        setActiveCategory(pendingCategory);
+        if (!hasUrlCategory) {
+          setActiveCategory(pendingCategory);
+        }
         window.sessionStorage.removeItem(PENDING_CATEGORY_KEY);
       }
     } catch {

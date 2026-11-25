@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Check,
@@ -17,6 +17,11 @@ import {
   useSiteData,
 } from '@/lib/siteDataContext';
 import {
+  extractHomeCategories,
+  resolveCategoryQueryId,
+  resolveShopCategoryParam,
+} from '@/lib/categoryUtils';
+import {
   formatLoomePrice,
   normalizeLoomeProduct,
   resolveLoomeCurrency,
@@ -28,7 +33,13 @@ import LoomeProductCard from '@/components/LoomeProductCard';
 import { LUXURY_EASE, LuxuryReveal } from '@/components/motion/LuxuryReveal';
 
 type SortOption = 'newest' | 'price-asc' | 'price-desc' | 'bestsellers';
-type PriceBand = 'all' | 'under-150' | '150-275' | 'over-275';
+type PriceBand = 'all' | 'low' | 'mid' | 'high';
+
+function roundNiceStep(value: number): number {
+  if (value >= 5000) return Math.round(value / 1000) * 1000;
+  if (value >= 500) return Math.round(value / 100) * 100;
+  return Math.max(25, Math.round(value / 25) * 25);
+}
 
 function extractMaterialGroup(material?: string): string {
   const m = (material || '').toLowerCase();
@@ -47,6 +58,10 @@ export default function ShopCatalogView() {
 
   const content = contentObject(siteData.content);
   const shopPage = contentObject(content.shopPage);
+  const homeCategories = useMemo(
+    () => extractHomeCategories(content.home),
+    [content.home],
+  );
 
   const allProducts = useMemo<LoomeProduct[]>(
     () => rawProducts.map((item, idx) => normalizeLoomeProduct(item, idx)),
@@ -55,10 +70,30 @@ export default function ShopCatalogView() {
 
   const storeCurrency = resolveLoomeCurrency(siteData, allProducts[0]?.currency);
 
-  const catalogMaxPrice = useMemo(() => {
+  const { catalogMinPrice, catalogMaxPrice, lowCut, highCut, sliderStep } = useMemo(() => {
     const prices = allProducts.map((p) => p.price).filter((n) => Number.isFinite(n) && n > 0);
-    if (prices.length === 0) return 500;
-    return Math.ceil(Math.max(...prices) / 25) * 25;
+    if (prices.length === 0) {
+      return {
+        catalogMinPrice: 5000,
+        catalogMaxPrice: 60000,
+        lowCut: 20000,
+        highCut: 35000,
+        sliderStep: 1000,
+      };
+    }
+    const minVal = Math.min(...prices);
+    const maxVal = Math.max(...prices);
+    const step = maxVal >= 5000 ? 1000 : maxVal >= 500 ? 100 : 15;
+    const roundedMax = Math.ceil(maxVal / step) * step;
+    const roundedMin = Math.max(0, Math.floor(minVal / step) * step);
+    const span = Math.max(step * 2, roundedMax - roundedMin);
+    return {
+      catalogMinPrice: roundedMin,
+      catalogMaxPrice: roundedMax,
+      lowCut: roundNiceStep(roundedMin + span * 0.35),
+      highCut: roundNiceStep(roundedMin + span * 0.7),
+      sliderStep: step,
+    };
   }, [allProducts]);
 
   const [selectedMaterial, setSelectedMaterial] = useState<string>('All');
@@ -95,6 +130,77 @@ export default function ShopCatalogView() {
     ];
   }, [allProducts]);
 
+  const availableCategoryNames = useMemo(
+    () => categoryEntries.filter((entry) => entry.name !== 'All').map((entry) => entry.name),
+    [categoryEntries],
+  );
+
+  const resolvedActiveCategory = useMemo(
+    () => resolveShopCategoryParam(activeCategory, availableCategoryNames, homeCategories),
+    [activeCategory, availableCategoryNames, homeCategories],
+  );
+
+  const syncCategoryQueryParam = useCallback(
+    (nextCategory: string) => {
+      if (typeof window === 'undefined') return;
+      try {
+        const url = new URL(window.location.href);
+        const queryId = resolveCategoryQueryId(nextCategory, homeCategories);
+        if (queryId) {
+          url.searchParams.set('category', queryId);
+        } else {
+          url.searchParams.delete('category');
+        }
+        window.history.replaceState(window.history.state, '', url.toString());
+      } catch {
+        // Ignore history restrictions in sandboxed environments
+      }
+    },
+    [homeCategories],
+  );
+
+  const selectCategory = useCallback(
+    (nextCategory: string) => {
+      const resolved = resolveShopCategoryParam(
+        nextCategory,
+        availableCategoryNames,
+        homeCategories,
+      );
+      setActiveCategory(resolved);
+      syncCategoryQueryParam(resolved);
+    },
+    [availableCategoryNames, homeCategories, setActiveCategory, syncCategoryQueryParam],
+  );
+
+  // Sync ?category=<stableId> query parameter on mount and browser back/forward
+  useEffect(() => {
+    const applyCategoryFromUrl = () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const urlCategory = params.get('category');
+        if (urlCategory !== null) {
+          const resolved = resolveShopCategoryParam(
+            urlCategory,
+            availableCategoryNames,
+            homeCategories,
+          );
+          setActiveCategory(resolved);
+          try {
+            window.sessionStorage.removeItem('loome_pending_category_v1');
+          } catch {
+            // Ignore storage errors
+          }
+        }
+      } catch {
+        // Ignore URL parsing errors
+      }
+    };
+
+    applyCategoryFromUrl();
+    window.addEventListener('popstate', applyCategoryFromUrl);
+    return () => window.removeEventListener('popstate', applyCategoryFromUrl);
+  }, [availableCategoryNames, homeCategories, setActiveCategory]);
+
   const materials = useMemo(() => {
     const set = new Set<string>();
     allProducts.forEach((p) => set.add(extractMaterialGroup(p.material)));
@@ -116,8 +222,8 @@ export default function ShopCatalogView() {
   const filteredProducts = useMemo(() => {
     const list = allProducts.filter((product) => {
       if (
-        activeCategory !== 'All' &&
-        product.category.toLowerCase() !== activeCategory.toLowerCase()
+        resolvedActiveCategory !== 'All' &&
+        product.category.toLowerCase() !== resolvedActiveCategory.toLowerCase()
       ) {
         return false;
       }
@@ -136,9 +242,9 @@ export default function ShopCatalogView() {
         if (!matchesTone) return false;
       }
 
-      if (priceBand === 'under-150' && product.price >= 150) return false;
-      if (priceBand === '150-275' && (product.price < 150 || product.price > 275)) return false;
-      if (priceBand === 'over-275' && product.price <= 275) return false;
+      if (priceBand === 'low' && product.price >= lowCut) return false;
+      if (priceBand === 'mid' && (product.price < lowCut || product.price > highCut)) return false;
+      if (priceBand === 'high' && product.price <= highCut) return false;
 
       if (maxPriceCap !== null && product.price > maxPriceCap) return false;
 
@@ -169,10 +275,12 @@ export default function ShopCatalogView() {
     return sorted;
   }, [
     allProducts,
-    activeCategory,
+    resolvedActiveCategory,
     selectedMaterial,
     selectedColor,
     priceBand,
+    lowCut,
+    highCut,
     maxPriceCap,
     inStockOnly,
     sortBy,
@@ -180,11 +288,11 @@ export default function ShopCatalogView() {
 
   const activeFilters = useMemo(() => {
     const chips: Array<{ key: string; label: string; onRemove: () => void }> = [];
-    if (activeCategory !== 'All') {
+    if (resolvedActiveCategory !== 'All') {
       chips.push({
         key: 'category',
-        label: `Category: ${activeCategory}`,
-        onRemove: () => setActiveCategory('All'),
+        label: `Category: ${resolvedActiveCategory}`,
+        onRemove: () => selectCategory('All'),
       });
     }
     if (selectedMaterial !== 'All') {
@@ -203,9 +311,9 @@ export default function ShopCatalogView() {
     }
     if (priceBand !== 'all') {
       const bandLabels: Record<Exclude<PriceBand, 'all'>, string> = {
-        'under-150': `Under ${formatLoomePrice(150, storeCurrency)}`,
-        '150-275': `${formatLoomePrice(150, storeCurrency)} – ${formatLoomePrice(275, storeCurrency)}`,
-        'over-275': `${formatLoomePrice(275, storeCurrency)}+`,
+        low: `Under ${formatLoomePrice(lowCut, storeCurrency)}`,
+        mid: `${formatLoomePrice(lowCut, storeCurrency)} – ${formatLoomePrice(highCut, storeCurrency)}`,
+        high: `${formatLoomePrice(highCut, storeCurrency)}+`,
       };
       chips.push({
         key: 'priceBand',
@@ -229,19 +337,21 @@ export default function ShopCatalogView() {
     }
     return chips;
   }, [
-    activeCategory,
+    resolvedActiveCategory,
     selectedMaterial,
     selectedColor,
     priceBand,
+    lowCut,
+    highCut,
     maxPriceCap,
     catalogMaxPrice,
     inStockOnly,
     storeCurrency,
-    setActiveCategory,
+    selectCategory,
   ]);
 
   const resetAllFilters = () => {
-    setActiveCategory('All');
+    selectCategory('All');
     setSelectedMaterial('All');
     setSelectedColor('All');
     setPriceBand('all');
@@ -348,26 +458,26 @@ export default function ShopCatalogView() {
 
         <input
           type="range"
-          min={50}
-          max={Math.max(catalogMaxPrice, 100)}
-          step={15}
+          min={catalogMinPrice}
+          max={Math.max(catalogMaxPrice, catalogMinPrice + sliderStep)}
+          step={sliderStep}
           value={effectiveMaxPrice}
           onChange={(e) => setMaxPriceCap(Number(e.target.value))}
           aria-label="Maximum price"
           data-preview-static={`${idPrefix}-price-slider`}
-          className="mt-3 h-1 w-full cursor-pointer appearance-none bg-[#201C1A]/20 accent-[#8D7667] dark:bg-[#F2E9DE]/20"
+          className="mt-3 h-1 w-full cursor-pointer appearance-none bg-[#201C1A]/20 accent-[#8D7667] dark:bg-[#F2E9DE]/20 dark:accent-[#C8A98B]"
         />
 
         <div className="mt-3 flex flex-wrap gap-1.5">
           {(
             [
               { id: 'all', label: 'All' },
-              { id: 'under-150', label: `Under ${formatLoomePrice(150, storeCurrency)}` },
+              { id: 'low', label: `Under ${formatLoomePrice(lowCut, storeCurrency)}` },
               {
-                id: '150-275',
-                label: `${formatLoomePrice(150, storeCurrency)}–${formatLoomePrice(275, storeCurrency)}`,
+                id: 'mid',
+                label: `${formatLoomePrice(lowCut, storeCurrency)}–${formatLoomePrice(highCut, storeCurrency)}`,
               },
-              { id: 'over-275', label: `${formatLoomePrice(275, storeCurrency)}+` },
+              { id: 'high', label: `${formatLoomePrice(highCut, storeCurrency)}+` },
             ] as const
           ).map((band) => {
             const active = priceBand === band.id;
@@ -380,7 +490,7 @@ export default function ShopCatalogView() {
                 className={`rounded-[10px] border px-2.5 py-1 text-[10px] tracking-wide transition-colors ${
                   active
                     ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                    : 'border-[#201C1A]/15 text-[#5E4E45] hover:border-[#C8A98B]'
+                    : 'border-[#201C1A]/15 text-[#5E4E45] hover:border-[#C8A98B] dark:border-[#F2E9DE]/20 dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]'
                 }`}
               >
                 {band.label}
@@ -482,13 +592,14 @@ export default function ShopCatalogView() {
       >
         <div className="mx-auto flex max-w-[1440px] items-center gap-6 overflow-x-auto px-4 py-4 sm:px-8 lg:gap-10 lg:px-14">
           {categoryEntries.map((entry) => {
-            const isActive = activeCategory.toLowerCase() === entry.name.toLowerCase();
+            const isActive =
+              resolvedActiveCategory.toLowerCase() === entry.name.toLowerCase();
             return (
               <button
                 key={entry.name}
                 type="button"
                 data-preview-static={`shop-cat-nav-${entry.name}`}
-                onClick={() => setActiveCategory(entry.name)}
+                onClick={() => selectCategory(entry.name)}
                 className={`group relative flex shrink-0 items-baseline gap-2 border-0 bg-transparent px-0 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition-colors ${
                   isActive
                     ? 'text-[#F2E9DE]'
@@ -515,7 +626,7 @@ export default function ShopCatalogView() {
           className="mx-auto max-w-[1440px] px-4 py-10 sm:px-8 lg:px-14 lg:py-14"
         >
         {/* Filter & Sort Toolbar */}
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#3B302B]/14 pb-5">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#3B302B]/14 pb-5 dark:border-[#C8A98B]/20">
           <div className="flex flex-wrap items-center gap-3 sm:gap-5">
             {/* Desktop Filter Drawer Toggle */}
             <button
@@ -523,7 +634,7 @@ export default function ShopCatalogView() {
               data-preview-static="shop-desktop-filter-toggle"
               onClick={() => setDesktopFiltersOpen((v) => !v)}
               aria-expanded={desktopFiltersOpen}
-              className="hidden items-center gap-2 rounded-[10px] border border-[#3B302B]/25 bg-[#FAF5EE] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] lg:inline-flex"
+              className="hidden items-center gap-2 rounded-[10px] border border-[#3B302B]/25 bg-[#FAF5EE] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] dark:border-[#C8A98B]/30 dark:bg-[#2A221F] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A] lg:inline-flex"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 stroke-[1.5]" />
               <span>{desktopFiltersOpen ? 'Hide Filters' : 'Filters'}</span>
@@ -539,7 +650,7 @@ export default function ShopCatalogView() {
               type="button"
               data-preview-static="shop-mobile-filter-toggle"
               onClick={() => setMobileDrawerOpen(true)}
-              className="inline-flex items-center gap-2 rounded-[10px] border border-[#3B302B]/25 bg-[#FAF5EE] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#201C1A] lg:hidden"
+              className="inline-flex items-center gap-2 rounded-[10px] border border-[#3B302B]/25 bg-[#FAF5EE] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#201C1A] dark:border-[#C8A98B]/30 dark:bg-[#2A221F] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] lg:hidden"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 stroke-[1.5]" />
               <span>Filters</span>
@@ -553,9 +664,9 @@ export default function ShopCatalogView() {
             {/* Live Product Count */}
             <p
               data-preview-static="shop-product-count"
-              className="m-0 text-xs tracking-wide text-[#5E4E45]"
+              className="m-0 text-xs tracking-wide text-[#5E4E45] dark:text-[#C9B9AA]"
             >
-              Showing <strong className="font-semibold text-[#201C1A]">{filteredProducts.length}</strong> of{' '}
+              Showing <strong className="font-semibold text-[#201C1A] dark:text-[#F5EEE6]">{filteredProducts.length}</strong> of{' '}
               {allProducts.length} {allProducts.length === 1 ? 'piece' : 'pieces'}
             </p>
           </div>
@@ -565,7 +676,7 @@ export default function ShopCatalogView() {
             <label
               htmlFor="loome-shop-sort"
               data-preview-static="shop-sort-label"
-              className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#5E4E45]"
+              className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#5E4E45] dark:text-[#C9B9AA]"
             >
               Sort
             </label>
@@ -575,7 +686,7 @@ export default function ShopCatalogView() {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortOption)}
                 data-preview-static="shop-sort-select"
-                className="appearance-none rounded-[10px] border border-[#3B302B]/22 bg-[#FAF5EE] py-2.5 pl-3.5 pr-9 text-xs font-medium text-[#201C1A] focus:border-[#C8A98B] focus:outline-none"
+                className="appearance-none rounded-[10px] border border-[#3B302B]/22 bg-[#FAF5EE] py-2.5 pl-3.5 pr-9 text-xs font-medium text-[#201C1A] focus:border-[#C8A98B] focus:outline-none dark:border-[#C8A98B]/30 dark:bg-[#2A221F] dark:text-[#F5EEE6]"
               >
                 <option value="newest">Newest Arrivals</option>
                 <option value="price-asc">Price: Low to High</option>
@@ -583,7 +694,7 @@ export default function ShopCatalogView() {
                 <option value="bestsellers">Bestsellers</option>
               </select>
               <ChevronDown
-                className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 stroke-[1.5] text-[#5E4E45]"
+                className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 stroke-[1.5] text-[#5E4E45] dark:text-[#C8A98B]"
                 aria-hidden="true"
               />
             </div>
@@ -598,7 +709,7 @@ export default function ShopCatalogView() {
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.35, ease: LUXURY_EASE }}
-              className="hidden overflow-hidden border-b border-[#201C1A]/10 bg-[#FAF5EE] dark:border-[#F2E9DE]/10 dark:bg-[#3B302B] lg:block"
+              className="mt-4 hidden overflow-hidden rounded-2xl border border-[#201C1A]/12 bg-[#FAF5EE] dark:border-[#C8A98B]/20 dark:bg-[#2A221F] lg:block"
             >
               <div className="p-7">{renderFilterGroups('desktop')}</div>
             </motion.div>
@@ -614,7 +725,7 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`active-chip-${chip.key}`}
                 onClick={chip.onRemove}
-                className="inline-flex items-center gap-2 border border-[#C8A98B]/55 bg-[#E6D9C9]/45 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#201C1A] transition-colors hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] dark:bg-[#3B302B] dark:text-[#F2E9DE]"
+                className="inline-flex items-center gap-2 rounded-[10px] border border-[#C8A98B]/55 bg-[#E6D9C9]/45 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#201C1A] transition-colors hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] dark:bg-[#2A221F] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
               >
                 <span>{chip.label}</span>
                 <X className="h-3 w-3 stroke-[1.8]" />
@@ -745,12 +856,13 @@ export default function ShopCatalogView() {
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {categoryEntries.map((entry) => {
-                      const active = activeCategory.toLowerCase() === entry.name.toLowerCase();
+                      const active =
+                        resolvedActiveCategory.toLowerCase() === entry.name.toLowerCase();
                       return (
                         <button
                           key={entry.name}
                           type="button"
-                          onClick={() => setActiveCategory(entry.name)}
+                          onClick={() => selectCategory(entry.name)}
                           className={`border px-3 py-1.5 text-[11px] tracking-wide transition-colors ${
                             active
                               ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'

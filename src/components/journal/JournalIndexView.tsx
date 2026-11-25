@@ -138,7 +138,7 @@ export default function JournalIndexView() {
   return (
     <div
       data-preview-page-key="journal"
-      className="loome-surface-cream min-h-[75vh] w-full bg-[#F2E9DE] text-[#201C1A]"
+      className="loome-surface-cream min-h-[75vh] w-full"
     >
       {/* Editorial Breadcrumb Strip */}
       <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
@@ -222,7 +222,7 @@ export default function JournalIndexView() {
                 type="button"
                 onClick={() => setActiveCategoryKey('all')}
                 aria-pressed={effectiveCategoryKey === 'all'}
-                className={`border px-3.5 py-1.5 text-[10.5px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${effectiveCategoryKey === 'all'
+                className={`rounded-[10px] border px-3.5 py-1.5 text-[10.5px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${effectiveCategoryKey === 'all'
                   ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
                   : 'border-[#201C1A]/15 bg-transparent text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
                   }`}
@@ -251,7 +251,7 @@ export default function JournalIndexView() {
                       data-preview-item-path={`journalPage.categories[${cat.index}]`}
                       onClick={() => setActiveCategoryKey(cat.id)}
                       aria-pressed={isActive}
-                      className={`border px-3.5 py-1.5 text-[10.5px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${isActive
+                      className={`rounded-[10px] border px-3.5 py-1.5 text-[10.5px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${isActive
                         ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
                         : 'border-[#201C1A]/15 bg-transparent text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
                         }`}
@@ -281,7 +281,7 @@ export default function JournalIndexView() {
                     type="button"
                     onClick={() => setActiveCategoryKey(extra.key)}
                     aria-pressed={isActive}
-                    className={`border px-3.5 py-1.5 text-[10.5px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${isActive
+                    className={`rounded-[10px] border px-3.5 py-1.5 text-[10.5px] font-medium uppercase tracking-[0.2em] transition-all duration-300 ${isActive
                       ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
                       : 'border-[#201C1A]/15 bg-transparent text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
                       }`}
@@ -303,7 +303,7 @@ export default function JournalIndexView() {
               })}
             </div>
 
-            <div className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-[#65685E] dark:text-[#C7B6A6]">
+            <div className="inline-flex items-center gap-1.5 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6]">
               <span data-preview-static="journal-story-count-number" className="tabular-nums">
                 {filteredPosts.length}
               </span>
@@ -376,10 +376,10 @@ export default function JournalIndexView() {
                 </div>
               </div>
 
-              <div className="border border-dashed border-[#201C1A]/20 px-6 py-16 text-center dark:border-[#F2E9DE]/20">
+              <div className="rounded-2xl border border-dashed border-[#201C1A]/20 px-6 py-16 text-center dark:border-[#F2E9DE]/20">
                 <p
                   data-preview-static="journal-page-empty"
-                  className="m-0 text-sm text-[#65685E] dark:text-[#C7B6A6]"
+                  className="m-0 text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
                 >
                   {allPosts.length === 0
                     ? 'Add journal stories in your Fivora editor to populate this editorial archive.'
@@ -460,7 +460,7 @@ export default function JournalIndexView() {
                 <LuxuryReveal>
                   <article
                     data-preview-item-path={`home.journalPosts[${featuredPost.index}]`}
-                    className="group grid grid-cols-1 overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-[0_14px_40px_rgba(32,28,26,0.05)] lg:grid-cols-12"
+                    className="group grid grid-cols-1 overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-[0_14px_40px_rgba(32,28,26,0.05)] dark:border-[#C8A98B]/20 dark:bg-[#2A221F] lg:grid-cols-12"
                   >
                     <div
                       onClick={() => window.location.assign(journalArticleHref(featuredPost.id))}
@@ -476,7 +476,7 @@ export default function JournalIndexView() {
                       </LuxuryImageReveal>
                       <span
                         onClick={(e) => e.stopPropagation()}
-                        className="absolute left-5 top-5 z-20 bg-[#F2E9DE]/92 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-[#201C1A] backdrop-blur-sm"
+                        className="absolute left-5 top-5 z-20 rounded-[9px] border border-[#C8A98B]/35 bg-[#201C1A]/88 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#F2E9DE] backdrop-blur-md"
                       >
                         <EditableText
                           as="span"
@@ -705,7 +705,7 @@ export default function JournalIndexView() {
                             >
                               <div
                                 onClick={() => window.location.assign(journalArticleHref(post.id))}
-                                className={`relative block w-full cursor-pointer overflow-hidden bg-[#E6D9C9]/60 ${aspectClass}`}
+                                className={`relative block w-full cursor-pointer overflow-hidden rounded-2xl bg-[#E6D9C9]/60 dark:bg-[#2A221F] ${aspectClass}`}
                               >
                                 <LuxuryImageReveal
                                   delay={Math.min(idx * 0.08, 0.24)}
