@@ -632,7 +632,9 @@
               {
                 "key": "transitionDurationMs",
                 "type": "number",
-                "label": "Autoplay Interval (ms)"
+                "label": "Autoplay Interval (ms)",
+                "description": "Time each hero slide stays visible in milliseconds (default: 4000 ms)",
+                "placeholder": "4000"
               },
               {
                 "key": "transitionSpeedMs",

@@ -83,7 +83,7 @@ function colorMix(color: string, percent: number): string {
 /**
  * Inspects URL query parameters, Fivora Studio bridge cache, and DOM markers to distinguish
  * interactive Edit mode (autoplay paused, manual navigation active) from Preview mode and
- * the published storefront (automatic 5s fabric-wave transitions active).
+ * the published storefront (automatic configurable fabric-wave transitions active).
  */
 function detectRuntimeEditMode(): 'edit' | 'preview' | 'unknown' {
   if (typeof window === 'undefined') return 'unknown';
@@ -218,13 +218,13 @@ export default function HeroSection({ revealReady = true }: HeroSectionProps) {
   const home = contentObject(contentObject(siteData.content).home);
   const fabricStoriesConfig = contentObject(home.fabricStories);
 
-  // Merchant-editable Fabric Stories settings
+  // Merchant-editable Fabric Stories settings (defaults to 4000ms when unset)
   const autoplaySetting = fabricStoriesConfig.autoplay !== false;
   const rawInterval = Number(fabricStoriesConfig.transitionDurationMs);
   const autoplayIntervalMs =
-    Number.isFinite(rawInterval) && rawInterval >= 2400 && rawInterval <= 15000
+    Number.isFinite(rawInterval) && rawInterval >= 1500 && rawInterval <= 15000
       ? rawInterval
-      : 5000;
+      : 4000;
 
   const rawSpeed = Number(fabricStoriesConfig.transitionSpeedMs);
   const transitionSpeedMs =

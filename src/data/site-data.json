@@ -229,7 +229,7 @@
       },
       "fabricStories": {
         "autoplay": true,
-        "transitionDurationMs": 5000,
+        "transitionDurationMs": 3000,
         "transitionSpeedMs": 1400,
         "animationStyle": "fabric-wave",
         "overlayColor": "#C8A98B",
