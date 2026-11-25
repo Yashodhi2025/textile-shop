@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import { ArrowRight, Check, Info, Mail, MapPin, Phone } from 'lucide-react';
-import { EditableBox, EditableText } from '@deneb-ui/ui';
+import { ArrowRight, Check, Info, MapPin } from 'lucide-react';
+import { EditableBox, EditableIcon, EditableText } from '@deneb-ui/ui';
 import { contentObject, contentText, useSiteApi, useSiteData } from '@/lib/siteDataContext';
 import { LuxuryReveal } from '@/components/motion/LuxuryReveal';
 
@@ -158,7 +158,9 @@ export default function ContactPage() {
 
               <div className="mt-5 flex flex-col gap-4 border-t border-[var(--loome-border)] pt-5 text-sm">
                 <div className="flex items-start gap-3">
-                  <Phone className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[var(--brand-accent)]" aria-hidden="true" />
+                  <span className="mt-0.5 shrink-0 text-[var(--brand-accent)]">
+                    <EditableIcon name="phone" fieldPath="common.footerPhoneIcon" size={16} />
+                  </span>
                   <a
                     href={phone ? `tel:${phone}` : ''}
                     data-preview-field-path="contact.phone"
@@ -169,7 +171,9 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Mail className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[var(--brand-accent)]" aria-hidden="true" />
+                  <span className="mt-0.5 shrink-0 text-[var(--brand-accent)]">
+                    <EditableIcon name="mail" fieldPath="common.footerEmailIcon" size={16} />
+                  </span>
                   <a
                     href={email ? `mailto:${email}` : ''}
                     data-preview-field-path="contact.email"
@@ -180,7 +184,9 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.6] text-[var(--brand-accent)]" aria-hidden="true" />
+                  <span className="mt-0.5 shrink-0 text-[var(--brand-accent)]">
+                    <EditableIcon name="map-pin" fieldPath="common.footerLocationIcon" size={16} />
+                  </span>
                   <EditableText
                     as="p"
                     data-preview-field-path="contact.address"

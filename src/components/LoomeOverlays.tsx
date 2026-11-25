@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '@deneb-ui/ui';
 import {
+  contentList,
   contentObject,
   contentText,
   platformProductDetailHref,
@@ -53,8 +54,59 @@ export default function LoomeOverlays() {
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [quickQty, setQuickQty] = useState(1);
 
-  const common = contentObject(contentObject(siteData.content).common);
+  const content = contentObject(siteData.content);
+  const common = contentObject(content.common);
+  const home = contentObject(content.home);
+  const shopTheLook = contentObject(home.shopTheLook);
+  const shopPage = contentObject(content.shopPage);
+  const cartPage = contentObject(content.cartPage);
+  const productDetailPage = contentObject(content.productDetailPage);
+  const accountDrawer = contentObject(common.accountDrawer);
   const storeName = contentText(common.websiteTitle) || 'LOOMÉ';
+
+  const toneLabel = contentText(productDetailPage.toneLabel) || 'Tone';
+  const sizeLabel = contentText(productDetailPage.sizeLabel) || 'Size';
+  const addToBagLabel = contentText(productDetailPage.addToBagLabel) || 'Add to Bag';
+  const quickViewSpecsLabel =
+    contentText(productDetailPage.quickViewSpecsLabel) || 'View Full Specifications';
+  const quickViewLabel = contentText(shopTheLook.quickViewLabel) || 'Quick View';
+  const searchPlaceholder =
+    contentText(shopPage.searchPlaceholder) || 'Search Belgian linen, curtains, duvet, velvet...';
+
+  const bagDrawerHeading = contentText(cartPage.heading) || 'Your Shopping Bag';
+  const bagEmptyHeading = contentText(cartPage.emptyHeading) || 'Your bag is currently empty';
+  const bagEmptyDesc =
+    contentText(cartPage.emptyDescription) ||
+    'Explore our Belgian flax drapery, stonewashed bedding, and tactile studio accents.';
+  const continueShoppingLabel =
+    contentText(cartPage.continueShoppingLabel) || 'Continue Shopping';
+  const checkoutLabel = contentText(cartPage.checkoutLabel) || 'Proceed to Checkout';
+  const viewBagLabel = contentText(cartPage.viewBagLabel) || 'View Shopping Bag';
+  const summaryFootnote =
+    contentText(cartPage.summaryFootnote) ||
+    'Custom sizing & shipping confirmed with our atelier concierge.';
+
+  const accountEyebrow = contentText(accountDrawer.eyebrow) || 'Private Client Services';
+  const accountHeading = contentText(accountDrawer.heading) || `${storeName} Atelier`;
+  const accountWishlistLabel = contentText(accountDrawer.wishlistLabel) || 'Wishlist';
+  const accountBagLabel = contentText(accountDrawer.bagLabel) || 'In Your Bag';
+  const accountTradeHeading =
+    contentText(accountDrawer.tradeHeading) || 'Trade & Interior Architects';
+  const accountTradeDesc =
+    contentText(accountDrawer.tradeDescription) ||
+    'Enjoy dedicated yardage reservations, custom drapery specifications, and complimentary fabric swatch boxes delivered to your studio.';
+  const accountPrimaryCta =
+    contentText(accountDrawer.primaryCtaLabel) || 'Schedule Atelier Consultation';
+  const accountSecondaryCta =
+    contentText(accountDrawer.secondaryCtaLabel) || 'Explore Bespoke Services';
+
+  const quickSearchCategories = useMemo(() => {
+    const fromHome = contentList(home.categories)
+      .map((raw) => contentText(contentObject(raw).name))
+      .filter(Boolean);
+    if (fromHome.length > 0) return fromHome;
+    return ['Curtains', 'Bedding', 'Upholstery', 'Fabrics', 'Cushions'];
+  }, [home.categories]);
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
     : siteData.template?.structure?.pages || [
@@ -184,10 +236,16 @@ export default function LoomeOverlays() {
                 <img
                   src={withBasePath(quickViewProduct.imageUrl)}
                   alt={quickViewProduct.name}
+                  data-preview-field-path={`products[${quickViewProduct.index}].imageUrl`}
+                  data-preview-style-target={`products[${quickViewProduct.index}].imageUrl`}
+                  data-preview-style-type="image"
                   className="h-full w-full object-cover"
                 />
                 {quickViewProduct.badge && (
-                  <span className="absolute left-5 top-5 rounded-[8px] border border-[#C8A98B]/35 bg-[#201C1A]/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#F2E9DE] backdrop-blur-md">
+                  <span
+                    data-preview-field-path={`products[${quickViewProduct.index}].badge`}
+                    className="absolute left-5 top-5 rounded-[8px] border border-[#C8A98B]/35 bg-[#201C1A]/85 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#F2E9DE] backdrop-blur-md"
+                  >
                     {quickViewProduct.badge}
                   </span>
                 )}
@@ -195,20 +253,32 @@ export default function LoomeOverlays() {
 
               <div className="flex flex-col justify-between p-7 sm:p-9">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]">
+                  <p
+                    data-preview-field-path={`products[${quickViewProduct.index}].category`}
+                    className="text-[11px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]"
+                  >
                     {quickViewProduct.category}
                   </p>
-                  <h2 className="mt-2 font-heading text-2xl font-extrabold leading-tight tracking-[-0.02em] text-[#F2E9DE] sm:text-3xl">
+                  <h2
+                    data-preview-field-path={`products[${quickViewProduct.index}].name`}
+                    className="mt-2 font-heading text-2xl font-extrabold leading-tight tracking-[-0.02em] text-[#F2E9DE] sm:text-3xl"
+                  >
                     {quickViewProduct.name}
                   </h2>
 
                   {quickViewProduct.showPrice ? (
                     <div className="mt-4 flex items-baseline gap-3">
-                      <span className="text-xl font-bold tracking-wide text-[#F2E9DE]">
+                      <span
+                        data-preview-field-path={`products[${quickViewProduct.index}].price`}
+                        className="whitespace-nowrap text-xl font-bold tracking-wide tabular-nums text-[#F2E9DE]"
+                      >
                         {formatLoomePrice(quickViewProduct.price, storeCurrency)}
                       </span>
                       {quickViewProduct.compareAtPrice && (
-                        <span className="text-sm text-[#C7B6A6]/70 line-through">
+                        <span
+                          data-preview-field-path={`products[${quickViewProduct.index}].compareAtPrice`}
+                          className="whitespace-nowrap text-sm tabular-nums text-[#C7B6A6]/70 line-through"
+                        >
                           {formatLoomePrice(quickViewProduct.compareAtPrice, storeCurrency)}
                         </span>
                       )}
@@ -219,12 +289,18 @@ export default function LoomeOverlays() {
                     </p>
                   )}
 
-                  <p className="mt-4 text-sm leading-relaxed text-[#C7B6A6]">
+                  <p
+                    data-preview-field-path={`products[${quickViewProduct.index}].description`}
+                    className="mt-4 text-sm leading-relaxed text-[#C7B6A6]"
+                  >
                     {quickViewProduct.description}
                   </p>
 
                   {quickViewProduct.material && (
-                    <p className="mt-4 border-l-2 border-[#C8A98B] pl-3 text-xs tracking-wide text-[#F2E9DE]/85">
+                    <p
+                      data-preview-field-path={`products[${quickViewProduct.index}].material`}
+                      className="mt-4 border-l-2 border-[#C8A98B] pl-3 text-xs tracking-wide text-[#F2E9DE]/85"
+                    >
                       {quickViewProduct.material}
                     </p>
                   )}
@@ -233,7 +309,12 @@ export default function LoomeOverlays() {
                   {quickViewProduct.hasExplicitColors && (
                     <div className="mt-6">
                       <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.18em]">
-                        <span className="text-[#C7B6A6]">Tone</span>
+                        <span
+                          data-preview-field-path="productDetailPage.toneLabel"
+                          className="text-[#C7B6A6]"
+                        >
+                          {toneLabel}
+                        </span>
                         <span className="font-semibold text-[#F2E9DE]">{selectedColor}</span>
                       </div>
                       <div className="mt-3 flex items-center gap-3">
@@ -263,7 +344,12 @@ export default function LoomeOverlays() {
                   {quickViewProduct.sizes.length > 0 && (
                     <div className="mt-5">
                       <div className="flex items-center justify-between text-[11px] uppercase tracking-[0.18em]">
-                        <span className="text-[#C7B6A6]">Size</span>
+                        <span
+                          data-preview-field-path="productDetailPage.sizeLabel"
+                          className="text-[#C7B6A6]"
+                        >
+                          {sizeLabel}
+                        </span>
                         <span className="font-semibold text-[#F2E9DE]">{selectedSize}</span>
                       </div>
                       <div className="mt-2.5 flex flex-wrap gap-2">
@@ -331,7 +417,10 @@ export default function LoomeOverlays() {
                     >
                       {quickViewProduct.isAvailable ? (
                         <>
-                          <ShoppingBag className="h-4 w-4 stroke-[1.6]" /> Add to Bag
+                          <ShoppingBag className="h-4 w-4 stroke-[1.6]" />
+                          <span data-preview-field-path="productDetailPage.addToBagLabel">
+                            {addToBagLabel}
+                          </span>
                         </>
                       ) : (
                         'Currently Unavailable'
@@ -357,10 +446,13 @@ export default function LoomeOverlays() {
 
                   <a
                     href={platformProductDetailHref(quickViewProduct.id)}
-                    data-preview-static="quickview-detail-link"
+                    data-testid="quickview-detail-link"
                     className="flex items-center justify-center gap-2 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#C8A98B] no-underline transition-colors hover:text-[#F2E9DE]"
                   >
-                    View Full Specifications <ArrowRight className="h-3.5 w-3.5" />
+                    <span data-preview-field-path="productDetailPage.quickViewSpecsLabel">
+                      {quickViewSpecsLabel}
+                    </span>
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </a>
                 </div>
               </div>
@@ -390,8 +482,11 @@ export default function LoomeOverlays() {
             >
               <div className="flex items-center justify-between border-b border-[#C8A98B]/18 px-6 py-5">
                 <div>
-                  <h2 className="font-heading text-xl font-extrabold tracking-tight text-[#F2E9DE]">
-                    Your Atelier Bag
+                  <h2
+                    data-preview-field-path="cartPage.heading"
+                    className="font-heading text-xl font-extrabold tracking-tight text-[#F2E9DE]"
+                  >
+                    {bagDrawerHeading}
                   </h2>
                   <p className="mt-0.5 text-[11px] uppercase tracking-[0.18em] text-[#C8A98B]">
                     {cart.totalCount} {cart.totalCount === 1 ? 'piece' : 'pieces'} selected
@@ -440,18 +535,26 @@ export default function LoomeOverlays() {
                     <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-[#C8A98B]/35 bg-[#3B302B]/55 text-[#C8A98B]">
                       <ShoppingBag className="h-6 w-6 stroke-[1.4]" />
                     </div>
-                    <h3 className="mt-5 font-heading text-2xl font-bold text-[#F2E9DE]">
-                      Your bag is currently empty
+                    <h3
+                      data-preview-field-path="cartPage.emptyHeading"
+                      className="mt-5 font-heading text-2xl font-bold text-[#F2E9DE]"
+                    >
+                      {bagEmptyHeading}
                     </h3>
-                    <p className="mt-2 max-w-xs text-sm leading-relaxed text-[#C7B6A6]">
-                      Explore our Belgian flax drapery, stonewashed bedding, and tactile studio accents.
+                    <p
+                      data-preview-field-path="cartPage.emptyDescription"
+                      className="mt-2 max-w-xs text-sm leading-relaxed text-[#C7B6A6]"
+                    >
+                      {bagEmptyDesc}
                     </p>
                     <button
                       type="button"
                       onClick={cart.closeCart}
                       className="loome-btn-outline mt-6"
                     >
-                      Continue Exploring
+                      <span data-preview-field-path="cartPage.continueShoppingLabel">
+                        {continueShoppingLabel}
+                      </span>
                     </button>
                   </div>
                 ) : (
@@ -544,8 +647,11 @@ export default function LoomeOverlays() {
                         : formatLoomePrice(cart.subtotal, storeCurrency)}
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-[#C7B6A6]">
-                    Custom sizing &amp; shipping confirmed with our atelier concierge.
+                  <p
+                    data-preview-field-path="cartPage.summaryFootnote"
+                    className="mt-1 text-xs text-[#C7B6A6]"
+                  >
+                    {summaryFootnote}
                   </p>
                   <div className="mt-4 space-y-2.5">
                     <button
@@ -556,7 +662,7 @@ export default function LoomeOverlays() {
                       }}
                       className="loome-btn-primary w-full text-center"
                     >
-                      Proceed to Checkout
+                      <span data-preview-field-path="cartPage.checkoutLabel">{checkoutLabel}</span>
                     </button>
                     <button
                       type="button"
@@ -566,7 +672,7 @@ export default function LoomeOverlays() {
                       }}
                       className="loome-btn-outline w-full text-center"
                     >
-                      View Shopping Bag
+                      <span data-preview-field-path="cartPage.viewBagLabel">{viewBagLabel}</span>
                     </button>
                   </div>
                 </div>
@@ -604,7 +710,8 @@ export default function LoomeOverlays() {
                   autoFocus
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search Belgian linen, curtains, duvet, velvet..."
+                  data-preview-field-path="shopPage.searchPlaceholder"
+                  placeholder={searchPlaceholder}
                   className="w-full bg-transparent font-heading text-xl font-semibold text-[#F2E9DE] outline-none placeholder:text-[#C7B6A6]/60 sm:text-2xl"
                 />
                 <button
@@ -618,7 +725,7 @@ export default function LoomeOverlays() {
               </div>
 
               <div className="mt-4 flex flex-wrap gap-2">
-                {['Curtains', 'Bedding', 'Upholstery', 'Fabrics', 'Cushions'].map((term) => (
+                {quickSearchCategories.map((term) => (
                   <button
                     key={term}
                     type="button"
@@ -668,7 +775,9 @@ export default function LoomeOverlays() {
                               onClick={() => openQuickView(product)}
                               className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#C8A98B] transition-colors hover:text-[#F2E9DE]"
                             >
-                              Quick View
+                              <span data-preview-field-path="home.shopTheLook.quickViewLabel">
+                                {quickViewLabel}
+                              </span>
                             </button>
                           </div>
                         </div>
@@ -704,11 +813,17 @@ export default function LoomeOverlays() {
               <div>
                 <div className="flex items-center justify-between border-b border-[#C8A98B]/18 pb-5">
                   <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]">
-                      Private Client Services
+                    <p
+                      data-preview-field-path="common.accountDrawer.eyebrow"
+                      className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#C8A98B]"
+                    >
+                      {accountEyebrow}
                     </p>
-                    <h2 className="mt-1 font-heading text-2xl font-extrabold tracking-tight text-[#F2E9DE]">
-                      {storeName} Atelier
+                    <h2
+                      data-preview-field-path="common.accountDrawer.heading"
+                      className="mt-1 font-heading text-2xl font-extrabold tracking-tight text-[#F2E9DE]"
+                    >
+                      {accountHeading}
                     </h2>
                   </div>
                   <button
@@ -727,8 +842,11 @@ export default function LoomeOverlays() {
                     onClick={closeAccount}
                     className="block rounded-xl border border-[#C8A98B]/20 bg-[#2B2320] p-4 text-left no-underline transition-colors hover:border-[#C8A98B]/55"
                   >
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C7B6A6]">
-                      Wishlist
+                    <p
+                      data-preview-field-path="common.accountDrawer.wishlistLabel"
+                      className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C7B6A6]"
+                    >
+                      {accountWishlistLabel}
                     </p>
                     <p className="mt-1 font-heading text-3xl font-extrabold text-[#F2E9DE]">
                       {wishlistIds.length}
@@ -739,8 +857,11 @@ export default function LoomeOverlays() {
                     onClick={closeAccount}
                     className="block rounded-xl border border-[#C8A98B]/20 bg-[#2B2320] p-4 text-left no-underline transition-colors hover:border-[#C8A98B]/55"
                   >
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C7B6A6]">
-                      In Your Bag
+                    <p
+                      data-preview-field-path="common.accountDrawer.bagLabel"
+                      className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#C7B6A6]"
+                    >
+                      {accountBagLabel}
                     </p>
                     <p className="mt-1 font-heading text-3xl font-extrabold text-[#F2E9DE]">
                       {cart.totalCount}
@@ -751,11 +872,15 @@ export default function LoomeOverlays() {
                 <div className="mt-6 rounded-2xl border border-[#C8A98B]/28 bg-[#3B302B]/55 p-5">
                   <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#C8A98B]">
                     <Sparkles className="h-4 w-4 stroke-[1.6]" />
-                    Trade &amp; Interior Architects
+                    <span data-preview-field-path="common.accountDrawer.tradeHeading">
+                      {accountTradeHeading}
+                    </span>
                   </div>
-                  <p className="mt-2 text-sm leading-relaxed text-[#C7B6A6]">
-                    Enjoy dedicated yardage reservations, custom drapery specifications, and complimentary
-                    fabric swatch boxes delivered to your studio.
+                  <p
+                    data-preview-field-path="common.accountDrawer.tradeDescription"
+                    className="mt-2 text-sm leading-relaxed text-[#C7B6A6]"
+                  >
+                    {accountTradeDesc}
                   </p>
                 </div>
               </div>
@@ -767,7 +892,9 @@ export default function LoomeOverlays() {
                     onClick={closeAccount}
                     className="loome-btn-primary w-full text-center no-underline"
                   >
-                    Schedule Atelier Consultation
+                    <span data-preview-field-path="common.accountDrawer.primaryCtaLabel">
+                      {accountPrimaryCta}
+                    </span>
                   </a>
                 )}
                 {hasServicesPage && (
@@ -776,7 +903,9 @@ export default function LoomeOverlays() {
                     onClick={closeAccount}
                     className="loome-btn-outline w-full text-center no-underline"
                   >
-                    Explore Bespoke Services
+                    <span data-preview-field-path="common.accountDrawer.secondaryCtaLabel">
+                      {accountSecondaryCta}
+                    </span>
                   </a>
                 )}
               </div>

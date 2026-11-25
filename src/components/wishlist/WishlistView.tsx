@@ -23,8 +23,13 @@ export default function WishlistView() {
   const common = contentObject(content.common);
   const navLabels = contentObject(common.navLabels);
   const wishlistPage = contentObject(content.wishlistPage);
+  const cartPage = contentObject(content.cartPage);
 
   const homeNavLabel = contentText(navLabels.home) || 'Home';
+  const wishlistNavLabel = contentText(navLabels.wishlist) || 'Wishlist';
+  const continueShoppingLabel =
+    contentText(cartPage.continueShoppingLabel) || 'Continue Shopping';
+  const clearAllLabel = contentText(wishlistPage.clearAllLabel) || 'Clear All';
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
     : siteData.template?.structure?.pages || [
@@ -87,10 +92,10 @@ export default function WishlistView() {
           </span>
           <span
             aria-current="page"
-            data-preview-static="wishlist-breadcrumb-current"
+            data-preview-field-path="common.navLabels.wishlist"
             className="font-semibold text-[var(--heading-color)]"
           >
-            Wishlist
+            {wishlistNavLabel}
           </span>
         </nav>
       </div>
@@ -152,11 +157,11 @@ export default function WishlistView() {
             <button
               type="button"
               onClick={handleClearAll}
-              data-preview-static="wishlist-clear-all"
+              data-testid="wishlist-clear-all"
               className="inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start rounded-[10px] border border-[var(--loome-border)] bg-[var(--card-bg)] px-4 text-xs font-semibold text-[var(--page-text)] transition-colors hover:border-[var(--loome-danger-text)]/45 hover:text-[var(--loome-danger-text)] sm:ml-auto sm:self-end"
             >
               <Trash2 className="h-3.5 w-3.5 stroke-[1.6]" />
-              <span>Clear All</span>
+              <span data-preview-field-path="wishlistPage.clearAllLabel">{clearAllLabel}</span>
             </button>
           )}
         </div>
@@ -219,6 +224,7 @@ export default function WishlistView() {
         ) : (
           <>
             <div
+              data-preview-list-path="products"
               data-testid="wishlist-cards-grid"
               className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
             >
@@ -239,11 +245,13 @@ export default function WishlistView() {
                 type="button"
                 onClick={() => window.location.assign(shopHref)}
                 data-target-page={hasShopPage ? 'shop' : undefined}
-                data-preview-static="wishlist-continue-shopping"
+                data-testid="wishlist-continue-shopping"
                 className="group inline-flex items-center gap-2 border-0 bg-transparent p-0 text-xs font-semibold text-[var(--page-text)] transition-colors hover:text-[var(--brand-accent)]"
               >
                 <ArrowLeft className="h-3.5 w-3.5 stroke-[1.8] transition-transform duration-300 group-hover:-translate-x-0.5" />
-                <span>Continue Shopping</span>
+                <span data-preview-field-path="cartPage.continueShoppingLabel">
+                  {continueShoppingLabel}
+                </span>
               </button>
             </div>
           </>

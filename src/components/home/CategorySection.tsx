@@ -151,6 +151,8 @@ export default function CategorySection() {
                             alt={cat.name}
                             loading="lazy"
                             data-preview-field-path={`home.categories[${cat.index}].imageUrl`}
+                            data-preview-style-target={`home.categories[${cat.index}].imageUrl`}
+                            data-preview-style-type="image"
                             className="h-full w-full object-cover transition-transform duration-[950ms] ease-luxury group-hover:scale-[1.05]"
                           />
                         </LuxuryImageReveal>

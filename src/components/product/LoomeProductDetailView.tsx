@@ -64,6 +64,7 @@ interface LoomeProductDetailViewProps {
 interface SpecRow {
   label: string;
   value: string;
+  fieldPath?: string;
 }
 
 export default function LoomeProductDetailView({
@@ -115,6 +116,7 @@ export default function LoomeProductDetailView({
   const swatchTitle = contentText(detailCopy.swatchTitle) || 'Need Fabric Swatches?';
   const swatchLinkLabel =
     contentText(detailCopy.swatchLinkLabel) || 'Request complimentary swatches';
+  const detailsHeading = contentText(detailCopy.detailsHeading) || 'Details';
   const specsHeading = contentText(detailCopy.specsHeading) || 'Specifications';
   const careHeading = contentText(detailCopy.careHeading) || 'Care';
   const shippingHeading = contentText(detailCopy.shippingHeading) || 'Delivery & Returns';
@@ -142,10 +144,14 @@ export default function LoomeProductDetailView({
   // Build textile specifications strictly from real merchant product data
   const textileSpecs = useMemo<SpecRow[]>(() => {
     const rows: SpecRow[] = [];
-    if (normalized.material) rows.push({ label: 'Material', value: normalized.material });
-    if (normalized.composition) rows.push({ label: 'Composition', value: normalized.composition });
-    if (normalized.gsm) rows.push({ label: 'Fabric Weight', value: normalized.gsm });
-    if (normalized.dimensions) rows.push({ label: 'Dimensions', value: normalized.dimensions });
+    if (normalized.material)
+      rows.push({ label: 'Material', value: normalized.material, fieldPath: `products[${idx}].material` });
+    if (normalized.composition)
+      rows.push({ label: 'Composition', value: normalized.composition, fieldPath: `products[${idx}].composition` });
+    if (normalized.gsm)
+      rows.push({ label: 'Fabric Weight', value: normalized.gsm, fieldPath: `products[${idx}].gsm` });
+    if (normalized.dimensions)
+      rows.push({ label: 'Dimensions', value: normalized.dimensions, fieldPath: `products[${idx}].dimensions` });
 
     if (Array.isArray(rawProduct.specs)) {
       rawProduct.specs.forEach((entry) => {
@@ -158,6 +164,7 @@ export default function LoomeProductDetailView({
     }
     return rows;
   }, [
+    idx,
     normalized.material,
     normalized.composition,
     normalized.gsm,
@@ -339,7 +346,7 @@ export default function LoomeProductDetailView({
   };
 
   const tabs: Array<{ key: DetailTabKey; label: string; fieldPath?: string }> = [
-    { key: 'details', label: 'Details' },
+    { key: 'details', label: detailsHeading, fieldPath: 'productDetailPage.detailsHeading' },
     ...(hasSpecs
       ? [{ key: 'specs' as const, label: specsHeading, fieldPath: 'productDetailPage.specsHeading' }]
       : []),
@@ -445,6 +452,8 @@ export default function LoomeProductDetailView({
                     src={withBasePath(activeImage)}
                     alt={normalized.name}
                     data-preview-field-path={`products[${idx}].imageUrl`}
+                    data-preview-style-target={`products[${idx}].imageUrl`}
+                    data-preview-style-type="image"
                     className="h-full w-full object-cover transition-transform duration-300 ease-out"
                     style={{
                       transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
@@ -455,11 +464,12 @@ export default function LoomeProductDetailView({
                 </motion.div>
               </AnimatePresence>
 
-              {/* Product Badge */}
+              {/* Product Badge — high-contrast and clickable in Fivora visual editor */}
               {normalized.badge && (
                 <span
                   data-preview-field-path={`products[${idx}].badge`}
-                  className="pointer-events-none absolute left-3.5 top-3.5 rounded-[8px] bg-[#2C211B]/86 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F7F3ED] backdrop-blur-sm"
+                  onClick={(e) => e.stopPropagation()}
+                  className="pointer-events-auto absolute left-3.5 top-3.5 z-10 rounded-[8px] border border-[#C8A98B]/55 bg-[#201A17]/95 px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-[0.14em] text-[#FAF7F2] shadow-[0_4px_12px_rgba(0,0,0,0.28)] backdrop-blur-sm"
                 >
                   {normalized.badge}
                 </span>
@@ -654,7 +664,7 @@ export default function LoomeProductDetailView({
                       {colorLabel}
                     </span>
                     <span
-                      data-preview-static="color-swatch-value"
+                      data-testid="color-swatch-value"
                       className="font-medium text-[var(--muted-text)]"
                     >
                       {activeColor.name}
@@ -678,7 +688,7 @@ export default function LoomeProductDetailView({
                             aria-label={`Select color ${swatch.name}`}
                             aria-pressed={selected}
                             title={swatch.name}
-                            data-preview-static={`detail-swatch-${sIdx}`}
+                            data-testid={`detail-swatch-${sIdx}`}
                             className={`flex items-center gap-2 rounded-[10px] border px-2.5 py-1.5 text-xs font-medium transition-all duration-200 ${
                               selected
                                 ? 'border-[var(--loome-btn-primary-bg)] bg-[var(--loome-surface-muted)] text-[var(--heading-color)] ring-1 ring-[var(--brand-accent)]/45'
@@ -686,10 +696,13 @@ export default function LoomeProductDetailView({
                             }`}
                           >
                             <span
+                              data-preview-field-path={`products[${idx}].colors[${sIdx}].hex`}
                               className="h-3.5 w-3.5 rounded-full border border-[var(--loome-border)]"
                               style={{ backgroundColor: swatch.hex }}
                             />
-                            <span>{swatch.name}</span>
+                            <span data-preview-field-path={`products[${idx}].colors[${sIdx}].name`}>
+                              {swatch.name}
+                            </span>
                           </button>
                         </span>
                       );
@@ -931,7 +944,11 @@ export default function LoomeProductDetailView({
                       : 'text-[var(--muted-text)] hover:text-[var(--heading-color)]'
                   }`}
                 >
-                  {tab.fieldPath === 'productDetailPage.specsHeading' ? (
+                  {tab.fieldPath === 'productDetailPage.detailsHeading' ? (
+                    <span data-preview-field-path="productDetailPage.detailsHeading">
+                      {tab.label}
+                    </span>
+                  ) : tab.fieldPath === 'productDetailPage.specsHeading' ? (
                     <span data-preview-field-path="productDetailPage.specsHeading">
                       {tab.label}
                     </span>
@@ -960,8 +977,11 @@ export default function LoomeProductDetailView({
           {/* Tab Panel Content */}
           <div role="tabpanel" className="p-5 sm:p-7">
             {activeTab === 'details' && (
-              <div data-preview-static="detail-panel-details" className="max-w-3xl space-y-4">
-                <p className="m-0 text-sm leading-relaxed text-[var(--page-text)]">
+              <div data-testid="detail-panel-details" className="max-w-3xl space-y-4">
+                <p
+                  data-preview-field-path={`products[${idx}].description`}
+                  className="m-0 text-sm leading-relaxed text-[var(--page-text)]"
+                >
                   {normalized.description ||
                     'Crafted from natural long-staple fibers designed for everyday elegance and breathable comfort.'}
                 </p>
@@ -970,7 +990,7 @@ export default function LoomeProductDetailView({
                   <div className="flex flex-wrap gap-2 pt-1">
                     {normalized.material && (
                       <span
-                        data-preview-static="product-material-pill"
+                        data-preview-field-path={`products[${idx}].material`}
                         className="rounded-[9px] border border-[var(--loome-border)] bg-[var(--loome-surface-muted)] px-3 py-1.5 text-xs font-semibold text-[var(--heading-color)]"
                       >
                         {normalized.material}
@@ -978,7 +998,7 @@ export default function LoomeProductDetailView({
                     )}
                     {normalized.gsm && (
                       <span
-                        data-preview-static="product-gsm-pill"
+                        data-preview-field-path={`products[${idx}].gsm`}
                         className="rounded-[9px] border border-[var(--loome-border)] bg-[var(--loome-surface-muted)] px-3 py-1.5 text-xs font-semibold text-[var(--heading-color)]"
                       >
                         {normalized.gsm}
@@ -986,7 +1006,7 @@ export default function LoomeProductDetailView({
                     )}
                     {normalized.dimensions && (
                       <span
-                        data-preview-static="product-dimensions-pill"
+                        data-preview-field-path={`products[${idx}].dimensions`}
                         className="rounded-[9px] border border-[var(--loome-border)] bg-[var(--loome-surface-muted)] px-3 py-1.5 text-xs font-semibold text-[var(--heading-color)]"
                       >
                         {normalized.dimensions}
@@ -999,7 +1019,7 @@ export default function LoomeProductDetailView({
 
             {activeTab === 'specs' && hasSpecs && (
               <dl
-                data-preview-static="detail-panel-specs"
+                data-testid="detail-panel-specs"
                 className="m-0 grid grid-cols-1 gap-x-10 gap-y-3 sm:grid-cols-2"
               >
                 {textileSpecs.map((spec) => (
@@ -1014,7 +1034,7 @@ export default function LoomeProductDetailView({
                       {spec.label}
                     </dt>
                     <dd
-                      data-preview-static={`spec-value-${spec.label}`}
+                      data-preview-field-path={spec.fieldPath}
                       className="m-0 text-sm font-semibold text-[var(--heading-color)] sm:text-right"
                     >
                       {spec.value}
@@ -1025,9 +1045,9 @@ export default function LoomeProductDetailView({
             )}
 
             {activeTab === 'care' && hasCare && normalized.careInstructions && (
-              <div data-preview-static="detail-panel-care" className="max-w-3xl">
+              <div data-testid="detail-panel-care" className="max-w-3xl">
                 <p
-                  data-preview-static="product-care-instructions"
+                  data-preview-field-path={`products[${idx}].careInstructions`}
                   className="m-0 text-sm leading-relaxed text-[var(--page-text)]"
                 >
                   {normalized.careInstructions}
@@ -1096,13 +1116,15 @@ export default function LoomeProductDetailView({
               </div>
             </LuxuryReveal>
 
-            <LuxuryStagger className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {relatedProducts.map((relProduct) => (
-                <LuxuryStaggerItem key={relProduct.id}>
-                  <LoomeProductCard product={relProduct} tone="light" />
-                </LuxuryStaggerItem>
-              ))}
-            </LuxuryStagger>
+            <div data-preview-list-path="products">
+              <LuxuryStagger className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {relatedProducts.map((relProduct) => (
+                  <LuxuryStaggerItem key={relProduct.id}>
+                    <LoomeProductCard product={relProduct} tone="light" />
+                  </LuxuryStaggerItem>
+                ))}
+              </LuxuryStagger>
+            </div>
           </div>
         </section>
       )}

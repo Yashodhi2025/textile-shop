@@ -350,6 +350,8 @@ export default function LoomeFooter() {
                   src={withBasePath(logoUrl)}
                   alt={siteTitle}
                   data-preview-field-path="common.logoUrl"
+                  data-preview-style-target="common.logoUrl"
+                  data-preview-style-type="image"
                   className="h-8 w-8 rounded-[6px] object-contain"
                 />
                 <span

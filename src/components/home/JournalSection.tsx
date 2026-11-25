@@ -154,6 +154,8 @@ export default function JournalSection() {
                             alt={post.title}
                             loading="lazy"
                             data-preview-field-path={`home.journalPosts[${post.index}].imageUrl`}
+                            data-preview-style-target={`home.journalPosts[${post.index}].imageUrl`}
+                            data-preview-style-type="image"
                             className="h-full w-full object-cover transition-transform duration-[950ms] ease-luxury group-hover:scale-[1.045]"
                           />
                         </LuxuryImageReveal>

@@ -108,7 +108,36 @@
       "collectionsPage.collections[*].id",
       "collectionsPage.collections[*].matchProductIds",
       "collectionsPage.collections[*].matchCategories",
-      "collectionsPage.collections[*].matchCollectionTag"
+      "collectionsPage.collections[*].matchCollectionTag",
+      "announcementBarPreview.intervalMs",
+      "common.navLabels.wishlist",
+      "common.navLabels.cart",
+      "common.navLabels.checkout",
+      "common.accountDrawer.eyebrow",
+      "common.accountDrawer.heading",
+      "common.accountDrawer.wishlistLabel",
+      "common.accountDrawer.bagLabel",
+      "common.accountDrawer.tradeHeading",
+      "common.accountDrawer.tradeDescription",
+      "common.accountDrawer.primaryCtaLabel",
+      "common.accountDrawer.secondaryCtaLabel",
+      "common.notFound.eyebrow",
+      "common.notFound.heading",
+      "common.notFound.description",
+      "common.notFound.ctaLabel",
+      "shopPage.emptyEyebrow",
+      "shopPage.emptyHeading",
+      "shopPage.emptyDescription",
+      "shopPage.resetFiltersLabel",
+      "wishlistPage.clearAllLabel",
+      "cartPage.itemsHeading",
+      "cartPage.summaryHeading",
+      "cartPage.clearCartLabel",
+      "cartPage.viewBagLabel",
+      "cartPage.summaryFootnote",
+      "checkoutPage.emptySecondaryCtaLabel",
+      "productDetailPage.detailsHeading",
+      "productDetailPage.quickViewSpecsLabel"
     ]
   },
   "siteDataFile": "src/data/site-data.json",
@@ -127,6 +156,11 @@
       "id": "shop",
       "label": "Shop",
       "route": "/shop"
+    },
+    {
+      "id": "product_detail",
+      "label": "Product Detail",
+      "route": "/products/detail"
     },
     {
       "id": "collections",
@@ -266,6 +300,21 @@
                 "key": "collections",
                 "type": "text",
                 "label": "Collections label"
+              },
+              {
+                "key": "wishlist",
+                "type": "text",
+                "label": "Wishlist label"
+              },
+              {
+                "key": "cart",
+                "type": "text",
+                "label": "Cart label"
+              },
+              {
+                "key": "checkout",
+                "type": "text",
+                "label": "Checkout label"
               },
               {
                 "key": "about_us",
@@ -411,6 +460,107 @@
             "key": "copyright",
             "type": "text",
             "label": "Copyright"
+          },
+          {
+            "key": "socialMedia",
+            "type": "object",
+            "label": "Social Media Links",
+            "fields": [
+              {
+                "key": "instagram",
+                "type": "url",
+                "label": "Instagram URL"
+              },
+              {
+                "key": "twitter",
+                "type": "url",
+                "label": "Twitter / X URL"
+              },
+              {
+                "key": "linkedin",
+                "type": "url",
+                "label": "LinkedIn URL"
+              },
+              {
+                "key": "facebook",
+                "type": "url",
+                "label": "Facebook URL"
+              }
+            ]
+          },
+          {
+            "key": "accountDrawer",
+            "type": "object",
+            "label": "Client Account Drawer",
+            "fields": [
+              {
+                "key": "eyebrow",
+                "type": "text",
+                "label": "Drawer Eyebrow"
+              },
+              {
+                "key": "heading",
+                "type": "text",
+                "label": "Drawer Heading"
+              },
+              {
+                "key": "wishlistLabel",
+                "type": "text",
+                "label": "Wishlist Counter Label"
+              },
+              {
+                "key": "bagLabel",
+                "type": "text",
+                "label": "Bag Counter Label"
+              },
+              {
+                "key": "tradeHeading",
+                "type": "text",
+                "label": "Trade Program Card Heading"
+              },
+              {
+                "key": "tradeDescription",
+                "type": "textarea",
+                "label": "Trade Program Card Description"
+              },
+              {
+                "key": "primaryCtaLabel",
+                "type": "text",
+                "label": "Primary Action Button Label"
+              },
+              {
+                "key": "secondaryCtaLabel",
+                "type": "text",
+                "label": "Secondary Action Button Label"
+              }
+            ]
+          },
+          {
+            "key": "notFound",
+            "type": "object",
+            "label": "404 Not Found Page",
+            "fields": [
+              {
+                "key": "eyebrow",
+                "type": "text",
+                "label": "404 Eyebrow"
+              },
+              {
+                "key": "heading",
+                "type": "text",
+                "label": "404 Heading"
+              },
+              {
+                "key": "description",
+                "type": "textarea",
+                "label": "404 Description"
+              },
+              {
+                "key": "ctaLabel",
+                "type": "text",
+                "label": "404 Return Button Label"
+              }
+            ]
           }
         ]
       },
@@ -870,6 +1020,12 @@
             "maxItems": 8,
             "fields": [
               {
+                "key": "icon",
+                "type": "text",
+                "control": "icon-picker",
+                "label": "Icon"
+              },
+              {
                 "key": "title",
                 "type": "text",
                 "label": "Title",
@@ -1041,6 +1197,31 @@
             "key": "intro",
             "type": "textarea",
             "label": "Introduction"
+          },
+          {
+            "key": "searchPlaceholder",
+            "type": "text",
+            "label": "Search Input Placeholder"
+          },
+          {
+            "key": "emptyEyebrow",
+            "type": "text",
+            "label": "No Results Eyebrow"
+          },
+          {
+            "key": "emptyHeading",
+            "type": "text",
+            "label": "No Results Heading"
+          },
+          {
+            "key": "emptyDescription",
+            "type": "textarea",
+            "label": "No Results Description"
+          },
+          {
+            "key": "resetFiltersLabel",
+            "type": "text",
+            "label": "Reset Filters Button Label"
           }
         ]
       },
@@ -1189,6 +1370,11 @@
             "key": "emptyCtaLabel",
             "type": "text",
             "label": "Empty Wishlist Button Label"
+          },
+          {
+            "key": "clearAllLabel",
+            "type": "text",
+            "label": "Clear All Button Label"
           }
         ]
       },
@@ -1214,6 +1400,31 @@
             "key": "intro",
             "type": "textarea",
             "label": "Introduction"
+          },
+          {
+            "key": "itemsHeading",
+            "type": "text",
+            "label": "Items Card Heading"
+          },
+          {
+            "key": "summaryHeading",
+            "type": "text",
+            "label": "Order Summary Heading"
+          },
+          {
+            "key": "clearCartLabel",
+            "type": "text",
+            "label": "Clear Cart Link Label"
+          },
+          {
+            "key": "viewBagLabel",
+            "type": "text",
+            "label": "Drawer View Bag Button Label"
+          },
+          {
+            "key": "summaryFootnote",
+            "type": "text",
+            "label": "Order Summary Footnote"
           },
           {
             "key": "deliveryNote",
@@ -1271,6 +1482,21 @@
             "label": "Introduction"
           },
           {
+            "key": "step1Label",
+            "type": "text",
+            "label": "Step 1 Label"
+          },
+          {
+            "key": "step2Label",
+            "type": "text",
+            "label": "Step 2 Label"
+          },
+          {
+            "key": "step3Label",
+            "type": "text",
+            "label": "Step 3 Label"
+          },
+          {
             "key": "deliveryNote",
             "type": "textarea",
             "label": "Delivery & Concierge Note"
@@ -1304,6 +1530,11 @@
             "key": "emptyDescription",
             "type": "textarea",
             "label": "Empty Bag Description"
+          },
+          {
+            "key": "emptySecondaryCtaLabel",
+            "type": "text",
+            "label": "Empty State Secondary Button Label"
           }
         ]
       },
@@ -2327,6 +2558,11 @@
             "maxItems": 12,
             "fields": [
               {
+                "key": "id",
+                "type": "text",
+                "label": "Image ID"
+              },
+              {
                 "key": "image",
                 "type": "image",
                 "label": "Image"
@@ -2531,7 +2767,7 @@
       {
         "id": "productDetailPage",
         "path": "productDetailPage",
-        "pageKey": "shop",
+        "pageKey": "product_detail",
         "type": "object",
         "label": "Product Detail Labels & Delivery",
         "fields": [
@@ -2556,6 +2792,11 @@
             "label": "WhatsApp Inquiry Button Label"
           },
           {
+            "key": "quickViewSpecsLabel",
+            "type": "text",
+            "label": "Quick View Full Details Link Label"
+          },
+          {
             "key": "deliveryTitle",
             "type": "text",
             "label": "Delivery Highlight Heading"
@@ -2574,6 +2815,11 @@
             "key": "swatchLinkLabel",
             "type": "text",
             "label": "Request Swatches Link Label"
+          },
+          {
+            "key": "detailsHeading",
+            "type": "text",
+            "label": "Details Tab Heading"
           },
           {
             "key": "specsHeading",
@@ -2675,6 +2921,11 @@
             "key": "showPrice",
             "type": "boolean",
             "label": "Show Price on Storefront"
+          },
+          {
+            "key": "isAvailable",
+            "type": "boolean",
+            "label": "In Stock / Available"
           },
           {
             "key": "isPriceRange",
@@ -2807,14 +3058,29 @@
         "label": "Flash Sale Countdown",
         "fields": [
           {
+            "key": "eyebrow",
+            "type": "text",
+            "label": "Promo Eyebrow"
+          },
+          {
+            "key": "promoHeading",
+            "type": "text",
+            "label": "Promo Heading"
+          },
+          {
+            "key": "promoDescription",
+            "type": "textarea",
+            "label": "Promo Description"
+          },
+          {
             "key": "heading",
             "type": "text",
-            "label": "Heading"
+            "label": "Countdown Heading"
           },
           {
             "key": "subtitle",
             "type": "text",
-            "label": "Subtitle"
+            "label": "Countdown Subtitle"
           },
           {
             "key": "deadline",
@@ -2836,6 +3102,21 @@
             "key": "ctaUrl",
             "type": "url",
             "label": "CTA URL"
+          },
+          {
+            "key": "termsNote",
+            "type": "text",
+            "label": "Terms Footnote"
+          },
+          {
+            "key": "collectionHeading",
+            "type": "text",
+            "label": "Lower Banner Heading"
+          },
+          {
+            "key": "collectionCopy",
+            "type": "textarea",
+            "label": "Lower Banner Description"
           }
         ]
       },
@@ -2846,6 +3127,11 @@
         "type": "object",
         "label": "Announcement Bar",
         "fields": [
+          {
+            "key": "intervalMs",
+            "type": "number",
+            "label": "Rotation Interval (ms)"
+          },
           {
             "key": "announcements",
             "type": "list",
@@ -2915,7 +3201,7 @@
       },
       "spacing": {
         "heroMinHeight": "88vh",
-        "sectionPadding": "6rem"
+        "sectionPadding": "4.5rem"
       }
     }
   }

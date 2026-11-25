@@ -18,6 +18,13 @@ export default function CountdownPreviewPage() {
   const home = contentObject(contentObject(siteData.content).home);
   const countdown = contentObject(home.countdown);
 
+  const eyebrow =
+    contentText(countdown.eyebrow) || 'The Seasonal Edit · Limited Time';
+  const promoHeading =
+    contentText(countdown.promoHeading) || 'Heirloom textiles. Private atelier pricing.';
+  const promoDescription =
+    contentText(countdown.promoDescription) ||
+    'Refresh your rooms with small-batch Belgian flax drapery, stonewashed duvet sets, and hand-loomed throws during our seasonal event.';
   const heading = contentText(countdown.heading) || 'Private Atelier Event ends in';
   const subtitle =
     contentText(countdown.subtitle) ||
@@ -28,6 +35,14 @@ export default function CountdownPreviewPage() {
     'This seasonal edit has concluded. Explore our current atelier collection.';
   const ctaLabel = contentText(countdown.ctaLabel) || 'Explore Collection';
   const ctaUrl = contentText(countdown.ctaUrl) || '#sale-collection';
+  const termsNote =
+    contentText(countdown.termsNote) ||
+    'Selected editions only. Event concludes at the scheduled deadline above.';
+  const collectionHeading =
+    contentText(countdown.collectionHeading) || 'Considered details. Everyday luxury.';
+  const collectionCopy =
+    contentText(countdown.collectionCopy) ||
+    'Explore our seasonal curation of Belgian flax drapery, stonewashed bedding, and hand-loomed throws.';
 
   const targetMs = parseIsoDeadline(deadline);
   const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null);
@@ -70,24 +85,40 @@ export default function CountdownPreviewPage() {
       >
         <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
           <div className="lg:col-span-5">
-            <p
-              data-preview-static="sale-eyebrow"
-              className="m-0 text-[11px] font-medium uppercase tracking-[0.26em] text-[#8D7667] dark:text-[#C8A98B]"
-            >
-              The Seasonal Edit · Limited Time
-            </p>
-            <h1
-              data-preview-static="sale-title"
-              className="mt-4 font-serif text-4xl font-light leading-[1.06] tracking-tight sm:text-5xl lg:text-[3.5rem]"
-            >
-              Heirloom textiles. Private atelier pricing.
-            </h1>
-            <p
-              data-preview-static="sale-description"
-              className="mt-4 max-w-md text-sm leading-[1.85] text-[#5E4E45] dark:text-[#C7B6A6]"
-            >
-              Refresh your rooms with small-batch Belgian flax drapery, stonewashed duvet sets, and hand-loomed throws during our seasonal event.
-            </p>
+            <EditableText
+              as="p"
+              data-preview-field-path="home.countdown.eyebrow"
+              defaultValue={eyebrow}
+              fontFamily="body"
+              size="0.6875rem"
+              weight={600}
+              transform="uppercase"
+              letterSpacing="0.24em"
+              color="accent"
+              className="m-0"
+            />
+            <EditableText
+              as="h1"
+              data-preview-field-path="home.countdown.promoHeading"
+              defaultValue={promoHeading}
+              fontFamily="heading"
+              size="clamp(2.25rem, 4vw, 3.25rem)"
+              weight={800}
+              lineHeight={1.08}
+              letterSpacing="-0.025em"
+              color="heading"
+              className="mt-4 mb-0"
+            />
+            <EditableText
+              as="p"
+              data-preview-field-path="home.countdown.promoDescription"
+              defaultValue={promoDescription}
+              fontFamily="body"
+              size="0.9375rem"
+              lineHeight={1.75}
+              color="muted"
+              className="mt-4 mb-0 max-w-md"
+            />
           </div>
 
           <div className="lg:col-span-7">
@@ -157,12 +188,16 @@ export default function CountdownPreviewPage() {
               </div>
             </div>
 
-            <p
-              data-preview-static="sale-terms"
-              className="mt-4 text-center text-xs text-[#5E4E45] dark:text-[#C7B6A6]"
-            >
-              Selected editions only. Event concludes at the scheduled deadline above.
-            </p>
+            <EditableText
+              as="p"
+              data-preview-field-path="home.countdown.termsNote"
+              defaultValue={termsNote}
+              fontFamily="body"
+              size="0.75rem"
+              color="muted"
+              align="center"
+              className="mt-4 mb-0"
+            />
           </div>
         </div>
       </section>
@@ -171,18 +206,27 @@ export default function CountdownPreviewPage() {
         id="sale-collection"
         className="border-t border-[#201C1A]/10 bg-[#E6D9C9]/38 px-4 py-12 text-center dark:border-[#F2E9DE]/10 dark:bg-[#3B302B]"
       >
-        <h2
-          data-preview-static="sale-collection-heading"
-          className="font-serif text-3xl font-light text-[#201C1A] dark:text-[#F2E9DE]"
-        >
-          Considered details. Everyday luxury.
-        </h2>
-        <p
-          data-preview-static="sale-collection-copy"
-          className="mx-auto mt-2 max-w-lg text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
-        >
-          Explore our seasonal curation of Belgian flax drapery, stonewashed bedding, and hand-loomed throws.
-        </p>
+        <EditableText
+          as="h2"
+          data-preview-field-path="home.countdown.collectionHeading"
+          defaultValue={collectionHeading}
+          fontFamily="heading"
+          size="1.875rem"
+          weight={800}
+          color="heading"
+          align="center"
+          className="m-0"
+        />
+        <EditableText
+          as="p"
+          data-preview-field-path="home.countdown.collectionCopy"
+          defaultValue={collectionCopy}
+          fontFamily="body"
+          size="0.9rem"
+          color="muted"
+          align="center"
+          className="mx-auto mt-2 mb-0 max-w-lg"
+        />
       </section>
     </div>
   );

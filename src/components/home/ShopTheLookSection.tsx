@@ -166,6 +166,8 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                     alt="Interactive LOOMÉ styled living room"
                     loading="lazy"
                     data-preview-field-path="home.shopTheLook.imageUrl"
+                    data-preview-style-target="home.shopTheLook.imageUrl"
+                    data-preview-style-type="image"
                     className="h-full w-full scale-[1.06] object-cover"
                   />
                 </motion.div>

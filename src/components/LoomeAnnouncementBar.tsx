@@ -11,8 +11,16 @@ import { LUXURY_EASE } from '@/components/motion/LuxuryReveal';
 export default function LoomeAnnouncementBar() {
   const siteData = useSiteData();
   const content = contentObject(siteData.content);
+  const common = contentObject(content.common);
   const previewBlock = contentObject(content.announcementBarPreview);
   const rawAnnouncements = contentList(previewBlock.announcements);
+  const siteTitle = contentText(common.websiteTitle) || 'LOOMÉ';
+  const footerTagline = contentText(common.footerTagline) || 'The Art of Fine Textiles';
+  const rawInterval = Number(previewBlock.intervalMs);
+  const rotationIntervalMs =
+    Number.isFinite(rawInterval) && rawInterval >= 2000 && rawInterval <= 20000
+      ? rawInterval
+      : 5200;
 
   const items = rawAnnouncements.map((raw, idx) => {
     const item = contentObject(raw);
@@ -35,9 +43,9 @@ export default function LoomeAnnouncementBar() {
     if (count <= 1 || paused) return;
     const timer = window.setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % count);
-    }, 5200);
+    }, rotationIntervalMs);
     return () => window.clearInterval(timer);
-  }, [count, paused]);
+  }, [count, paused, rotationIntervalMs]);
 
   const pathname = usePathname() || '/';
   const isHome = pathname === '/' || pathname === '';
@@ -52,8 +60,22 @@ export default function LoomeAnnouncementBar() {
     if (href.startsWith('#')) {
       return isHome ? href : `${withBasePath('/')}${href}`;
     }
-    const clean = href.replace(/^\/+|\/+$/g, '');
-    if (['about_us', 'services', 'contact'].includes(clean) && !requiredPages.includes(clean)) {
+    const clean = href.replace(/^\/+|\/+$/g, '').split(/[/?#]/)[0].replace(/-/g, '_');
+    const optionalPages = [
+      'shop',
+      'collections',
+      'wishlist',
+      'cart',
+      'checkout',
+      'journal',
+      'textile_care',
+      'shipping_returns',
+      'faq',
+      'about_us',
+      'services',
+      'contact',
+    ];
+    if (optionalPages.includes(clean) && !requiredPages.includes(clean)) {
       return isHome ? '#categories' : `${withBasePath('/')}#categories`;
     }
     return withBasePath(href);
@@ -139,7 +161,7 @@ export default function LoomeAnnouncementBar() {
                   data-preview-static="announcement-empty"
                   className="text-[11px] uppercase tracking-[0.2em] text-[#C8A98B]/80"
                 >
-                  LOOMÉ — The Art of Fine Textiles
+                  {siteTitle} — {footerTagline}
                 </span>
               </div>
             )}

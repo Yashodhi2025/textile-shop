@@ -176,6 +176,8 @@ export default function LoomeNavbar() {
                 src={withBasePath(logoUrl)}
                 alt={siteTitle}
                 data-preview-field-path="common.logoUrl"
+                data-preview-style-target="common.logoUrl"
+                data-preview-style-type="image"
                 className="h-7 w-7 shrink-0 rounded-[6px] object-contain transition-transform duration-300 group-hover:scale-105"
               />
               <span
@@ -402,7 +404,7 @@ export default function LoomeNavbar() {
                     className="flex items-center justify-center gap-2 rounded-[10px] border border-[#49382D]/18 bg-white py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#49382D] transition-colors hover:border-[#B28B65] dark:border-[#C8A98B]/28 dark:bg-[#28211D] dark:text-[#F5EEE6]"
                   >
                     <Heart className="h-3.5 w-3.5 stroke-[1.6]" />
-                    Wishlist ({wishlistCount})
+                    <span>{contentText(navLabels.wishlist) || 'Wishlist'} ({wishlistCount})</span>
                   </button>
                 </div>
                 {requiredPages.includes('services') && (

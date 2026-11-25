@@ -95,6 +95,8 @@ export default function CraftsmanshipSection() {
                 alt="LOOMÉ heritage loom weaving craftsmanship"
                 loading="lazy"
                 data-preview-field-path="home.craftsmanshipImageUrl"
+                data-preview-style-target="home.craftsmanshipImageUrl"
+                data-preview-style-type="image"
                 className="h-full w-full scale-[1.06] object-cover"
               />
             </motion.div>
@@ -111,6 +113,8 @@ export default function CraftsmanshipSection() {
                 alt="Close-up macro texture of woven Belgian flax linen"
                 loading="lazy"
                 data-preview-field-path="home.craftsmanshipDetailImageUrl"
+                data-preview-style-target="home.craftsmanshipDetailImageUrl"
+                data-preview-style-type="image"
                 className="h-full w-full object-cover transition-transform duration-[900ms] ease-luxury hover:scale-[1.05]"
               />
             </LuxuryImageReveal>

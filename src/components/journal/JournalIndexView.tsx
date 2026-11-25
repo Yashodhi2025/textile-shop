@@ -473,6 +473,8 @@ export default function JournalIndexView() {
                           src={withBasePath(featuredPost.imageUrl)}
                           alt={featuredPost.title}
                           data-preview-field-path={`home.journalPosts[${featuredPost.index}].imageUrl`}
+                          data-preview-style-target={`home.journalPosts[${featuredPost.index}].imageUrl`}
+                          data-preview-style-type="image"
                           className="h-full w-full object-cover transition-transform duration-[950ms] ease-luxury group-hover:scale-[1.04]"
                         />
                       </LuxuryImageReveal>
@@ -714,6 +716,8 @@ export default function JournalIndexView() {
                                   alt={post.title}
                                   loading="lazy"
                                   data-preview-field-path={`home.journalPosts[${post.index}].imageUrl`}
+                                  data-preview-style-target={`home.journalPosts[${post.index}].imageUrl`}
+                                  data-preview-style-type="image"
                                   className="h-full w-full object-cover transition-transform duration-[950ms] ease-luxury group-hover:scale-[1.045]"
                                 />
                               </LuxuryImageReveal>

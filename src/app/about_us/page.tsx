@@ -160,6 +160,8 @@ export default function AboutPage() {
                           alt={item.caption || 'Atelier textile detail'}
                           loading="lazy"
                           data-preview-field-path={`about.collageImages[${index}].image`}
+                          data-preview-style-target={`about.collageImages[${index}].image`}
+                          data-preview-style-type="image"
                           className="h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.05]"
                         />
                       </div>

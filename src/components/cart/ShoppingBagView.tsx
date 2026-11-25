@@ -42,6 +42,7 @@ export default function ShoppingBagView() {
   const cartPage = contentObject(content.cartPage);
   const homeNavLabel = contentText(navLabels.home) || 'Home';
   const shopNavLabel = contentText(navLabels.shop) || 'Shop';
+  const cartNavLabel = contentText(navLabels.cart) || 'Cart';
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
@@ -80,6 +81,12 @@ export default function ShoppingBagView() {
   const checkoutLabel = contentText(cartPage.checkoutLabel) || 'Proceed to Checkout';
   const continueShoppingLabel =
     contentText(cartPage.continueShoppingLabel) || 'Continue Shopping';
+  const itemsHeading = contentText(cartPage.itemsHeading) || 'Items in Your Bag';
+  const summaryHeading = contentText(cartPage.summaryHeading) || 'Order Summary';
+  const clearCartLabel = contentText(cartPage.clearCartLabel) || 'Clear Cart';
+  const summaryFootnote =
+    contentText(cartPage.summaryFootnote) ||
+    'Delivery details and WhatsApp confirmation happen on the next step.';
   const assuranceEyebrow =
     contentText(cartPage.assuranceEyebrow) || 'Delivery & Order Assurance';
   const emptyHeading =
@@ -138,10 +145,10 @@ export default function ShoppingBagView() {
           )}
           <span
             aria-current="page"
-            data-preview-static="cart-breadcrumb-current"
+            data-preview-field-path="common.navLabels.cart"
             className="font-semibold text-[var(--heading-color)]"
           >
-            Cart
+            {cartNavLabel}
           </span>
         </nav>
       </div>
@@ -269,8 +276,11 @@ export default function ShoppingBagView() {
               >
                 {/* Compact Column Header */}
                 <div className="flex items-center justify-between border-b border-[var(--loome-border)] pb-3.5">
-                  <h2 className="m-0 font-heading text-base font-bold tracking-tight text-[var(--heading-color)]">
-                    Items in Your Bag
+                  <h2
+                    data-preview-field-path="cartPage.itemsHeading"
+                    className="m-0 font-heading text-base font-bold tracking-tight text-[var(--heading-color)]"
+                  >
+                    {itemsHeading}
                   </h2>
                   <div className="hidden items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted-text)] sm:flex">
                     <span className="w-[104px] text-center">Qty</span>
@@ -431,10 +441,10 @@ export default function ShoppingBagView() {
                   <button
                     type="button"
                     onClick={() => cart.clearCart()}
-                    data-preview-static="cart-clear-btn"
+                    data-testid="cart-clear-btn"
                     className="border-0 bg-transparent p-0 text-xs font-medium text-[var(--muted-text)] underline decoration-[var(--loome-border)] underline-offset-4 transition-colors hover:text-[var(--loome-danger-text)]"
                   >
-                    Clear Cart
+                    <span data-preview-field-path="cartPage.clearCartLabel">{clearCartLabel}</span>
                   </button>
                 </div>
               </div>
@@ -446,8 +456,11 @@ export default function ShoppingBagView() {
                 data-testid="cart-summary-card"
                 className="rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-6 shadow-[0_10px_30px_rgba(73,56,45,0.07)]"
               >
-                <h2 className="m-0 border-b border-[var(--loome-border)] pb-3.5 font-heading text-lg font-extrabold tracking-tight text-[var(--heading-color)]">
-                  Order Summary
+                <h2
+                  data-preview-field-path="cartPage.summaryHeading"
+                  className="m-0 border-b border-[var(--loome-border)] pb-3.5 font-heading text-lg font-extrabold tracking-tight text-[var(--heading-color)]"
+                >
+                  {summaryHeading}
                 </h2>
 
                 {/* Free Delivery Progress Bar — Subtle Sage Green when Unlocked */}
@@ -549,8 +562,11 @@ export default function ShoppingBagView() {
                   </motion.button>
                 </div>
 
-                <p className="mt-3.5 mb-0 text-center text-xs leading-relaxed text-[var(--muted-text)]">
-                  Delivery details and WhatsApp confirmation happen on the next step.
+                <p
+                  data-preview-field-path="cartPage.summaryFootnote"
+                  className="mt-3.5 mb-0 text-center text-xs leading-relaxed text-[var(--muted-text)]"
+                >
+                  {summaryFootnote}
                 </p>
               </div>
             </aside>

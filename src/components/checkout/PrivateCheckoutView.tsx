@@ -103,11 +103,21 @@ export default function PrivateCheckoutView() {
   const common = contentObject(content.common);
   const navLabels = contentObject(common.navLabels);
   const contact = contentObject(content.contact);
+  const cartPage = contentObject(content.cartPage);
   const checkoutPage = contentObject(content.checkoutPage);
   const shopMeta = contentObject((siteData as Record<string, unknown>).shop);
   const merchantMeta = contentObject((siteData as Record<string, unknown>).merchant);
   const homeNavLabel = contentText(navLabels.home) || 'Home';
   const shopNavLabel = contentText(navLabels.shop) || 'Shop';
+  const checkoutNavLabel = contentText(navLabels.checkout) || 'Private Checkout';
+  const continueShoppingLabel =
+    contentText(cartPage.continueShoppingLabel) || 'Continue Shopping';
+  const summaryHeading = contentText(cartPage.summaryHeading) || 'Order Summary';
+  const step1Label = contentText(checkoutPage.step1Label) || 'Review Bag';
+  const step2Label = contentText(checkoutPage.step2Label) || 'Delivery Details';
+  const step3Label = contentText(checkoutPage.step3Label) || 'WhatsApp Concierge';
+  const emptySecondaryCtaLabel =
+    contentText(checkoutPage.emptySecondaryCtaLabel) || 'Atelier Services';
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
@@ -460,27 +470,24 @@ export default function PrivateCheckoutView() {
       {/* Merchant-Configurable White-Glove Delivery Progress */}
       {hasDeliveryThreshold && (
         <div
-          className={`rounded-xl border px-3.5 py-3 ${
-            deliveryRemaining === 0
-              ? 'border-[var(--loome-sage-border)] bg-[var(--loome-sage-bg)]'
-              : 'border-[var(--loome-border)] bg-[var(--loome-ivory)]'
-          }`}
+          className={`rounded-xl border px-3.5 py-3 ${deliveryRemaining === 0
+            ? 'border-[var(--loome-sage-border)] bg-[var(--loome-sage-bg)]'
+            : 'border-[var(--loome-border)] bg-[var(--loome-ivory)]'
+            }`}
         >
           <div className="flex items-center justify-between gap-2 text-[11.5px] font-medium text-[var(--heading-color)]">
             <span className="inline-flex items-center gap-1.5">
               <Truck
-                className={`h-3.5 w-3.5 shrink-0 stroke-[1.6] ${
-                  deliveryRemaining === 0 ? 'text-[var(--loome-sage-text)]' : 'text-[var(--brand-accent)]'
-                }`}
+                className={`h-3.5 w-3.5 shrink-0 stroke-[1.6] ${deliveryRemaining === 0 ? 'text-[var(--loome-sage-text)]' : 'text-[var(--brand-accent)]'
+                  }`}
               />
               {deliveryRemaining === 0
                 ? 'Complimentary white-glove delivery unlocked'
                 : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for complimentary delivery`}
             </span>
             <span
-              className={`tabular-nums font-semibold ${
-                deliveryRemaining === 0 ? 'text-[var(--loome-sage-text)]' : 'text-[var(--brand-accent)]'
-              }`}
+              className={`tabular-nums font-semibold ${deliveryRemaining === 0 ? 'text-[var(--loome-sage-text)]' : 'text-[var(--brand-accent)]'
+                }`}
             >
               {deliveryProgress}%
             </span>
@@ -490,9 +497,8 @@ export default function PrivateCheckoutView() {
               initial={false}
               animate={{ width: `${deliveryProgress}%` }}
               transition={{ duration: 0.45, ease: LUXURY_EASE }}
-              className={`h-full rounded-full ${
-                deliveryRemaining === 0 ? 'bg-[var(--loome-sage-text)]' : 'bg-[var(--brand-accent)]'
-              }`}
+              className={`h-full rounded-full ${deliveryRemaining === 0 ? 'bg-[var(--loome-sage-text)]' : 'bg-[var(--brand-accent)]'
+                }`}
             />
           </div>
         </div>
@@ -573,10 +579,10 @@ export default function PrivateCheckoutView() {
           )}
           <span
             aria-current="page"
-            data-preview-static="checkout-breadcrumb-current"
+            data-preview-field-path="common.navLabels.checkout"
             className="font-semibold text-[var(--heading-color)]"
           >
-            Private Checkout
+            {checkoutNavLabel}
           </span>
         </nav>
       </div>
@@ -636,37 +642,34 @@ export default function PrivateCheckoutView() {
           {/* Compact 3-Step Private Checkout Cadence */}
           <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[var(--loome-border)] pt-4 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[var(--muted-color)]">
             <span
-              data-preview-static="checkout-step-1"
               className="inline-flex items-center gap-2 text-[var(--heading-color)]"
             >
               <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[var(--brand-accent)] text-[9px] text-[var(--brand-accent)]">
                 1
               </span>
-              Review Bag
+              <span data-preview-field-path="checkoutPage.step1Label">{step1Label}</span>
             </span>
             <span aria-hidden="true" data-preview-static="checkout-step-sep-1" className="text-[var(--brand-accent)]">
               /
             </span>
             <span
-              data-preview-static="checkout-step-2"
               className="inline-flex items-center gap-2 text-[var(--heading-color)]"
             >
               <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[var(--brand-accent)] text-[9px] text-[var(--brand-accent)]">
                 2
               </span>
-              Delivery Details
+              <span data-preview-field-path="checkoutPage.step2Label">{step2Label}</span>
             </span>
             <span aria-hidden="true" data-preview-static="checkout-step-sep-2" className="text-[var(--brand-accent)]">
               /
             </span>
             <span
-              data-preview-static="checkout-step-3"
               className="inline-flex items-center gap-2 text-[var(--brand-accent)]"
             >
               <span className="flex h-5 w-5 items-center justify-center rounded-full border border-[var(--brand-accent)]/60 text-[9px]">
                 3
               </span>
-              WhatsApp Concierge
+              <span data-preview-field-path="checkoutPage.step3Label">{step3Label}</span>
             </span>
           </div>
         </div>
@@ -714,25 +717,31 @@ export default function PrivateCheckoutView() {
             </div>
 
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href={withBasePath(hasShopPage ? '/shop' : '/')}
+              <button
+                type="button"
+                onClick={() => window.location.assign(withBasePath(hasShopPage ? '/shop/' : '/'))}
                 data-target-page={hasShopPage ? 'shop' : undefined}
-                data-preview-static="checkout-empty-continue-shopping"
-                className="group loome-btn-primary no-underline"
+                data-testid="checkout-empty-continue-shopping"
+                className="group loome-btn-primary cursor-pointer"
               >
-                Continue Shopping
+                <span data-preview-field-path="cartPage.continueShoppingLabel">
+                  {continueShoppingLabel}
+                </span>
                 <ArrowRight className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1" />
-              </a>
+              </button>
 
               {hasServicesPage && (
-                <a
-                  href={withBasePath('/services')}
+                <button
+                  type="button"
+                  onClick={() => window.location.assign(withBasePath('/services/'))}
                   data-target-page="services"
-                  data-preview-static="checkout-empty-explore-atelier"
-                  className="loome-btn-outline no-underline"
+                  data-testid="checkout-empty-explore-atelier"
+                  className="loome-btn-outline cursor-pointer"
                 >
-                  Atelier Services
-                </a>
+                  <span data-preview-field-path="checkoutPage.emptySecondaryCtaLabel">
+                    {emptySecondaryCtaLabel}
+                  </span>
+                </button>
               )}
             </div>
           </LuxuryReveal>
@@ -1101,7 +1110,7 @@ export default function PrivateCheckoutView() {
                           }`}
                       >
                         <MessageCircle className="h-4 w-4 stroke-[1.6]" />
-                        <span>{submitLabel}</span>
+                        <span data-preview-field-path="checkoutPage.submitLabel">{submitLabel}</span>
                         <ArrowRight className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-1" />
                       </motion.button>
 
@@ -1150,8 +1159,11 @@ export default function PrivateCheckoutView() {
                       <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]">
                         Curated Selection
                       </p>
-                      <h2 className="mt-1 mb-0 font-heading text-xl font-extrabold tracking-tight text-[var(--heading-color)]">
-                        Order Summary
+                      <h2
+                        data-preview-field-path="cartPage.summaryHeading"
+                        className="mt-1 mb-0 font-heading text-xl font-extrabold tracking-tight text-[var(--heading-color)]"
+                      >
+                        {summaryHeading}
                       </h2>
                     </div>
                     <span className="rounded-full border border-[var(--loome-border)] bg-[var(--loome-ivory)] px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-[var(--muted-color)]">

@@ -39,10 +39,20 @@ export default function FeaturedCollectionBanner() {
   const ctaLabel = contentText(featured.ctaLabel) || 'Discover the Edit';
   const ctaUrl = contentText(featured.ctaUrl) || '#bestsellers';
 
-  const resolvedUrl =
-    ctaUrl.startsWith('#') || /^https?:\/\//i.test(ctaUrl)
-      ? ctaUrl
-      : withBasePath(ctaUrl);
+  const requiredPages: string[] = Array.isArray(siteData.requirements?.requiredPages)
+    ? siteData.requirements.requiredPages
+    : siteData.template?.structure?.pages || [];
+
+  const resolvedUrl = (() => {
+    const clean = ctaUrl.trim();
+    if (!clean) return '#bestsellers';
+    if (clean.startsWith('#') || /^https?:\/\//i.test(clean)) return clean;
+    const pageKey = clean.replace(/^\/+/, '').split(/[/?#]/)[0].replace(/-/g, '_');
+    if (pageKey && pageKey !== 'home' && !requiredPages.includes(pageKey)) {
+      return '#bestsellers';
+    }
+    return withBasePath(clean);
+  })();
 
   return (
     <section
@@ -61,9 +71,11 @@ export default function FeaturedCollectionBanner() {
           alt={title}
           loading="lazy"
           data-preview-field-path="home.featuredCollection.imageUrl"
+          data-preview-style-target="home.featuredCollection.imageUrl"
+          data-preview-style-type="image"
           className="h-full w-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[#2D2722]/58" />
+        <div className="pointer-events-none absolute inset-0 bg-[#2D2722]/58" />
       </motion.div>
 
       {/* Centered Frosted Walnut Editorial Card */}

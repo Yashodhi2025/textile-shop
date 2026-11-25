@@ -87,6 +87,7 @@
   },
   "content": {
     "announcementBarPreview": {
+      "intervalMs": 5200,
       "announcements": [
         {
           "text": "Complimentary Swatch Box with Every Bespoke Drapery Inquiry",
@@ -122,6 +123,9 @@
         "home": "Home",
         "shop": "Shop",
         "collections": "Collections",
+        "wishlist": "Wishlist",
+        "cart": "Cart",
+        "checkout": "Private Checkout",
         "services": "Services",
         "journal": "Journal",
         "textile_care": "Textile Care",
@@ -182,6 +186,22 @@
         "twitter": "https://twitter.com",
         "linkedin": "https://linkedin.com",
         "facebook": "https://facebook.com"
+      },
+      "accountDrawer": {
+        "eyebrow": "Private Client Services",
+        "heading": "LOOMÉ Atelier",
+        "wishlistLabel": "Wishlist",
+        "bagLabel": "In Your Bag",
+        "tradeHeading": "Trade & Interior Architects",
+        "tradeDescription": "Enjoy dedicated yardage reservations, custom drapery specifications, and complimentary fabric swatch boxes delivered to your studio.",
+        "primaryCtaLabel": "Schedule Atelier Consultation",
+        "secondaryCtaLabel": "Explore Bespoke Services"
+      },
+      "notFound": {
+        "eyebrow": "404 · Page Not Found",
+        "heading": "This Page Could Not Be Found",
+        "description": "The textile edition or atelier page you requested may have been moved or is no longer available.",
+        "ctaLabel": "Return to Storefront"
       }
     },
     "home": {
@@ -194,12 +214,18 @@
         "durationMs": 2800
       },
       "countdown": {
+        "eyebrow": "The Seasonal Edit · Limited Time",
+        "promoHeading": "Heirloom textiles. Private atelier pricing.",
+        "promoDescription": "Refresh your rooms with small-batch Belgian flax drapery, stonewashed duvet sets, and hand-loomed throws during our seasonal event.",
         "heading": "Private Atelier Event ends in",
         "subtitle": "Limited seasonal pricing on European flax drapery and bedding sets.",
         "deadline": "2026-12-15T23:59:59+05:30",
         "expiryMessage": "This seasonal edit has concluded. Explore our current atelier collection.",
         "ctaLabel": "Explore Collection",
-        "ctaUrl": "#sale-collection"
+        "ctaUrl": "#sale-collection",
+        "termsNote": "Selected editions only. Event concludes at the scheduled deadline above.",
+        "collectionHeading": "Considered details. Everyday luxury.",
+        "collectionCopy": "Explore our seasonal curation of Belgian flax drapery, stonewashed bedding, and hand-loomed throws."
       },
       "fabricStories": {
         "autoplay": true,
@@ -391,14 +417,17 @@
       "featuresHeading": "Crafted to Outlast Seasons",
       "features": [
         {
+          "icon": "leaf",
           "title": "Quality Materials",
           "body": "Certified European flax linen, 600-thread-count organic cotton sateen, and ethically sourced noble merino woven without synthetic coatings."
         },
         {
+          "icon": "award",
           "title": "Thoughtful Craftsmanship",
           "body": "Small-batch heritage loom weaving paired with hand-finished mitred hems, weighted drapery seams, and meticulous piece-by-piece inspection."
         },
         {
+          "icon": "sparkles",
           "title": "Timeless Design",
           "body": "Restrained architectural palettes in warm ivory, sage olive, beige, and champagne that soften gracefully and remain effortless across decades."
         }
@@ -975,12 +1004,22 @@
     "shopPage": {
       "eyebrow": "SHOP ALL TEXTILES",
       "heading": "Shop Fine Textiles",
-      "intro": "Browse our full range of Belgian flax curtains, stonewashed linen bedding, upholstery weaves, cushions, and fabrics by the yard."
+      "intro": "Browse our full range of Belgian flax curtains, stonewashed linen bedding, upholstery weaves, cushions, and fabrics by the yard.",
+      "searchPlaceholder": "Search textiles...",
+      "emptyEyebrow": "No Matching Products",
+      "emptyHeading": "No textiles match your current selection",
+      "emptyDescription": "Try widening your price range, switching fiber or tone filters, or returning to the full collection.",
+      "resetFiltersLabel": "Reset All Filters"
     },
     "cartPage": {
       "eyebrow": "SHOPPING CART",
       "heading": "Your Shopping Bag",
       "intro": "Review your selected textiles, adjust quantities, and proceed to checkout.",
+      "itemsHeading": "Items in Your Bag",
+      "summaryHeading": "Order Summary",
+      "clearCartLabel": "Clear Cart",
+      "viewBagLabel": "View Shopping Bag",
+      "summaryFootnote": "Delivery details and WhatsApp confirmation happen on the next step.",
       "deliveryNote": "Free island-wide delivery across Sri Lanka on qualifying orders. Delivery timing and custom sizing are confirmed directly at checkout.",
       "checkoutLabel": "Proceed to Checkout",
       "continueShoppingLabel": "Continue Shopping",
@@ -992,6 +1031,7 @@
       "eyebrow": "SAVED ITEMS",
       "heading": "Your Wishlist",
       "intro": "Keep track of your favorite curtains, bedding, and fabrics and move them to your bag whenever you are ready.",
+      "clearAllLabel": "Clear All",
       "emptyHeading": "Your wishlist is empty",
       "emptyDescription": "Tap the heart icon on any product to save it here for easy comparison and future orders.",
       "emptyCtaLabel": "Explore Shop"
@@ -1000,23 +1040,29 @@
       "eyebrow": "THE PRIVATE CHECKOUT",
       "heading": "Complete Your Atelier Order",
       "intro": "Review your curated textile pieces and share your delivery details below to send your order directly to our concierge via WhatsApp.",
+      "step1Label": "Review Bag",
+      "step2Label": "Delivery Details",
+      "step3Label": "WhatsApp Concierge",
       "deliveryNote": "Complimentary white-glove delivery across Sri Lanka on qualifying orders. Availability, bespoke sizing, district delivery charges, and payment are confirmed personally with our atelier concierge via WhatsApp.",
       "submitLabel": "Place Order via WhatsApp",
       "clientSectionHeading": "01. Client Details",
       "deliverySectionHeading": "02. Delivery Destination",
       "assuranceEyebrow": "Atelier Delivery & Concierge Policy",
       "emptyHeading": "Your atelier bag is currently empty",
-      "emptyDescription": "Explore our Belgian flax drapery, stonewashed linen bedding, and heirloom fabrics to begin curating your order."
+      "emptyDescription": "Explore our Belgian flax drapery, stonewashed linen bedding, and heirloom fabrics to begin curating your order.",
+      "emptySecondaryCtaLabel": "Atelier Services"
     },
     "productDetailPage": {
       "toneLabel": "Color",
       "sizeLabel": "Size",
       "addToBagLabel": "Add to Bag",
       "whatsappInquireLabel": "Order or Ask via WhatsApp",
+      "quickViewSpecsLabel": "View Full Specifications",
       "deliveryTitle": "Island-Wide Delivery",
       "deliveryNote": "Tracked delivery across Sri Lanka",
       "swatchTitle": "Need Fabric Swatches?",
       "swatchLinkLabel": "Request complimentary swatches",
+      "detailsHeading": "Details",
       "specsHeading": "Specifications",
       "careHeading": "Care",
       "shippingHeading": "Delivery & Returns",

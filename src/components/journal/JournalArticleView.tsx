@@ -577,6 +577,8 @@ export default function JournalArticleView() {
                 src={withBasePath(resolvedArticle.imageUrl)}
                 alt={resolvedArticle.title}
                 data-preview-field-path={`home.journalPosts[${resolvedArticle.index}].imageUrl`}
+                data-preview-style-target={`home.journalPosts[${resolvedArticle.index}].imageUrl`}
+                data-preview-style-type="image"
                 className="h-full w-full object-cover"
               />
             </LuxuryImageReveal>

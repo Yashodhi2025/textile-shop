@@ -63,7 +63,17 @@ export default function ShopCatalogView() {
   const { activeCategory, setActiveCategory } = useLoomeStore();
 
   const content = contentObject(siteData.content);
+  const home = contentObject(content.home);
   const shopPage = contentObject(content.shopPage);
+  const allFilterLabel = contentText(home.productsAllFilterLabel) || 'All';
+  const searchPlaceholder = contentText(shopPage.searchPlaceholder) || 'Search textiles...';
+  const emptyEyebrow = contentText(shopPage.emptyEyebrow) || 'No Matching Products';
+  const emptyHeading =
+    contentText(shopPage.emptyHeading) || 'No textiles match your current selection';
+  const emptyDescription =
+    contentText(shopPage.emptyDescription) ||
+    'Try widening your price range, switching fiber or tone filters, or returning to the full collection.';
+  const resetFiltersLabel = contentText(shopPage.resetFiltersLabel) || 'Reset All Filters';
   const homeCategories = useMemo(
     () => extractHomeCategories(content.home),
     [content.home],
@@ -678,19 +688,52 @@ export default function ShopCatalogView() {
           {categoryEntries.map((entry) => {
             const isActive =
               resolvedActiveCategory.toLowerCase() === entry.name.toLowerCase();
+            const isAll = entry.name === 'All';
+            const matchedHomeCatIdx = isAll
+              ? -1
+              : homeCategories.findIndex(
+                  (c) =>
+                    c.id.toLowerCase() === entry.name.toLowerCase() ||
+                    c.name.toLowerCase() === entry.name.toLowerCase(),
+                );
+            const firstProdMatch = isAll
+              ? undefined
+              : allProducts.find(
+                  (p) => p.category.toLowerCase() === entry.name.toLowerCase(),
+                );
+            const displayLabel = isAll
+              ? allFilterLabel
+              : matchedHomeCatIdx >= 0
+                ? homeCategories[matchedHomeCatIdx].name || entry.name
+                : entry.name;
             return (
               <button
                 key={entry.name}
                 type="button"
-                data-preview-static={`shop-cat-nav-${entry.name}`}
+                data-testid={`shop-cat-nav-${entry.name.toLowerCase()}`}
                 onClick={() => selectCategory(entry.name)}
                 className={`inline-flex shrink-0 items-center gap-1.5 rounded-[10px] border px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${isActive
                   ? 'border-[var(--loome-btn-primary-bg)] bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
                   : 'border-[var(--loome-border)] bg-[var(--card-bg)] text-[var(--muted-color)] hover:border-[var(--brand-accent)] hover:text-[var(--heading-color)]'
                   }`}
               >
-                <span>{entry.name}</span>
+                {isAll ? (
+                  <span data-preview-field-path="home.productsAllFilterLabel">
+                    {displayLabel}
+                  </span>
+                ) : matchedHomeCatIdx >= 0 ? (
+                  <span data-preview-field-path={`home.categories[${matchedHomeCatIdx}].name`}>
+                    {displayLabel}
+                  </span>
+                ) : firstProdMatch ? (
+                  <span data-preview-field-path={`products[${firstProdMatch.index}].category`}>
+                    {displayLabel}
+                  </span>
+                ) : (
+                  <span>{displayLabel}</span>
+                )}
                 <span
+                  data-preview-static={`shop-cat-count-${entry.name}`}
                   className={`text-[10px] font-medium ${isActive ? 'opacity-80' : 'text-[var(--brand-accent)]'
                     }`}
                 >
@@ -716,7 +759,8 @@ export default function ShopCatalogView() {
                   Collection
                 </span>
                 <h2
-                  data-preview-static="shop-active-collection-title"
+                  data-testid="shop-active-collection-title"
+                  data-preview-field-path={`collectionsPage.collections[${activeCollection.index}].title`}
                   className="m-0 font-heading text-base font-extrabold text-[var(--heading-color)]"
                 >
                   {activeCollection.title}
@@ -724,7 +768,8 @@ export default function ShopCatalogView() {
               </div>
               {activeCollection.description && (
                 <p
-                  data-preview-static="shop-active-collection-desc"
+                  data-testid="shop-active-collection-desc"
+                  data-preview-field-path={`collectionsPage.collections[${activeCollection.index}].description`}
                   className="mt-0.5 mb-0 truncate text-xs text-[var(--muted-color)]"
                 >
                   {activeCollection.description}
@@ -806,9 +851,9 @@ export default function ShopCatalogView() {
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search textiles..."
+                placeholder={searchPlaceholder}
                 aria-label="Search shop products"
-                data-preview-static="shop-search-input"
+                data-preview-field-path="shopPage.searchPlaceholder"
                 className="h-9 w-full rounded-[9px] border border-[var(--loome-border)] bg-[var(--loome-ivory)] pl-8 pr-7 text-xs text-[var(--heading-color)] placeholder:text-[var(--muted-color)]/75 focus:border-[var(--brand-accent)] focus:bg-[var(--card-bg)] focus:outline-none"
               />
               {searchQuery && (
@@ -913,32 +958,34 @@ export default function ShopCatalogView() {
           ) : filteredProducts.length === 0 ? (
             <div className="col-span-full rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] px-6 py-14 text-center">
               <p
-                data-preview-static="shop-empty-eyebrow"
+                data-preview-field-path="shopPage.emptyEyebrow"
                 className="m-0 text-[10px] font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent)]"
               >
-                No Matching Products
+                {emptyEyebrow}
               </p>
               <h2
-                data-preview-static="shop-empty-heading"
+                data-preview-field-path="shopPage.emptyHeading"
                 className="mt-2 font-heading text-2xl font-bold text-[var(--heading-color)]"
               >
-                No textiles match your current selection
+                {emptyHeading}
               </h2>
               <p
-                data-preview-static="shop-empty-copy"
+                data-preview-field-path="shopPage.emptyDescription"
                 className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-[var(--muted-color)]"
               >
-                Try widening your price range, switching fiber or tone filters, or returning to the full LOOMÉ collection.
+                {emptyDescription}
               </p>
               <div className="mt-5 flex justify-center">
                 <button
                   type="button"
-                  data-preview-static="shop-empty-reset-btn"
+                  data-testid="shop-empty-reset-btn"
                   onClick={resetAllFilters}
                   className="loome-btn-primary"
                 >
                   <RotateCcw className="h-3.5 w-3.5 stroke-[1.5]" />
-                  Reset All Filters
+                  <span data-preview-field-path="shopPage.resetFiltersLabel">
+                    {resetFiltersLabel}
+                  </span>
                 </button>
               </div>
             </div>

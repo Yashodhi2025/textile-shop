@@ -1,11 +1,10 @@
 'use client';
 
-import { Compass, Feather, Layers, ShieldCheck } from 'lucide-react';
-import { EditableText } from '@deneb-ui/ui';
+import { EditableIcon, EditableText } from '@deneb-ui/ui';
 import { contentList, contentObject, contentText, useSiteData } from '@/lib/siteDataContext';
 import { LuxuryReveal, LuxuryStagger, LuxuryStaggerItem } from '@/components/motion/LuxuryReveal';
 
-const PILLAR_ICONS = [Feather, Layers, Compass, ShieldCheck];
+const DEFAULT_PILLAR_ICONS = ['leaf', 'award', 'sparkles', 'shield'] as const;
 
 export default function BrandBenefitsSection() {
   const siteData = useSiteData();
@@ -64,7 +63,9 @@ export default function BrandBenefitsSection() {
             <LuxuryStagger className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:gap-6">
               {features.map((rawFeature, index) => {
                 const feature = contentObject(rawFeature);
-                const Icon = PILLAR_ICONS[index % PILLAR_ICONS.length];
+                const iconName =
+                  contentText(feature.icon) ||
+                  DEFAULT_PILLAR_ICONS[index % DEFAULT_PILLAR_ICONS.length];
                 return (
                   <LuxuryStaggerItem
                     key={index}
@@ -75,7 +76,15 @@ export default function BrandBenefitsSection() {
                       className="flex flex-col items-center"
                     >
                       <div className="flex h-12 w-12 items-center justify-center rounded-[12px] border border-[var(--brand-accent)]/35 bg-[var(--loome-ivory)] text-[var(--brand-accent)] transition-all duration-300 group-hover:border-[var(--brand-accent)] group-hover:bg-[var(--brand-accent)] group-hover:text-white dark:group-hover:text-[#1A1614]">
-                        <Icon className="h-5 w-5 stroke-[1.6]" />
+                        <span
+                          data-preview-field-path={`home.features[${index}].icon`}
+                          data-preview-control="icon-picker"
+                          data-preview-icon-type="lucide"
+                          data-preview-icon={iconName}
+                          className="inline-flex items-center justify-center leading-none"
+                        >
+                          <EditableIcon name={iconName} size={20} />
+                        </span>
                       </div>
 
                       <EditableText
