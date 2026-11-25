@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowLeft,
   ArrowRight,
+  CheckCircle2,
   Minus,
   Plus,
   ShieldCheck,
@@ -95,6 +96,7 @@ export default function ShoppingBagView() {
   const deliveryRemaining = hasDeliveryThreshold
     ? Math.max(0, freeDeliveryThreshold - cart.subtotal)
     : 0;
+  const deliveryUnlocked = hasDeliveryThreshold && deliveryRemaining === 0;
   const deliveryProgress = hasDeliveryThreshold
     ? Math.min(100, Math.round((cart.subtotal / freeDeliveryThreshold) * 100))
     : 0;
@@ -107,16 +109,16 @@ export default function ShoppingBagView() {
       className="loome-surface-commerce min-h-[75vh] w-full font-sans"
     >
       {/* Compact Breadcrumb Bar */}
-      <div className="border-b border-[#49382D]/10 bg-white/85 dark:border-[#C8A98B]/16 dark:bg-[#201C1A]">
-        <nav className="mx-auto flex max-w-[1260px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6E5B4E] dark:text-[#C9B9AA] sm:px-8 lg:px-10">
+      <div className="border-b border-[var(--loome-border)] bg-[var(--loome-surface-subtle)]">
+        <nav className="mx-auto flex max-w-[1260px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-text)] sm:px-8 lg:px-10">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6E5B4E] transition-colors hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-text)] transition-colors hover:text-[var(--heading-color)]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" data-preview-static="cart-bc-sep-1" className="text-[#B28B65] dark:text-[#C8A98B]">
+          <span aria-hidden="true" data-preview-static="cart-bc-sep-1" className="text-[var(--brand-accent)]">
             /
           </span>
           {hasShopPage && (
@@ -125,11 +127,11 @@ export default function ShoppingBagView() {
                 type="button"
                 onClick={() => window.location.assign(withBasePath('/shop/'))}
                 data-target-page="shop"
-                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6E5B4E] transition-colors hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-text)] transition-colors hover:text-[var(--heading-color)]"
               >
                 <span data-preview-field-path="common.navLabels.shop">{shopNavLabel}</span>
               </button>
-              <span aria-hidden="true" data-preview-static="cart-bc-sep-2" className="text-[#B28B65] dark:text-[#C8A98B]">
+              <span aria-hidden="true" data-preview-static="cart-bc-sep-2" className="text-[var(--brand-accent)]">
                 /
               </span>
             </>
@@ -137,78 +139,77 @@ export default function ShoppingBagView() {
           <span
             aria-current="page"
             data-preview-static="cart-breadcrumb-current"
-            className="font-semibold text-[#2C211B] dark:text-[#F5EEE6]"
+            className="font-semibold text-[var(--heading-color)]"
           >
             Cart
           </span>
         </nav>
       </div>
 
-      {/* Compact Cart Header */}
+      {/* Left-Aligned Cart Header (Aligned with Content Container Left Edge, Description Below Heading) */}
       <section
         data-design-section="cart-hero"
-        className="mx-auto max-w-[1260px] px-4 pb-5 pt-7 sm:px-8 sm:pt-9 lg:px-10"
+        className="mx-auto w-full max-w-[1260px] px-4 pb-6 pt-7 sm:px-8 sm:pt-9 lg:px-10"
       >
-        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-          <div>
-            <EditableText
-              as="p"
-              data-preview-field-path="cartPage.eyebrow"
-              defaultValue={eyebrow}
-              fontFamily="body"
-              size="0.6875rem"
-              weight={600}
-              transform="uppercase"
-              letterSpacing="0.22em"
-              color="primary"
-              className="m-0"
-            />
-            <div className="mt-1.5 flex flex-wrap items-baseline gap-3">
-              <EditableText
-                as="h1"
-                data-preview-field-path="cartPage.heading"
-                defaultValue={heading}
-                fontFamily="heading"
-                size="clamp(1.75rem, 3vw, 2.35rem)"
-                weight={800}
-                lineHeight={1.12}
-                letterSpacing="-0.025em"
-                color="heading"
-                className="m-0"
-              />
-              {hasItems && (
-                <span
-                  data-preview-static="cart-item-count-badge"
-                  className="rounded-full border border-[#49382D]/14 bg-white px-2.5 py-0.5 text-xs font-semibold text-[#49382D] dark:border-[#C8A98B]/24 dark:bg-[#28211D] dark:text-[#F5EEE6]"
-                >
-                  {cart.totalCount} {cart.totalCount === 1 ? 'item' : 'items'}
-                </span>
-              )}
-            </div>
-          </div>
-
+        <div className="max-w-2xl">
           <EditableText
             as="p"
-            data-preview-field-path="cartPage.intro"
-            defaultValue={intro}
+            data-preview-field-path="cartPage.eyebrow"
+            defaultValue={eyebrow}
             fontFamily="body"
-            size="0.875rem"
-            lineHeight={1.6}
-            color="muted"
-            className="m-0 max-w-md sm:text-right"
+            size="0.6875rem"
+            weight={600}
+            transform="uppercase"
+            letterSpacing="0.22em"
+            color="primary"
+            className="m-0"
           />
+          <div className="mt-1.5 flex flex-wrap items-baseline gap-3">
+            <EditableText
+              as="h1"
+              data-preview-field-path="cartPage.heading"
+              defaultValue={heading}
+              fontFamily="heading"
+              size="clamp(1.75rem, 3vw, 2.35rem)"
+              weight={800}
+              lineHeight={1.12}
+              letterSpacing="-0.025em"
+              color="heading"
+              className="m-0"
+            />
+            {hasItems && (
+              <span
+                data-preview-static="cart-item-count-badge"
+                className="rounded-full border border-[var(--loome-border)] bg-[var(--card-bg)] px-2.5 py-0.5 text-xs font-semibold text-[var(--page-text)]"
+              >
+                {cart.totalCount} {cart.totalCount === 1 ? 'item' : 'items'}
+              </span>
+            )}
+          </div>
+          <div className="mt-2">
+            <EditableText
+              as="p"
+              data-preview-field-path="cartPage.intro"
+              defaultValue={intro}
+              fontFamily="body"
+              size="0.875rem"
+              lineHeight={1.6}
+              color="muted"
+              className="m-0"
+            />
+          </div>
         </div>
       </section>
 
       {/* Main Shopping Cart Content */}
       <section
         data-design-section="cart-main"
-        className="mx-auto max-w-[1260px] px-4 pb-12 sm:px-8 lg:px-10 lg:pb-14"
+        className="mx-auto w-full max-w-[1260px] px-4 pb-12 sm:px-8 lg:px-10 lg:pb-14"
       >
         {!hasItems ? (
           /* Clean White Empty-Cart Card */
-          <LuxuryReveal className="mx-auto max-w-lg rounded-2xl border border-[#49382D]/12 bg-white px-6 py-12 text-center shadow-[0_6px_24px_rgba(73,56,45,0.06)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] sm:px-10">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#B28B65]/30 bg-[#EDE5DA]/75 text-[#B28B65] dark:border-[#C8A98B]/30 dark:bg-[#1A1614] dark:text-[#C8A98B]">
+          <LuxuryReveal className="mx-auto max-w-lg rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] px-6 py-12 text-center shadow-[0_6px_24px_rgba(73,56,45,0.06)] sm:px-10">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--brand-accent)]/30 bg-[var(--loome-surface-muted)] text-[var(--brand-accent)]">
               <ShoppingBag className="h-6 w-6 stroke-[1.6]" />
             </div>
 
@@ -248,7 +249,7 @@ export default function ShoppingBagView() {
                 onClick={() => window.location.assign(continueHref)}
                 data-target-page={hasShopPage ? 'shop' : undefined}
                 data-testid="cart-empty-continue-shopping"
-                className="group inline-flex h-11 items-center justify-center gap-2 rounded-[11px] border-0 bg-[#49382D] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-[#F7F3ED] transition-colors hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]"
+                className="group inline-flex h-11 items-center justify-center gap-2 rounded-[11px] border-0 bg-[var(--loome-btn-primary-bg)] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--loome-btn-primary-text)] transition-colors hover:bg-[var(--loome-btn-primary-hover)] hover:text-white dark:hover:text-[#201C1A]"
               >
                 <span data-preview-field-path="cartPage.continueShoppingLabel">
                   {continueShoppingLabel}
@@ -258,27 +259,27 @@ export default function ShoppingBagView() {
             </div>
           </LuxuryReveal>
         ) : (
-          /* Balanced Two-Column Cart Layout with White Cards on Warm Beige Background */
+          /* Balanced Two-Column Cart Layout with White Cards on Warm Ivory Background */
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start lg:gap-8">
             {/* Left Column: Cart Items Card */}
             <div className="lg:col-span-8">
               <div
                 data-testid="cart-items-card"
-                className="rounded-2xl border border-[#49382D]/12 bg-white p-5 shadow-[0_6px_24px_rgba(73,56,45,0.06)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] sm:p-6"
+                className="rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-5 shadow-[0_6px_24px_rgba(73,56,45,0.05)] sm:p-6"
               >
                 {/* Compact Column Header */}
-                <div className="flex items-center justify-between border-b border-[#49382D]/10 pb-3.5 dark:border-[#C8A98B]/16">
-                  <h2 className="m-0 font-heading text-base font-bold tracking-tight text-[#2C211B] dark:text-[#F5EEE6]">
+                <div className="flex items-center justify-between border-b border-[var(--loome-border)] pb-3.5">
+                  <h2 className="m-0 font-heading text-base font-bold tracking-tight text-[var(--heading-color)]">
                     Items in Your Bag
                   </h2>
-                  <div className="hidden items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6E5B4E] dark:text-[#C9B9AA] sm:flex">
+                  <div className="hidden items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted-text)] sm:flex">
                     <span className="w-[104px] text-center">Qty</span>
                     <span className="min-w-[116px] text-right">Total</span>
                   </div>
                 </div>
 
                 {/* Live Cart Rows */}
-                <ul className="m-0 list-none divide-y divide-[#49382D]/10 p-0 dark:divide-[#C8A98B]/14">
+                <ul className="m-0 list-none divide-y divide-[var(--loome-border)] p-0">
                   <AnimatePresence initial={false}>
                     {cart.items.map((item) => {
                       const itemKey = `${item.id}-${item.color || ''}-${item.size || ''}`;
@@ -302,7 +303,7 @@ export default function ShoppingBagView() {
                           <div className="flex min-w-0 flex-1 gap-4">
                             <a
                               href={detailHref}
-                              className="h-24 w-20 shrink-0 overflow-hidden rounded-xl border border-[#49382D]/10 bg-[#EDE5DA]/70 dark:border-[#C8A98B]/16 dark:bg-[#3B302B]"
+                              className="h-24 w-20 shrink-0 overflow-hidden rounded-xl border border-[var(--loome-border)] bg-[var(--loome-surface-muted)]"
                             >
                               <img
                                 src={withBasePath(item.image || '/images/prod-curtain-ivory.jpg')}
@@ -314,17 +315,17 @@ export default function ShoppingBagView() {
                             <div className="flex min-w-0 flex-1 flex-col justify-center">
                               <a
                                 href={detailHref}
-                                className="font-heading text-[15px] font-bold leading-snug text-[#2C211B] no-underline transition-colors hover:text-[#B28B65] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
+                                className="font-heading text-[15px] font-bold leading-snug text-[var(--heading-color)] no-underline transition-colors hover:text-[var(--brand-accent)]"
                               >
                                 {item.name}
                               </a>
 
                               {/* Selected Color & Size */}
                               {(item.color || item.size) && (
-                                <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-xs text-[#6E5B4E] dark:text-[#C9B9AA]">
+                                <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-xs text-[var(--muted-text)]">
                                   {item.color && <span>Color: {item.color}</span>}
                                   {item.color && item.size && (
-                                    <span aria-hidden="true" className="text-[#B28B65]">
+                                    <span aria-hidden="true" className="text-[var(--brand-accent)]">
                                       ·
                                     </span>
                                   )}
@@ -334,13 +335,13 @@ export default function ShoppingBagView() {
 
                               {/* Unit Price + Remove */}
                               <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
-                                <span className="whitespace-nowrap font-semibold tabular-nums text-[#49382D] dark:text-[#E8DDD0]">
+                                <span className="whitespace-nowrap font-semibold tabular-nums text-[var(--page-text)]">
                                   {item.showPrice === false
                                     ? 'Price on Request'
                                     : formatLoomePrice(item.price, storeCurrency)}
                                 </span>
                                 {hasSavings && item.originalPrice && (
-                                  <span className="whitespace-nowrap tabular-nums text-[#6E5B4E]/80 line-through dark:text-[#C9B9AA]/70">
+                                  <span className="whitespace-nowrap tabular-nums text-[var(--muted-text)]/80 line-through">
                                     {formatLoomePrice(item.originalPrice, storeCurrency)}
                                   </span>
                                 )}
@@ -348,7 +349,7 @@ export default function ShoppingBagView() {
                                   type="button"
                                   onClick={() => cart.removeItem(item.id, item.size, item.color)}
                                   aria-label={`Remove ${item.name} from bag`}
-                                  className="inline-flex items-center gap-1 border-0 bg-transparent p-0 text-xs font-medium text-[#6E5B4E] transition-colors hover:text-[#A63A2B] dark:text-[#C9B9AA] dark:hover:text-[#F09A8B]"
+                                  className="inline-flex items-center gap-1 border-0 bg-transparent p-0 text-xs font-medium text-[var(--muted-text)] transition-colors hover:text-[var(--loome-danger-text)]"
                                 >
                                   <Trash2 className="h-3.5 w-3.5 stroke-[1.6]" />
                                   Remove
@@ -358,8 +359,8 @@ export default function ShoppingBagView() {
                           </div>
 
                           {/* Quantity Stepper + Single-Line LKR Line Total */}
-                          <div className="flex items-center justify-between gap-4 border-t border-[#49382D]/8 pt-3 sm:justify-end sm:gap-8 sm:border-t-0 sm:pt-0 dark:border-[#C8A98B]/12">
-                            <div className="inline-flex w-[104px] items-center justify-between overflow-hidden rounded-[10px] border border-[#49382D]/16 bg-[#F7F3ED] dark:border-[#C8A98B]/24 dark:bg-[#1A1614]">
+                          <div className="flex items-center justify-between gap-4 border-t border-[var(--loome-border)] pt-3 sm:justify-end sm:gap-8 sm:border-t-0 sm:pt-0">
+                            <div className="inline-flex w-[104px] items-center justify-between overflow-hidden rounded-[10px] border border-[var(--loome-border)] bg-[var(--loome-surface-muted)]">
                               <button
                                 type="button"
                                 onClick={() =>
@@ -371,11 +372,11 @@ export default function ShoppingBagView() {
                                   )
                                 }
                                 aria-label={`Decrease quantity for ${item.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-[#49382D] transition-colors hover:bg-[#EDE5DA] dark:text-[#F5EEE6] dark:hover:bg-[#3B302B]"
+                                className="flex h-8 w-8 items-center justify-center text-[var(--heading-color)] transition-colors hover:bg-[var(--brand-accent)]/15"
                               >
                                 <Minus className="h-3.5 w-3.5 stroke-[1.8]" />
                               </button>
-                              <span className="w-8 text-center text-xs font-bold tabular-nums text-[#2C211B] dark:text-[#F5EEE6]">
+                              <span className="w-8 text-center text-xs font-bold tabular-nums text-[var(--heading-color)]">
                                 {item.quantity}
                               </span>
                               <button
@@ -389,7 +390,7 @@ export default function ShoppingBagView() {
                                   )
                                 }
                                 aria-label={`Increase quantity for ${item.name}`}
-                                className="flex h-8 w-8 items-center justify-center text-[#49382D] transition-colors hover:bg-[#EDE5DA] dark:text-[#F5EEE6] dark:hover:bg-[#3B302B]"
+                                className="flex h-8 w-8 items-center justify-center text-[var(--heading-color)] transition-colors hover:bg-[var(--brand-accent)]/15"
                               >
                                 <Plus className="h-3.5 w-3.5 stroke-[1.8]" />
                               </button>
@@ -398,7 +399,7 @@ export default function ShoppingBagView() {
                             <div className="min-w-[116px] shrink-0 text-right">
                               <span
                                 data-preview-static="cart-line-total"
-                                className="whitespace-nowrap font-heading text-[15px] font-extrabold tabular-nums text-[#2C211B] dark:text-[#F5EEE6]"
+                                className="whitespace-nowrap font-heading text-[15px] font-extrabold tabular-nums text-[var(--heading-color)]"
                               >
                                 {item.showPrice === false
                                   ? 'Price on Request'
@@ -412,14 +413,14 @@ export default function ShoppingBagView() {
                   </AnimatePresence>
                 </ul>
 
-                {/* Single Continue Shopping Link + Clear Bag */}
-                <div className="mt-2 flex flex-wrap items-center justify-between gap-4 border-t border-[#49382D]/10 pt-4 dark:border-[#C8A98B]/16">
+                {/* Single Continue Shopping Link + Clear Cart */}
+                <div className="mt-2 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--loome-border)] pt-4">
                   <button
                     type="button"
                     onClick={() => window.location.assign(continueHref)}
                     data-target-page={hasShopPage ? 'shop' : undefined}
                     data-testid="cart-continue-shopping"
-                    className="group inline-flex items-center gap-2 border-0 bg-transparent p-0 text-xs font-semibold text-[#49382D] transition-colors hover:text-[#B28B65] dark:text-[#E8DDD0] dark:hover:text-[#C8A98B]"
+                    className="group inline-flex items-center gap-2 border-0 bg-transparent p-0 text-xs font-semibold text-[var(--page-text)] transition-colors hover:text-[var(--brand-accent)]"
                   >
                     <ArrowLeft className="h-3.5 w-3.5 stroke-[1.8] transition-transform duration-300 group-hover:-translate-x-0.5" />
                     <span data-preview-field-path="cartPage.continueShoppingLabel">
@@ -431,7 +432,7 @@ export default function ShoppingBagView() {
                     type="button"
                     onClick={() => cart.clearCart()}
                     data-preview-static="cart-clear-btn"
-                    className="border-0 bg-transparent p-0 text-xs font-medium text-[#6E5B4E] underline decoration-[#49382D]/25 underline-offset-4 transition-colors hover:text-[#A63A2B] dark:text-[#C9B9AA] dark:hover:text-[#F09A8B]"
+                    className="border-0 bg-transparent p-0 text-xs font-medium text-[var(--muted-text)] underline decoration-[var(--loome-border)] underline-offset-4 transition-colors hover:text-[var(--loome-danger-text)]"
                   >
                     Clear Cart
                   </button>
@@ -443,32 +444,60 @@ export default function ShoppingBagView() {
             <aside className="lg:sticky lg:top-24 lg:col-span-4">
               <div
                 data-testid="cart-summary-card"
-                className="rounded-2xl border border-[#49382D]/14 bg-white p-6 shadow-[0_10px_30px_rgba(73,56,45,0.08)] dark:border-[#C8A98B]/24 dark:bg-[#28211D]"
+                className="rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-6 shadow-[0_10px_30px_rgba(73,56,45,0.07)]"
               >
-                <h2 className="m-0 border-b border-[#49382D]/10 pb-3.5 font-heading text-lg font-extrabold tracking-tight text-[#2C211B] dark:border-[#C8A98B]/16 dark:text-[#F5EEE6]">
+                <h2 className="m-0 border-b border-[var(--loome-border)] pb-3.5 font-heading text-lg font-extrabold tracking-tight text-[var(--heading-color)]">
                   Order Summary
                 </h2>
 
-                {/* Free Delivery Progress Bar */}
+                {/* Free Delivery Progress Bar — Subtle Sage Green when Unlocked */}
                 {hasDeliveryThreshold && (
-                  <div className="mt-4 rounded-xl border border-[#B28B65]/25 bg-[#F7F3ED] px-3.5 py-3 dark:border-[#C8A98B]/22 dark:bg-[#1E1917]">
-                    <div className="flex items-center justify-between gap-2 text-xs font-medium text-[#49382D] dark:text-[#E8DDD0]">
+                  <div
+                    data-testid="cart-delivery-banner"
+                    className={`mt-4 rounded-xl border px-3.5 py-3 transition-colors ${deliveryUnlocked
+                      ? 'border-[var(--loome-sage-border)] bg-[var(--loome-sage-bg)]'
+                      : 'border-[var(--brand-accent)]/28 bg-[var(--loome-surface-muted)]'
+                      }`}
+                  >
+                    <div
+                      className={`flex items-center justify-between gap-2 text-xs font-medium ${deliveryUnlocked
+                        ? 'text-[var(--loome-sage-text)]'
+                        : 'text-[var(--page-text)]'
+                        }`}
+                    >
                       <span className="inline-flex items-center gap-1.5">
-                        <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.7] text-[#B28B65] dark:text-[#C8A98B]" />
-                        {deliveryRemaining === 0
+                        {deliveryUnlocked ? (
+                          <CheckCircle2 className="h-3.5 w-3.5 shrink-0 stroke-[1.9] text-[var(--loome-sage-accent)]" />
+                        ) : (
+                          <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.7] text-[var(--brand-accent)]" />
+                        )}
+                        {deliveryUnlocked
                           ? 'Free delivery unlocked'
                           : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for free delivery`}
                       </span>
-                      <span className="shrink-0 tabular-nums font-bold text-[#B28B65] dark:text-[#C8A98B]">
+                      <span
+                        className={`shrink-0 tabular-nums font-bold ${deliveryUnlocked
+                          ? 'text-[var(--loome-sage-text)]'
+                          : 'text-[var(--brand-accent)]'
+                          }`}
+                      >
                         {deliveryProgress}%
                       </span>
                     </div>
-                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#E8DDD0] dark:bg-[#3B302B]">
+                    <div
+                      className={`mt-2 h-1.5 w-full overflow-hidden rounded-full ${deliveryUnlocked
+                        ? 'bg-[var(--loome-sage-accent)]/20'
+                        : 'bg-[var(--loome-border)]'
+                        }`}
+                    >
                       <motion.div
                         initial={false}
                         animate={{ width: `${deliveryProgress}%` }}
                         transition={{ duration: 0.4, ease: LUXURY_EASE }}
-                        className="h-full rounded-full bg-[#B28B65] dark:bg-[#C8A98B]"
+                        className={`h-full rounded-full ${deliveryUnlocked
+                          ? 'bg-[var(--loome-sage-accent)]'
+                          : 'bg-[var(--brand-accent)]'
+                          }`}
                       />
                     </div>
                   </div>
@@ -476,29 +505,30 @@ export default function ShoppingBagView() {
 
                 {/* Price Breakdown — Strictly Single-Line Totals */}
                 <div className="mt-4 space-y-2.5 text-sm">
-                  <div className="flex items-center justify-between gap-3 text-[#6E5B4E] dark:text-[#C9B9AA]">
+                  <div className="flex items-center justify-between gap-3 text-[var(--muted-text)]">
                     <span>Items ({cart.totalCount})</span>
-                    <span className="whitespace-nowrap font-semibold tabular-nums text-[#2C211B] dark:text-[#F5EEE6]">
+                    <span className="whitespace-nowrap font-semibold tabular-nums text-[var(--heading-color)]">
                       {subtotalDisplay}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between gap-3 text-[#6E5B4E] dark:text-[#C9B9AA]">
+                  <div className="flex items-center justify-between gap-3 text-[var(--muted-text)]">
                     <span>Delivery</span>
-                    <span className="whitespace-nowrap font-semibold text-[#2C211B] dark:text-[#F5EEE6]">
-                      {hasDeliveryThreshold && deliveryRemaining === 0
-                        ? 'Free'
-                        : 'Calculated at checkout'}
+                    <span
+                      className={`whitespace-nowrap font-semibold ${deliveryUnlocked
+                        ? 'text-[var(--loome-sage-text)]'
+                        : 'text-[var(--heading-color)]'
+                        }`}
+                    >
+                      {deliveryUnlocked ? 'Free' : 'Calculated at checkout'}
                     </span>
                   </div>
                 </div>
 
-                <div className="mt-4 flex items-baseline justify-between gap-3 border-t border-[#49382D]/12 pt-4 dark:border-[#C8A98B]/18">
-                  <span className="text-sm font-bold text-[#2C211B] dark:text-[#F5EEE6]">
-                    Total
-                  </span>
+                <div className="mt-4 flex items-baseline justify-between gap-3 border-t border-[var(--loome-border)] pt-4">
+                  <span className="text-sm font-bold text-[var(--heading-color)]">Total</span>
                   <span
                     data-preview-static="cart-subtotal-total"
-                    className="whitespace-nowrap font-heading text-2xl font-extrabold leading-none tabular-nums text-[#2C211B] dark:text-[#F5EEE6]"
+                    className="whitespace-nowrap font-heading text-2xl font-extrabold leading-none tabular-nums text-[var(--heading-color)]"
                   >
                     {subtotalDisplay}
                   </span>
@@ -512,14 +542,14 @@ export default function ShoppingBagView() {
                     data-testid="cart-checkout-cta"
                     whileHover={prefersReducedMotion ? undefined : { y: -1 }}
                     whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
-                    className="group flex h-12 w-full items-center justify-center gap-2 rounded-[11px] border-0 bg-[#49382D] px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#F7F3ED] shadow-sm transition-colors hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]"
+                    className="group flex h-12 w-full items-center justify-center gap-2 rounded-[11px] border-0 bg-[var(--loome-btn-primary-bg)] px-6 text-xs font-bold uppercase tracking-[0.16em] text-[var(--loome-btn-primary-text)] shadow-sm transition-colors hover:bg-[var(--loome-btn-primary-hover)] hover:text-white dark:hover:text-[#201C1A]"
                   >
                     <span data-preview-field-path="cartPage.checkoutLabel">{checkoutLabel}</span>
                     <ArrowRight className="h-4 w-4 stroke-[1.8] transition-transform duration-300 group-hover:translate-x-0.5" />
                   </motion.button>
                 </div>
 
-                <p className="mt-3.5 mb-0 text-center text-xs leading-relaxed text-[#6E5B4E] dark:text-[#C9B9AA]">
+                <p className="mt-3.5 mb-0 text-center text-xs leading-relaxed text-[var(--muted-text)]">
                   Delivery details and WhatsApp confirmation happen on the next step.
                 </p>
               </div>
@@ -529,10 +559,10 @@ export default function ShoppingBagView() {
       </section>
 
       {/* Compact Delivery & Order Assurance Band */}
-      <section className="border-t border-[#49382D]/10 bg-white/70 py-6 dark:border-[#C8A98B]/16 dark:bg-[#201C1A]">
+      <section className="border-t border-[var(--loome-border)] bg-[var(--loome-surface-subtle)] py-6">
         <div className="mx-auto flex max-w-[1260px] flex-col justify-between gap-4 px-4 sm:px-8 md:flex-row md:items-center lg:px-10">
           <div className="max-w-2xl">
-            <p className="m-0 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#B28B65] dark:text-[#C8A98B]">
+            <p className="m-0 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--brand-accent)]">
               <ShieldCheck className="h-3.5 w-3.5 stroke-[1.7]" />
               <span data-preview-field-path="cartPage.assuranceEyebrow">{assuranceEyebrow}</span>
             </p>
@@ -552,7 +582,7 @@ export default function ShoppingBagView() {
 
           <p
             data-preview-static="cart-handoff-note"
-            className="m-0 shrink-0 text-xs font-medium text-[#6E5B4E] dark:text-[#C9B9AA]"
+            className="m-0 shrink-0 text-xs font-medium text-[var(--muted-text)]"
           >
             Prices in {storeCurrency} · Saved automatically in your browser
           </p>

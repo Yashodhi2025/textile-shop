@@ -91,14 +91,14 @@ export default function LoomeProductDetailView({
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
     : siteData.template?.structure?.pages || [
-      'home',
-      'shop',
-      'collections',
-      'wishlist',
-      'about_us',
-      'services',
-      'contact',
-    ];
+        'home',
+        'shop',
+        'collections',
+        'wishlist',
+        'about_us',
+        'services',
+        'contact',
+      ];
   const hasShopPage = requiredPages.includes('shop');
   const hasContactPage = requiredPages.includes('contact');
 
@@ -221,9 +221,9 @@ export default function LoomeProductDetailView({
 
   const savingsPercent =
     normalized.showPrice &&
-      normalized.compareAtPrice &&
-      normalized.compareAtPrice > normalized.price &&
-      normalized.price > 0
+    normalized.compareAtPrice &&
+    normalized.compareAtPrice > normalized.price &&
+    normalized.price > 0
       ? Math.round(((normalized.compareAtPrice - normalized.price) / normalized.compareAtPrice) * 100)
       : null;
 
@@ -356,16 +356,16 @@ export default function LoomeProductDetailView({
   return (
     <div className="loome-surface-commerce min-h-[75vh] w-full font-sans">
       {/* Compact Breadcrumb Bar */}
-      <div className="border-b border-[#49382D]/10 bg-white/85 dark:border-[#C8A98B]/16 dark:bg-[#201C1A]">
-        <nav className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-2 px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.16em] text-[#6E5B4E] dark:text-[#C9B9AA] sm:px-8 lg:px-10">
+      <div className="border-b border-[var(--loome-border)] bg-[var(--loome-surface-subtle)]">
+        <nav className="mx-auto flex max-w-[1240px] flex-wrap items-center gap-2 px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--muted-text)] sm:px-8 lg:px-10">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[#6E5B4E] transition-colors hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--muted-text)] transition-colors hover:text-[var(--heading-color)]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" data-preview-static="pdp-bc-sep-1" className="text-[#B28B65] dark:text-[#C8A98B]">
+          <span aria-hidden="true" data-preview-static="pdp-bc-sep-1" className="text-[var(--brand-accent)]">
             /
           </span>
           {hasShopPage && (
@@ -374,11 +374,11 @@ export default function LoomeProductDetailView({
                 type="button"
                 onClick={() => window.location.assign(withBasePath('/shop/'))}
                 data-target-page="shop"
-                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[#6E5B4E] transition-colors hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--muted-text)] transition-colors hover:text-[var(--heading-color)]"
               >
                 <span data-preview-field-path="common.navLabels.shop">{shopNavLabel}</span>
               </button>
-              <span aria-hidden="true" data-preview-static="pdp-bc-sep-2" className="text-[#B28B65] dark:text-[#C8A98B]">
+              <span aria-hidden="true" data-preview-static="pdp-bc-sep-2" className="text-[var(--brand-accent)]">
                 /
               </span>
             </>
@@ -387,17 +387,17 @@ export default function LoomeProductDetailView({
             type="button"
             onClick={handleCategoryBreadcrumbClick}
             data-preview-static="breadcrumb-category"
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[#6E5B4E] transition-colors hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--muted-text)] transition-colors hover:text-[var(--heading-color)]"
           >
             {normalized.category}
           </button>
-          <span aria-hidden="true" data-preview-static="pdp-bc-sep-3" className="text-[#B28B65] dark:text-[#C8A98B]">
+          <span aria-hidden="true" data-preview-static="pdp-bc-sep-3" className="text-[var(--brand-accent)]">
             /
           </span>
           <span
             aria-current="page"
             data-preview-static="breadcrumb-current"
-            className="max-w-[220px] truncate font-semibold text-[#2C211B] dark:text-[#F5EEE6] sm:max-w-md"
+            className="max-w-[220px] truncate font-semibold text-[var(--heading-color)] sm:max-w-md"
           >
             {normalized.name}
           </span>
@@ -405,180 +405,183 @@ export default function LoomeProductDetailView({
       </div>
 
       {/* Compact Balanced Two-Column Product Hero (Designed to fit cleanly on 1366x768) */}
-      <section className="mx-auto max-w-[1240px] px-4 pb-10 pt-5 sm:px-8 lg:px-10 lg:pb-12 lg:pt-6">
+      <section className="mx-auto w-full max-w-[1240px] px-4 pb-10 pt-5 sm:px-8 lg:px-10 lg:pb-12 lg:pt-6">
         <div
           data-preview-item-path={`products[${idx}]`}
-          className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start lg:gap-8"
+          className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start lg:gap-10"
         >
-          {/* Left Column: Compact Gallery Card with Thumbnails Below */}
-          <div className="lg:col-span-6">
-            <div className="rounded-2xl border border-[#49382D]/12 bg-white p-3 shadow-[0_6px_24px_rgba(73,56,45,0.06)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] sm:p-4">
-              {/* Main Product Image Stage */}
-              <div
-                onMouseEnter={() => {
-                  if (!prefersReducedMotion) setIsHoverZoomed(true);
-                }}
-                onMouseLeave={() => setIsHoverZoomed(false)}
-                onMouseMove={handleImageMouseMove}
-                onClick={() => setIsLightboxOpen(true)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setIsLightboxOpen(true);
-                  }
-                }}
-                aria-label={`Zoom ${normalized.name} image`}
-                data-testid="product-gallery-zoom-stage"
-                className="group relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-xl bg-[#EDE5DA]/60 dark:bg-[#1E1917] lg:h-[400px] lg:aspect-auto"
-              >
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeImage}
-                    initial={prefersReducedMotion ? false : { opacity: 0.3, scale: 1.01 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={prefersReducedMotion ? undefined : { opacity: 0.25 }}
-                    transition={{ duration: 0.3, ease: LUXURY_EASE }}
-                    className="h-full w-full"
-                  >
-                    <img
-                      src={withBasePath(activeImage)}
-                      alt={normalized.name}
-                      data-preview-field-path={`products[${idx}].imageUrl`}
-                      className="h-full w-full object-cover transition-transform duration-300 ease-out"
-                      style={{
-                        transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
-                        transform:
-                          isHoverZoomed && !prefersReducedMotion ? 'scale(1.38)' : 'scale(1)',
-                      }}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+          {/* Left Column: Clean Editorial Gallery (No Outer White Card) with Thumbnails Below */}
+          <div data-testid="product-gallery-column" className="lg:col-span-6">
+            {/* Main Product Image Stage */}
+            <div
+              onMouseEnter={() => {
+                if (!prefersReducedMotion) setIsHoverZoomed(true);
+              }}
+              onMouseLeave={() => setIsHoverZoomed(false)}
+              onMouseMove={handleImageMouseMove}
+              onClick={() => setIsLightboxOpen(true)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setIsLightboxOpen(true);
+                }
+              }}
+              aria-label={`Zoom ${normalized.name} image`}
+              data-testid="product-gallery-zoom-stage"
+              className="group relative aspect-[4/3] w-full cursor-zoom-in overflow-hidden rounded-2xl bg-[var(--loome-surface-muted)] shadow-[0_10px_30px_rgba(73,56,45,0.08)] lg:h-[420px] lg:aspect-auto"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeImage}
+                  initial={prefersReducedMotion ? false : { opacity: 0.3, scale: 1.01 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={prefersReducedMotion ? undefined : { opacity: 0.25 }}
+                  transition={{ duration: 0.3, ease: LUXURY_EASE }}
+                  className="h-full w-full"
+                >
+                  <img
+                    src={withBasePath(activeImage)}
+                    alt={normalized.name}
+                    data-preview-field-path={`products[${idx}].imageUrl`}
+                    className="h-full w-full object-cover transition-transform duration-300 ease-out"
+                    style={{
+                      transformOrigin: `${zoomOrigin.x}% ${zoomOrigin.y}%`,
+                      transform:
+                        isHoverZoomed && !prefersReducedMotion ? 'scale(1.38)' : 'scale(1)',
+                    }}
+                  />
+                </motion.div>
+              </AnimatePresence>
 
-                {/* Product Badge */}
-                {normalized.badge && (
-                  <span
-                    data-preview-field-path={`products[${idx}].badge`}
-                    className="pointer-events-none absolute left-3 top-3 rounded-[8px] bg-[#2C211B]/86 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F7F3ED] backdrop-blur-sm"
-                  >
-                    {normalized.badge}
-                  </span>
-                )}
-
-                {/* Zoom Hint */}
+              {/* Product Badge */}
+              {normalized.badge && (
                 <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute bottom-3 right-3 flex items-center gap-1.5 rounded-[8px] bg-white/92 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2C211B] shadow-sm backdrop-blur-sm transition-opacity duration-200 dark:bg-[#201C1A]/90 dark:text-[#F5EEE6] sm:opacity-0 sm:group-hover:opacity-100"
+                  data-preview-field-path={`products[${idx}].badge`}
+                  className="pointer-events-none absolute left-3.5 top-3.5 rounded-[8px] bg-[#2C211B]/86 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F7F3ED] backdrop-blur-sm"
                 >
-                  <Maximize2 className="h-3 w-3 stroke-[1.7]" />
-                  Zoom
+                  {normalized.badge}
                 </span>
+              )}
 
-                {/* Prev / Next Gallery Arrows */}
-                {hasMultipleImages && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        prevImage();
-                      }}
-                      aria-label="Previous product image"
-                      data-preview-static="gallery-prev"
-                      className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-[#2C211B] shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-[#49382D] hover:text-white dark:bg-[#201C1A]/85 dark:text-[#F5EEE6] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
-                    >
-                      <ChevronLeft className="h-4 w-4 stroke-[1.8]" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        nextImage();
-                      }}
-                      aria-label="Next product image"
-                      data-preview-static="gallery-next"
-                      className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-[#2C211B] shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-[#49382D] hover:text-white dark:bg-[#201C1A]/85 dark:text-[#F5EEE6] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
-                    >
-                      <ChevronRight className="h-4 w-4 stroke-[1.8]" />
-                    </button>
-                  </>
-                )}
-              </div>
+              {/* Zoom Hint */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute bottom-3.5 right-3.5 flex items-center gap-1.5 rounded-[8px] bg-[var(--card-bg)]/92 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--heading-color)] shadow-sm backdrop-blur-sm transition-opacity duration-200 sm:opacity-0 sm:group-hover:opacity-100"
+              >
+                <Maximize2 className="h-3 w-3 stroke-[1.7]" />
+                Zoom
+              </span>
 
-              {/* Horizontal Thumbnail Strip BELOW Main Image */}
+              {/* Prev / Next Gallery Arrows */}
               {hasMultipleImages && (
-                <div
-                  data-preview-static="gallery-thumbnails-below"
-                  className="mt-3 flex items-center justify-between gap-3"
-                >
-                  <div
-                    role="tablist"
-                    aria-label="Product gallery thumbnails"
-                    className="flex items-center gap-2.5 overflow-x-auto py-0.5"
+                <>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      prevImage();
+                    }}
+                    aria-label="Previous product image"
+                    data-preview-static="gallery-prev"
+                    className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--card-bg)]/90 text-[var(--heading-color)] shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-[var(--loome-btn-primary-bg)] hover:text-[var(--loome-btn-primary-text)]"
                   >
-                    {galleryImages.map((imgUrl, gIdx) => {
-                      const isSelected = gIdx === activeImageIndex;
-                      return (
-                        <button
-                          key={`${normalized.id}-thumb-${gIdx}`}
-                          type="button"
-                          role="tab"
-                          aria-selected={isSelected}
-                          aria-label={`View image ${gIdx + 1} of ${galleryImages.length}`}
-                          data-preview-static={`gallery-thumb-${gIdx}`}
-                          onClick={() => setActiveImageIndex(gIdx)}
-                          className={`group relative h-[64px] w-[64px] shrink-0 overflow-hidden rounded-lg border-2 bg-[#EDE5DA]/50 transition-all duration-200 dark:bg-[#1E1917] sm:h-[70px] sm:w-[70px] ${isSelected
-                            ? 'border-[#B28B65] opacity-100 shadow-sm dark:border-[#C8A98B]'
-                            : 'border-transparent opacity-70 hover:border-[#49382D]/25 hover:opacity-100 dark:hover:border-[#C8A98B]/40'
-                            }`}
-                        >
-                          <img
-                            src={withBasePath(imgUrl)}
-                            alt={`${normalized.name} view ${gIdx + 1}`}
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  <span
-                    data-preview-static="gallery-counter"
-                    className="shrink-0 text-xs font-semibold tabular-nums text-[#6E5B4E] dark:text-[#C9B9AA]"
+                    <ChevronLeft className="h-4 w-4 stroke-[1.8]" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      nextImage();
+                    }}
+                    aria-label="Next product image"
+                    data-preview-static="gallery-next"
+                    className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--card-bg)]/90 text-[var(--heading-color)] shadow-sm backdrop-blur-sm transition-all duration-200 hover:bg-[var(--loome-btn-primary-bg)] hover:text-[var(--loome-btn-primary-text)]"
                   >
-                    {activeImageIndex + 1} / {galleryImages.length}
-                  </span>
-                </div>
+                    <ChevronRight className="h-4 w-4 stroke-[1.8]" />
+                  </button>
+                </>
               )}
             </div>
+
+            {/* Horizontal Thumbnail Strip BELOW Main Image */}
+            {hasMultipleImages && (
+              <div
+                data-preview-static="gallery-thumbnails-below"
+                className="mt-3.5 flex items-center justify-between gap-3"
+              >
+                <div
+                  role="tablist"
+                  aria-label="Product gallery thumbnails"
+                  className="flex items-center gap-2.5 overflow-x-auto py-0.5"
+                >
+                  {galleryImages.map((imgUrl, gIdx) => {
+                    const isSelected = gIdx === activeImageIndex;
+                    return (
+                      <button
+                        key={`${normalized.id}-thumb-${gIdx}`}
+                        type="button"
+                        role="tab"
+                        aria-selected={isSelected}
+                        aria-label={`View image ${gIdx + 1} of ${galleryImages.length}`}
+                        data-preview-static={`gallery-thumb-${gIdx}`}
+                        onClick={() => setActiveImageIndex(gIdx)}
+                        className={`group relative h-[64px] w-[64px] shrink-0 overflow-hidden rounded-xl border-2 bg-[var(--loome-surface-muted)] transition-all duration-200 sm:h-[70px] sm:w-[70px] ${
+                          isSelected
+                            ? 'border-[var(--brand-accent)] opacity-100 shadow-sm'
+                            : 'border-transparent opacity-72 hover:border-[var(--loome-border)] hover:opacity-100'
+                        }`}
+                      >
+                        <img
+                          src={withBasePath(imgUrl)}
+                          alt={`${normalized.name} view ${gIdx + 1}`}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <span
+                  data-preview-static="gallery-counter"
+                  className="shrink-0 text-xs font-semibold tabular-nums text-[var(--muted-text)]"
+                >
+                  {activeImageIndex + 1} / {galleryImages.length}
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Right Column: Compact White Purchase Card (Controls Visible Above Fold on 1366x768) */}
           <div className="lg:col-span-6">
             <div
               data-testid="product-purchase-card"
-              className="rounded-2xl border border-[#49382D]/12 bg-white p-5 shadow-[0_6px_24px_rgba(73,56,45,0.06)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] sm:p-6"
+              className="rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-5 shadow-[0_6px_24px_rgba(73,56,45,0.06)] sm:p-6"
             >
-              {/* Category & Stock Status Row */}
+              {/* Category & Subtle Sage Stock Status Row */}
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span
                   data-preview-field-path={`products[${idx}].category`}
-                  className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#B28B65] dark:text-[#C8A98B]"
+                  className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--brand-accent)]"
                 >
                   {normalized.category}
                 </span>
 
                 <div
                   data-preview-static="product-availability-pill"
-                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${normalized.isAvailable
-                    ? 'bg-[#EAF3EC] text-[#2F6A3F] dark:bg-[#263A2C] dark:text-[#9FD6AE]'
-                    : 'bg-[#F8EAE7] text-[#9A3C2E] dark:bg-[#3F2521] dark:text-[#F0A498]'
-                    }`}
+                  className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${
+                    normalized.isAvailable
+                      ? 'border-[var(--loome-sage-border)] bg-[var(--loome-sage-bg)] text-[var(--loome-sage-text)]'
+                      : 'border-[var(--loome-danger-text)]/20 bg-[var(--loome-danger-bg)] text-[var(--loome-danger-text)]'
+                  }`}
                 >
                   <span
-                    className={`h-1.5 w-1.5 rounded-full ${normalized.isAvailable ? 'bg-[#2F6A3F] dark:bg-[#9FD6AE]' : 'bg-[#9A3C2E] dark:bg-[#F0A498]'
-                      }`}
+                    className={`h-1.5 w-1.5 rounded-full ${
+                      normalized.isAvailable
+                        ? 'bg-[var(--loome-sage-accent)]'
+                        : 'bg-[var(--loome-danger-text)]'
+                    }`}
                   />
                   <span>{normalized.isAvailable ? 'In Stock' : 'Out of Stock'}</span>
                 </div>
@@ -599,10 +602,10 @@ export default function LoomeProductDetailView({
               />
 
               {/* Single-Line LKR Price + Compare-At + Discount Badge */}
-              <div className="mt-3 flex flex-wrap items-center gap-2.5 border-b border-[#49382D]/10 pb-3.5 dark:border-[#C8A98B]/16">
+              <div className="mt-3 flex flex-wrap items-center gap-2.5 border-b border-[var(--loome-border)] pb-3.5">
                 <span
                   data-preview-field-path={`products[${idx}].price`}
-                  className="whitespace-nowrap font-heading text-2xl font-extrabold tracking-tight tabular-nums text-[#2C211B] dark:text-[#F5EEE6]"
+                  className="whitespace-nowrap font-heading text-2xl font-extrabold tracking-tight tabular-nums text-[var(--heading-color)]"
                 >
                   {normalized.showPrice
                     ? formatLoomePrice(normalized.price, storeCurrency)
@@ -611,7 +614,7 @@ export default function LoomeProductDetailView({
                 {normalized.showPrice && normalized.compareAtPrice && (
                   <span
                     data-preview-field-path={`products[${idx}].compareAtPrice`}
-                    className="whitespace-nowrap text-sm font-medium tabular-nums text-[#6E5B4E]/80 line-through dark:text-[#C9B9AA]/75"
+                    className="whitespace-nowrap text-sm font-medium tabular-nums text-[var(--muted-text)]/80 line-through"
                   >
                     {formatLoomePrice(normalized.compareAtPrice, storeCurrency)}
                   </span>
@@ -619,7 +622,7 @@ export default function LoomeProductDetailView({
                 {savingsPercent && (
                   <span
                     data-preview-static="product-savings-badge"
-                    className="rounded-md bg-[#B28B65]/15 px-2 py-0.5 text-[11px] font-bold text-[#8A623C] dark:bg-[#C8A98B]/20 dark:text-[#C8A98B]"
+                    className="rounded-md bg-[var(--brand-accent)]/16 px-2 py-0.5 text-[11px] font-bold text-[var(--brand-accent)]"
                   >
                     Save {savingsPercent}%
                   </span>
@@ -646,13 +649,13 @@ export default function LoomeProductDetailView({
                   <div className="flex items-center justify-between text-xs">
                     <span
                       data-preview-field-path="productDetailPage.toneLabel"
-                      className="font-semibold text-[#49382D] dark:text-[#E8DDD0]"
+                      className="font-semibold text-[var(--heading-color)]"
                     >
                       {colorLabel}
                     </span>
                     <span
                       data-preview-static="color-swatch-value"
-                      className="font-medium text-[#6E5B4E] dark:text-[#C9B9AA]"
+                      className="font-medium text-[var(--muted-text)]"
                     >
                       {activeColor.name}
                     </span>
@@ -676,13 +679,14 @@ export default function LoomeProductDetailView({
                             aria-pressed={selected}
                             title={swatch.name}
                             data-preview-static={`detail-swatch-${sIdx}`}
-                            className={`flex items-center gap-2 rounded-[10px] border px-2.5 py-1.5 text-xs font-medium transition-all duration-200 ${selected
-                              ? 'border-[#49382D] bg-[#F7F3ED] text-[#2C211B] ring-1 ring-[#B28B65]/50 dark:border-[#C8A98B] dark:bg-[#3B302B] dark:text-[#F5EEE6]'
-                              : 'border-[#49382D]/14 bg-white text-[#49382D] hover:border-[#B28B65] dark:border-[#C8A98B]/20 dark:bg-[#1E1917] dark:text-[#C9B9AA] dark:hover:border-[#C8A98B]'
-                              }`}
+                            className={`flex items-center gap-2 rounded-[10px] border px-2.5 py-1.5 text-xs font-medium transition-all duration-200 ${
+                              selected
+                                ? 'border-[var(--loome-btn-primary-bg)] bg-[var(--loome-surface-muted)] text-[var(--heading-color)] ring-1 ring-[var(--brand-accent)]/45'
+                                : 'border-[var(--loome-border)] bg-[var(--card-bg)] text-[var(--page-text)] hover:border-[var(--brand-accent)]'
+                            }`}
                           >
                             <span
-                              className="h-3.5 w-3.5 rounded-full border border-[#49382D]/25"
+                              className="h-3.5 w-3.5 rounded-full border border-[var(--loome-border)]"
                               style={{ backgroundColor: swatch.hex }}
                             />
                             <span>{swatch.name}</span>
@@ -698,13 +702,13 @@ export default function LoomeProductDetailView({
               {hasSizes && activeSize && (
                 <div className="mt-3.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="inline-flex items-center gap-1.5 font-semibold text-[#49382D] dark:text-[#E8DDD0]">
-                      <Ruler className="h-3.5 w-3.5 stroke-[1.7] text-[#B28B65] dark:text-[#C8A98B]" />
+                    <span className="inline-flex items-center gap-1.5 font-semibold text-[var(--heading-color)]">
+                      <Ruler className="h-3.5 w-3.5 stroke-[1.7] text-[var(--brand-accent)]" />
                       <span data-preview-field-path="productDetailPage.sizeLabel">{sizeLabel}</span>
                     </span>
                     <span
                       data-preview-static="size-selector-value"
-                      className="font-medium text-[#6E5B4E] dark:text-[#C9B9AA]"
+                      className="font-medium text-[var(--muted-text)]"
                     >
                       {activeSize}
                     </span>
@@ -719,10 +723,11 @@ export default function LoomeProductDetailView({
                           onClick={() => setSelectedSizeIndex(szIdx)}
                           aria-pressed={selected}
                           data-preview-static={`detail-size-${szIdx}`}
-                          className={`rounded-[10px] border px-3 py-1.5 text-xs font-medium transition-colors duration-200 ${selected
-                            ? 'border-[#49382D] bg-[#49382D] text-[#F7F3ED] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                            : 'border-[#49382D]/16 bg-[#F7F3ED]/60 text-[#49382D] hover:border-[#B28B65] dark:border-[#C8A98B]/22 dark:bg-[#1E1917] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B]'
-                            }`}
+                          className={`rounded-[10px] border px-3 py-1.5 text-xs font-medium transition-colors duration-200 ${
+                            selected
+                              ? 'border-[var(--loome-btn-primary-bg)] bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
+                              : 'border-[var(--loome-border)] bg-[var(--loome-surface-muted)]/70 text-[var(--page-text)] hover:border-[var(--brand-accent)]'
+                          }`}
                         >
                           {sizeOption}
                         </button>
@@ -735,21 +740,21 @@ export default function LoomeProductDetailView({
               {/* Quantity + Add to Bag + Wishlist Row */}
               <div className="mt-4 flex flex-wrap items-stretch gap-2.5 sm:flex-nowrap">
                 {/* Quantity Stepper */}
-                <div className="flex h-11 w-[112px] shrink-0 items-center justify-between overflow-hidden rounded-[11px] border border-[#49382D]/18 bg-[#F7F3ED] px-1 dark:border-[#C8A98B]/24 dark:bg-[#1E1917]">
+                <div className="flex h-11 w-[112px] shrink-0 items-center justify-between overflow-hidden rounded-[11px] border border-[var(--loome-border)] bg-[var(--loome-surface-muted)] px-1">
                   <button
                     type="button"
                     disabled={!normalized.isAvailable || quantity <= 1}
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                     aria-label="Decrease quantity"
                     data-preview-static="detail-qty-decrease"
-                    className="flex h-9 w-8 items-center justify-center rounded-[8px] text-[#49382D] transition-colors hover:bg-[#EDE5DA] disabled:cursor-not-allowed disabled:opacity-35 dark:text-[#F5EEE6] dark:hover:bg-[#3B302B]"
+                    className="flex h-9 w-8 items-center justify-center rounded-[8px] text-[var(--heading-color)] transition-colors hover:bg-[var(--brand-accent)]/15 disabled:cursor-not-allowed disabled:opacity-35"
                   >
                     <Minus className="h-3.5 w-3.5 stroke-[1.8]" />
                   </button>
                   <span
                     aria-live="polite"
                     data-preview-static="detail-qty-value"
-                    className="w-8 text-center text-sm font-bold tabular-nums text-[#2C211B] dark:text-[#F5EEE6]"
+                    className="w-8 text-center text-sm font-bold tabular-nums text-[var(--heading-color)]"
                   >
                     {quantity}
                   </span>
@@ -759,7 +764,7 @@ export default function LoomeProductDetailView({
                     onClick={() => setQuantity((q) => Math.min(99, q + 1))}
                     aria-label="Increase quantity"
                     data-preview-static="detail-qty-increase"
-                    className="flex h-9 w-8 items-center justify-center rounded-[8px] text-[#49382D] transition-colors hover:bg-[#EDE5DA] disabled:cursor-not-allowed disabled:opacity-35 dark:text-[#F5EEE6] dark:hover:bg-[#3B302B]"
+                    className="flex h-9 w-8 items-center justify-center rounded-[8px] text-[var(--heading-color)] transition-colors hover:bg-[var(--brand-accent)]/15 disabled:cursor-not-allowed disabled:opacity-35"
                   >
                     <Plus className="h-3.5 w-3.5 stroke-[1.8]" />
                   </button>
@@ -772,12 +777,13 @@ export default function LoomeProductDetailView({
                   disabled={!normalized.isAvailable}
                   onClick={handleAddToBag}
                   data-testid="detail-add-to-bag"
-                  className={`flex h-11 min-w-[160px] flex-1 items-center justify-center gap-2 rounded-[11px] px-5 text-xs font-bold uppercase tracking-[0.16em] transition-colors duration-200 ${!normalized.isAvailable
-                    ? 'cursor-not-allowed bg-[#E8DDD0] text-[#6E5B4E] dark:bg-[#3B302B] dark:text-[#C9B9AA]/60'
-                    : addedFeedback
-                      ? 'bg-[#B28B65] text-white dark:bg-[#D8BFA4] dark:text-[#201C1A]'
-                      : 'bg-[#49382D] text-[#F7F3ED] hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]'
-                    }`}
+                  className={`flex h-11 min-w-[160px] flex-1 items-center justify-center gap-2 rounded-[11px] border-0 px-5 text-xs font-bold uppercase tracking-[0.16em] transition-colors duration-200 ${
+                    !normalized.isAvailable
+                      ? 'cursor-not-allowed bg-[var(--loome-surface-muted)] text-[var(--muted-text)]'
+                      : addedFeedback
+                        ? 'bg-[var(--loome-sage-accent)] text-white'
+                        : 'bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)] hover:bg-[var(--loome-btn-primary-hover)] hover:text-white dark:hover:text-[#201C1A]'
+                  }`}
                 >
                   {addedFeedback ? (
                     <>
@@ -808,10 +814,11 @@ export default function LoomeProductDetailView({
                   }
                   aria-pressed={wishlisted}
                   data-preview-static="detail-wishlist-toggle"
-                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[11px] border transition-colors duration-200 ${wishlisted
-                    ? 'border-[#B28B65] bg-[#49382D] text-[#F7F3ED] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                    : 'border-[#49382D]/18 bg-[#F7F3ED] text-[#49382D] hover:border-[#B28B65] hover:text-[#B28B65] dark:border-[#C8A98B]/26 dark:bg-[#1E1917] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B]'
-                    }`}
+                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[11px] border transition-colors duration-200 ${
+                    wishlisted
+                      ? 'border-[var(--brand-accent)] bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
+                      : 'border-[var(--loome-border)] bg-[var(--loome-surface-muted)] text-[var(--page-text)] hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]'
+                  }`}
                 >
                   <Heart className={`h-4 w-4 stroke-[1.7] ${wishlisted ? 'fill-current' : ''}`} />
                 </motion.button>
@@ -824,9 +831,9 @@ export default function LoomeProductDetailView({
                   target="_blank"
                   rel="noopener noreferrer"
                   data-testid="detail-whatsapp-cta"
-                  className="mt-2.5 flex h-10 w-full items-center justify-center gap-2 rounded-[11px] border border-[#49382D]/18 bg-transparent px-4 text-xs font-semibold text-[#49382D] no-underline transition-colors hover:border-[#B28B65] hover:bg-[#F7F3ED] dark:border-[#C8A98B]/30 dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:bg-[#3B302B]/70"
+                  className="mt-2.5 flex h-10 w-full items-center justify-center gap-2 rounded-[11px] border border-[var(--loome-border)] bg-transparent px-4 text-xs font-semibold text-[var(--page-text)] no-underline transition-colors hover:border-[var(--brand-accent)] hover:bg-[var(--loome-surface-muted)]"
                 >
-                  <MessageCircle className="h-3.5 w-3.5 stroke-[1.7] text-[#B28B65] dark:text-[#C8A98B]" />
+                  <MessageCircle className="h-3.5 w-3.5 stroke-[1.7] text-[var(--brand-accent)]" />
                   <span data-preview-field-path="productDetailPage.whatsappInquireLabel">
                     {whatsappInquireLabel}
                   </span>
@@ -834,9 +841,9 @@ export default function LoomeProductDetailView({
               )}
 
               {/* Compact Delivery & Swatch Assurance Footer */}
-              <div className="mt-4 grid grid-cols-1 gap-2.5 border-t border-[#49382D]/10 pt-3.5 text-xs text-[#6E5B4E] dark:border-[#C8A98B]/16 dark:text-[#C9B9AA] sm:grid-cols-2">
+              <div className="mt-4 grid grid-cols-1 gap-2.5 border-t border-[var(--loome-border)] pt-3.5 text-xs text-[var(--muted-text)] sm:grid-cols-2">
                 <div className="flex items-start gap-2">
-                  <Truck className="mt-0.5 h-3.5 w-3.5 shrink-0 stroke-[1.7] text-[#B28B65] dark:text-[#C8A98B]" />
+                  <Truck className="mt-0.5 h-3.5 w-3.5 shrink-0 stroke-[1.7] text-[var(--loome-sage-accent)]" />
                   <div>
                     <EditableText
                       as="p"
@@ -848,7 +855,7 @@ export default function LoomeProductDetailView({
                       color="heading"
                       className="m-0"
                     />
-                    <p className="m-0 mt-0.5 text-[11.5px] leading-snug">
+                    <p className="m-0 mt-0.5 text-[11.5px] leading-snug text-[var(--loome-sage-text)]">
                       {freeDeliveryThreshold > 0 ? (
                         `Free over ${formatLoomePrice(freeDeliveryThreshold, storeCurrency)}`
                       ) : (
@@ -861,7 +868,7 @@ export default function LoomeProductDetailView({
                 </div>
 
                 <div className="flex items-start gap-2">
-                  <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 stroke-[1.7] text-[#B28B65] dark:text-[#C8A98B]" />
+                  <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 stroke-[1.7] text-[var(--brand-accent)]" />
                   <div>
                     <EditableText
                       as="p"
@@ -878,7 +885,7 @@ export default function LoomeProductDetailView({
                         <a
                           href={withBasePath('/contact/')}
                           data-target-page="contact"
-                          className="text-[#49382D] underline decoration-[#B28B65] underline-offset-4 transition-colors hover:text-[#B28B65] dark:text-[#E8DDD0] dark:hover:text-[#C8A98B]"
+                          className="text-[var(--page-text)] underline decoration-[var(--brand-accent)] underline-offset-4 transition-colors hover:text-[var(--brand-accent)]"
                         >
                           <span data-preview-field-path="productDetailPage.swatchLinkLabel">
                             {swatchLinkLabel}
@@ -900,13 +907,13 @@ export default function LoomeProductDetailView({
         {/* Clean Tabbed Product Information Below (Details, Specifications, Care, Delivery & Returns) */}
         <div
           data-testid="product-detail-tabs-card"
-          className="mt-8 overflow-hidden rounded-2xl border border-[#49382D]/12 bg-white shadow-[0_6px_24px_rgba(73,56,45,0.05)] dark:border-[#C8A98B]/20 dark:bg-[#28211D]"
+          className="mt-8 overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] shadow-[0_6px_24px_rgba(73,56,45,0.05)]"
         >
           {/* Tab Header Strip */}
           <div
             role="tablist"
             aria-label="Product information tabs"
-            className="flex items-center gap-1 overflow-x-auto border-b border-[#49382D]/10 px-4 pt-2 dark:border-[#C8A98B]/16 sm:gap-2 sm:px-6"
+            className="flex items-center gap-1 overflow-x-auto border-b border-[var(--loome-border)] px-4 pt-2 sm:gap-2 sm:px-6"
           >
             {tabs.map((tab) => {
               const isActive = activeTab === tab.key;
@@ -918,10 +925,11 @@ export default function LoomeProductDetailView({
                   aria-selected={isActive}
                   data-testid={`detail-tab-${tab.key}`}
                   onClick={() => setActiveTab(tab.key)}
-                  className={`relative shrink-0 border-0 bg-transparent px-3.5 py-3 text-xs font-bold uppercase tracking-[0.14em] transition-colors sm:px-4 ${isActive
-                    ? 'text-[#2C211B] dark:text-[#F5EEE6]'
-                    : 'text-[#6E5B4E] hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]'
-                    }`}
+                  className={`relative shrink-0 border-0 bg-transparent px-3.5 py-3 text-xs font-bold uppercase tracking-[0.14em] transition-colors sm:px-4 ${
+                    isActive
+                      ? 'text-[var(--heading-color)]'
+                      : 'text-[var(--muted-text)] hover:text-[var(--heading-color)]'
+                  }`}
                 >
                   {tab.fieldPath === 'productDetailPage.specsHeading' ? (
                     <span data-preview-field-path="productDetailPage.specsHeading">
@@ -941,7 +949,7 @@ export default function LoomeProductDetailView({
                   {isActive && (
                     <span
                       aria-hidden="true"
-                      className="absolute inset-x-3 bottom-0 h-[2.5px] rounded-t-full bg-[#B28B65] dark:bg-[#C8A98B]"
+                      className="absolute inset-x-3 bottom-0 h-[2.5px] rounded-t-full bg-[var(--brand-accent)]"
                     />
                   )}
                 </button>
@@ -953,7 +961,7 @@ export default function LoomeProductDetailView({
           <div role="tabpanel" className="p-5 sm:p-7">
             {activeTab === 'details' && (
               <div data-preview-static="detail-panel-details" className="max-w-3xl space-y-4">
-                <p className="m-0 text-sm leading-relaxed text-[#49382D] dark:text-[#E8DDD0]">
+                <p className="m-0 text-sm leading-relaxed text-[var(--page-text)]">
                   {normalized.description ||
                     'Crafted from natural long-staple fibers designed for everyday elegance and breathable comfort.'}
                 </p>
@@ -963,7 +971,7 @@ export default function LoomeProductDetailView({
                     {normalized.material && (
                       <span
                         data-preview-static="product-material-pill"
-                        className="rounded-[9px] border border-[#49382D]/14 bg-[#F7F3ED] px-3 py-1.5 text-xs font-semibold text-[#49382D] dark:border-[#C8A98B]/22 dark:bg-[#1E1917] dark:text-[#F5EEE6]"
+                        className="rounded-[9px] border border-[var(--loome-border)] bg-[var(--loome-surface-muted)] px-3 py-1.5 text-xs font-semibold text-[var(--heading-color)]"
                       >
                         {normalized.material}
                       </span>
@@ -971,7 +979,7 @@ export default function LoomeProductDetailView({
                     {normalized.gsm && (
                       <span
                         data-preview-static="product-gsm-pill"
-                        className="rounded-[9px] border border-[#49382D]/14 bg-[#F7F3ED] px-3 py-1.5 text-xs font-semibold text-[#49382D] dark:border-[#C8A98B]/22 dark:bg-[#1E1917] dark:text-[#F5EEE6]"
+                        className="rounded-[9px] border border-[var(--loome-border)] bg-[var(--loome-surface-muted)] px-3 py-1.5 text-xs font-semibold text-[var(--heading-color)]"
                       >
                         {normalized.gsm}
                       </span>
@@ -979,7 +987,7 @@ export default function LoomeProductDetailView({
                     {normalized.dimensions && (
                       <span
                         data-preview-static="product-dimensions-pill"
-                        className="rounded-[9px] border border-[#49382D]/14 bg-[#F7F3ED] px-3 py-1.5 text-xs font-semibold text-[#49382D] dark:border-[#C8A98B]/22 dark:bg-[#1E1917] dark:text-[#F5EEE6]"
+                        className="rounded-[9px] border border-[var(--loome-border)] bg-[var(--loome-surface-muted)] px-3 py-1.5 text-xs font-semibold text-[var(--heading-color)]"
                       >
                         {normalized.dimensions}
                       </span>
@@ -997,17 +1005,17 @@ export default function LoomeProductDetailView({
                 {textileSpecs.map((spec) => (
                   <div
                     key={spec.label}
-                    className="flex flex-col justify-between gap-1 border-b border-[#49382D]/10 pb-3 dark:border-[#C8A98B]/14 sm:flex-row sm:items-baseline sm:gap-4"
+                    className="flex flex-col justify-between gap-1 border-b border-[var(--loome-border)] pb-3 sm:flex-row sm:items-baseline sm:gap-4"
                   >
                     <dt
                       data-preview-static={`spec-label-${spec.label}`}
-                      className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6E5B4E] dark:text-[#C9B9AA]"
+                      className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--muted-text)]"
                     >
                       {spec.label}
                     </dt>
                     <dd
                       data-preview-static={`spec-value-${spec.label}`}
-                      className="m-0 text-sm font-semibold text-[#2C211B] dark:text-[#F5EEE6] sm:text-right"
+                      className="m-0 text-sm font-semibold text-[var(--heading-color)] sm:text-right"
                     >
                       {spec.value}
                     </dd>
@@ -1020,7 +1028,7 @@ export default function LoomeProductDetailView({
               <div data-preview-static="detail-panel-care" className="max-w-3xl">
                 <p
                   data-preview-static="product-care-instructions"
-                  className="m-0 text-sm leading-relaxed text-[#49382D] dark:text-[#E8DDD0]"
+                  className="m-0 text-sm leading-relaxed text-[var(--page-text)]"
                 >
                   {normalized.careInstructions}
                 </p>
@@ -1030,14 +1038,14 @@ export default function LoomeProductDetailView({
             {activeTab === 'delivery' && (
               <div
                 data-testid="detail-panel-delivery"
-                className="max-w-3xl space-y-3 text-sm leading-relaxed text-[#49382D] dark:text-[#E8DDD0]"
+                className="max-w-3xl space-y-3 text-sm leading-relaxed text-[var(--page-text)]"
               >
                 <p data-preview-field-path="productDetailPage.defaultShippingSummary" className="m-0">
                   {shippingSummary}
                 </p>
                 <p
                   data-preview-field-path="productDetailPage.defaultShippingReturns"
-                  className="m-0 text-[#6E5B4E] dark:text-[#C9B9AA]"
+                  className="m-0 text-[var(--muted-text)]"
                 >
                   {shippingReturns}
                 </p>
@@ -1049,12 +1057,12 @@ export default function LoomeProductDetailView({
 
       {/* Related Products Section */}
       {relatedProducts.length > 0 && (
-        <section className="loome-surface-ivory border-t border-[#49382D]/10 py-12 dark:border-[#C8A98B]/16 sm:py-16">
+        <section className="loome-surface-ivory border-t border-[var(--loome-border)] py-12 sm:py-16">
           <div className="mx-auto max-w-[1240px] px-4 sm:px-8 lg:px-10">
             <LuxuryReveal>
               <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
                 <div>
-                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B28B65] dark:text-[#C8A98B]">
+                  <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]">
                     <Sparkles className="h-3.5 w-3.5 stroke-[1.6]" />
                     <span data-preview-field-path="productDetailPage.relatedEyebrow">
                       {relatedEyebrow}
@@ -1077,7 +1085,7 @@ export default function LoomeProductDetailView({
                   <a
                     href={withBasePath('/shop/')}
                     data-target-page="shop"
-                    className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#49382D] no-underline transition-colors hover:text-[#B28B65] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
+                    className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--heading-color)] no-underline transition-colors hover:text-[var(--brand-accent)]"
                   >
                     <span data-preview-field-path="productDetailPage.relatedCtaLabel">
                       {relatedCtaLabel}

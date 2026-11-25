@@ -30,25 +30,25 @@ export default function ProductDetailPage() {
           <div className="mx-auto max-w-[1240px] px-4 sm:px-8 lg:px-10">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
               <div className="lg:col-span-6">
-                <div className="h-[400px] w-full animate-pulse rounded-2xl bg-white/80 dark:bg-[#28211D]" />
+                <div className="h-[420px] w-full animate-pulse rounded-2xl bg-[var(--loome-surface-muted)]" />
               </div>
-              <div className="flex flex-col justify-center space-y-4 rounded-2xl bg-white p-6 dark:bg-[#28211D] lg:col-span-6">
+              <div className="flex flex-col justify-center space-y-4 rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-6 lg:col-span-6">
                 <span
                   data-preview-static="product-detail-loading-eyebrow"
-                  className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#B28B65] dark:text-[#C8A98B]"
+                  className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--brand-accent)]"
                 >
                   Loading Product
                 </span>
                 <p
                   data-preview-static="product-detail-loading"
-                  className="m-0 font-heading text-2xl font-extrabold tracking-tight text-[#2C211B] dark:text-[#F5EEE6]"
+                  className="m-0 font-heading text-2xl font-extrabold tracking-tight text-[var(--heading-color)]"
                 >
                   Preparing product details…
                 </p>
                 <div className="space-y-2.5 pt-2">
-                  <div className="h-3 w-3/4 animate-pulse rounded bg-[#EDE5DA] dark:bg-[#3B302B]" />
-                  <div className="h-3 w-full animate-pulse rounded bg-[#EDE5DA]/80 dark:bg-[#3B302B]/80" />
-                  <div className="h-3 w-2/3 animate-pulse rounded bg-[#EDE5DA]/80 dark:bg-[#3B302B]/80" />
+                  <div className="h-3 w-3/4 animate-pulse rounded bg-[var(--loome-surface-muted)]" />
+                  <div className="h-3 w-full animate-pulse rounded bg-[var(--loome-surface-muted)]/80" />
+                  <div className="h-3 w-2/3 animate-pulse rounded bg-[var(--loome-surface-muted)]/80" />
                 </div>
               </div>
             </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { ArrowRight, Heart, Trash2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Heart, Trash2 } from 'lucide-react';
 import { EditableText } from '@deneb-ui/ui';
 import {
   contentObject,
@@ -28,15 +28,15 @@ export default function WishlistView() {
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
     : siteData.template?.structure?.pages || [
-        'home',
-        'shop',
-        'collections',
-        'wishlist',
-        'cart',
-        'checkout',
-        'services',
-        'contact',
-      ];
+      'home',
+      'shop',
+      'collections',
+      'wishlist',
+      'cart',
+      'checkout',
+      'services',
+      'contact',
+    ];
   const hasShopPage = requiredPages.includes('shop');
 
   const allProducts = useMemo(
@@ -73,35 +73,35 @@ export default function WishlistView() {
       className="loome-surface-commerce min-h-[75vh] w-full font-sans"
     >
       {/* Compact Breadcrumb Bar */}
-      <div className="border-b border-[#49382D]/10 bg-white/85 dark:border-[#C8A98B]/16 dark:bg-[#201C1A]">
-        <nav className="mx-auto flex max-w-[1260px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6E5B4E] dark:text-[#C9B9AA] sm:px-8 lg:px-10">
+      <div className="border-b border-[var(--loome-border)] bg-[var(--loome-surface-subtle)]">
+        <nav className="mx-auto flex max-w-[1260px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-text)] sm:px-8 lg:px-10">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[#6E5B4E] transition-colors hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-text)] transition-colors hover:text-[var(--heading-color)]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" data-preview-static="wishlist-bc-sep" className="text-[#B28B65] dark:text-[#C8A98B]">
+          <span aria-hidden="true" data-preview-static="wishlist-bc-sep" className="text-[var(--brand-accent)]">
             /
           </span>
           <span
             aria-current="page"
             data-preview-static="wishlist-breadcrumb-current"
-            className="font-semibold text-[#2C211B] dark:text-[#F5EEE6]"
+            className="font-semibold text-[var(--heading-color)]"
           >
             Wishlist
           </span>
         </nav>
       </div>
 
-      {/* Compact Wishlist Header */}
+      {/* Left-Aligned Wishlist Header + Far-Right Clear All */}
       <section
         data-design-section="wishlist-header"
-        className="mx-auto max-w-[1260px] px-4 pb-6 pt-7 sm:px-8 sm:pt-9 lg:px-10"
+        className="mx-auto w-full max-w-[1260px] px-4 pb-6 pt-7 sm:px-8 sm:pt-9 lg:px-10"
       >
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-          <div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-2xl">
             <EditableText
               as="p"
               data-preview-field-path="wishlistPage.eyebrow"
@@ -129,12 +129,12 @@ export default function WishlistView() {
               />
               <span
                 data-preview-static="wishlist-item-count"
-                className="rounded-full border border-[#49382D]/14 bg-white px-2.5 py-0.5 text-xs font-semibold text-[#49382D] dark:border-[#C8A98B]/24 dark:bg-[#28211D] dark:text-[#F5EEE6]"
+                className="rounded-full border border-[var(--loome-border)] bg-[var(--card-bg)] px-2.5 py-0.5 text-xs font-semibold text-[var(--page-text)]"
               >
                 {savedProducts.length} {savedProducts.length === 1 ? 'item' : 'items'}
               </span>
             </div>
-            <div className="mt-2 max-w-xl">
+            <div className="mt-2">
               <EditableText
                 as="p"
                 data-preview-field-path="wishlistPage.intro"
@@ -153,7 +153,7 @@ export default function WishlistView() {
               type="button"
               onClick={handleClearAll}
               data-preview-static="wishlist-clear-all"
-              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start rounded-[10px] border border-[#49382D]/18 bg-white px-4 text-xs font-semibold text-[#49382D] transition-colors hover:border-[#A63A2B]/40 hover:text-[#A63A2B] dark:border-[#C8A98B]/24 dark:bg-[#28211D] dark:text-[#F5EEE6] dark:hover:border-[#F09A8B]/50 dark:hover:text-[#F09A8B] sm:self-auto"
+              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 self-start rounded-[10px] border border-[var(--loome-border)] bg-[var(--card-bg)] px-4 text-xs font-semibold text-[var(--page-text)] transition-colors hover:border-[var(--loome-danger-text)]/45 hover:text-[var(--loome-danger-text)] sm:ml-auto sm:self-end"
             >
               <Trash2 className="h-3.5 w-3.5 stroke-[1.6]" />
               <span>Clear All</span>
@@ -162,14 +162,14 @@ export default function WishlistView() {
         </div>
       </section>
 
-      {/* Main Saved Grid or Empty State */}
+      {/* Main Saved 4-Column Grid or Empty State */}
       <section
         data-design-section="wishlist-grid"
-        className="mx-auto max-w-[1260px] px-4 pb-16 sm:px-8 lg:px-10"
+        className="mx-auto w-full max-w-[1260px] px-4 pb-14 sm:px-8 lg:px-10 lg:pb-16"
       >
         {savedProducts.length === 0 ? (
-          <LuxuryReveal className="mx-auto max-w-lg rounded-2xl border border-[#49382D]/12 bg-white px-6 py-12 text-center shadow-[0_6px_24px_rgba(73,56,45,0.06)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] sm:px-10">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[#B28B65]/30 bg-[#EDE5DA]/75 text-[#B28B65] dark:border-[#C8A98B]/30 dark:bg-[#1A1614] dark:text-[#C8A98B]">
+          <LuxuryReveal className="mx-auto max-w-lg rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] px-6 py-12 text-center shadow-[0_6px_24px_rgba(73,56,45,0.06)] sm:px-10">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--brand-accent)]/30 bg-[var(--loome-surface-muted)] text-[var(--brand-accent)]">
               <Heart className="h-6 w-6 stroke-[1.6]" />
             </div>
 
@@ -209,7 +209,7 @@ export default function WishlistView() {
                 onClick={() => window.location.assign(shopHref)}
                 data-target-page={hasShopPage ? 'shop' : undefined}
                 data-testid="wishlist-empty-cta"
-                className="group inline-flex h-11 items-center justify-center gap-2 rounded-[11px] border-0 bg-[#49382D] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-[#F7F3ED] transition-colors hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]"
+                className="group inline-flex h-11 items-center justify-center gap-2 rounded-[11px] border-0 bg-[var(--loome-btn-primary-bg)] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--loome-btn-primary-text)] transition-colors hover:bg-[var(--loome-btn-primary-hover)] hover:text-white dark:hover:text-[#201C1A]"
               >
                 <span data-preview-field-path="wishlistPage.emptyCtaLabel">{emptyCtaLabel}</span>
                 <ArrowRight className="h-3.5 w-3.5 stroke-[1.7] transition-transform duration-300 group-hover:translate-x-0.5" />
@@ -217,19 +217,36 @@ export default function WishlistView() {
             </div>
           </LuxuryReveal>
         ) : (
-          <div
-            data-testid="wishlist-cards-grid"
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-          >
-            {savedProducts.map((product) => (
-              <LoomeProductCard
-                key={product.id}
-                product={product}
-                tone="light"
-                showRemoveAction
-              />
-            ))}
-          </div>
+          <>
+            <div
+              data-testid="wishlist-cards-grid"
+              className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
+            >
+              {savedProducts.map((product) => (
+                <LoomeProductCard
+                  key={product.id}
+                  product={product}
+                  tone="light"
+                  showRemoveAction
+                  compactMedia
+                />
+              ))}
+            </div>
+
+            {/* Continue Shopping Link */}
+            <div className="mt-8 flex items-center justify-between border-t border-[var(--loome-border)] pt-5">
+              <button
+                type="button"
+                onClick={() => window.location.assign(shopHref)}
+                data-target-page={hasShopPage ? 'shop' : undefined}
+                data-preview-static="wishlist-continue-shopping"
+                className="group inline-flex items-center gap-2 border-0 bg-transparent p-0 text-xs font-semibold text-[var(--page-text)] transition-colors hover:text-[var(--brand-accent)]"
+              >
+                <ArrowLeft className="h-3.5 w-3.5 stroke-[1.8] transition-transform duration-300 group-hover:-translate-x-0.5" />
+                <span>Continue Shopping</span>
+              </button>
+            </div>
+          </>
         )}
       </section>
     </div>

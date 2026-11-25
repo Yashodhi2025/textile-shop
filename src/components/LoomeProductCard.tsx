@@ -16,12 +16,14 @@ interface LoomeProductCardProps {
   product: LoomeProduct;
   tone?: 'dark' | 'light';
   showRemoveAction?: boolean;
+  compactMedia?: boolean;
 }
 
 export default function LoomeProductCard({
   product,
   tone = 'light',
   showRemoveAction = false,
+  compactMedia = false,
 }: LoomeProductCardProps) {
   const siteData = useSiteData();
   const cart = useCart();
@@ -73,8 +75,13 @@ export default function LoomeProductCard({
           : 'border-[#49382D]/12 bg-white shadow-[0_2px_12px_rgba(73,56,45,0.05)] hover:border-[#B28B65]/60 hover:shadow-[0_10px_28px_rgba(73,56,45,0.09)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] dark:shadow-none dark:hover:border-[#C8A98B]/50'
       }`}
     >
-      {/* Large 3:4 Product Image Frame */}
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-[#E8DDD0]/60 dark:bg-[#3B302B]/40">
+      {/* Product Image Frame — compact 276px height on Wishlist desktop, 3:4 editorial elsewhere */}
+      <div
+        data-testid={compactMedia ? 'wishlist-card-media' : undefined}
+        className={`relative w-full overflow-hidden bg-[var(--brand-secondary,#E8DDD0)]/60 dark:bg-[#3B302B]/40 ${
+          compactMedia ? 'aspect-[4/3] sm:h-[268px] sm:aspect-auto lg:h-[276px]' : 'aspect-[3/4]'
+        }`}
+      >
         <div
           onClick={() => {
             window.location.href = detailHref;

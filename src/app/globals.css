@@ -200,23 +200,47 @@ html.dark .loome-surface-beige,
   --loome-border: rgba(200, 169, 139, 0.22);
 }
 
-/* Warm Beige Commerce Surface (#EDE5DA) for Cart, Wishlist & Product Detail — adapts cleanly in Dark Mode */
+/* Warm Ivory Commerce Surface (#F5F1EB) for Cart, Wishlist & Product Detail — token-driven & Dark Mode aware */
 .loome-surface-commerce {
-  background-color: #EDE5DA;
-  color: #49382D;
+  --loome-commerce-bg: #F5F1EB;
+  --loome-surface-subtle: rgba(255, 255, 255, 0.88);
+  --loome-surface-muted: #EFE9E0;
+  --loome-btn-primary-bg: var(--brand-color, #49382D);
+  --loome-btn-primary-text: #F7F3ED;
+  --loome-btn-primary-hover: var(--brand-accent, #B28B65);
+  --loome-sage-bg: #EBF2EC;
+  --loome-sage-text: #3F6147;
+  --loome-sage-accent: #5A7F62;
+  --loome-sage-border: rgba(63, 97, 71, 0.24);
+  --loome-danger-bg: #F8EAE7;
+  --loome-danger-text: #9A3C2E;
+  background-color: var(--loome-commerce-bg);
+  color: var(--page-text, #49382D);
   --heading-color: #2C211B;
   --page-text: #49382D;
   --muted-text: #6E5B4E;
   --color-text: #49382D;
   --color-text-muted: #6E5B4E;
   --card-bg: #FFFFFF;
-  --brand-primary: #B28B65;
+  --brand-primary: var(--brand-accent, #B28B65);
   --loome-border: rgba(73, 56, 45, 0.13);
 }
 
 html.dark .loome-surface-commerce,
 .dark .loome-surface-commerce {
-  background-color: #1A1614;
+  --loome-commerce-bg: #1A1614;
+  --loome-surface-subtle: #201C1A;
+  --loome-surface-muted: #1E1917;
+  --loome-btn-primary-bg: var(--brand-accent, #C8A98B);
+  --loome-btn-primary-text: #201C1A;
+  --loome-btn-primary-hover: #D8BFA4;
+  --loome-sage-bg: #233327;
+  --loome-sage-text: #9CC7A5;
+  --loome-sage-accent: #82B38C;
+  --loome-sage-border: rgba(156, 199, 165, 0.28);
+  --loome-danger-bg: #3F2521;
+  --loome-danger-text: #F0A498;
+  background-color: var(--loome-commerce-bg);
   color: #F5EEE6;
   --heading-color: #F5EEE6;
   --page-text: #F5EEE6;
