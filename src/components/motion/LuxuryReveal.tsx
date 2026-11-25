@@ -137,9 +137,9 @@ interface LuxuryImageRevealProps {
 }
 
 const CURTAIN_TONES: Record<'ivory' | 'beige' | 'charcoal', string> = {
-  ivory: 'bg-[#F2E9DE] dark:bg-[#201C1A]',
-  beige: 'bg-[#E6D9C9] dark:bg-[#3B302B]',
-  charcoal: 'bg-[#201C1A] dark:bg-[#161311]',
+  ivory: 'bg-[#F7F4EF] dark:bg-[#1A1614]',
+  beige: 'bg-[#EAE2D7] dark:bg-[#28211D]',
+  charcoal: 'bg-[#2D2722] dark:bg-[#161311]',
 };
 
 /**

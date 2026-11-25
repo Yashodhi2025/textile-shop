@@ -163,16 +163,16 @@ export default function JournalIndexView() {
         </nav>
       </div>
 
-      {/* Magazine Editorial Hero */}
+      {/* Compact Magazine Editorial Hero */}
       <section
         data-design-section="journal-hero"
         className="w-full border-b border-[var(--loome-border)]"
       >
-        <div className="mx-auto max-w-[1280px] px-4 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
-          <LuxuryReveal className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[var(--brand-accent)]" />
+        <div className="mx-auto max-w-[1280px] px-4 py-6 sm:px-8 sm:py-7 lg:px-10 lg:py-8">
+          <LuxuryReveal className="flex flex-col justify-between gap-2.5 lg:flex-row lg:items-end">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-2.5">
+                <LuxuryHairline className="h-px w-7 bg-[var(--brand-accent)]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="journalPage.eyebrow"
@@ -181,7 +181,7 @@ export default function JournalIndexView() {
                   size="0.6875rem"
                   weight={600}
                   transform="uppercase"
-                  letterSpacing="0.24em"
+                  letterSpacing="0.22em"
                   color="primary"
                   className="m-0"
                 />
@@ -192,12 +192,12 @@ export default function JournalIndexView() {
                 data-preview-field-path="journalPage.heading"
                 defaultValue={heading}
                 fontFamily="heading"
-                size="clamp(1.9rem, 3.1vw, 2.65rem)"
+                size="clamp(1.75rem, 2.6vw, 2.25rem)"
                 weight={800}
-                lineHeight={1.08}
+                lineHeight={1.1}
                 letterSpacing="-0.025em"
                 color="heading"
-                className="mt-2.5 mb-0"
+                className="mt-1.5 mb-0"
               />
             </div>
 
@@ -207,8 +207,8 @@ export default function JournalIndexView() {
                 data-preview-field-path="journalPage.intro"
                 defaultValue={intro}
                 fontFamily="body"
-                size="0.9375rem"
-                lineHeight={1.7}
+                size="0.875rem"
+                lineHeight={1.6}
                 color="muted"
                 className="m-0"
               />
@@ -216,7 +216,7 @@ export default function JournalIndexView() {
           </LuxuryReveal>
 
           {/* Editorial Category Navigation Bar */}
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--loome-border)] pt-4">
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--loome-border)] pt-3.5">
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
@@ -342,7 +342,7 @@ export default function JournalIndexView() {
       {/* Main Editorial Magazine Feed */}
       <section
         data-design-section="journal-feed"
-        className="mx-auto w-full max-w-[1280px] px-4 py-10 sm:px-8 sm:py-12 lg:px-10 lg:py-14"
+        className="mx-auto w-full max-w-[1280px] px-4 py-7 sm:px-8 sm:py-8 lg:px-10 lg:py-9"
       >
         <div data-preview-list-path="home.journalPosts">
           {filteredPosts.length === 0 ? (
@@ -454,17 +454,19 @@ export default function JournalIndexView() {
               </div>
             </div>
           ) : (
-            <div className="space-y-12 lg:space-y-14">
-              {/* 1. Large Immersive Featured Story */}
+            <div className="space-y-9 lg:space-y-10">
+              {/* 1. Balanced Horizontal Featured Article (340–400px desktop image area + prominent Read CTA) */}
               {featuredPost && (
                 <LuxuryReveal>
                   <article
                     data-preview-item-path={`home.journalPosts[${featuredPost.index}]`}
-                    className="group grid grid-cols-1 overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] shadow-[0_6px_22px_rgba(73,56,44,0.05)] dark:shadow-none lg:grid-cols-12"
+                    data-testid="journal-featured-article"
+                    className="group grid grid-cols-1 overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] shadow-[0_4px_18px_rgba(73,56,44,0.05)] dark:shadow-none lg:grid-cols-12"
                   >
                     <div
                       onClick={() => window.location.assign(journalArticleHref(featuredPost.id))}
-                      className="relative block aspect-[16/11] w-full cursor-pointer overflow-hidden bg-[var(--loome-beige)] lg:col-span-7 lg:aspect-auto lg:min-h-[420px]"
+                      data-testid="journal-featured-media"
+                      className="relative block h-[240px] w-full cursor-pointer overflow-hidden bg-[var(--loome-beige)] sm:h-[300px] lg:col-span-6 lg:h-[368px]"
                     >
                       <LuxuryImageReveal tone="beige" className="h-full w-full">
                         <img
@@ -476,7 +478,7 @@ export default function JournalIndexView() {
                       </LuxuryImageReveal>
                       <span
                         onClick={(e) => e.stopPropagation()}
-                        className="absolute left-5 top-5 z-20 rounded-[9px] border border-[#B18D69]/40 bg-[#2D2722]/88 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#F7F4EF] backdrop-blur-md"
+                        className="absolute left-4 top-4 z-20 rounded-[8px] border border-[#B18D69]/40 bg-[#2D2722]/88 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#F7F4EF] backdrop-blur-md"
                       >
                         <EditableText
                           as="span"
@@ -486,25 +488,25 @@ export default function JournalIndexView() {
                           size="0.625rem"
                           weight={600}
                           transform="uppercase"
-                          letterSpacing="0.22em"
+                          letterSpacing="0.2em"
                           color="inherit"
                           className="inline"
                         />
                       </span>
                     </div>
 
-                    <div className="flex flex-col justify-between p-6 sm:p-8 lg:col-span-5 lg:p-10">
+                    <div className="flex flex-col justify-between p-5 sm:p-6 lg:col-span-6 lg:p-8">
                       <div>
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-[var(--brand-accent)]">
+                        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--brand-accent)]">
                           <EditableText
                             as="span"
                             data-preview-field-path={`home.journalPosts[${featuredPost.index}].category`}
                             defaultValue={featuredPost.category}
                             fontFamily="body"
-                            size="0.65625rem"
+                            size="0.625rem"
                             weight={600}
                             transform="uppercase"
-                            letterSpacing="0.2em"
+                            letterSpacing="0.18em"
                             color="inherit"
                             className="inline"
                           />
@@ -518,10 +520,10 @@ export default function JournalIndexView() {
                               data-preview-field-path={`home.journalPosts[${featuredPost.index}].date`}
                               defaultValue={featuredPost.date}
                               fontFamily="body"
-                              size="0.65625rem"
+                              size="0.625rem"
                               weight={500}
                               transform="uppercase"
-                              letterSpacing="0.2em"
+                              letterSpacing="0.18em"
                               color="inherit"
                               className="inline"
                             />
@@ -536,10 +538,10 @@ export default function JournalIndexView() {
                               data-preview-field-path={`home.journalPosts[${featuredPost.index}].readTime`}
                               defaultValue={featuredPost.readTime}
                               fontFamily="body"
-                              size="0.65625rem"
+                              size="0.625rem"
                               weight={500}
                               transform="uppercase"
-                              letterSpacing="0.2em"
+                              letterSpacing="0.18em"
                               color="inherit"
                               className="inline"
                             />
@@ -549,47 +551,47 @@ export default function JournalIndexView() {
                         <button
                           type="button"
                           onClick={() => window.location.assign(journalArticleHref(featuredPost.id))}
-                          className="mt-3.5 block w-full border-0 bg-transparent p-0 text-left text-[var(--heading-color)] transition-colors hover:text-[var(--brand-accent)]"
+                          className="mt-2.5 block w-full border-0 bg-transparent p-0 text-left text-[var(--heading-color)] transition-colors hover:text-[var(--brand-accent)]"
                         >
                           <EditableText
                             as="h2"
                             data-preview-field-path={`home.journalPosts[${featuredPost.index}].title`}
                             defaultValue={featuredPost.title}
                             fontFamily="heading"
-                            size="clamp(1.5rem, 2.4vw, 2.1rem)"
+                            size="clamp(1.4rem, 2.1vw, 1.8rem)"
                             weight={800}
-                            lineHeight={1.15}
+                            lineHeight={1.18}
                             letterSpacing="-0.02em"
                             color="inherit"
                             className="m-0"
                           />
                         </button>
 
-                        <div className="my-4 h-px w-10 bg-[var(--brand-accent)]" aria-hidden="true" />
+                        <div className="my-3.5 h-px w-10 bg-[var(--brand-accent)]" aria-hidden="true" />
 
                         <EditableText
                           as="p"
                           data-preview-field-path={`home.journalPosts[${featuredPost.index}].excerpt`}
                           defaultValue={featuredPost.excerpt}
                           fontFamily="body"
-                          size="0.9375rem"
-                          lineHeight={1.72}
+                          size="0.9rem"
+                          lineHeight={1.65}
                           color="muted"
                           className="m-0"
                         />
                       </div>
 
-                      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--loome-border)] pt-4">
-                        <div className="inline-flex flex-wrap items-center gap-1.5 text-[11px] uppercase tracking-[0.16em] text-[var(--muted-color)]">
+                      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--loome-border)] pt-4">
+                        <div className="inline-flex flex-wrap items-center gap-1.5 text-[10.5px] uppercase tracking-[0.14em] text-[var(--muted-color)]">
                           <EditableText
                             as="span"
                             data-preview-field-path="journalPage.authorPrefixLabel"
                             defaultValue={authorPrefixLabel}
                             fontFamily="body"
-                            size="0.6875rem"
+                            size="0.65625rem"
                             weight={500}
                             transform="uppercase"
-                            letterSpacing="0.16em"
+                            letterSpacing="0.14em"
                             color="inherit"
                             className="inline"
                           />
@@ -598,10 +600,10 @@ export default function JournalIndexView() {
                             data-preview-field-path={`home.journalPosts[${featuredPost.index}].author`}
                             defaultValue={featuredPost.author}
                             fontFamily="body"
-                            size="0.6875rem"
+                            size="0.65625rem"
                             weight={600}
                             transform="uppercase"
-                            letterSpacing="0.16em"
+                            letterSpacing="0.14em"
                             color="inherit"
                             className="inline"
                           />
@@ -609,8 +611,9 @@ export default function JournalIndexView() {
 
                         <button
                           type="button"
+                          data-testid="journal-featured-read-cta"
                           onClick={() => window.location.assign(journalArticleHref(featuredPost.id))}
-                          className="inline-flex cursor-pointer items-center gap-2 border-0 border-b border-[var(--loome-border)] bg-transparent px-0 pb-1 pt-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--heading-color)] transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
+                          className="group/btn inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-[10px] bg-[var(--loome-btn-primary-bg)] px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--loome-btn-primary-text)] transition-colors duration-200 hover:bg-[var(--loome-btn-primary-hover)]"
                         >
                           <EditableText
                             as="span"
@@ -620,13 +623,13 @@ export default function JournalIndexView() {
                             size="0.6875rem"
                             weight={600}
                             transform="uppercase"
-                            letterSpacing="0.18em"
+                            letterSpacing="0.14em"
                             color="inherit"
                             className="inline"
                           />
                           <ArrowUpRight
                             aria-hidden="true"
-                            className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                            className="h-3.5 w-3.5 stroke-[1.7] transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
                           />
                         </button>
                       </div>
@@ -635,10 +638,10 @@ export default function JournalIndexView() {
                 </LuxuryReveal>
               )}
 
-              {/* 2. Asymmetric Magazine Editorial Grid */}
+              {/* 2. Consistent Archive Card Grid (Uniform 16:10 Image Ratios & Aligned Content) */}
               {gridPosts.length > 0 && (
                 <div>
-                  <div className="mb-8 flex items-end justify-between gap-4 border-b border-[var(--loome-border)] pb-4">
+                  <div className="mb-6 flex items-end justify-between gap-4 border-b border-[var(--loome-border)] pb-3.5">
                     <div>
                       <EditableText
                         as="p"
@@ -648,7 +651,7 @@ export default function JournalIndexView() {
                         size="0.65625rem"
                         weight={600}
                         transform="uppercase"
-                        letterSpacing="0.24em"
+                        letterSpacing="0.22em"
                         color="primary"
                         className="m-0"
                       />
@@ -657,207 +660,200 @@ export default function JournalIndexView() {
                         data-preview-field-path="journalPage.archiveHeading"
                         defaultValue={archiveHeading}
                         fontFamily="heading"
-                        size="1.6rem"
+                        size="1.45rem"
                         weight={800}
                         lineHeight={1.2}
                         letterSpacing="-0.02em"
                         color="heading"
-                        className="mt-1.5 mb-0"
+                        className="mt-1 mb-0"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-12 lg:gap-7">
+                  <div
+                    data-testid="journal-archive-grid"
+                    className={`grid grid-cols-1 gap-6 md:grid-cols-2 ${gridPosts.length === 2 || gridPosts.length === 4 ? '' : 'lg:grid-cols-3'}`}
+                  >
                     <AnimatePresence mode="popLayout">
-                      {gridPosts.map((post, idx) => {
-                        // Alternating editorial magazine rhythm: 7/5 then 5/7
-                        const rowPair = Math.floor(idx / 2) % 2;
-                        const isWide =
-                          (rowPair === 0 && idx % 2 === 0) ||
-                          (rowPair === 1 && idx % 2 === 1);
-                        const colClass = isWide ? 'md:col-span-7' : 'md:col-span-5';
-                        const aspectClass = isWide
-                          ? 'aspect-[16/10]'
-                          : 'aspect-[4/3] md:aspect-[5/4]';
-
-                        return (
-                          <motion.div
-                            key={post.id}
-                            layout={!prefersReducedMotion}
-                            initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            exit={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.98 }}
-                            viewport={{ once: true, amount: 0.12 }}
-                            transition={
-                              prefersReducedMotion
-                                ? { duration: 0 }
-                                : {
-                                  duration: 0.78,
-                                  delay: Math.min(idx * 0.09, 0.27),
-                                  ease: LUXURY_EASE,
-                                }
-                            }
-                            className={colClass}
+                      {gridPosts.map((post, idx) => (
+                        <motion.div
+                          key={post.id}
+                          layout={!prefersReducedMotion}
+                          initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          exit={prefersReducedMotion ? undefined : { opacity: 0, scale: 0.98 }}
+                          viewport={{ once: true, amount: 0.12 }}
+                          transition={
+                            prefersReducedMotion
+                              ? { duration: 0 }
+                              : {
+                                duration: 0.65,
+                                delay: Math.min(idx * 0.08, 0.24),
+                                ease: LUXURY_EASE,
+                              }
+                          }
+                          className="h-full"
+                        >
+                          <article
+                            data-preview-item-path={`home.journalPosts[${post.index}]`}
+                            data-testid="journal-archive-card"
+                            className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-3.5 shadow-[0_2px_10px_rgba(73,56,44,0.04)] transition-all duration-300 hover:border-[var(--brand-accent)]/70 dark:shadow-none"
                           >
-                            <article
-                              data-preview-item-path={`home.journalPosts[${post.index}]`}
-                              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-4 shadow-[0_2px_10px_rgba(73,56,44,0.04)] transition-all duration-300 hover:border-[var(--brand-accent)]/70 dark:shadow-none"
+                            <div
+                              onClick={() => window.location.assign(journalArticleHref(post.id))}
+                              data-testid="journal-archive-media"
+                              className="relative block aspect-[16/10] w-full cursor-pointer overflow-hidden rounded-xl bg-[var(--loome-beige)]"
                             >
-                              <div
-                                onClick={() => window.location.assign(journalArticleHref(post.id))}
-                                className={`relative block w-full cursor-pointer overflow-hidden rounded-xl bg-[var(--loome-beige)] ${aspectClass}`}
+                              <LuxuryImageReveal
+                                delay={Math.min(idx * 0.08, 0.24)}
+                                tone="ivory"
+                                className="h-full w-full"
                               >
-                                <LuxuryImageReveal
-                                  delay={Math.min(idx * 0.08, 0.24)}
-                                  tone="ivory"
-                                  className="h-full w-full"
-                                >
-                                  <img
-                                    src={withBasePath(post.imageUrl)}
-                                    alt={post.title}
-                                    loading="lazy"
-                                    data-preview-field-path={`home.journalPosts[${post.index}].imageUrl`}
-                                    className="h-full w-full object-cover transition-transform duration-[950ms] ease-luxury group-hover:scale-[1.045]"
-                                  />
-                                </LuxuryImageReveal>
-                              </div>
+                                <img
+                                  src={withBasePath(post.imageUrl)}
+                                  alt={post.title}
+                                  loading="lazy"
+                                  data-preview-field-path={`home.journalPosts[${post.index}].imageUrl`}
+                                  className="h-full w-full object-cover transition-transform duration-[950ms] ease-luxury group-hover:scale-[1.045]"
+                                />
+                              </LuxuryImageReveal>
+                            </div>
 
-                              <div className="flex flex-1 flex-col px-1 pt-4">
-                                <div className="flex flex-wrap items-center justify-between gap-2 text-[10px] font-semibold uppercase tracking-[0.2em]">
+                            <div className="flex flex-1 flex-col px-1.5 pb-1 pt-4">
+                              <div className="flex flex-wrap items-center justify-between gap-2 text-[10px] font-semibold uppercase tracking-[0.18em]">
+                                <EditableText
+                                  as="span"
+                                  data-preview-field-path={`home.journalPosts[${post.index}].category`}
+                                  defaultValue={post.category}
+                                  fontFamily="body"
+                                  size="0.625rem"
+                                  weight={600}
+                                  transform="uppercase"
+                                  letterSpacing="0.18em"
+                                  color="primary"
+                                  className="inline"
+                                />
+                                <div className="flex flex-wrap items-center gap-2 text-[var(--muted-color)]">
                                   <EditableText
                                     as="span"
-                                    data-preview-field-path={`home.journalPosts[${post.index}].category`}
-                                    defaultValue={post.category}
+                                    data-preview-field-path={`home.journalPosts[${post.index}].date`}
+                                    defaultValue={post.date}
                                     fontFamily="body"
                                     size="0.625rem"
-                                    weight={600}
+                                    weight={500}
                                     transform="uppercase"
-                                    letterSpacing="0.2em"
-                                    color="primary"
+                                    letterSpacing="0.16em"
+                                    color="inherit"
                                     className="inline"
                                   />
-                                  <div className="flex flex-wrap items-center gap-2 text-[var(--muted-color)]">
+                                  <span aria-hidden="true" className="text-[var(--brand-accent)]">
+                                    ·
+                                  </span>
+                                  <span className="inline-flex items-center gap-1">
+                                    <Clock aria-hidden="true" className="h-3 w-3 stroke-[1.5]" />
                                     <EditableText
                                       as="span"
-                                      data-preview-field-path={`home.journalPosts[${post.index}].date`}
-                                      defaultValue={post.date}
+                                      data-preview-field-path={`home.journalPosts[${post.index}].readTime`}
+                                      defaultValue={post.readTime}
                                       fontFamily="body"
                                       size="0.625rem"
                                       weight={500}
                                       transform="uppercase"
-                                      letterSpacing="0.18em"
+                                      letterSpacing="0.16em"
                                       color="inherit"
                                       className="inline"
                                     />
-                                    <span aria-hidden="true" className="text-[var(--brand-accent)]">
-                                      ·
-                                    </span>
-                                    <span className="inline-flex items-center gap-1">
-                                      <Clock aria-hidden="true" className="h-3 w-3 stroke-[1.5]" />
-                                      <EditableText
-                                        as="span"
-                                        data-preview-field-path={`home.journalPosts[${post.index}].readTime`}
-                                        defaultValue={post.readTime}
-                                        fontFamily="body"
-                                        size="0.625rem"
-                                        weight={500}
-                                        transform="uppercase"
-                                        letterSpacing="0.18em"
-                                        color="inherit"
-                                        className="inline"
-                                      />
-                                    </span>
-                                  </div>
-                                </div>
-
-                                <button
-                                  type="button"
-                                  onClick={() => window.location.assign(journalArticleHref(post.id))}
-                                  className="mt-2.5 block w-full border-0 bg-transparent p-0 text-left text-[var(--heading-color)] transition-colors hover:text-[var(--brand-accent)]"
-                                >
-                                  <EditableText
-                                    as="h3"
-                                    data-preview-field-path={`home.journalPosts[${post.index}].title`}
-                                    defaultValue={post.title}
-                                    fontFamily="heading"
-                                    size={isWide ? '1.35rem' : '1.2rem'}
-                                    weight={700}
-                                    lineHeight={1.25}
-                                    letterSpacing="-0.015em"
-                                    color="inherit"
-                                    className="m-0"
-                                  />
-                                </button>
-
-                                <EditableText
-                                  as="p"
-                                  data-preview-field-path={`home.journalPosts[${post.index}].excerpt`}
-                                  defaultValue={post.excerpt}
-                                  fontFamily="body"
-                                  size="0.875rem"
-                                  lineHeight={1.68}
-                                  color="muted"
-                                  className="mt-2 mb-0 max-w-xl"
-                                />
-
-                                <div className="mt-auto pt-4">
-                                  <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--loome-border)] pt-3.5">
-                                    <div className="inline-flex flex-wrap items-center gap-1.5 text-[10.5px] uppercase tracking-[0.16em] text-[var(--muted-color)]">
-                                      <EditableText
-                                        as="span"
-                                        data-preview-field-path="journalPage.authorPrefixLabel"
-                                        defaultValue={authorPrefixLabel}
-                                        fontFamily="body"
-                                        size="0.65625rem"
-                                        weight={500}
-                                        transform="uppercase"
-                                        letterSpacing="0.16em"
-                                        color="inherit"
-                                        className="inline"
-                                      />
-                                      <EditableText
-                                        as="span"
-                                        data-preview-field-path={`home.journalPosts[${post.index}].author`}
-                                        defaultValue={post.author}
-                                        fontFamily="body"
-                                        size="0.65625rem"
-                                        weight={600}
-                                        transform="uppercase"
-                                        letterSpacing="0.16em"
-                                        color="inherit"
-                                        className="inline"
-                                      />
-                                    </div>
-
-                                    <button
-                                      type="button"
-                                      onClick={() => window.location.assign(journalArticleHref(post.id))}
-                                      className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[var(--loome-border)] bg-transparent px-0 pb-1 pt-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--heading-color)] transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
-                                    >
-                                      <EditableText
-                                        as="span"
-                                        data-preview-field-path="journalPage.readStoryLabel"
-                                        defaultValue={readStoryLabel}
-                                        fontFamily="body"
-                                        size="0.6875rem"
-                                        weight={600}
-                                        transform="uppercase"
-                                        letterSpacing="0.18em"
-                                        color="inherit"
-                                        className="inline"
-                                      />
-                                      <ArrowUpRight
-                                        aria-hidden="true"
-                                        className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                                      />
-                                    </button>
-                                  </div>
+                                  </span>
                                 </div>
                               </div>
-                            </article>
-                          </motion.div>
-                        );
-                      })}
+
+                              <button
+                                type="button"
+                                onClick={() => window.location.assign(journalArticleHref(post.id))}
+                                className="mt-2 block w-full border-0 bg-transparent p-0 text-left text-[var(--heading-color)] transition-colors hover:text-[var(--brand-accent)]"
+                              >
+                                <EditableText
+                                  as="h3"
+                                  data-preview-field-path={`home.journalPosts[${post.index}].title`}
+                                  defaultValue={post.title}
+                                  fontFamily="heading"
+                                  size="1.125rem"
+                                  weight={700}
+                                  lineHeight={1.28}
+                                  letterSpacing="-0.015em"
+                                  color="inherit"
+                                  className="m-0"
+                                />
+                              </button>
+
+                              <EditableText
+                                as="p"
+                                data-preview-field-path={`home.journalPosts[${post.index}].excerpt`}
+                                defaultValue={post.excerpt}
+                                fontFamily="body"
+                                size="0.84375rem"
+                                lineHeight={1.62}
+                                color="muted"
+                                className="mt-2 mb-0"
+                              />
+
+                              <div className="mt-auto pt-4">
+                                <div className="flex flex-wrap items-center justify-between gap-2.5 border-t border-[var(--loome-border)] pt-3">
+                                  <div className="inline-flex flex-wrap items-center gap-1 text-[10px] uppercase tracking-[0.14em] text-[var(--muted-color)]">
+                                    <EditableText
+                                      as="span"
+                                      data-preview-field-path="journalPage.authorPrefixLabel"
+                                      defaultValue={authorPrefixLabel}
+                                      fontFamily="body"
+                                      size="0.625rem"
+                                      weight={500}
+                                      transform="uppercase"
+                                      letterSpacing="0.14em"
+                                      color="inherit"
+                                      className="inline"
+                                    />
+                                    <EditableText
+                                      as="span"
+                                      data-preview-field-path={`home.journalPosts[${post.index}].author`}
+                                      defaultValue={post.author}
+                                      fontFamily="body"
+                                      size="0.625rem"
+                                      weight={600}
+                                      transform="uppercase"
+                                      letterSpacing="0.14em"
+                                      color="inherit"
+                                      className="inline"
+                                    />
+                                  </div>
+
+                                  <button
+                                    type="button"
+                                    onClick={() => window.location.assign(journalArticleHref(post.id))}
+                                    className="inline-flex cursor-pointer items-center gap-1 border-0 border-b border-[var(--loome-border)] bg-transparent px-0 pb-0.5 pt-0 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-[var(--heading-color)] transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
+                                  >
+                                    <EditableText
+                                      as="span"
+                                      data-preview-field-path="journalPage.readStoryLabel"
+                                      defaultValue={readStoryLabel}
+                                      fontFamily="body"
+                                      size="0.65625rem"
+                                      weight={600}
+                                      transform="uppercase"
+                                      letterSpacing="0.16em"
+                                      color="inherit"
+                                      className="inline"
+                                    />
+                                    <ArrowUpRight
+                                      aria-hidden="true"
+                                      className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                                    />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </article>
+                        </motion.div>
+                      ))}
                     </AnimatePresence>
                   </div>
                 </div>
