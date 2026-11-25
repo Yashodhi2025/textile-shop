@@ -266,25 +266,25 @@ export default function FaqPageView() {
   return (
     <div
       data-preview-page-key="faq"
-      className="loome-surface-cream min-h-[75vh] w-full"
+      className="loome-surface-ivory min-h-[75vh] w-full"
     >
       {/* Breadcrumb Strip */}
-      <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
-        <nav className="mx-auto flex max-w-[1380px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-14">
+      <div className="border-b border-[var(--loome-border)] bg-[var(--loome-surface-subtle)]">
+        <nav className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-color)] sm:px-8 lg:px-10">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-color)] transition-colors hover:text-[var(--heading-color)]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" className="text-[#C8A98B]">
+          <span aria-hidden="true" data-preview-static="faq-bc-sep" className="text-[var(--brand-accent)]">
             /
           </span>
           <span
             aria-current="page"
             data-preview-field-path="common.navLabels.faq"
-            className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
+            className="font-semibold text-[var(--heading-color)]"
           >
             {faqNavLabel}
           </span>
@@ -294,13 +294,13 @@ export default function FaqPageView() {
       {/* 1. Editorial Hero */}
       <section
         data-design-section="faq-hero"
-        className="border-b border-[#201C1A]/8 bg-gradient-to-b from-[#E6D9C9]/90 via-[#F2E9DE] to-[#F2E9DE] dark:border-[#F2E9DE]/10 dark:from-[#2B2320] dark:via-[#201C1A] dark:to-[#201C1A]"
+        className="w-full border-b border-[var(--loome-border)]"
       >
-        <div className="mx-auto max-w-[1380px] px-4 py-12 sm:px-8 sm:py-16 lg:px-14 lg:py-20">
-          <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+        <div className="mx-auto max-w-[1280px] px-4 py-9 sm:px-8 sm:py-11 lg:px-10 lg:py-12">
+          <LuxuryReveal className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
             <div className="max-w-3xl">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-9 bg-[#C8A98B]" />
+                <LuxuryHairline className="h-px w-8 bg-[var(--brand-accent)]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="faqPage.eyebrow"
@@ -309,7 +309,7 @@ export default function FaqPageView() {
                   size="0.6875rem"
                   weight={600}
                   transform="uppercase"
-                  letterSpacing="0.28em"
+                  letterSpacing="0.24em"
                   color="primary"
                   className="m-0"
                 />
@@ -320,12 +320,12 @@ export default function FaqPageView() {
                 data-preview-field-path="faqPage.heading"
                 defaultValue={heading}
                 fontFamily="heading"
-                size="clamp(2.65rem, 5vw, 4.35rem)"
-                weight={300}
-                lineHeight={1.04}
-                letterSpacing="-0.02em"
+                size="clamp(1.9rem, 3.1vw, 2.65rem)"
+                weight={800}
+                lineHeight={1.08}
+                letterSpacing="-0.025em"
                 color="heading"
-                className="mt-4 mb-0"
+                className="mt-2.5 mb-0"
               />
             </div>
 
@@ -336,7 +336,7 @@ export default function FaqPageView() {
                 defaultValue={intro}
                 fontFamily="body"
                 size="0.9375rem"
-                lineHeight={1.8}
+                lineHeight={1.7}
                 color="muted"
                 className="m-0"
               />
@@ -348,11 +348,11 @@ export default function FaqPageView() {
       {/* 2, 3, 4 & 5. Refined Two-Column Desktop Layout: Category Nav + Editorial Image | FAQ Accordions */}
       <section
         data-design-section="faq-directory"
-        className="mx-auto max-w-[1380px] px-4 py-12 sm:px-8 sm:py-16 lg:px-14 lg:py-20"
+        className="mx-auto w-full max-w-[1280px] px-4 py-10 sm:px-8 sm:py-12 lg:px-10 lg:py-14"
       >
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
           {/* Left Sticky Sidebar: Category Tabs + Small Editorial Textile Image */}
-          <aside className="space-y-10 lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
+          <aside className="space-y-7 lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
             <div>
               <EditableText
                 as="p"
@@ -362,21 +362,21 @@ export default function FaqPageView() {
                 size="0.65625rem"
                 weight={600}
                 transform="uppercase"
-                letterSpacing="0.26em"
+                letterSpacing="0.24em"
                 color="primary"
                 className="m-0"
               />
 
               {/* Responsive Category Tabs: Horizontal wrap on mobile, clean editorial stack on desktop */}
-              <div className="mt-4 flex flex-wrap gap-2 lg:flex-col lg:gap-1.5">
+              <div className="mt-3.5 flex flex-wrap gap-2 lg:flex-col lg:gap-1.5">
                 <button
                   type="button"
                   aria-pressed={activeCategoryKey === 'all'}
                   onClick={() => setSelectedCategoryKey('all')}
-                  className={`flex cursor-pointer items-center justify-between gap-3 border px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-[0.2em] transition-all duration-300 lg:w-full ${
+                  className={`flex cursor-pointer items-center justify-between gap-3 rounded-[10px] border px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 lg:w-full ${
                     activeCategoryKey === 'all'
-                      ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                      : 'border-[#201C1A]/14 bg-[#FAF5EE] text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/14 dark:bg-[#3B302B] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
+                      ? 'border-[var(--loome-btn-primary-bg)] bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
+                      : 'border-[var(--loome-border)] bg-[var(--card-bg)] text-[var(--muted-color)] hover:border-[var(--brand-accent)] hover:text-[var(--heading-color)]'
                   }`}
                 >
                   <EditableText
@@ -385,9 +385,9 @@ export default function FaqPageView() {
                     defaultValue={allQuestionsLabel}
                     fontFamily="body"
                     size="0.6875rem"
-                    weight={500}
+                    weight={600}
                     transform="uppercase"
-                    letterSpacing="0.2em"
+                    letterSpacing="0.16em"
                     color="inherit"
                     className="inline"
                   />
@@ -410,10 +410,10 @@ export default function FaqPageView() {
                         data-preview-item-path={`faqPage.categories[${cat.index}]`}
                         aria-pressed={isActive}
                         onClick={() => setSelectedCategoryKey(cat.id)}
-                        className={`flex cursor-pointer items-center justify-between gap-3 border px-4 py-2.5 text-left text-[11px] font-medium uppercase tracking-[0.2em] transition-all duration-300 lg:w-full ${
+                        className={`flex cursor-pointer items-center justify-between gap-3 rounded-[10px] border px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.16em] transition-all duration-300 lg:w-full ${
                           isActive
-                            ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                            : 'border-[#201C1A]/14 bg-[#FAF5EE] text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/14 dark:bg-[#3B302B] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]'
+                            ? 'border-[var(--loome-btn-primary-bg)] bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
+                            : 'border-[var(--loome-border)] bg-[var(--card-bg)] text-[var(--muted-color)] hover:border-[var(--brand-accent)] hover:text-[var(--heading-color)]'
                         }`}
                       >
                         <EditableText
@@ -422,9 +422,9 @@ export default function FaqPageView() {
                           defaultValue={cat.label}
                           fontFamily="body"
                           size="0.6875rem"
-                          weight={500}
+                          weight={600}
                           transform="uppercase"
-                          letterSpacing="0.2em"
+                          letterSpacing="0.16em"
                           color="inherit"
                           className="inline"
                         />
@@ -442,8 +442,8 @@ export default function FaqPageView() {
             </div>
 
             {/* 5. Small Editorial Textile Image Card */}
-            <LuxuryReveal delay={0.08} className="overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-[0_12px_34px_rgba(32,28,26,0.04)] dark:border-[#C8A98B]/20 dark:bg-[#2A221F]">
-              <LuxuryImageReveal tone="ivory" className="aspect-[4/3] w-full bg-[#E6D9C9]/60">
+            <LuxuryReveal delay={0.08} className="overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] shadow-[0_3px_14px_rgba(73,56,44,0.04)] dark:shadow-none">
+              <LuxuryImageReveal tone="ivory" className="aspect-[4/3] w-full bg-[var(--loome-beige)]">
                 <img
                   src={withBasePath(editorialImageUrl)}
                   alt={editorialTitle}
@@ -452,7 +452,7 @@ export default function FaqPageView() {
                   className="h-full w-full object-cover"
                 />
               </LuxuryImageReveal>
-              <div className="p-5 sm:p-6">
+              <div className="p-5">
                 <EditableText
                   as="p"
                   data-preview-field-path="faqPage.editorialEyebrow"
@@ -461,7 +461,7 @@ export default function FaqPageView() {
                   size="0.625rem"
                   weight={600}
                   transform="uppercase"
-                  letterSpacing="0.24em"
+                  letterSpacing="0.22em"
                   color="primary"
                   className="m-0"
                 />
@@ -470,11 +470,11 @@ export default function FaqPageView() {
                   data-preview-field-path="faqPage.editorialTitle"
                   defaultValue={editorialTitle}
                   fontFamily="heading"
-                  size="1.45rem"
-                  weight={400}
-                  lineHeight={1.2}
+                  size="1.2rem"
+                  weight={700}
+                  lineHeight={1.25}
                   color="heading"
-                  className="mt-2 mb-0"
+                  className="mt-1.5 mb-0"
                 />
                 <EditableText
                   as="p"
@@ -482,9 +482,9 @@ export default function FaqPageView() {
                   defaultValue={editorialCaption}
                   fontFamily="body"
                   size="0.825rem"
-                  lineHeight={1.74}
+                  lineHeight={1.68}
                   color="muted"
-                  className="mt-2.5 mb-0"
+                  className="mt-2 mb-0"
                 />
               </div>
             </LuxuryReveal>
@@ -492,9 +492,9 @@ export default function FaqPageView() {
 
           {/* Right Column: Dynamic Count Header, Policy Note & Animated Accordions */}
           <div className="lg:col-span-8">
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#201C1A]/12 pb-4 dark:border-[#F2E9DE]/12">
-              <div className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.22em] text-[#5E4E45] dark:text-[#C7B6A6]">
-                <span data-preview-static="faq-visible-count" className="tabular-nums text-[#201C1A] dark:text-[#F2E9DE]">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--loome-border)] pb-4">
+              <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--muted-color)]">
+                <span data-preview-static="faq-visible-count" className="tabular-nums text-[var(--heading-color)]">
                   {filteredItems.length}
                 </span>
                 {filteredItems.length === 1 ? (
@@ -504,9 +504,9 @@ export default function FaqPageView() {
                     defaultValue={questionSingularLabel}
                     fontFamily="body"
                     size="0.6875rem"
-                    weight={500}
+                    weight={600}
                     transform="uppercase"
-                    letterSpacing="0.22em"
+                    letterSpacing="0.18em"
                     color="inherit"
                     className="inline"
                   />
@@ -517,9 +517,9 @@ export default function FaqPageView() {
                     defaultValue={questionsLabel}
                     fontFamily="body"
                     size="0.6875rem"
-                    weight={500}
+                    weight={600}
                     transform="uppercase"
-                    letterSpacing="0.22em"
+                    letterSpacing="0.18em"
                     color="inherit"
                     className="inline"
                   />
@@ -529,7 +529,7 @@ export default function FaqPageView() {
               <button
                 type="button"
                 onClick={toggleAllVisible}
-                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#8D7667] transition-colors hover:text-[#201C1A] dark:text-[#C8A98B] dark:hover:text-[#F2E9DE]"
+                className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--brand-accent)] transition-colors hover:text-[var(--heading-color)]"
               >
                 {allFilteredOpen ? (
                   <EditableText
@@ -538,9 +538,9 @@ export default function FaqPageView() {
                     defaultValue={collapseAllLabel}
                     fontFamily="body"
                     size="0.6875rem"
-                    weight={500}
+                    weight={600}
                     transform="uppercase"
-                    letterSpacing="0.2em"
+                    letterSpacing="0.18em"
                     color="inherit"
                     className="inline"
                   />
@@ -551,9 +551,9 @@ export default function FaqPageView() {
                     defaultValue={expandAllLabel}
                     fontFamily="body"
                     size="0.6875rem"
-                    weight={500}
+                    weight={600}
                     transform="uppercase"
-                    letterSpacing="0.2em"
+                    letterSpacing="0.18em"
                     color="inherit"
                     className="inline"
                   />
@@ -562,26 +562,26 @@ export default function FaqPageView() {
             </div>
 
             {/* Merchant-Configurable Policy Note */}
-            <div className="mt-5 border-l-2 border-l-[#C8A98B] bg-[#FAF5EE] px-4 py-3.5 dark:bg-[#1D201A]">
+            <div className="mt-5 rounded-xl border border-[var(--loome-border)] border-l-2 border-l-[var(--brand-accent)] bg-[var(--card-bg)] px-4 py-3.5">
               <EditableText
                 as="p"
                 data-preview-field-path="faqPage.policyNote"
                 defaultValue={policyNote}
                 fontFamily="body"
                 size="0.8125rem"
-                lineHeight={1.7}
+                lineHeight={1.68}
                 color="muted"
                 className="m-0"
               />
             </div>
 
             {/* Animated Accessible FAQ Accordions */}
-            <div data-preview-list-path="faqPage.items" className="mt-6">
+            <div data-preview-list-path="faqPage.items" className="mt-5">
               {filteredItems.length === 0 ? (
-                <div className="rounded-2xl border border-dashed border-[#201C1A]/20 px-6 py-16 text-center dark:border-[#F2E9DE]/20">
+                <div className="rounded-2xl border border-dashed border-[var(--loome-border)] bg-[var(--card-bg)] px-6 py-14 text-center">
                   <p
                     data-preview-static="faq-empty-message"
-                    className="m-0 text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
+                    className="m-0 text-sm text-[var(--muted-color)]"
                   >
                     {items.length === 0
                       ? 'Add FAQ questions and answers in your Fivora editor.'
@@ -591,7 +591,7 @@ export default function FaqPageView() {
                     <button
                       type="button"
                       onClick={() => setSelectedCategoryKey('all')}
-                      className="mt-5 inline-flex cursor-pointer items-center border border-[#201C1A]/25 bg-transparent px-4 py-2 text-[10.5px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#C8A98B] hover:text-[#8D7667] dark:border-[#F2E9DE]/25 dark:text-[#F2E9DE]"
+                      className="mt-5 inline-flex cursor-pointer items-center rounded-[10px] border border-[var(--loome-border)] bg-transparent px-4 py-2 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[var(--heading-color)] transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
                     >
                       <EditableText
                         as="span"
@@ -599,9 +599,9 @@ export default function FaqPageView() {
                         defaultValue={allQuestionsLabel}
                         fontFamily="body"
                         size="0.65625rem"
-                        weight={500}
+                        weight={600}
                         transform="uppercase"
-                        letterSpacing="0.2em"
+                        letterSpacing="0.18em"
                         color="inherit"
                         className="inline"
                       />
@@ -609,7 +609,7 @@ export default function FaqPageView() {
                   )}
                 </div>
               ) : (
-                <div className="divide-y divide-[#201C1A]/12 border-b border-[#201C1A]/12 dark:divide-[#F2E9DE]/12 dark:border-[#F2E9DE]/12">
+                <div className="divide-y divide-[var(--loome-border)] rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] px-6">
                   <AnimatePresence mode="popLayout">
                     {filteredItems.map((item) => {
                       const open = isItemOpen(item);
@@ -628,7 +628,7 @@ export default function FaqPageView() {
                               : { duration: 0.45, ease: LUXURY_EASE }
                           }
                           data-preview-item-path={`faqPage.items[${item.index}]`}
-                          className="py-5 sm:py-6"
+                          className="py-5"
                         >
                           <button
                             id={triggerId}
@@ -638,7 +638,7 @@ export default function FaqPageView() {
                             onClick={() => toggleItem(item)}
                             className="group flex w-full cursor-pointer items-start justify-between gap-4 border-0 bg-transparent p-0 text-left"
                           >
-                            <div className="space-y-1.5">
+                            <div className="space-y-1">
                               <EditableText
                                 as="span"
                                 data-preview-field-path={`faqPage.items[${item.index}].categoryLabel`}
@@ -647,7 +647,7 @@ export default function FaqPageView() {
                                 size="0.625rem"
                                 weight={600}
                                 transform="uppercase"
-                                letterSpacing="0.24em"
+                                letterSpacing="0.22em"
                                 color="primary"
                                 className="inline-block"
                               />
@@ -656,19 +656,19 @@ export default function FaqPageView() {
                                 data-preview-field-path={`faqPage.items[${item.index}].question`}
                                 defaultValue={item.question}
                                 fontFamily="heading"
-                                size="clamp(1.3rem, 2vw, 1.65rem)"
-                                weight={400}
-                                lineHeight={1.25}
+                                size="1.125rem"
+                                weight={700}
+                                lineHeight={1.3}
                                 color="heading"
-                                className="m-0 transition-colors group-hover:text-[#8D7667] dark:group-hover:text-[#C8A98B]"
+                                className="m-0 transition-colors group-hover:text-[var(--brand-accent)]"
                               />
                             </div>
 
                             <span
                               aria-hidden="true"
-                              className={`mt-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#201C1A]/15 text-[#201C1A] transition-all duration-300 motion-reduce:transition-none group-hover:border-[#C8A98B] dark:border-[#F2E9DE]/18 dark:text-[#F2E9DE] ${
+                              className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--loome-border)] text-[var(--heading-color)] transition-all duration-300 motion-reduce:transition-none group-hover:border-[var(--brand-accent)] ${
                                 open
-                                  ? 'rotate-180 bg-[#201C1A] text-[#F2E9DE] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                                  ? 'rotate-180 bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
                                   : ''
                               }`}
                             >
@@ -690,10 +690,10 @@ export default function FaqPageView() {
                                 data-preview-field-path={`faqPage.items[${item.index}].answer`}
                                 defaultValue={item.answer}
                                 fontFamily="body"
-                                size="0.9375rem"
-                                lineHeight={1.84}
+                                size="0.9rem"
+                                lineHeight={1.74}
                                 color="muted"
-                                className="mt-4 mb-0 max-w-3xl pb-1"
+                                className="mt-3 mb-0 max-w-3xl pb-1"
                               />
                             </div>
                           </div>
@@ -711,12 +711,12 @@ export default function FaqPageView() {
       {/* 6. Premium "Still Have Questions?" Contact Section */}
       <section
         data-design-section="faq-contact-cta"
-        className="border-t border-[#201C1A]/8 bg-[#E6D9C9]/72 py-16 dark:border-[#F2E9DE]/10 dark:bg-[#1C1F19] sm:py-20"
+        className="loome-surface-beige w-full border-t border-[var(--loome-border)] py-12 lg:py-14"
       >
-        <div className="mx-auto max-w-[1160px] px-4 sm:px-8 lg:px-14">
-          <LuxuryReveal className="border border-[#201C1A]/12 border-t-2 border-t-[#C8A98B] bg-[#FAF5EE] px-7 py-12 text-center shadow-[0_18px_52px_rgba(38,41,35,0.04)] dark:border-[#F2E9DE]/12 dark:border-t-[#C8A98B] dark:bg-[#3B302B] sm:px-12 sm:py-14">
+        <div className="mx-auto max-w-[1040px] px-4 sm:px-8 lg:px-10">
+          <LuxuryReveal className="rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] px-7 py-10 text-center shadow-[0_6px_22px_rgba(73,56,44,0.05)] dark:shadow-none sm:px-10 sm:py-12">
             <div className="flex items-center justify-center gap-3">
-              <LuxuryHairline origin="center" className="h-px w-8 bg-[#C8A98B]" />
+              <LuxuryHairline origin="center" className="h-px w-8 bg-[var(--brand-accent)]" />
               <EditableText
                 as="p"
                 data-preview-field-path="faqPage.contactEyebrow"
@@ -725,11 +725,11 @@ export default function FaqPageView() {
                 size="0.65625rem"
                 weight={600}
                 transform="uppercase"
-                letterSpacing="0.28em"
+                letterSpacing="0.24em"
                 color="primary"
                 className="m-0"
               />
-              <LuxuryHairline origin="center" className="h-px w-8 bg-[#C8A98B]" />
+              <LuxuryHairline origin="center" className="h-px w-8 bg-[var(--brand-accent)]" />
             </div>
 
             <EditableText
@@ -737,12 +737,12 @@ export default function FaqPageView() {
               data-preview-field-path="faqPage.contactHeading"
               defaultValue={contactHeading}
               fontFamily="heading"
-              size="clamp(2.1rem, 3.6vw, 3.15rem)"
-              weight={300}
-              lineHeight={1.08}
-              letterSpacing="-0.015em"
+              size="clamp(1.65rem, 2.6vw, 2.2rem)"
+              weight={800}
+              lineHeight={1.12}
+              letterSpacing="-0.02em"
               color="heading"
-              className="mt-4 mb-0"
+              className="mt-2.5 mb-0"
             />
 
             <EditableText
@@ -751,16 +751,16 @@ export default function FaqPageView() {
               defaultValue={contactDescription}
               fontFamily="body"
               size="0.9375rem"
-              lineHeight={1.8}
+              lineHeight={1.72}
               color="muted"
-              className="mx-auto mt-4 mb-0 max-w-xl"
+              className="mx-auto mt-3 mb-0 max-w-xl"
             />
 
-            <div className="mt-9 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-3.5">
               <button
                 type="button"
                 onClick={handleWhatsAppClick}
-                className="group loome-btn-primary h-[50px] cursor-pointer px-8"
+                className="group loome-btn-primary h-12 cursor-pointer px-7"
               >
                 <MessageCircle aria-hidden="true" className="h-4 w-4 stroke-[1.6]" />
                 <EditableText
@@ -769,15 +769,15 @@ export default function FaqPageView() {
                   defaultValue={contactWhatsappLabel}
                   fontFamily="body"
                   size="0.75rem"
-                  weight={500}
+                  weight={600}
                   transform="uppercase"
-                  letterSpacing="0.2em"
+                  letterSpacing="0.16em"
                   color="inherit"
                   className="inline"
                 />
                 <ArrowRight
                   aria-hidden="true"
-                  className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1"
+                  className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-1"
                 />
               </button>
 
@@ -786,7 +786,7 @@ export default function FaqPageView() {
                   type="button"
                   onClick={() => window.location.assign(withBasePath('/contact/'))}
                   data-target-page="contact"
-                  className="inline-flex h-[50px] cursor-pointer items-center justify-center gap-2 border border-[#201C1A]/30 bg-transparent px-7 text-[11.5px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-all duration-300 hover:border-[#C8A98B] hover:text-[#8D7667] dark:border-[#F2E9DE]/30 dark:text-[#F2E9DE] dark:hover:border-[#C8A98B] dark:hover:text-[#C8A98B]"
+                  className="inline-flex h-12 cursor-pointer items-center justify-center gap-2 rounded-[11px] border border-[var(--loome-border)] bg-transparent px-6 text-[11.5px] font-semibold uppercase tracking-[0.16em] text-[var(--heading-color)] transition-all duration-300 hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
                 >
                   <Mail aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.5]" />
                   <EditableText
@@ -795,9 +795,9 @@ export default function FaqPageView() {
                     defaultValue={contactPageLabel}
                     fontFamily="body"
                     size="0.71875rem"
-                    weight={500}
+                    weight={600}
                     transform="uppercase"
-                    letterSpacing="0.2em"
+                    letterSpacing="0.16em"
                     color="inherit"
                     className="inline"
                   />

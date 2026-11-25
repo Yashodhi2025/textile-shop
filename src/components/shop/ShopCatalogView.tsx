@@ -447,16 +447,16 @@ export default function ShopCatalogView() {
   };
 
   const renderFilterGroups = (idPrefix: string) => (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-7 md:grid-cols-2 lg:grid-cols-4">
       {/* 1. Material Filter */}
       <div>
         <p
           data-preview-static={`${idPrefix}-material-heading`}
-          className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
+          className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]"
         >
           Material &amp; Fiber
         </p>
-        <div className="mt-3.5 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {materials.map((mat) => {
             const active = selectedMaterial === mat;
             return (
@@ -465,9 +465,9 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`${idPrefix}-mat-${mat}`}
                 onClick={() => setSelectedMaterial(mat)}
-                className={`rounded-[10px] border px-3 py-1.5 text-[11px] tracking-wide transition-colors ${active
-                  ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                  : 'border-[#201C1A]/15 bg-transparent text-[#5E4E45] hover:border-[#C8A98B] hover:text-[#201C1A] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6]'
+                className={`rounded-[10px] border px-3 py-1.5 text-[11px] font-medium tracking-wide transition-colors ${active
+                  ? 'border-[var(--loome-btn-primary-bg)] bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
+                  : 'border-[var(--loome-border)] bg-[var(--loome-ivory)] text-[var(--muted-color)] hover:border-[var(--brand-accent)] hover:text-[var(--heading-color)]'
                   }`}
               >
                 {mat}
@@ -481,18 +481,18 @@ export default function ShopCatalogView() {
       <div>
         <p
           data-preview-static={`${idPrefix}-color-heading`}
-          className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
+          className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]"
         >
           Color Palette
         </p>
-        <div className="mt-3.5 flex flex-wrap items-center gap-2.5">
+        <div className="mt-3 flex flex-wrap items-center gap-2.5">
           <button
             type="button"
             data-preview-static={`${idPrefix}-color-all`}
             onClick={() => setSelectedColor('All')}
-            className={`rounded-[10px] border px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] transition-colors ${selectedColor === 'All'
-              ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-              : 'border-[#201C1A]/15 text-[#5E4E45] hover:border-[#C8A98B]'
+            className={`rounded-[10px] border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors ${selectedColor === 'All'
+              ? 'border-[var(--loome-btn-primary-bg)] bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
+              : 'border-[var(--loome-border)] text-[var(--muted-color)] hover:border-[var(--brand-accent)] hover:text-[var(--heading-color)]'
               }`}
           >
             All
@@ -508,13 +508,13 @@ export default function ShopCatalogView() {
                 aria-label={`Filter by ${swatch.name}`}
                 title={swatch.name}
                 className={`relative flex h-6 w-6 items-center justify-center rounded-full border transition-transform ${active
-                  ? 'scale-110 border-[#201C1A] ring-2 ring-[#C8A98B] ring-offset-2 ring-offset-[#F2E9DE] dark:ring-offset-[#3B302B]'
-                  : 'border-[#201C1A]/25 hover:scale-110'
+                  ? 'scale-110 border-[var(--heading-color)] ring-2 ring-[var(--brand-accent)] ring-offset-2 ring-offset-[var(--card-bg)]'
+                  : 'border-[var(--loome-border)] hover:scale-110'
                   }`}
                 style={{ backgroundColor: swatch.hex }}
               >
                 {active && (
-                  <Check className="h-3 w-3 stroke-[2.5] text-[#201C1A] drop-shadow-[0_0_2px_rgba(255,255,255,0.9)]" />
+                  <Check className="h-3 w-3 stroke-[2.5] text-[#2D2722] drop-shadow-[0_0_2px_rgba(255,255,255,0.9)]" />
                 )}
               </button>
             );
@@ -527,13 +527,13 @@ export default function ShopCatalogView() {
         <div className="flex items-center justify-between gap-2">
           <p
             data-preview-static={`${idPrefix}-price-heading`}
-            className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
+            className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]"
           >
             Price Range
           </p>
           <span
             data-preview-static={`${idPrefix}-price-cap`}
-            className="text-[11px] font-medium text-[#201C1A] dark:text-[#F2E9DE]"
+            className="text-[11px] font-semibold text-[var(--heading-color)]"
           >
             Up to {formatLoomePrice(effectiveMaxPrice, storeCurrency)}
           </span>
@@ -548,7 +548,7 @@ export default function ShopCatalogView() {
           onChange={(e) => setMaxPriceCap(Number(e.target.value))}
           aria-label="Maximum price"
           data-preview-static={`${idPrefix}-price-slider`}
-          className="mt-3 h-1 w-full cursor-pointer appearance-none bg-[#201C1A]/20 accent-[#8D7667] dark:bg-[#F2E9DE]/20 dark:accent-[#C8A98B]"
+          className="mt-3 h-1 w-full cursor-pointer appearance-none bg-[var(--loome-border)] accent-[var(--brand-accent)]"
         />
 
         <div className="mt-3 flex flex-wrap gap-1.5">
@@ -570,9 +570,9 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`${idPrefix}-band-${band.id}`}
                 onClick={() => setPriceBand(band.id)}
-                className={`rounded-[10px] border px-2.5 py-1 text-[10px] tracking-wide transition-colors ${active
-                  ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                  : 'border-[#201C1A]/15 text-[#5E4E45] hover:border-[#C8A98B] dark:border-[#F2E9DE]/20 dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]'
+                className={`rounded-[10px] border px-2.5 py-1 text-[10px] font-medium tracking-wide transition-colors ${active
+                  ? 'border-[var(--loome-btn-primary-bg)] bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
+                  : 'border-[var(--loome-border)] text-[var(--muted-color)] hover:border-[var(--brand-accent)] hover:text-[var(--heading-color)]'
                   }`}
               >
                 {band.label}
@@ -586,7 +586,7 @@ export default function ShopCatalogView() {
       <div>
         <p
           data-preview-static={`${idPrefix}-availability-heading`}
-          className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]"
+          className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]"
         >
           Availability
         </p>
@@ -596,15 +596,15 @@ export default function ShopCatalogView() {
           aria-checked={inStockOnly}
           data-preview-static={`${idPrefix}-instock-toggle`}
           onClick={() => setInStockOnly((v) => !v)}
-          className="mt-3.5 flex w-full items-center justify-between rounded-[11px] border border-[#201C1A]/15 bg-[#F2E9DE] px-4 py-3 text-left text-xs text-[#201C1A] transition-colors hover:border-[#C8A98B] dark:border-[#F2E9DE]/18 dark:bg-[#201C1A] dark:text-[#F2E9DE]"
+          className="mt-3 flex w-full items-center justify-between rounded-[11px] border border-[var(--loome-border)] bg-[var(--loome-ivory)] px-4 py-2.5 text-left text-xs font-medium text-[var(--heading-color)] transition-colors hover:border-[var(--brand-accent)]"
         >
           <span>In Stock &amp; Ready to Ship</span>
           <span
-            className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${inStockOnly ? 'bg-[#8D7667]' : 'bg-[#201C1A]/20 dark:bg-[#F2E9DE]/25'
+            className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${inStockOnly ? 'bg-[var(--brand-accent)]' : 'bg-[var(--loome-border)]'
               }`}
           >
             <span
-              className={`inline-block h-3.5 w-3.5 rounded-full bg-[#F2E9DE] transition-transform ${inStockOnly ? 'translate-x-[18px]' : 'translate-x-[3px]'
+              className={`inline-block h-3.5 w-3.5 rounded-full bg-white transition-transform ${inStockOnly ? 'translate-x-[18px]' : 'translate-x-[3px]'
                 }`}
             />
           </span>
@@ -618,12 +618,12 @@ export default function ShopCatalogView() {
       {/* 1. Light Editorial Shop Heading & Introduction — Warm Ivory */}
       <section
         data-design-section="shop-heading"
-        className="mx-auto max-w-[1440px] px-4 pb-8 pt-10 sm:px-8 lg:px-14 lg:pb-10 lg:pt-14"
+        className="mx-auto w-full max-w-[1280px] px-4 pb-7 pt-9 sm:px-8 lg:px-10 lg:pb-8 lg:pt-11"
       >
-        <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+        <LuxuryReveal className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3">
-              <span className="h-px w-8 bg-[#B28B65] dark:bg-[#C8A98B]" aria-hidden="true" />
+              <span className="h-px w-8 bg-[var(--brand-accent)]" aria-hidden="true" />
               <EditableText
                 as="p"
                 data-preview-field-path="shopPage.eyebrow"
@@ -643,12 +643,12 @@ export default function ShopCatalogView() {
               data-preview-field-path="shopPage.heading"
               defaultValue={contentText(shopPage.heading) || 'Shop Fine Textiles'}
               fontFamily="heading"
-              size="clamp(2.4rem, 4.4vw, 3.85rem)"
+              size="clamp(1.9rem, 3.1vw, 2.65rem)"
               weight={800}
-              lineHeight={1.05}
-              letterSpacing="-0.03em"
+              lineHeight={1.08}
+              letterSpacing="-0.025em"
               color="heading"
-              className="mt-3.5 mb-0"
+              className="mt-2.5 mb-0"
             />
           </div>
 
@@ -657,20 +657,20 @@ export default function ShopCatalogView() {
             data-preview-field-path="shopPage.intro"
             defaultValue={contentText(shopPage.intro)}
             fontFamily="body"
-            size="0.96875rem"
-            lineHeight={1.78}
+            size="0.9375rem"
+            lineHeight={1.7}
             color="muted"
             className="m-0 max-w-md lg:text-right"
           />
         </LuxuryReveal>
       </section>
 
-      {/* 2. Category Navigation Ribbon — Soft Beige / Dark Mocha */}
+      {/* 2. Category Navigation Ribbon — Oat Beige */}
       <section
         data-design-section="shop-categories-nav"
-        className="loome-surface-beige w-full border-y border-[#49382D]/12 dark:border-[#C8A98B]/20"
+        className="loome-surface-beige w-full border-y border-[var(--loome-border)]"
       >
-        <div className="mx-auto flex max-w-[1440px] items-center gap-6 overflow-x-auto px-4 py-3.5 sm:px-8 lg:gap-10 lg:px-14">
+        <div className="mx-auto flex max-w-[1280px] items-center gap-6 overflow-x-auto px-4 py-3 sm:px-8 lg:gap-8 lg:px-10">
           {categoryEntries.map((entry) => {
             const isActive =
               resolvedActiveCategory.toLowerCase() === entry.name.toLowerCase();
@@ -680,17 +680,17 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static={`shop-cat-nav-${entry.name}`}
                 onClick={() => selectCategory(entry.name)}
-                className={`group relative flex shrink-0 items-baseline gap-1.5 border-0 bg-transparent px-0 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors ${isActive
-                  ? 'text-[#2C211B] dark:text-[#F5EEE6]'
-                  : 'text-[#6E5B4E] hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]'
+                className={`group relative flex shrink-0 items-baseline gap-1.5 border-0 bg-transparent px-0 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors ${isActive
+                  ? 'text-[var(--heading-color)]'
+                  : 'text-[var(--muted-color)] hover:text-[var(--heading-color)]'
                   }`}
               >
                 <span>{entry.name}</span>
-                <span className="text-[10px] font-medium text-[#B28B65] dark:text-[#C8A98B]">
+                <span className="text-[10px] font-medium text-[var(--brand-accent)]">
                   ({entry.count})
                 </span>
                 <span
-                  className={`absolute inset-x-0 bottom-0 h-[2px] bg-[#B28B65] transition-transform duration-300 dark:bg-[#C8A98B] ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                  className={`absolute inset-x-0 bottom-0 h-[2px] bg-[var(--brand-accent)] transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
                     }`}
                 />
               </button>
@@ -701,25 +701,25 @@ export default function ShopCatalogView() {
 
       {/* 3. Active Collection Context Banner (shown when arriving from /collections/?collection=...) */}
       {activeCollection && (
-        <div className="border-b border-[#49382D]/10 bg-white dark:border-[#C8A98B]/16 dark:bg-[#241E1B]">
-          <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-4 px-4 py-5 sm:flex-row sm:items-center sm:px-8 lg:px-14">
+        <div className="border-b border-[var(--loome-border)] bg-[var(--card-bg)]">
+          <div className="mx-auto flex max-w-[1280px] flex-col justify-between gap-4 px-4 py-4 sm:flex-row sm:items-center sm:px-8 lg:px-10">
             <div className="max-w-2xl">
               <p
                 data-preview-static="shop-active-collection-eyebrow"
-                className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#B28B65] dark:text-[#C8A98B]"
+                className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]"
               >
                 Viewing Collection · {activeCollection.tag}
               </p>
               <h2
                 data-preview-static="shop-active-collection-title"
-                className="mt-1 mb-0 font-heading text-xl font-extrabold text-[#2C211B] dark:text-[#F5EEE6] sm:text-2xl"
+                className="mt-1 mb-0 font-heading text-xl font-extrabold text-[var(--heading-color)] sm:text-2xl"
               >
                 {activeCollection.title}
               </h2>
               {activeCollection.description && (
                 <p
                   data-preview-static="shop-active-collection-desc"
-                  className="mt-1 mb-0 text-xs leading-relaxed text-[#6E5B4E] dark:text-[#C9B9AA]"
+                  className="mt-1 mb-0 text-xs leading-relaxed text-[var(--muted-color)]"
                 >
                   {activeCollection.description}
                 </p>
@@ -729,7 +729,7 @@ export default function ShopCatalogView() {
               type="button"
               data-preview-static="shop-clear-collection"
               onClick={() => selectCollection('')}
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-[10px] border border-[#49382D]/20 bg-[#F7F3ED] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#49382D] transition-colors hover:border-[#B28B65] hover:bg-[#49382D] hover:text-[#F7F3ED] dark:border-[#C8A98B]/30 dark:bg-[#28211D] dark:text-[#F5EEE6] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-[10px] border border-[var(--loome-border)] bg-[var(--loome-ivory)] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--heading-color)] transition-colors hover:border-[var(--loome-btn-primary-bg)] hover:bg-[var(--loome-btn-primary-bg)] hover:text-[var(--loome-btn-primary-text)]"
             >
               <X className="h-3.5 w-3.5 stroke-[1.8]" />
               View All Products
@@ -742,10 +742,10 @@ export default function ShopCatalogView() {
       <div className="loome-surface-ivory w-full">
         <section
           data-design-section="shop-catalog"
-          className="mx-auto max-w-[1440px] px-4 py-9 sm:px-8 lg:px-14 lg:py-12"
+          className="mx-auto w-full max-w-[1280px] px-4 py-8 sm:px-8 lg:px-10 lg:py-10"
         >
           {/* Filter, Search & Sort Toolbar */}
-          <div className="flex flex-col gap-4 border-b border-[#49382D]/12 pb-5 dark:border-[#C8A98B]/20 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-4 border-b border-[var(--loome-border)] pb-5 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               {/* Desktop Filter Drawer Toggle */}
               <button
@@ -753,12 +753,12 @@ export default function ShopCatalogView() {
                 data-preview-static="shop-desktop-filter-toggle"
                 onClick={() => setDesktopFiltersOpen((v) => !v)}
                 aria-expanded={desktopFiltersOpen}
-                className="hidden items-center gap-2 rounded-[10px] border border-[#49382D]/20 bg-white px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#49382D] transition-colors hover:border-[#49382D] hover:bg-[#49382D] hover:text-[#F7F3ED] dark:border-[#C8A98B]/30 dark:bg-[#28211D] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A] lg:inline-flex"
+                className="hidden items-center gap-2 rounded-[10px] border border-[var(--loome-border)] bg-[var(--card-bg)] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--heading-color)] transition-colors hover:border-[var(--loome-btn-primary-bg)] hover:bg-[var(--loome-btn-primary-bg)] hover:text-[var(--loome-btn-primary-text)] lg:inline-flex"
               >
                 <SlidersHorizontal className="h-3.5 w-3.5 stroke-[1.6]" />
                 <span>{desktopFiltersOpen ? 'Hide Filters' : 'Filters'}</span>
                 {activeFilters.length > 0 && (
-                  <span className="ml-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#B28B65] px-1 text-[9px] font-bold text-white dark:bg-[#C8A98B] dark:text-[#201C1A]">
+                  <span className="ml-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[var(--brand-accent)] px-1 text-[9px] font-bold text-white dark:text-[#1A1614]">
                     {activeFilters.length}
                   </span>
                 )}
@@ -769,12 +769,12 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static="shop-mobile-filter-toggle"
                 onClick={() => setMobileDrawerOpen(true)}
-                className="inline-flex items-center gap-2 rounded-[10px] border border-[#49382D]/20 bg-white px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#49382D] transition-colors hover:border-[#49382D] dark:border-[#C8A98B]/30 dark:bg-[#28211D] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] lg:hidden"
+                className="inline-flex items-center gap-2 rounded-[10px] border border-[var(--loome-border)] bg-[var(--card-bg)] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--heading-color)] transition-colors hover:border-[var(--brand-accent)] lg:hidden"
               >
                 <SlidersHorizontal className="h-3.5 w-3.5 stroke-[1.6]" />
                 <span>Filters</span>
                 {activeFilters.length > 0 && (
-                  <span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#B28B65] px-1 text-[9px] font-bold text-white dark:bg-[#C8A98B] dark:text-[#201C1A]">
+                  <span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[var(--brand-accent)] px-1 text-[9px] font-bold text-white dark:text-[#1A1614]">
                     {activeFilters.length}
                   </span>
                 )}
@@ -783,10 +783,10 @@ export default function ShopCatalogView() {
               {/* Live Product Count */}
               <p
                 data-preview-static="shop-product-count"
-                className="m-0 text-xs tracking-wide text-[#6E5B4E] dark:text-[#C9B9AA]"
+                className="m-0 text-xs tracking-wide text-[var(--muted-color)]"
               >
                 Showing{' '}
-                <strong className="font-semibold text-[#2C211B] dark:text-[#F5EEE6]">
+                <strong className="font-semibold text-[var(--heading-color)]">
                   {filteredProducts.length}
                 </strong>{' '}
                 of {allProducts.length} {allProducts.length === 1 ? 'product' : 'products'}
@@ -798,7 +798,7 @@ export default function ShopCatalogView() {
               <div className="relative flex-1 sm:w-64 sm:flex-initial">
                 <Search
                   aria-hidden="true"
-                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 stroke-[1.6] text-[#6E5B4E] dark:text-[#C8A98B]"
+                  className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 stroke-[1.6] text-[var(--muted-color)]"
                 />
                 <input
                   type="search"
@@ -807,7 +807,7 @@ export default function ShopCatalogView() {
                   placeholder="Search textiles..."
                   aria-label="Search shop products"
                   data-preview-static="shop-search-input"
-                  className="h-10 w-full rounded-[10px] border border-[#49382D]/18 bg-white pl-9 pr-8 text-xs text-[#2C211B] placeholder:text-[#6E5B4E]/75 focus:border-[#B28B65] focus:outline-none dark:border-[#C8A98B]/28 dark:bg-[#28211D] dark:text-[#F5EEE6] dark:placeholder:text-[#C9B9AA]/70 dark:focus:border-[#C8A98B]"
+                  className="h-10 w-full rounded-[10px] border border-[var(--loome-border)] bg-[var(--card-bg)] pl-9 pr-8 text-xs text-[var(--heading-color)] placeholder:text-[var(--muted-color)]/75 focus:border-[var(--brand-accent)] focus:outline-none"
                 />
                 {searchQuery && (
                   <button
@@ -815,7 +815,7 @@ export default function ShopCatalogView() {
                     onClick={() => setSearchQuery('')}
                     aria-label="Clear search"
                     data-preview-static="shop-search-clear"
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 border-0 bg-transparent p-0.5 text-[#6E5B4E] hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 border-0 bg-transparent p-0.5 text-[var(--muted-color)] hover:text-[var(--heading-color)]"
                   >
                     <X className="h-3.5 w-3.5" />
                   </button>
@@ -826,7 +826,7 @@ export default function ShopCatalogView() {
                 <label
                   htmlFor="loome-shop-sort"
                   data-preview-static="shop-sort-label"
-                  className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6E5B4E] dark:text-[#C9B9AA]"
+                  className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted-color)]"
                 >
                   Sort
                 </label>
@@ -836,7 +836,7 @@ export default function ShopCatalogView() {
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as SortOption)}
                     data-preview-static="shop-sort-select"
-                    className="h-10 w-full appearance-none rounded-[10px] border border-[#49382D]/18 bg-white pl-3.5 pr-9 text-xs font-medium text-[#2C211B] focus:border-[#B28B65] focus:outline-none dark:border-[#C8A98B]/28 dark:bg-[#28211D] dark:text-[#F5EEE6]"
+                    className="h-10 w-full appearance-none rounded-[10px] border border-[var(--loome-border)] bg-[var(--card-bg)] pl-3.5 pr-9 text-xs font-medium text-[var(--heading-color)] focus:border-[var(--brand-accent)] focus:outline-none"
                   >
                     <option value="newest">Newest Arrivals</option>
                     <option value="price-asc">Price: Low to High</option>
@@ -844,7 +844,7 @@ export default function ShopCatalogView() {
                     <option value="bestsellers">Bestsellers</option>
                   </select>
                   <ChevronDown
-                    className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 stroke-[1.6] text-[#6E5B4E] dark:text-[#C8A98B]"
+                    className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 stroke-[1.6] text-[var(--muted-color)]"
                     aria-hidden="true"
                   />
                 </div>
@@ -860,23 +860,23 @@ export default function ShopCatalogView() {
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.35, ease: LUXURY_EASE }}
-                className="mt-4 hidden overflow-hidden rounded-2xl border border-[#201C1A]/12 bg-[#FAF5EE] dark:border-[#C8A98B]/20 dark:bg-[#2A221F] lg:block"
+                className="mt-4 hidden overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] lg:block"
               >
-                <div className="p-7">{renderFilterGroups('desktop')}</div>
+                <div className="p-6">{renderFilterGroups('desktop')}</div>
               </motion.div>
             )}
           </AnimatePresence>
 
           {/* Active Filter Chips Bar */}
           {activeFilters.length > 0 && (
-            <div className="flex flex-wrap items-center gap-2 pt-5">
+            <div className="flex flex-wrap items-center gap-2 pt-4">
               {activeFilters.map((chip) => (
                 <button
                   key={chip.key}
                   type="button"
                   data-preview-static={`active-chip-${chip.key}`}
                   onClick={chip.onRemove}
-                  className="inline-flex items-center gap-2 rounded-[10px] border border-[#C8A98B]/55 bg-[#E6D9C9]/45 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-[#201C1A] transition-colors hover:border-[#201C1A] hover:bg-[#201C1A] hover:text-[#F2E9DE] dark:bg-[#2A221F] dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:bg-[#C8A98B] dark:hover:text-[#201C1A]"
+                  className="inline-flex items-center gap-2 rounded-[10px] border border-[var(--brand-accent)]/55 bg-[var(--loome-beige)] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--heading-color)] transition-colors hover:border-[var(--loome-btn-primary-bg)] hover:bg-[var(--loome-btn-primary-bg)] hover:text-[var(--loome-btn-primary-text)]"
                 >
                   <span>{chip.label}</span>
                   <X className="h-3 w-3 stroke-[1.8]" />
@@ -887,7 +887,7 @@ export default function ShopCatalogView() {
                 type="button"
                 data-preview-static="shop-clear-filters"
                 onClick={resetAllFilters}
-                className="ml-1 inline-flex items-center gap-1.5 border-0 bg-transparent px-2 py-1 text-[10px] font-medium uppercase tracking-[0.2em] text-[#8D7667] underline underline-offset-4 transition-colors hover:text-[#201C1A] dark:text-[#C8A98B]"
+                className="ml-1 inline-flex items-center gap-1.5 border-0 bg-transparent px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--brand-accent)] underline underline-offset-4 transition-colors hover:text-[var(--heading-color)]"
               >
                 <RotateCcw className="h-3 w-3 stroke-[1.6]" />
                 Clear All
@@ -898,36 +898,36 @@ export default function ShopCatalogView() {
           {/* Responsive 4-Column Product Grid */}
           <div
             data-preview-list-path="products"
-            className="mt-10 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-7"
+            className="mt-8 grid grid-cols-1 gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           >
             {allProducts.length === 0 ? (
               <p
                 data-preview-static="shop-catalog-empty"
-                className="col-span-full border border-dashed border-[#201C1A]/20 py-20 text-center text-sm text-[#5E4E45]"
+                className="col-span-full rounded-2xl border border-dashed border-[var(--loome-border)] bg-[var(--card-bg)] py-16 text-center text-sm text-[var(--muted-color)]"
               >
                 Add textile products in your Fivora catalog to populate the shop.
               </p>
             ) : filteredProducts.length === 0 ? (
-              <div className="col-span-full border border-[#201C1A]/12 bg-[#FAF5EE] px-6 py-20 text-center dark:border-[#F2E9DE]/12 dark:bg-[#3B302B]">
+              <div className="col-span-full rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] px-6 py-16 text-center">
                 <p
                   data-preview-static="shop-empty-eyebrow"
-                  className="m-0 text-[10px] font-medium uppercase tracking-[0.26em] text-[#8D7667] dark:text-[#C8A98B]"
+                  className="m-0 text-[10px] font-semibold uppercase tracking-[0.24em] text-[var(--brand-accent)]"
                 >
-                  No Matching Editions
+                  No Matching Products
                 </p>
                 <h2
                   data-preview-static="shop-empty-heading"
-                  className="mt-3 font-serif text-3xl font-light text-[#201C1A] dark:text-[#F2E9DE] sm:text-4xl"
+                  className="mt-2.5 font-heading text-2xl font-bold text-[var(--heading-color)] sm:text-3xl"
                 >
                   No textiles match your current selection
                 </h2>
                 <p
                   data-preview-static="shop-empty-copy"
-                  className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-[#5E4E45] dark:text-[#C7B6A6]"
+                  className="mx-auto mt-2.5 max-w-md text-sm leading-relaxed text-[var(--muted-color)]"
                 >
                   Try widening your price range, switching fiber or tone filters, or returning to the full LOOMÉ collection.
                 </p>
-                <div className="mt-7 flex justify-center">
+                <div className="mt-6 flex justify-center">
                   <button
                     type="button"
                     data-preview-static="shop-empty-reset-btn"
@@ -979,7 +979,7 @@ export default function ShopCatalogView() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileDrawerOpen(false)}
-              className="fixed inset-0 bg-[#201C1A]/50 backdrop-blur-sm"
+              className="fixed inset-0 bg-[#2D2722]/50 backdrop-blur-sm"
             />
             <motion.aside
               initial={{ x: '100%' }}
@@ -987,29 +987,29 @@ export default function ShopCatalogView() {
               exit={{ x: '100%' }}
               transition={{ duration: 0.42, ease: LUXURY_EASE }}
               aria-label="Shop filters"
-              className="relative z-10 flex h-full w-[88%] max-w-sm flex-col bg-[#F2E9DE] text-[#201C1A] shadow-2xl dark:bg-[#201C1A] dark:text-[#F2E9DE]"
+              className="relative z-10 flex h-full w-[88%] max-w-sm flex-col bg-[var(--loome-ivory)] text-[var(--heading-color)] shadow-2xl"
             >
-              <div className="flex items-center justify-between border-b border-[#201C1A]/10 px-6 py-5 dark:border-[#F2E9DE]/10">
+              <div className="flex items-center justify-between border-b border-[var(--loome-border)] px-6 py-4">
                 <div>
-                  <h2 className="m-0 font-serif text-2xl font-normal">Refine Selection</h2>
-                  <p className="mt-0.5 m-0 text-[10px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6]">
-                    {filteredProducts.length} {filteredProducts.length === 1 ? 'piece' : 'pieces'}
+                  <h2 className="m-0 font-heading text-xl font-bold">Refine Selection</h2>
+                  <p className="mt-0.5 m-0 text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--muted-color)]">
+                    {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setMobileDrawerOpen(false)}
                   aria-label="Close filters"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-[#201C1A]/15 dark:border-[#F2E9DE]/20"
+                  className="flex h-9 w-9 items-center justify-center rounded-[10px] border border-[var(--loome-border)] text-[var(--heading-color)]"
                 >
                   <X className="h-4 w-4 stroke-[1.5]" />
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto px-6 py-6">
+              <div className="flex-1 overflow-y-auto px-6 py-5">
                 {/* Category quick select inside mobile drawer */}
-                <div className="mb-8">
-                  <p className="m-0 text-[10px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]">
+                <div className="mb-7">
+                  <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]">
                     Category
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -1021,9 +1021,9 @@ export default function ShopCatalogView() {
                           key={entry.name}
                           type="button"
                           onClick={() => selectCategory(entry.name)}
-                          className={`border px-3 py-1.5 text-[11px] tracking-wide transition-colors ${active
-                            ? 'border-[#201C1A] bg-[#201C1A] text-[#F2E9DE] dark:border-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A]'
-                            : 'border-[#201C1A]/15 text-[#5E4E45] dark:border-[#F2E9DE]/18 dark:text-[#C7B6A6]'
+                          className={`rounded-[10px] border px-3 py-1.5 text-[11px] font-medium tracking-wide transition-colors ${active
+                            ? 'border-[var(--loome-btn-primary-bg)] bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
+                            : 'border-[var(--loome-border)] bg-[var(--card-bg)] text-[var(--muted-color)]'
                             }`}
                         >
                           {entry.name} ({entry.count})
@@ -1036,7 +1036,7 @@ export default function ShopCatalogView() {
                 {renderFilterGroups('mobile')}
               </div>
 
-              <div className="flex gap-3 border-t border-[#201C1A]/10 bg-[#FAF5EE] px-6 py-4 dark:border-[#F2E9DE]/10 dark:bg-[#3B302B]">
+              <div className="flex gap-3 border-t border-[var(--loome-border)] bg-[var(--card-bg)] px-6 py-4">
                 <button
                   type="button"
                   onClick={resetAllFilters}

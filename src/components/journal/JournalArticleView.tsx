@@ -171,38 +171,38 @@ export default function JournalArticleView() {
   return (
     <div
       data-preview-page-key="journal_article"
-      className="loome-surface-cream min-h-[75vh] w-full"
+      className="loome-surface-ivory min-h-[75vh] w-full"
     >
       {/* Breadcrumb Strip */}
-      <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
-        <nav className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-12">
+      <div className="border-b border-[var(--loome-border)] bg-[var(--loome-surface-subtle)]">
+        <nav className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-color)] sm:px-8 lg:px-10">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-color)] transition-colors hover:text-[var(--heading-color)]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" className="text-[#C8A98B]">
+          <span aria-hidden="true" data-preview-static="article-bc-sep-1" className="text-[var(--brand-accent)]">
             /
           </span>
           <button
             type="button"
             onClick={() => window.location.assign(backToJournalHref)}
             data-target-page={hasJournalPage ? 'journal' : undefined}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-color)] transition-colors hover:text-[var(--heading-color)]"
           >
             <span data-preview-field-path="common.navLabels.journal">{journalNavLabel}</span>
           </button>
           {resolvedArticle && (
             <>
-              <span aria-hidden="true" className="text-[#C8A98B]">
+              <span aria-hidden="true" data-preview-static="article-bc-sep-2" className="text-[var(--brand-accent)]">
                 /
               </span>
               <span
                 aria-current="page"
                 data-preview-field-path={`home.journalPosts[${resolvedArticle.index}].category`}
-                className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
+                className="font-semibold text-[var(--heading-color)]"
               >
                 {resolvedArticle.category}
               </span>
@@ -390,26 +390,26 @@ export default function JournalArticleView() {
         /* Magazine Article Masthead & Essay */
         <article
           data-preview-item-path={`home.journalPosts[${resolvedArticle.index}]`}
-          className="mx-auto max-w-[1080px] px-4 pb-16 pt-12 sm:px-8 sm:pt-16 lg:px-12 lg:pb-24"
+          className="mx-auto w-full max-w-[1040px] px-4 pb-12 pt-9 sm:px-8 sm:pt-12 lg:px-10 lg:pb-16"
         >
           <LuxuryReveal className="mx-auto max-w-3xl text-center">
-            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] font-medium uppercase tracking-[0.24em] text-[#8D7667] dark:text-[#C8A98B]">
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]">
               <EditableText
                 as="span"
                 data-preview-field-path={`home.journalPosts[${resolvedArticle.index}].category`}
                 defaultValue={resolvedArticle.category}
                 fontFamily="body"
                 size="0.6875rem"
-                weight={500}
+                weight={600}
                 transform="uppercase"
-                letterSpacing="0.24em"
+                letterSpacing="0.22em"
                 color="inherit"
                 className="inline"
               />
-              <span aria-hidden="true" className="text-[#C8A98B]">
+              <span aria-hidden="true" className="text-[var(--brand-accent)]">
                 ·
               </span>
-              <span className="inline-flex items-center gap-1 text-[#5E4E45] dark:text-[#C7B6A6]">
+              <span className="inline-flex items-center gap-1 text-[var(--muted-color)]">
                 <Calendar aria-hidden="true" className="h-3 w-3 stroke-[1.5]" />
                 <EditableText
                   as="span"
@@ -419,15 +419,15 @@ export default function JournalArticleView() {
                   size="0.6875rem"
                   weight={500}
                   transform="uppercase"
-                  letterSpacing="0.24em"
+                  letterSpacing="0.22em"
                   color="inherit"
                   className="inline"
                 />
               </span>
-              <span aria-hidden="true" className="text-[#C8A98B]">
+              <span aria-hidden="true" className="text-[var(--brand-accent)]">
                 ·
               </span>
-              <span className="inline-flex items-center gap-1 text-[#5E4E45] dark:text-[#C7B6A6]">
+              <span className="inline-flex items-center gap-1 text-[var(--muted-color)]">
                 <Clock aria-hidden="true" className="h-3 w-3 stroke-[1.5]" />
                 <EditableText
                   as="span"
@@ -437,7 +437,7 @@ export default function JournalArticleView() {
                   size="0.6875rem"
                   weight={500}
                   transform="uppercase"
-                  letterSpacing="0.24em"
+                  letterSpacing="0.22em"
                   color="inherit"
                   className="inline"
                 />
@@ -449,33 +449,33 @@ export default function JournalArticleView() {
               data-preview-field-path={`home.journalPosts[${resolvedArticle.index}].title`}
               defaultValue={resolvedArticle.title}
               fontFamily="heading"
-              size="clamp(2.25rem, 4.6vw, 3.9rem)"
-              weight={300}
-              lineHeight={1.06}
-              letterSpacing="-0.02em"
+              size="clamp(1.9rem, 3.3vw, 2.75rem)"
+              weight={800}
+              lineHeight={1.1}
+              letterSpacing="-0.025em"
               color="heading"
-              className="mt-5 mb-0"
+              className="mt-3.5 mb-0"
             />
 
             <LuxuryHairline
               origin="center"
-              className="mx-auto my-6 h-px w-14 bg-[#C8A98B]"
+              className="mx-auto my-5 h-px w-12 bg-[var(--brand-accent)]"
             />
 
             <EditableText
               as="p"
               data-preview-field-path={`home.journalPosts[${resolvedArticle.index}].excerpt`}
               defaultValue={resolvedArticle.excerpt}
-              fontFamily="heading"
-              size="clamp(1.25rem, 1.8vw, 1.5rem)"
-              weight={300}
-              lineHeight={1.55}
+              fontFamily="body"
+              size="1.05rem"
+              weight={400}
+              lineHeight={1.65}
               color="muted"
-              className="mx-auto m-0 max-w-2xl italic"
+              className="mx-auto m-0 max-w-2xl"
             />
 
             {/* Author Byline + Shareable Link Actions */}
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6]">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-[11px] uppercase tracking-[0.18em] text-[var(--muted-color)]">
               <div className="inline-flex flex-wrap items-center gap-1.5">
                 <EditableText
                   as="span"
@@ -485,7 +485,7 @@ export default function JournalArticleView() {
                   size="0.6875rem"
                   weight={500}
                   transform="uppercase"
-                  letterSpacing="0.2em"
+                  letterSpacing="0.18em"
                   color="inherit"
                   className="inline"
                 />
@@ -495,27 +495,27 @@ export default function JournalArticleView() {
                   defaultValue={resolvedArticle.author}
                   fontFamily="body"
                   size="0.6875rem"
-                  weight={500}
+                  weight={600}
                   transform="uppercase"
-                  letterSpacing="0.2em"
+                  letterSpacing="0.18em"
                   color="inherit"
                   className="inline"
                 />
               </div>
               <span
                 aria-hidden="true"
-                className="h-3 w-px bg-[#201C1A]/20 dark:bg-[#F2E9DE]/20"
+                className="h-3 w-px bg-[var(--loome-border)]"
               />
               <button
                 type="button"
                 onClick={handleCopyShareLink}
-                className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
+                className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--heading-color)] transition-colors hover:text-[var(--brand-accent)]"
               >
                 {copiedLink ? (
                   <>
                     <Check
                       aria-hidden="true"
-                      className="h-3.5 w-3.5 stroke-[1.7] text-[#8D7667]"
+                      className="h-3.5 w-3.5 stroke-[1.7] text-[var(--brand-accent)]"
                     />
                     <EditableText
                       as="span"
@@ -523,9 +523,9 @@ export default function JournalArticleView() {
                       defaultValue={copiedLinkLabel}
                       fontFamily="body"
                       size="0.6875rem"
-                      weight={500}
+                      weight={600}
                       transform="uppercase"
-                      letterSpacing="0.2em"
+                      letterSpacing="0.18em"
                       color="inherit"
                       className="inline"
                     />
@@ -539,9 +539,9 @@ export default function JournalArticleView() {
                       defaultValue={copyLinkLabel}
                       fontFamily="body"
                       size="0.6875rem"
-                      weight={500}
+                      weight={600}
                       transform="uppercase"
-                      letterSpacing="0.2em"
+                      letterSpacing="0.18em"
                       color="inherit"
                       className="inline"
                     />
@@ -551,7 +551,7 @@ export default function JournalArticleView() {
               <button
                 type="button"
                 onClick={handleNativeShare}
-                className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+                className="inline-flex items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--muted-color)] transition-colors hover:text-[var(--heading-color)]"
               >
                 <Share2 aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.5]" />
                 <EditableText
@@ -560,9 +560,9 @@ export default function JournalArticleView() {
                   defaultValue={shareLabel}
                   fontFamily="body"
                   size="0.6875rem"
-                  weight={500}
+                  weight={600}
                   transform="uppercase"
-                  letterSpacing="0.2em"
+                  letterSpacing="0.18em"
                   color="inherit"
                   className="inline"
                 />
@@ -571,8 +571,8 @@ export default function JournalArticleView() {
           </LuxuryReveal>
 
           {/* Immersive Framed Editorial Hero Image */}
-          <div className="mt-10 sm:mt-12">
-            <LuxuryImageReveal tone="beige" className="aspect-[16/9] w-full bg-[#E6D9C9]/60">
+          <div className="mt-8 sm:mt-10">
+            <LuxuryImageReveal tone="beige" className="aspect-[16/9] w-full overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--loome-beige)]">
               <img
                 src={withBasePath(resolvedArticle.imageUrl)}
                 alt={resolvedArticle.title}
@@ -583,26 +583,26 @@ export default function JournalArticleView() {
           </div>
 
           {/* Editorial Essay Body */}
-          <LuxuryReveal delay={0.08} className="mx-auto mt-12 max-w-[68ch] sm:mt-14">
+          <LuxuryReveal delay={0.08} className="mx-auto mt-10 max-w-[68ch]">
             <EditableText
               as="p"
               data-preview-field-path={`home.journalPosts[${resolvedArticle.index}].body`}
               defaultValue={resolvedArticle.body}
               fontFamily="body"
-              size="clamp(1rem, 1.1vw, 1.0625rem)"
+              size="1rem"
               weight={400}
-              lineHeight={1.95}
+              lineHeight={1.88}
               color="body"
-              className="m-0 whitespace-pre-line text-[#2F332B] first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:font-serif first-letter:text-5xl first-letter:font-light first-letter:leading-none first-letter:text-[#8D7667] dark:text-[#DFE1DA] dark:first-letter:text-[#C8A98B]"
+              className="m-0 whitespace-pre-line text-[var(--page-text)] first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:font-heading first-letter:text-4xl first-letter:font-extrabold first-letter:leading-none first-letter:text-[var(--brand-accent)]"
             />
 
             {/* Subtle Editorial Signoff & Navigation */}
-            <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[#201C1A]/12 pt-8 dark:border-[#F2E9DE]/12">
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--loome-border)] pt-6">
               <button
                 type="button"
                 onClick={() => window.location.assign(backToJournalHref)}
                 data-target-page={hasJournalPage ? 'journal' : undefined}
-                className="group inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
+                className="group inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--heading-color)] transition-colors hover:text-[var(--brand-accent)]"
               >
                 <ArrowLeft
                   aria-hidden="true"
@@ -616,7 +616,7 @@ export default function JournalArticleView() {
                   size="0.6875rem"
                   weight={600}
                   transform="uppercase"
-                  letterSpacing="0.2em"
+                  letterSpacing="0.18em"
                   color="inherit"
                   className="inline"
                 />
@@ -627,7 +627,7 @@ export default function JournalArticleView() {
                   type="button"
                   onClick={() => window.location.assign(withBasePath('/shop/'))}
                   data-target-page="shop"
-                  className="group inline-flex cursor-pointer items-center gap-2 border-0 border-b border-[#C8A98B] bg-transparent px-0 pb-1 pt-0 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8D7667] transition-colors hover:text-[#201C1A] dark:text-[#C8A98B] dark:hover:text-[#F2E9DE]"
+                  className="group inline-flex cursor-pointer items-center gap-2 border-0 border-b border-[var(--brand-accent)] bg-transparent px-0 pb-1 pt-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--brand-accent)] transition-colors hover:text-[var(--heading-color)]"
                 >
                   <EditableText
                     as="span"
@@ -637,7 +637,7 @@ export default function JournalArticleView() {
                     size="0.6875rem"
                     weight={600}
                     transform="uppercase"
-                    letterSpacing="0.2em"
+                    letterSpacing="0.18em"
                     color="inherit"
                     className="inline"
                   />
@@ -650,7 +650,7 @@ export default function JournalArticleView() {
                 <span
                   data-target-page="shop"
                   data-preview-field-path="journalArticlePage.shopCtaLabel"
-                  className="unavailable inline-flex items-center gap-2 border-b border-[#C8A98B] pb-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#8D7667]"
+                  className="unavailable inline-flex items-center gap-2 border-b border-[var(--brand-accent)] pb-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--brand-accent)]"
                 >
                   {shopCtaLabel}
                 </span>
@@ -661,8 +661,8 @@ export default function JournalArticleView() {
       )}
 
       {/* Continue Reading — Related Essays (always mounted so section headings stay editable in Fivora empty-state) */}
-      <section className="border-t border-[#201C1A]/8 bg-[#E6D9C9]/60 py-16 dark:border-[#F2E9DE]/10 dark:bg-[#2A2320] sm:py-20">
-        <div className="mx-auto max-w-[1320px] px-4 sm:px-8 lg:px-14">
+      <section className="loome-surface-beige w-full border-t border-[var(--loome-border)] py-12 sm:py-14">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-8 lg:px-10">
           <LuxuryReveal className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <div>
               <EditableText
@@ -671,9 +671,9 @@ export default function JournalArticleView() {
                 defaultValue={relatedEyebrow}
                 fontFamily="body"
                 size="0.65625rem"
-                weight={500}
+                weight={600}
                 transform="uppercase"
-                letterSpacing="0.26em"
+                letterSpacing="0.24em"
                 color="primary"
                 className="m-0"
               />
@@ -682,9 +682,10 @@ export default function JournalArticleView() {
                 data-preview-field-path="journalArticlePage.relatedHeading"
                 defaultValue={relatedHeading}
                 fontFamily="heading"
-                size="clamp(1.875rem, 3vw, 2.25rem)"
-                weight={300}
+                size="clamp(1.6rem, 2.5vw, 2.1rem)"
+                weight={800}
                 lineHeight={1.15}
+                letterSpacing="-0.02em"
                 color="heading"
                 className="mt-2 mb-0"
               />
@@ -694,7 +695,7 @@ export default function JournalArticleView() {
               type="button"
               onClick={() => window.location.assign(backToJournalHref)}
               data-target-page={hasJournalPage ? 'journal' : undefined}
-              className="inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.22em] text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
+              className="inline-flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--heading-color)] transition-colors hover:text-[var(--brand-accent)]"
             >
               <EditableText
                 as="span"
@@ -702,48 +703,48 @@ export default function JournalArticleView() {
                 defaultValue={viewArchiveLabel}
                 fontFamily="body"
                 size="0.6875rem"
-                weight={500}
+                weight={600}
                 transform="uppercase"
-                letterSpacing="0.22em"
+                letterSpacing="0.18em"
                 color="inherit"
                 className="inline"
               />
-              <ArrowRight aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.5]" />
+              <ArrowRight aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.6]" />
             </button>
           </LuxuryReveal>
 
           {relatedPosts.length > 0 && (
-            <LuxuryStagger className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-3 lg:gap-10">
+            <LuxuryStagger className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
               {relatedPosts.map((rel) => (
                 <LuxuryStaggerItem key={rel.id}>
                   <article
                     data-preview-item-path={`home.journalPosts[${rel.index}]`}
-                    className="group flex h-full flex-col"
+                    className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-3.5 transition-all duration-300 hover:border-[var(--brand-accent)]/70"
                   >
                     <div
                       onClick={() => window.location.assign(journalArticleHref(rel.id))}
-                      className="relative block aspect-[4/3] w-full cursor-pointer overflow-hidden bg-[#E6D9C9]/60"
+                      className="relative block aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-xl bg-[var(--loome-beige)]"
                     >
                       <img
                         src={withBasePath(rel.imageUrl)}
                         alt={rel.title}
                         loading="lazy"
                         data-preview-field-path={`home.journalPosts[${rel.index}].imageUrl`}
-                        className="h-full w-full object-cover transition-transform duration-[900ms] ease-luxury group-hover:scale-[1.055]"
+                        className="h-full w-full object-cover transition-transform duration-[900ms] ease-luxury group-hover:scale-[1.045]"
                       />
                     </div>
 
-                    <div className="flex flex-1 flex-col pt-4">
-                      <div className="flex flex-wrap items-center justify-between gap-2 text-[10px] font-medium uppercase tracking-[0.2em]">
+                    <div className="flex flex-1 flex-col px-1.5 pb-1.5 pt-4">
+                      <div className="flex flex-wrap items-center justify-between gap-2 text-[10px] font-semibold uppercase tracking-[0.18em]">
                         <EditableText
                           as="span"
                           data-preview-field-path={`home.journalPosts[${rel.index}].category`}
                           defaultValue={rel.category}
                           fontFamily="body"
                           size="0.625rem"
-                          weight={500}
+                          weight={600}
                           transform="uppercase"
-                          letterSpacing="0.2em"
+                          letterSpacing="0.18em"
                           color="primary"
                           className="inline"
                         />
@@ -755,7 +756,7 @@ export default function JournalArticleView() {
                           size="0.625rem"
                           weight={500}
                           transform="uppercase"
-                          letterSpacing="0.2em"
+                          letterSpacing="0.18em"
                           color="muted"
                           className="inline"
                         />
@@ -764,16 +765,16 @@ export default function JournalArticleView() {
                       <button
                         type="button"
                         onClick={() => window.location.assign(journalArticleHref(rel.id))}
-                        className="mt-2.5 block w-full border-0 bg-transparent p-0 text-left text-[#201C1A] transition-colors hover:text-[#8D7667] dark:text-[#F2E9DE] dark:hover:text-[#C8A98B]"
+                        className="mt-2 block w-full border-0 bg-transparent p-0 text-left text-[var(--heading-color)] transition-colors hover:text-[var(--brand-accent)]"
                       >
                         <EditableText
                           as="h3"
                           data-preview-field-path={`home.journalPosts[${rel.index}].title`}
                           defaultValue={rel.title}
                           fontFamily="heading"
-                          size="1.5rem"
-                          weight={400}
-                          lineHeight={1.25}
+                          size="1.15rem"
+                          weight={700}
+                          lineHeight={1.28}
                           color="inherit"
                           className="m-0"
                         />
@@ -783,7 +784,7 @@ export default function JournalArticleView() {
                         <button
                           type="button"
                           onClick={() => window.location.assign(journalArticleHref(rel.id))}
-                          className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[#201C1A]/30 bg-transparent px-0 pb-1 pt-0 text-[11px] font-medium uppercase tracking-[0.2em] text-[#201C1A] transition-colors hover:border-[#C8A98B] hover:text-[#8D7667] dark:border-[#F2E9DE]/30 dark:text-[#F2E9DE]"
+                          className="inline-flex cursor-pointer items-center gap-1.5 border-0 border-b border-[var(--loome-border)] bg-transparent px-0 pb-1 pt-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--heading-color)] transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
                         >
                           <EditableText
                             as="span"
@@ -791,13 +792,13 @@ export default function JournalArticleView() {
                             defaultValue={readStoryLabel}
                             fontFamily="body"
                             size="0.6875rem"
-                            weight={500}
+                            weight={600}
                             transform="uppercase"
-                            letterSpacing="0.2em"
+                            letterSpacing="0.18em"
                             color="inherit"
                             className="inline"
                           />
-                          <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.5]" />
+                          <ArrowUpRight aria-hidden="true" className="h-3.5 w-3.5 stroke-[1.6]" />
                         </button>
                       </div>
                     </div>

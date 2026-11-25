@@ -2817,11 +2817,11 @@
     ],
     "defaults": {
       "colors": {
-        "primary": "#49382D",
-        "secondary": "#E8DDD0",
-        "accent": "#B28B65",
-        "background": "#F7F3ED",
-        "text": "#49382D"
+        "primary": "#49382C",
+        "secondary": "#EAE2D7",
+        "accent": "#B18D69",
+        "background": "#F7F4EF",
+        "text": "#2D2722"
       },
       "typography": {
         "headingFont": "Manrope",

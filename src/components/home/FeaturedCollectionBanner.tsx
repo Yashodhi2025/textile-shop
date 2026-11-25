@@ -49,7 +49,7 @@ export default function FeaturedCollectionBanner() {
       ref={sectionRef}
       id="featured-collection"
       data-design-section="featured-collection"
-      className="relative flex min-h-[76vh] w-full items-center overflow-hidden bg-[#201C1A] py-24"
+      className="loome-surface-espresso relative flex min-h-[54vh] w-full items-center overflow-hidden bg-[#2D2722] py-14 lg:py-16"
     >
       {/* Parallax Immersive Editorial Photography (desktop-only parallax for mobile smoothness) */}
       <motion.div
@@ -63,13 +63,12 @@ export default function FeaturedCollectionBanner() {
           data-preview-field-path="home.featuredCollection.imageUrl"
           className="h-full w-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-[#201C1A]/56" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#201C1A]/82 via-transparent to-[#201C1A]/35" />
+        <div className="absolute inset-0 bg-[#2D2722]/58" />
       </motion.div>
 
-      {/* Centered Frosted Espresso Editorial Card (18px rounded) */}
-      <div className="relative z-10 mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
-        <LuxuryReveal className="mx-auto max-w-2xl rounded-[18px] border border-[#C8A98B]/30 bg-[#201C1A]/68 px-7 py-12 text-center text-[#F2E9DE] backdrop-blur-md sm:px-14 sm:py-16">
+      {/* Centered Frosted Walnut Editorial Card */}
+      <div className="relative z-10 mx-auto max-w-[1280px] px-4 sm:px-8 lg:px-10">
+        <LuxuryReveal className="mx-auto max-w-2xl rounded-2xl border border-[#B18D69]/35 bg-[#2D2722]/78 px-6 py-9 text-center text-[#F7F4EF] backdrop-blur-md sm:px-12 sm:py-12">
           <LuxuryStagger staggerDelay={0.1} delayChildren={0.08}>
             <LuxuryStaggerItem y={14}>
               <EditableText
@@ -80,8 +79,8 @@ export default function FeaturedCollectionBanner() {
                 size="0.6875rem"
                 weight={600}
                 transform="uppercase"
-                letterSpacing="0.28em"
-                color="#C8A98B"
+                letterSpacing="0.26em"
+                color="#C7A684"
                 align="center"
                 className="m-0"
               />
@@ -93,20 +92,20 @@ export default function FeaturedCollectionBanner() {
                 data-preview-field-path="home.featuredCollection.title"
                 defaultValue={title}
                 fontFamily="heading"
-                size="clamp(2.35rem, 4.5vw, 3.85rem)"
+                size="clamp(1.9rem, 3.2vw, 2.7rem)"
                 weight={800}
-                lineHeight={1.04}
-                letterSpacing="-0.03em"
-                color="#F2E9DE"
+                lineHeight={1.08}
+                letterSpacing="-0.025em"
+                color="#F7F4EF"
                 align="center"
-                className="mt-4 mb-0"
+                className="mt-3 mb-0"
               />
             </LuxuryStaggerItem>
 
             <LuxuryHairline
               origin="center"
               delay={0.22}
-              className="mx-auto my-6 h-px w-14 bg-[#C8A98B]"
+              className="mx-auto my-5 h-px w-12 bg-[#B18D69]"
             />
 
             <LuxuryStaggerItem y={16}>
@@ -115,17 +114,17 @@ export default function FeaturedCollectionBanner() {
                 data-preview-field-path="home.featuredCollection.description"
                 defaultValue={description}
                 fontFamily="body"
-                size="0.96875rem"
+                size="0.9375rem"
                 weight={400}
-                lineHeight={1.82}
-                color="rgba(242, 233, 222, 0.9)"
+                lineHeight={1.75}
+                color="rgba(247, 244, 239, 0.9)"
                 align="center"
                 className="mx-auto m-0 max-w-lg"
               />
             </LuxuryStaggerItem>
 
             <LuxuryStaggerItem y={14}>
-              <div className="mt-9 flex justify-center">
+              <div className="mt-7 flex justify-center">
                 <a
                   href={resolvedUrl}
                   data-preview-field-path="home.featuredCollection.ctaUrl"

@@ -22,12 +22,12 @@ export default function AboutPage() {
       {/* Editorial Split Introduction — Light Warm Ivory */}
       <section
         data-design-section="about"
-        className="mx-auto max-w-[1440px] px-4 pb-16 pt-12 sm:px-8 lg:px-14 lg:pb-20 lg:pt-16"
+        className="mx-auto w-full max-w-[1280px] px-4 pb-12 pt-10 sm:px-8 lg:px-10 lg:pb-14 lg:pt-12"
       >
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-14">
+        <div className="grid grid-cols-1 items-center gap-9 lg:grid-cols-12 lg:gap-12">
           <LuxuryReveal className="lg:col-span-6">
             <div className="flex items-center gap-3">
-              <span className="h-px w-8 bg-[#B28B65] dark:bg-[#C8A98B]" aria-hidden="true" />
+              <span className="h-px w-8 bg-[var(--brand-accent)]" aria-hidden="true" />
               <EditableText
                 as="p"
                 data-preview-field-path="about.eyebrow"
@@ -47,12 +47,12 @@ export default function AboutPage() {
               data-preview-field-path="about.heading"
               defaultValue={contentText(about.heading)}
               fontFamily="heading"
-              size="clamp(2.4rem, 4.4vw, 3.85rem)"
+              size="clamp(1.9rem, 3.1vw, 2.65rem)"
               weight={800}
-              lineHeight={1.05}
-              letterSpacing="-0.03em"
+              lineHeight={1.08}
+              letterSpacing="-0.025em"
               color="heading"
-              className="mt-3.5 mb-0"
+              className="mt-2.5 mb-0"
             />
 
             <EditableText
@@ -60,15 +60,15 @@ export default function AboutPage() {
               data-preview-field-path="about.body"
               defaultValue={contentText(about.body)}
               fontFamily="body"
-              size="0.96875rem"
-              lineHeight={1.82}
+              size="0.9375rem"
+              lineHeight={1.75}
               color="muted"
-              className="mt-5 mb-0 max-w-xl"
+              className="mt-4 mb-0 max-w-xl"
             />
           </LuxuryReveal>
 
           <LuxuryReveal delay={0.12} className="lg:col-span-6">
-            <div className="group overflow-hidden rounded-2xl border border-[#49382D]/12 bg-[#E8DDD0]/50 shadow-[0_6px_26px_rgba(73,56,45,0.08)] dark:border-[#C8A98B]/20 dark:bg-[#28211D]">
+            <div className="group overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--loome-beige)] shadow-[0_6px_22px_rgba(73,56,44,0.06)] dark:shadow-none">
               <EditableImage
                 className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.04]"
                 src={contentText(about.imageUrl) || '/images/craftsmanship-loom.jpg'}
@@ -82,23 +82,23 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Atelier Philosophy & Editorial Collage — Soft Beige Surface */}
+      {/* Atelier Philosophy & Editorial Collage — Oat Beige Surface */}
       <section
         data-design-section="about-heritage"
-        className="loome-surface-beige w-full border-t border-[#49382D]/12 py-16 dark:border-[#C8A98B]/16 lg:py-20"
+        className="loome-surface-beige w-full border-t border-[var(--loome-border)] py-12 lg:py-16"
       >
-        <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-12 px-4 sm:px-8 lg:grid-cols-12 lg:gap-14 lg:px-14">
-          <LuxuryReveal className="space-y-8 lg:col-span-5">
+        <div className="mx-auto grid max-w-[1280px] grid-cols-1 items-start gap-10 px-4 sm:px-8 lg:grid-cols-12 lg:gap-12 lg:px-10">
+          <LuxuryReveal className="space-y-6 lg:col-span-5">
             <div>
               <EditableText
                 as="h2"
                 data-preview-field-path="about.collageHeading"
                 defaultValue={contentText(about.collageHeading)}
                 fontFamily="heading"
-                size="clamp(2rem, 3.2vw, 2.75rem)"
+                size="clamp(1.65rem, 2.6vw, 2.2rem)"
                 weight={800}
-                lineHeight={1.08}
-                letterSpacing="-0.025em"
+                lineHeight={1.12}
+                letterSpacing="-0.02em"
                 color="heading"
                 className="m-0"
               />
@@ -108,21 +108,21 @@ export default function AboutPage() {
                 defaultValue={contentText(about.collageDescription)}
                 fontFamily="body"
                 size="0.9375rem"
-                lineHeight={1.8}
+                lineHeight={1.72}
                 color="muted"
-                className="mt-3 mb-0"
+                className="mt-2.5 mb-0"
               />
             </div>
 
-            <div className="border-t border-[#3B302B]/14 pt-7 dark:border-[#C8A98B]/20">
+            <div className="border-t border-[var(--loome-border)] pt-6">
               <EditableText
                 as="h3"
                 data-preview-field-path="about.historyHeading"
                 defaultValue={contentText(about.historyHeading)}
                 fontFamily="heading"
-                size="1.65rem"
+                size="1.35rem"
                 weight={700}
-                lineHeight={1.2}
+                lineHeight={1.25}
                 color="heading"
                 className="m-0"
               />
@@ -132,9 +132,9 @@ export default function AboutPage() {
                 defaultValue={contentText(about.history)}
                 fontFamily="body"
                 size="0.9375rem"
-                lineHeight={1.85}
+                lineHeight={1.75}
                 color="muted"
-                className="mt-3 mb-0"
+                className="mt-2.5 mb-0"
               />
             </div>
           </LuxuryReveal>
@@ -152,18 +152,18 @@ export default function AboutPage() {
                   <LuxuryStaggerItem key={item.id || index}>
                     <figure
                       data-preview-item-path={`about.collageImages[${index}]`}
-                      className="group relative m-0 overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#FAF5EE] shadow-sm transition-all duration-500 hover:-translate-y-1 hover:border-[#C8A98B]/70 dark:border-[#C8A98B]/22 dark:bg-[#2A221F]"
+                      className="group relative m-0 overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] shadow-[0_2px_10px_rgba(73,56,44,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--brand-accent)]/70 dark:shadow-none"
                     >
-                      <div className="aspect-[4/5] overflow-hidden">
+                      <div className="aspect-[4/5] overflow-hidden bg-[var(--loome-beige)]">
                         <img
                           src={withBasePath(item.image || '/images/cat-fabrics.jpg')}
                           alt={item.caption || 'Atelier textile detail'}
                           loading="lazy"
                           data-preview-field-path={`about.collageImages[${index}].image`}
-                          className="h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.06]"
+                          className="h-full w-full object-cover transition-transform duration-700 ease-luxury group-hover:scale-[1.05]"
                         />
                       </div>
-                      <figcaption className="border-t border-[#3B302B]/10 px-4 py-3 text-xs font-medium tracking-wide text-[#201C1A] dark:border-[#C8A98B]/18 dark:text-[#F5EEE6]">
+                      <figcaption className="border-t border-[var(--loome-border)] px-4 py-3 text-xs font-medium tracking-wide text-[var(--heading-color)]">
                         <span data-preview-field-path={`about.collageImages[${index}].caption`}>
                           {item.caption || ''}
                         </span>

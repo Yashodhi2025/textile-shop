@@ -89,31 +89,34 @@ export default function LoomeNavbar() {
     <>
       <header
         data-design-section="navbar"
-        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+        className={`sticky top-0 z-40 w-full font-sans transition-all duration-300 ${
           scrolled
-            ? 'loome-navbar-surface-scrolled border-b border-[#49382D]/14 shadow-[0_8px_24px_rgba(73,56,45,0.08)] backdrop-blur-md dark:border-[#C8A98B]/24 dark:shadow-[0_10px_32px_rgba(12,9,8,0.38)]'
-            : 'loome-navbar-surface border-b border-[#49382D]/10 backdrop-blur-md dark:border-[#C8A98B]/16'
+            ? 'loome-navbar-surface-scrolled border-b border-[var(--loome-border)] shadow-[0_6px_22px_rgba(45,39,34,0.07)] backdrop-blur-md dark:shadow-[0_10px_30px_rgba(12,9,8,0.38)]'
+            : 'loome-navbar-surface border-b border-[var(--loome-border)] backdrop-blur-md'
         }`}
       >
         <div
-          className={`mx-auto flex max-w-[1440px] items-center justify-between px-4 transition-all duration-300 sm:px-8 lg:px-12 ${
-            scrolled ? 'h-[66px]' : 'h-[78px]'
+          className={`mx-auto grid max-w-[1360px] grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 transition-all duration-300 sm:px-8 lg:px-10 ${
+            scrolled ? 'h-[64px]' : 'h-[72px]'
           }`}
         >
-          {/* Left: Mobile Menu Toggle + Desktop Navigation */}
-          <div className="flex flex-1 items-center gap-6">
+          {/* Left: Mobile/Compact Menu Toggle (<1280px) + Spacious Desktop Navigation (1280px+) */}
+          <div className="flex min-w-0 items-center justify-start gap-4">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open navigation menu"
               aria-expanded={mobileOpen}
               data-preview-static="mobile-menu-toggle"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-[10px] text-[#49382D] transition-colors hover:bg-[#E8DDD0] hover:text-[#2C211B] dark:text-[#F5EEE6] dark:hover:bg-[#3B302B] dark:hover:text-[#C8A98B] lg:hidden"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] text-[var(--heading-color)] transition-colors hover:bg-[var(--loome-beige)] xl:hidden"
             >
-              <Menu className="h-5 w-5 stroke-[1.6]" />
+              <Menu className="h-5 w-5 stroke-[1.7]" />
             </button>
 
-            <nav className="hidden items-center gap-3.5 lg:flex xl:gap-5 2xl:gap-6">
+            <nav
+              data-testid="navbar-desktop-nav"
+              className="hidden items-center gap-4 xl:flex 2xl:gap-6"
+            >
               {NAV_ITEMS.map((item) => {
                 const isEnabled = item.id === 'home' || requiredPages.includes(item.id);
                 const label = contentText(navLabels[item.id]) || item.fallbackLabel;
@@ -141,16 +144,16 @@ export default function LoomeNavbar() {
                         onClick={() => navigateTo(item.id)}
                         data-active={active ? 'true' : 'false'}
                         aria-current={active ? 'page' : undefined}
-                        className={`loome-nav-link whitespace-nowrap border-0 bg-transparent px-0 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors xl:tracking-[0.18em] ${
+                        className={`loome-nav-link whitespace-nowrap border-0 bg-transparent px-0 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
                           active
-                            ? 'text-[#B28B65] dark:text-[#C8A98B]'
-                            : 'text-[#49382D]/85 hover:text-[#2C211B] dark:text-[#F5EEE6]/80 dark:hover:text-[#F5EEE6]'
+                            ? 'text-[var(--brand-accent)]'
+                            : 'text-[var(--heading-color)]/82 hover:text-[var(--heading-color)]'
                         }`}
                       >
                         {labelEl}
                       </button>
                     ) : (
-                      <span className="unavailable whitespace-nowrap text-[11px] uppercase tracking-[0.16em] text-[#49382D]/40 dark:text-[#F5EEE6]/45">
+                      <span className="unavailable whitespace-nowrap text-[11px] uppercase tracking-[0.14em] text-[var(--muted-text)]/50">
                         {labelEl}
                       </span>
                     )}
@@ -160,8 +163,8 @@ export default function LoomeNavbar() {
             </nav>
           </div>
 
-          {/* Center: LOOMÉ Editorial Wordmark */}
-          <div className="flex shrink-0 items-center justify-center">
+          {/* Center: LOOMÉ Manrope Brand Wordmark (Always Clear of Side Controls) */}
+          <div data-testid="navbar-brand" className="flex shrink-0 items-center justify-center px-2">
             <button
               type="button"
               onClick={() => {
@@ -173,37 +176,37 @@ export default function LoomeNavbar() {
                 src={withBasePath(logoUrl)}
                 alt={siteTitle}
                 data-preview-field-path="common.logoUrl"
-                className="h-7 w-7 rounded-[6px] object-contain transition-transform duration-300 group-hover:scale-105"
+                className="h-7 w-7 shrink-0 rounded-[6px] object-contain transition-transform duration-300 group-hover:scale-105"
               />
               <span
                 data-preview-field-path="common.websiteTitle"
-                className="font-serif text-[25px] font-medium leading-none tracking-[0.26em] text-[#2C211B] transition-colors group-hover:text-[#B28B65] dark:text-[#F5EEE6] dark:group-hover:text-[#C8A98B] sm:text-[29px]"
+                className="whitespace-nowrap font-heading text-[20px] font-extrabold leading-none tracking-[0.24em] text-[var(--heading-color)] transition-colors group-hover:text-[var(--brand-accent)] sm:text-[23px]"
               >
                 {siteTitle}
               </span>
             </button>
           </div>
 
-          {/* Right: Private Atelier (-> /services/) + Utility Icons */}
-          <div className="flex flex-1 items-center justify-end gap-1.5 sm:gap-2">
-            <span data-target-page="services" className="mr-2 hidden xl:inline-flex">
+          {/* Right: Private Atelier (2xl+) + Utility Icons */}
+          <div data-testid="navbar-actions" className="flex min-w-0 items-center justify-end gap-1 sm:gap-1.5">
+            <span data-target-page="services" className="mr-2 hidden 2xl:inline-flex">
               {requiredPages.includes('services') ? (
                 <button
                   type="button"
                   onClick={() => navigateTo('services')}
                   data-active={isServicesActive ? 'true' : 'false'}
                   aria-current={isServicesActive ? 'page' : undefined}
-                  className={`loome-nav-link whitespace-nowrap border-0 bg-transparent px-0 py-1 text-[10.5px] font-semibold uppercase tracking-[0.18em] transition-colors ${
+                  className={`loome-nav-link whitespace-nowrap border-0 bg-transparent px-0 py-1 text-[10.5px] font-semibold uppercase tracking-[0.16em] transition-colors ${
                     isServicesActive
-                      ? 'text-[#2C211B] dark:text-[#F5EEE6]'
-                      : 'text-[#B28B65] hover:text-[#2C211B] dark:text-[#C8A98B] dark:hover:text-[#F5EEE6]'
+                      ? 'text-[var(--heading-color)]'
+                      : 'text-[var(--brand-accent)] hover:text-[var(--heading-color)]'
                   }`}
                 >
                   <span data-preview-field-path="common.headerCtaLabel">{headerCtaLabel}</span>
                 </button>
               ) : (
                 <span
-                  className="unavailable text-[10.5px] uppercase tracking-[0.18em] text-[#B28B65]/50"
+                  className="unavailable text-[10.5px] uppercase tracking-[0.16em] text-[var(--muted-text)]/50"
                   data-preview-field-path="common.headerCtaLabel"
                 >
                   {headerCtaLabel}
@@ -216,7 +219,7 @@ export default function LoomeNavbar() {
               onClick={openSearch}
               aria-label="Search textiles"
               data-preview-static="header-search-btn"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-[10px] text-[#49382D] transition-colors hover:bg-[#E8DDD0] hover:text-[#2C211B] dark:text-[#F5EEE6]/85 dark:hover:bg-[#3B302B] dark:hover:text-[#C8A98B]"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-[10px] text-[var(--heading-color)] transition-colors hover:bg-[var(--loome-beige)] hover:text-[var(--brand-accent)] sm:h-10 sm:w-10"
             >
               <Search className="h-[18px] w-[18px] stroke-[1.6]" />
             </button>
@@ -226,7 +229,7 @@ export default function LoomeNavbar() {
               onClick={openAccount}
               aria-label="Account"
               data-preview-static="header-account-btn"
-              className="hidden h-10 w-10 items-center justify-center rounded-[10px] text-[#49382D] transition-colors hover:bg-[#E8DDD0] hover:text-[#2C211B] dark:text-[#F5EEE6]/85 dark:hover:bg-[#3B302B] dark:hover:text-[#C8A98B] sm:inline-flex"
+              className="hidden h-9 w-9 items-center justify-center rounded-[10px] text-[var(--heading-color)] transition-colors hover:bg-[var(--loome-beige)] hover:text-[var(--brand-accent)] sm:inline-flex sm:h-10 sm:w-10"
             >
               <User className="h-[18px] w-[18px] stroke-[1.6]" />
             </button>
@@ -241,10 +244,10 @@ export default function LoomeNavbar() {
               aria-current={isRouteActive('/wishlist') ? 'page' : undefined}
               data-target-page="wishlist"
               data-preview-static="header-wishlist-btn"
-              className={`relative inline-flex h-10 w-10 items-center justify-center rounded-[10px] transition-colors hover:bg-[#E8DDD0] hover:text-[#2C211B] dark:hover:bg-[#3B302B] dark:hover:text-[#C8A98B] ${
+              className={`relative inline-flex h-9 w-9 items-center justify-center rounded-[10px] transition-colors hover:bg-[var(--loome-beige)] hover:text-[var(--brand-accent)] sm:h-10 sm:w-10 ${
                 isRouteActive('/wishlist')
-                  ? 'bg-[#E8DDD0] text-[#2C211B] dark:bg-[#3B302B] dark:text-[#C8A98B]'
-                  : 'text-[#49382D] dark:text-[#F5EEE6]/85'
+                  ? 'bg-[var(--loome-beige)] text-[var(--brand-accent)]'
+                  : 'text-[var(--heading-color)]'
               }`}
             >
               <Heart className={`h-[18px] w-[18px] stroke-[1.6] ${isRouteActive('/wishlist') ? 'fill-current' : ''}`} />
@@ -253,7 +256,7 @@ export default function LoomeNavbar() {
                   key={wishlistCount}
                   initial={{ scale: 0.6, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-[6px] bg-[#B28B65] px-1 text-[9px] font-bold text-white dark:bg-[#C8A98B] dark:text-[#201C1A]"
+                  className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-[6px] bg-[var(--brand-accent)] px-1 text-[9px] font-bold text-white dark:text-[#201C1A]"
                 >
                   {wishlistCount}
                 </motion.span>
@@ -269,10 +272,10 @@ export default function LoomeNavbar() {
               aria-label={`Shopping bag (${activeCartCount} items)`}
               aria-current={isRouteActive('/cart') ? 'page' : undefined}
               data-preview-static="header-cart-btn"
-              className={`relative inline-flex h-10 w-10 items-center justify-center rounded-[10px] transition-colors hover:bg-[#E8DDD0] hover:text-[#2C211B] dark:hover:bg-[#3B302B] dark:hover:text-[#C8A98B] ${
+              className={`relative inline-flex h-9 w-9 items-center justify-center rounded-[10px] transition-colors hover:bg-[var(--loome-beige)] hover:text-[var(--brand-accent)] sm:h-10 sm:w-10 ${
                 isRouteActive('/cart')
-                  ? 'bg-[#E8DDD0] text-[#2C211B] dark:bg-[#3B302B] dark:text-[#C8A98B]'
-                  : 'text-[#49382D] dark:text-[#F5EEE6]/85'
+                  ? 'bg-[var(--loome-beige)] text-[var(--brand-accent)]'
+                  : 'text-[var(--heading-color)]'
               }`}
             >
               <ShoppingBag className="h-[18px] w-[18px] stroke-[1.6]" />
@@ -281,7 +284,7 @@ export default function LoomeNavbar() {
                   key={activeCartCount}
                   initial={{ scale: 0.6, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-[6px] bg-[#49382D] px-1 text-[9px] font-bold text-[#F7F3ED] dark:bg-[#C8A98B] dark:text-[#201C1A]"
+                  className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-[6px] bg-[var(--loome-btn-primary-bg)] px-1 text-[9px] font-bold text-[var(--loome-btn-primary-text)]"
                 >
                   {activeCartCount > 99 ? '99+' : activeCartCount}
                 </motion.span>
@@ -291,10 +294,10 @@ export default function LoomeNavbar() {
         </div>
       </header>
 
-      {/* Mobile Slide-Over Navigation */}
+      {/* Mobile / Narrow-Viewport Slide-Over Navigation */}
       <AnimatePresence>
         {mobileOpen && (
-          <div className="fixed inset-0 z-50 lg:hidden">
+          <div className="fixed inset-0 z-50 xl:hidden">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -312,8 +315,8 @@ export default function LoomeNavbar() {
               className="relative z-10 flex h-full w-[86%] max-w-sm flex-col justify-between border-r border-[#49382D]/14 bg-[#F7F3ED] px-7 py-6 text-[#49382D] shadow-2xl dark:border-[#C8A98B]/20 dark:bg-[#1A1614] dark:text-[#F5EEE6]"
             >
               <div>
-                <div className="flex items-center justify-between border-b border-[#49382D]/14 pb-5 dark:border-[#C8A98B]/18">
-                  <span className="font-serif text-2xl tracking-[0.26em] text-[#2C211B] dark:text-[#F5EEE6]">
+                <div className="flex items-center justify-between border-b border-[var(--loome-border)] pb-5">
+                  <span className="font-heading text-xl font-extrabold tracking-[0.24em] text-[var(--heading-color)]">
                     {siteTitle}
                   </span>
                   <button

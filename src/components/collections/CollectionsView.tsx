@@ -80,22 +80,22 @@ export default function CollectionsView() {
       className="loome-surface-ivory min-h-[75vh] w-full overflow-x-clip"
     >
       {/* Breadcrumb Strip */}
-      <div className="border-b border-[#49382D]/10 bg-white/80 dark:border-[#C8A98B]/16 dark:bg-[#1A1614]">
-        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#6E5B4E] dark:text-[#C9B9AA] sm:px-8 lg:px-14">
+      <div className="border-b border-[var(--loome-border)] bg-[var(--loome-surface-subtle)]">
+        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-color)] sm:px-8 lg:px-10">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#6E5B4E] transition-colors hover:text-[#2C211B] dark:text-[#C9B9AA] dark:hover:text-[#F5EEE6]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-color)] transition-colors hover:text-[var(--heading-color)]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" className="text-[#B28B65] dark:text-[#C8A98B]">
+          <span aria-hidden="true" data-preview-static="collections-bc-sep" className="text-[var(--brand-accent)]">
             /
           </span>
           <span
             aria-current="page"
             data-preview-field-path="common.navLabels.collections"
-            className="font-semibold text-[#2C211B] dark:text-[#F5EEE6]"
+            className="font-semibold text-[var(--heading-color)]"
           >
             {collectionsNavLabel}
           </span>
@@ -105,12 +105,12 @@ export default function CollectionsView() {
       {/* Editorial Hero Header */}
       <section
         data-design-section="collections-heading"
-        className="mx-auto max-w-[1440px] px-4 pb-10 pt-12 sm:px-8 lg:px-14 lg:pb-14 lg:pt-16"
+        className="mx-auto w-full max-w-[1280px] px-4 pb-8 pt-9 sm:px-8 lg:px-10 lg:pb-10 lg:pt-12"
       >
-        <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+        <LuxuryReveal className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
           <div className="max-w-3xl">
             <div className="flex items-center gap-3">
-              <span className="h-px w-8 bg-[#B28B65] dark:bg-[#C8A98B]" aria-hidden="true" />
+              <span className="h-px w-8 bg-[var(--brand-accent)]" aria-hidden="true" />
               <EditableText
                 as="p"
                 data-preview-field-path="collectionsPage.eyebrow"
@@ -130,12 +130,12 @@ export default function CollectionsView() {
               data-preview-field-path="collectionsPage.heading"
               defaultValue={heading}
               fontFamily="heading"
-              size="clamp(2.4rem, 4.4vw, 3.85rem)"
+              size="clamp(1.9rem, 3.1vw, 2.65rem)"
               weight={800}
-              lineHeight={1.05}
-              letterSpacing="-0.03em"
+              lineHeight={1.08}
+              letterSpacing="-0.025em"
               color="heading"
-              className="mt-3.5 mb-0"
+              className="mt-2.5 mb-0"
             />
           </div>
 
@@ -144,8 +144,8 @@ export default function CollectionsView() {
             data-preview-field-path="collectionsPage.intro"
             defaultValue={intro}
             fontFamily="body"
-            size="0.96875rem"
-            lineHeight={1.78}
+            size="0.9375rem"
+            lineHeight={1.7}
             color="muted"
             className="m-0 max-w-md lg:text-right"
           />
@@ -155,18 +155,18 @@ export default function CollectionsView() {
       {/* Curated Collections Editorial Grid */}
       <section
         data-design-section="collections-grid"
-        className="mx-auto max-w-[1440px] px-4 pb-18 sm:px-8 lg:px-14 lg:pb-24"
+        className="mx-auto w-full max-w-[1280px] px-4 pb-12 sm:px-8 lg:px-10 lg:pb-16"
       >
         <div data-preview-list-path="collectionsPage.collections">
           {collections.length === 0 ? (
             <div
               data-preview-static="collections-empty"
-              className="rounded-2xl border border-dashed border-[#49382D]/20 bg-white/70 py-16 text-center text-sm text-[#6E5B4E] dark:border-[#C8A98B]/28 dark:bg-[#28211D]/60 dark:text-[#C9B9AA]"
+              className="rounded-2xl border border-dashed border-[var(--loome-border)] bg-[var(--card-bg)] py-14 text-center text-sm text-[var(--muted-color)]"
             >
               Add curated collections in your Fivora editor to populate this page.
             </div>
           ) : (
-            <LuxuryStagger className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10">
+            <LuxuryStagger className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
               {collections.map((col) => {
                 const matchingCount = allProducts.filter((product) =>
                   productMatchesCollection(product, col),
@@ -183,10 +183,10 @@ export default function CollectionsView() {
                   <LuxuryStaggerItem key={col.id}>
                     <article
                       data-preview-item-path={`collectionsPage.collections[${col.index}]`}
-                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#49382D]/12 bg-white shadow-[0_4px_20px_rgba(73,56,45,0.06)] transition-all duration-300 hover:border-[#B28B65]/65 hover:shadow-[0_14px_34px_rgba(73,56,45,0.1)] dark:border-[#C8A98B]/20 dark:bg-[#28211D] dark:shadow-none dark:hover:border-[#C8A98B]/55"
+                      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] shadow-[0_4px_18px_rgba(73,56,44,0.05)] transition-all duration-300 hover:border-[var(--brand-accent)]/70 hover:shadow-[0_12px_28px_rgba(73,56,44,0.09)] dark:shadow-none"
                     >
                       {/* Editorial 16:10 Image */}
-                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#E8DDD0]/60 dark:bg-[#3B302B]/50">
+                      <div className="relative aspect-[16/10] w-full overflow-hidden bg-[var(--loome-beige)]">
                         <EditableImage
                           id={`collectionsPage.collections[${col.index}].imageUrl`}
                           data-preview-field-path={`collectionsPage.collections[${col.index}].imageUrl`}
@@ -202,14 +202,14 @@ export default function CollectionsView() {
                         {/* Live Product Count Badge */}
                         <span
                           data-preview-static={`collection-count-${col.index}`}
-                          className="pointer-events-none absolute right-4 top-4 rounded-[8px] border border-white/25 bg-[#201C1A]/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#F7F3ED] backdrop-blur-md"
+                          className="pointer-events-none absolute right-4 top-4 rounded-[8px] border border-white/25 bg-[#2D2722]/82 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#F7F4EF] backdrop-blur-md"
                         >
                           {matchingCount} {matchingCount === 1 ? 'Product' : 'Products'}
                         </span>
                       </div>
 
                       {/* Collection Copy & Explore CTA */}
-                      <div className="flex flex-1 flex-col p-6 sm:p-8">
+                      <div className="flex flex-1 flex-col p-6 sm:p-7">
                         <EditableText
                           as="p"
                           data-preview-field-path={`collectionsPage.collections[${col.index}].tag`}
@@ -228,12 +228,12 @@ export default function CollectionsView() {
                           data-preview-field-path={`collectionsPage.collections[${col.index}].title`}
                           defaultValue={col.title}
                           fontFamily="heading"
-                          size="clamp(1.5rem, 2.2vw, 1.9rem)"
+                          size="clamp(1.35rem, 2vw, 1.65rem)"
                           weight={800}
-                          lineHeight={1.16}
+                          lineHeight={1.18}
                           letterSpacing="-0.02em"
                           color="heading"
-                          className="mt-2.5 mb-0"
+                          className="mt-2 mb-0"
                         />
 
                         <EditableText
@@ -241,19 +241,19 @@ export default function CollectionsView() {
                           data-preview-field-path={`collectionsPage.collections[${col.index}].description`}
                           defaultValue={col.description}
                           fontFamily="body"
-                          size="0.9375rem"
-                          lineHeight={1.75}
+                          size="0.9rem"
+                          lineHeight={1.7}
                           color="muted"
-                          className="mt-3 mb-0"
+                          className="mt-2.5 mb-0"
                         />
 
-                        <div className="mt-auto pt-6">
+                        <div className="mt-auto pt-5">
                           <a
                             href={targetHref}
                             target={isExternal ? '_blank' : undefined}
                             rel={isExternal ? 'noopener noreferrer' : undefined}
                             data-preview-field-path={`collectionsPage.collections[${col.index}].href`}
-                            className="group/btn inline-flex h-11 items-center justify-center gap-2.5 rounded-[11px] bg-[#49382D] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-[#F7F3ED] no-underline transition-colors duration-200 hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]"
+                            className="group/btn inline-flex h-11 items-center justify-center gap-2.5 rounded-[11px] bg-[var(--loome-btn-primary-bg)] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--loome-btn-primary-text)] no-underline transition-colors duration-200 hover:bg-[var(--loome-btn-primary-hover)]"
                           >
                             <span
                               data-preview-field-path={`collectionsPage.collections[${col.index}].ctaLabel`}
@@ -279,9 +279,9 @@ export default function CollectionsView() {
       {/* Bespoke Services Cross-Link Band */}
       <section
         data-design-section="collections-atelier-cta"
-        className="loome-surface-beige w-full border-t border-[#49382D]/12 py-14 dark:border-[#C8A98B]/16 sm:py-18"
+        className="loome-surface-beige w-full border-t border-[var(--loome-border)] py-12 lg:py-14"
       >
-        <div className="mx-auto flex max-w-[1440px] flex-col items-start justify-between gap-8 px-4 sm:px-8 lg:flex-row lg:items-center lg:px-14">
+        <div className="mx-auto flex max-w-[1280px] flex-col items-start justify-between gap-6 px-4 sm:px-8 lg:flex-row lg:items-center lg:px-10">
           <div className="max-w-2xl">
             <EditableText
               as="p"
@@ -300,12 +300,12 @@ export default function CollectionsView() {
               data-preview-field-path="collectionsPage.atelierHeading"
               defaultValue={atelierHeading}
               fontFamily="heading"
-              size="clamp(1.75rem, 3vw, 2.5rem)"
+              size="clamp(1.6rem, 2.5vw, 2.15rem)"
               weight={800}
-              lineHeight={1.12}
-              letterSpacing="-0.025em"
+              lineHeight={1.14}
+              letterSpacing="-0.02em"
               color="heading"
-              className="mt-2.5 mb-0"
+              className="mt-2 mb-0"
             />
             <EditableText
               as="p"
@@ -313,9 +313,9 @@ export default function CollectionsView() {
               defaultValue={atelierDescription}
               fontFamily="body"
               size="0.9375rem"
-              lineHeight={1.75}
+              lineHeight={1.7}
               color="muted"
-              className="mt-3 mb-0"
+              className="mt-2.5 mb-0"
             />
           </div>
 
@@ -324,7 +324,7 @@ export default function CollectionsView() {
               <button
                 type="button"
                 onClick={() => window.location.assign(withBasePath(pageRoute('services')))}
-                className="group inline-flex h-12 items-center justify-center gap-2.5 rounded-[11px] bg-[#49382D] px-7 text-xs font-semibold uppercase tracking-[0.18em] text-[#F7F3ED] transition-colors duration-200 hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]"
+                className="group inline-flex h-11 items-center justify-center gap-2.5 rounded-[11px] bg-[var(--loome-btn-primary-bg)] px-6 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--loome-btn-primary-text)] transition-colors duration-200 hover:bg-[var(--loome-btn-primary-hover)]"
               >
                 <span data-preview-field-path="collectionsPage.atelierCtaLabel">
                   {atelierCtaLabel}
@@ -337,7 +337,7 @@ export default function CollectionsView() {
             ) : (
               <span
                 data-preview-field-path="collectionsPage.atelierCtaLabel"
-                className="unavailable inline-flex h-12 items-center rounded-[11px] border border-[#49382D]/20 px-7 text-xs font-semibold uppercase tracking-[0.18em]"
+                className="unavailable inline-flex h-11 items-center rounded-[11px] border border-[var(--loome-border)] px-6 text-xs font-semibold uppercase tracking-[0.16em]"
               >
                 {atelierCtaLabel}
               </span>

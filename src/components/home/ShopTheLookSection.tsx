@@ -89,10 +89,10 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
       ref={sectionRef}
       id="shop-the-look"
       data-design-section="shop-the-look"
-      className="loome-surface-beige w-full border-y border-[#49382D]/10 py-16 dark:border-[#C8A98B]/16 sm:py-20 lg:py-24"
+      className="loome-surface-beige w-full border-y border-[var(--loome-border)] py-12 sm:py-14 lg:py-16"
     >
-      <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-14">
-        <LuxuryReveal className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+      <div className="mx-auto max-w-[1280px] px-4 sm:px-8 lg:px-10">
+        <LuxuryReveal className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
           <div className="max-w-2xl">
             <EditableText
               as="p"
@@ -102,7 +102,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
               size="0.6875rem"
               weight={600}
               transform="uppercase"
-              letterSpacing="0.26em"
+              letterSpacing="0.24em"
               color="primary"
               className="m-0"
             />
@@ -111,12 +111,12 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
               data-preview-field-path="home.shopTheLook.title"
               defaultValue={contentText(look.title) || 'Shop the Look'}
               fontFamily="heading"
-              size="clamp(2.25rem, 4vw, 3.4rem)"
+              size="clamp(1.85rem, 3vw, 2.45rem)"
               weight={800}
-              lineHeight={1.04}
-              letterSpacing="-0.03em"
+              lineHeight={1.08}
+              letterSpacing="-0.025em"
               color="heading"
-              className="mt-3 mb-0"
+              className="mt-2 mb-0"
             />
           </div>
           <EditableText
@@ -125,16 +125,16 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
             defaultValue={contentText(look.subtitle)}
             fontFamily="body"
             size="0.9375rem"
-            lineHeight={1.75}
+            lineHeight={1.7}
             color="muted"
             className="m-0 max-w-md"
           />
         </LuxuryReveal>
 
-        <div className="mt-14 grid grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-10">
+        <div className="mt-9 grid grid-cols-1 items-start gap-7 lg:grid-cols-12 lg:gap-8">
           {/* Left: Interactive Hotspot Room Photograph with 16px rounded frame */}
           <div className="relative lg:col-span-7">
-            <div className="relative aspect-[16/11] w-full overflow-hidden rounded-2xl border border-[#3B302B]/14 bg-[#201C1A]">
+            <div className="relative aspect-[16/11] w-full overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[#2D2722]">
               <LuxuryImageReveal tone="charcoal" className="h-full w-full">
                 <motion.div
                   style={parallaxActive ? { y: roomImageY } : undefined}
@@ -248,15 +248,15 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                       <div
                         data-preview-item-path={`home.shopTheLook.hotspots[${spot.index}]`}
                         onClick={() => setActiveIndex(idx)}
-                        className={`group cursor-pointer rounded-2xl border p-4 transition-all duration-300 sm:p-5 ${
+                        className={`group cursor-pointer rounded-2xl border p-4 transition-all duration-300 ${
                           isSelected
-                            ? 'border-[#B28B65] bg-white shadow-[0_8px_24px_rgba(73,56,45,0.08)] dark:border-[#C8A98B] dark:bg-[#28211D]'
-                            : 'border-[#49382D]/12 bg-white/85 hover:border-[#B28B65]/70 dark:border-[#C8A98B]/18 dark:bg-[#241D1A] dark:hover:border-[#C8A98B]/55'
+                            ? 'border-[var(--brand-accent)] bg-[var(--card-bg)] shadow-[0_6px_20px_rgba(73,56,44,0.08)]'
+                            : 'border-[var(--loome-border)] bg-[var(--card-bg)] hover:border-[var(--brand-accent)]/70'
                         }`}
                       >
                         <div className="flex items-start gap-4">
                           {product && (
-                            <div className="h-24 w-20 shrink-0 overflow-hidden rounded-[11px] bg-[#E6D9C9] dark:bg-[#3B302B]">
+                            <div className="h-24 w-20 shrink-0 overflow-hidden rounded-[11px] bg-[var(--loome-beige)]">
                               <img
                                 src={withBasePath(product.imageUrl)}
                                 alt={product.name}
@@ -268,7 +268,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
 
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center justify-between gap-2">
-                              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8D7667] dark:text-[#C8A98B]">
+                              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--brand-accent)]">
                                 <span data-preview-static="shop-look-num">0{idx + 1} · </span>
                                 <span data-preview-field-path={`home.shopTheLook.hotspots[${spot.index}].label`}>
                                   {spot.label}
@@ -277,7 +277,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                               {product && product.showPrice && (
                                 <span
                                   data-preview-static="shop-look-price"
-                                  className="text-sm font-bold text-[#201C1A] dark:text-[#F5EEE6]"
+                                  className="text-sm font-bold text-[var(--heading-color)]"
                                 >
                                   {formatLoomePrice(product.price, storeCurrency)}
                                 </span>
@@ -287,7 +287,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                             {product && (
                               <h3
                                 data-preview-static="shop-look-product-title"
-                                className="mt-1 m-0 font-heading text-lg font-bold leading-snug text-[#201C1A] dark:text-[#F5EEE6]"
+                                className="mt-1 m-0 font-heading text-base font-bold leading-snug text-[var(--heading-color)]"
                               >
                                 {product.name}
                               </h3>
@@ -295,13 +295,13 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
 
                             <p
                               data-preview-field-path={`home.shopTheLook.hotspots[${spot.index}].note`}
-                              className="mt-1 m-0 text-xs leading-relaxed text-[#5E4E45] dark:text-[#C9B9AA]"
+                              className="mt-1 m-0 text-xs leading-relaxed text-[var(--muted-color)]"
                             >
                               {spot.note}
                             </p>
 
                             {product && (
-                              <div className="mt-3.5 flex flex-wrap items-center gap-3">
+                              <div className="mt-3 flex flex-wrap items-center gap-2.5">
                                 <button
                                   type="button"
                                   data-preview-static="shop-look-add-bag"
@@ -309,7 +309,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                                     e.stopPropagation();
                                     handleAddPiece(product);
                                   }}
-                                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[#201C1A] px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#F2E9DE] transition-all hover:bg-[#3B302B] hover:text-[#C8A98B] dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]"
+                                  className="inline-flex items-center gap-1.5 rounded-[10px] bg-[var(--loome-btn-primary-bg)] px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--loome-btn-primary-text)] transition-all hover:bg-[var(--loome-btn-primary-hover)]"
                                 >
                                   <ShoppingBag className="h-3 w-3 stroke-[1.6]" />
                                   Add to Bag
@@ -321,7 +321,7 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
                                     e.stopPropagation();
                                     openQuickView(product);
                                   }}
-                                  className="inline-flex items-center gap-1 rounded-[10px] border border-[#3B302B]/25 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#3B302B] transition-colors hover:border-[#201C1A] hover:text-[#201C1A] dark:border-[#C8A98B]/35 dark:text-[#F5EEE6] dark:hover:border-[#C8A98B] dark:hover:text-[#C8A98B]"
+                                  className="inline-flex items-center gap-1 rounded-[10px] border border-[var(--loome-border)] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--heading-color)] transition-colors hover:border-[var(--brand-accent)] hover:text-[var(--brand-accent)]"
                                 >
                                   <Eye className="h-3 w-3 stroke-[1.6]" />
                                   Quick View
@@ -338,11 +338,11 @@ export default function ShopTheLookSection({ products }: ShopTheLookSectionProps
             )}
 
             {hotspots.length > 0 && (
-              <div className="pt-5">
+              <div className="pt-4">
                 <a
                   href={withBasePath('/collections/')}
                   data-preview-static="shop-look-explore-all"
-                  className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#2C211B] no-underline transition-colors hover:text-[#B28B65] dark:text-[#F5EEE6] dark:hover:text-[#C8A98B]"
+                  className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--heading-color)] no-underline transition-colors hover:text-[var(--brand-accent)]"
                 >
                   Explore Collections
                   <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />

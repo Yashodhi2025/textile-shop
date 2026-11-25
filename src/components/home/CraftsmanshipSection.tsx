@@ -62,15 +62,15 @@ export default function CraftsmanshipSection() {
       ref={sectionRef}
       id="craftsmanship"
       data-design-section="home-introduction"
-      className="loome-surface-ivory w-full py-16 sm:py-20 lg:py-24"
+      className="loome-surface-ivory w-full py-12 sm:py-14 lg:py-16"
     >
-      <div className="mx-auto grid max-w-[1440px] grid-cols-1 items-center gap-12 px-4 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-14">
+      <div className="mx-auto grid max-w-[1280px] grid-cols-1 items-center gap-10 px-4 sm:px-8 lg:grid-cols-12 lg:gap-12 lg:px-10">
         {/* Left: Layered Editorial Loom & Weave Photography with Curtain Mask & Desktop Parallax */}
         <div className="relative lg:col-span-6">
-          <LuxuryImageReveal tone="ivory" className="overflow-hidden rounded-2xl border border-[#49382D]/12 bg-[#E8DDD0] dark:border-[#C8A98B]/20 dark:bg-[#28211D]">
+          <LuxuryImageReveal tone="ivory" className="overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--loome-beige)]">
             <motion.div
               style={parallaxActive ? { y: mainImageY } : undefined}
-              className="aspect-[4/5] w-full will-change-transform"
+              className="aspect-square w-full will-change-transform"
             >
               <img
                 src={withBasePath(mainImage)}
@@ -85,7 +85,7 @@ export default function CraftsmanshipSection() {
           {/* Overlapping Macro Weave Detail Inset */}
           <motion.div
             style={parallaxActive ? { y: insetY } : undefined}
-            className="absolute -bottom-8 -right-3 z-20 hidden w-44 overflow-hidden rounded-2xl border-4 border-[#F7F3ED] bg-white shadow-[0_16px_36px_rgba(73,56,45,0.16)] dark:border-[#1A1614] dark:bg-[#28211D] sm:block md:w-52 lg:-right-8"
+            className="absolute -bottom-6 -right-3 z-20 hidden w-40 overflow-hidden rounded-2xl border-4 border-[var(--loome-ivory)] bg-[var(--card-bg)] shadow-[0_14px_32px_rgba(73,56,44,0.14)] sm:block md:w-44 lg:-right-6"
           >
             <LuxuryImageReveal delay={0.22} tone="ivory" className="aspect-square">
               <img
@@ -100,18 +100,18 @@ export default function CraftsmanshipSection() {
 
           <p
             data-preview-field-path="home.craftsmanshipCaption"
-            className="mt-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#B28B65] dark:text-[#C8A98B]"
+            className="mt-3.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--brand-accent)]"
           >
             {caption}
           </p>
         </div>
 
         {/* Right: Luxury Editorial Storytelling */}
-        <div className="lg:col-span-6 lg:pl-8">
+        <div className="lg:col-span-6 lg:pl-6">
           <LuxuryStagger staggerDelay={0.11} delayChildren={0.05}>
             <LuxuryStaggerItem y={16}>
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#B28B65] dark:bg-[#C8A98B]" />
+                <LuxuryHairline className="h-px w-8 bg-[var(--brand-accent)]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="home.introEyebrow"
@@ -133,12 +133,12 @@ export default function CraftsmanshipSection() {
                 data-preview-field-path="home.introTitle"
                 defaultValue={title}
                 fontFamily="heading"
-                size="clamp(2.2rem, 4vw, 3.4rem)"
+                size="clamp(1.85rem, 3vw, 2.5rem)"
                 weight={800}
-                lineHeight={1.06}
-                letterSpacing="-0.03em"
+                lineHeight={1.08}
+                letterSpacing="-0.025em"
                 color="heading"
-                className="mt-3.5 mb-0"
+                className="mt-2.5 mb-0"
               />
             </LuxuryStaggerItem>
 
@@ -148,27 +148,27 @@ export default function CraftsmanshipSection() {
                 data-preview-field-path="home.introBody"
                 defaultValue={body}
                 fontFamily="body"
-                size="0.96875rem"
-                lineHeight={1.82}
+                size="0.9375rem"
+                lineHeight={1.75}
                 color="muted"
-                className="mt-5 mb-0 max-w-xl"
+                className="mt-4 mb-0 max-w-xl"
               />
             </LuxuryStaggerItem>
 
             {/* Provenance Pillars */}
             <LuxuryStaggerItem y={18}>
-              <div className="mt-9 grid grid-cols-3 gap-5 border-y border-[#49382D]/14 py-6 dark:border-[#C8A98B]/20">
+              <div className="mt-7 grid grid-cols-3 gap-4 border-y border-[var(--loome-border)] py-5">
                 {ATELIER_METRICS.map((metric) => (
                   <div key={metric.label}>
                     <p
                       data-preview-static={`craft-metric-val-${metric.label}`}
-                      className="m-0 font-heading text-xl font-extrabold tracking-tight text-[#2C211B] dark:text-[#F5EEE6] sm:text-2xl"
+                      className="m-0 font-heading text-lg font-extrabold tracking-tight text-[var(--heading-color)] sm:text-xl"
                     >
                       {metric.value}
                     </p>
                     <p
                       data-preview-static={`craft-metric-lbl-${metric.label}`}
-                      className="mt-1 m-0 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#B28B65] dark:text-[#C8A98B]"
+                      className="mt-1 m-0 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--brand-accent)]"
                     >
                       {metric.label}
                     </p>
@@ -181,7 +181,7 @@ export default function CraftsmanshipSection() {
             <LuxuryStaggerItem y={16}>
               <div
                 data-preview-list-path="home.demoPreOrderCta"
-                className="mt-9 flex flex-wrap items-center gap-4"
+                className="mt-7 flex flex-wrap items-center gap-3.5"
               >
                 {ctaList.map((rawCta, index) => {
                   const cta = contentObject(rawCta);

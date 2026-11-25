@@ -304,25 +304,25 @@ export default function ShippingReturnsView() {
   return (
     <div
       data-preview-page-key="shipping_returns"
-      className="loome-surface-cream min-h-[75vh] w-full"
+      className="loome-surface-ivory min-h-[75vh] w-full"
     >
       {/* Editorial Breadcrumb Strip */}
-      <div className="border-b border-[#201C1A]/8 bg-[#FAF5EE]/95 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A]">
-        <nav className="mx-auto flex max-w-[1380px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] dark:text-[#C7B6A6] sm:px-8 lg:px-14">
+      <div className="border-b border-[var(--loome-border)] bg-[var(--loome-surface-subtle)]">
+        <nav className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-2 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-color)] sm:px-8 lg:px-10">
           <button
             type="button"
             onClick={() => window.location.assign(withBasePath('/'))}
-            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] uppercase tracking-[0.2em] text-[#5E4E45] transition-colors hover:text-[#201C1A] dark:text-[#C7B6A6] dark:hover:text-[#F2E9DE]"
+            className="cursor-pointer border-0 bg-transparent p-0 text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--muted-color)] transition-colors hover:text-[var(--heading-color)]"
           >
             <span data-preview-field-path="common.navLabels.home">{homeNavLabel}</span>
           </button>
-          <span aria-hidden="true" className="text-[#C8A98B]">
+          <span aria-hidden="true" data-preview-static="shipping-bc-sep" className="text-[var(--brand-accent)]">
             /
           </span>
           <span
             aria-current="page"
             data-preview-field-path="common.navLabels.shipping_returns"
-            className="font-medium text-[#201C1A] dark:text-[#F2E9DE]"
+            className="font-semibold text-[var(--heading-color)]"
           >
             {shippingNavLabel}
           </span>
@@ -332,13 +332,13 @@ export default function ShippingReturnsView() {
       {/* 1. Editorial Hero */}
       <section
         data-design-section="shipping-hero"
-        className="border-b border-[#201C1A]/8 bg-gradient-to-b from-[#E6D9C9]/90 via-[#F2E9DE] to-[#F2E9DE] dark:border-[#F2E9DE]/10 dark:from-[#2B2320] dark:via-[#201C1A] dark:to-[#201C1A]"
+        className="w-full border-b border-[var(--loome-border)]"
       >
-        <div className="mx-auto max-w-[1380px] px-4 py-12 sm:px-8 sm:py-16 lg:px-14 lg:py-20">
-          <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-12">
+        <div className="mx-auto max-w-[1280px] px-4 py-9 sm:px-8 sm:py-11 lg:px-10 lg:py-12">
+          <div className="grid grid-cols-1 items-end gap-8 lg:grid-cols-12 lg:gap-10">
             <LuxuryReveal className="lg:col-span-7">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-9 bg-[#C8A98B]" />
+                <LuxuryHairline className="h-px w-8 bg-[var(--brand-accent)]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="shippingReturnsPage.eyebrow"
@@ -347,7 +347,7 @@ export default function ShippingReturnsView() {
                   size="0.6875rem"
                   weight={600}
                   transform="uppercase"
-                  letterSpacing="0.28em"
+                  letterSpacing="0.24em"
                   color="primary"
                   className="m-0"
                 />
@@ -358,12 +358,12 @@ export default function ShippingReturnsView() {
                 data-preview-field-path="shippingReturnsPage.heading"
                 defaultValue={heading}
                 fontFamily="heading"
-                size="clamp(2.65rem, 5vw, 4.35rem)"
-                weight={300}
-                lineHeight={1.04}
-                letterSpacing="-0.02em"
+                size="clamp(1.9rem, 3.1vw, 2.65rem)"
+                weight={800}
+                lineHeight={1.08}
+                letterSpacing="-0.025em"
                 color="heading"
-                className="mt-4 mb-0"
+                className="mt-2.5 mb-0"
               />
 
               <EditableText
@@ -371,20 +371,20 @@ export default function ShippingReturnsView() {
                 data-preview-field-path="shippingReturnsPage.intro"
                 defaultValue={intro}
                 fontFamily="body"
-                size="0.975rem"
-                lineHeight={1.82}
+                size="0.9375rem"
+                lineHeight={1.72}
                 color="muted"
-                className="mt-5 mb-0 max-w-2xl"
+                className="mt-3.5 mb-0 max-w-2xl"
               />
             </LuxuryReveal>
 
             {/* Merchant Policy Notice Card */}
             <LuxuryReveal delay={0.1} className="lg:col-span-5">
-              <div className="border border-[#C8A98B]/35 bg-[#FAF5EE]/95 p-6 shadow-[0_14px_38px_rgba(38,41,35,0.04)] dark:border-[#C8A98B]/30 dark:bg-[#3B302B]/90 sm:p-7">
+              <div className="rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-5 shadow-[0_4px_18px_rgba(73,56,44,0.05)] dark:shadow-none sm:p-6">
                 <div className="flex items-start gap-3.5">
                   <span
                     aria-hidden="true"
-                    className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border border-[#C8A98B]/40 bg-[#E6D9C9]/75 text-[#8D7667] dark:bg-[#201C1A] dark:text-[#C8A98B]"
+                    className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[var(--brand-accent)]/35 bg-[var(--loome-ivory)] text-[var(--brand-accent)]"
                   >
                     <ShieldCheck className="h-4 w-4 stroke-[1.6]" />
                   </span>
@@ -394,9 +394,9 @@ export default function ShippingReturnsView() {
                       data-preview-field-path="shippingReturnsPage.policyNoticeHeading"
                       defaultValue={policyNoticeHeading}
                       fontFamily="heading"
-                      size="1.25rem"
-                      weight={500}
-                      lineHeight={1.25}
+                      size="1.05rem"
+                      weight={700}
+                      lineHeight={1.28}
                       color="heading"
                       className="m-0"
                     />
@@ -406,9 +406,9 @@ export default function ShippingReturnsView() {
                       defaultValue={policyNoticeBody}
                       fontFamily="body"
                       size="0.8125rem"
-                      lineHeight={1.72}
+                      lineHeight={1.68}
                       color="muted"
-                      className="mt-2 mb-0"
+                      className="mt-1.5 mb-0"
                     />
                   </div>
                 </div>
@@ -417,14 +417,14 @@ export default function ShippingReturnsView() {
           </div>
 
           {/* 2. Three Refined Overview Cards: Delivery, Returns, Order Assistance */}
-          <div data-preview-list-path="shippingReturnsPage.highlights" className="mt-12 lg:mt-14">
+          <div data-preview-list-path="shippingReturnsPage.highlights" className="mt-9">
             {highlights.length > 0 && (
-              <LuxuryStagger className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
+              <LuxuryStagger className="grid grid-cols-1 gap-5 md:grid-cols-3 lg:gap-6">
                 {highlights.map((card) => (
                   <LuxuryStaggerItem key={card.id}>
                     <article
                       data-preview-item-path={`shippingReturnsPage.highlights[${card.index}]`}
-                      className="flex h-full flex-col rounded-2xl border border-[#3B302B]/14 border-t-2 border-t-[#C8A98B] bg-[#FAF5EE] p-7 shadow-[0_12px_34px_rgba(32,28,26,0.04)] transition-all duration-300 hover:border-[#C8A98B] hover:shadow-[0_16px_42px_rgba(32,28,26,0.07)] dark:border-[#C8A98B]/20 dark:border-t-[#C8A98B] dark:bg-[#2A221F]"
+                      className="flex h-full flex-col rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-6 shadow-[0_3px_14px_rgba(73,56,44,0.04)] transition-all duration-300 hover:border-[var(--brand-accent)]/70 dark:shadow-none"
                     >
                       <div className="flex items-center justify-between gap-3">
                         <EditableText
@@ -435,11 +435,11 @@ export default function ShippingReturnsView() {
                           size="0.65625rem"
                           weight={600}
                           transform="uppercase"
-                          letterSpacing="0.24em"
+                          letterSpacing="0.22em"
                           color="primary"
                           className="inline"
                         />
-                        <span className="flex h-8 w-8 items-center justify-center border border-[#201C1A]/10 bg-[#F2E9DE] text-[#8D7667] dark:border-[#F2E9DE]/12 dark:bg-[#201C1A] dark:text-[#C8A98B]">
+                        <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-[var(--loome-border)] bg-[var(--loome-ivory)] text-[var(--brand-accent)]">
                           {renderHighlightIcon(card.id, card.index)}
                         </span>
                       </div>
@@ -449,11 +449,11 @@ export default function ShippingReturnsView() {
                         data-preview-field-path={`shippingReturnsPage.highlights[${card.index}].title`}
                         defaultValue={card.title}
                         fontFamily="heading"
-                        size="1.55rem"
-                        weight={400}
-                        lineHeight={1.2}
+                        size="1.2rem"
+                        weight={700}
+                        lineHeight={1.25}
                         color="heading"
-                        className="mt-4 mb-0"
+                        className="mt-3.5 mb-0"
                       />
 
                       <EditableText
@@ -462,9 +462,9 @@ export default function ShippingReturnsView() {
                         defaultValue={card.description}
                         fontFamily="body"
                         size="0.875rem"
-                        lineHeight={1.76}
+                        lineHeight={1.7}
                         color="muted"
-                        className="mt-3 mb-0"
+                        className="mt-2 mb-0"
                       />
                     </article>
                   </LuxuryStaggerItem>
@@ -478,12 +478,12 @@ export default function ShippingReturnsView() {
       {/* 3. Shipping Information: Editable Delivery Methods, Timelines & Charges */}
       <section
         data-design-section="shipping-methods"
-        className="mx-auto max-w-[1380px] px-4 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-24"
+        className="mx-auto w-full max-w-[1280px] px-4 py-12 sm:px-8 lg:px-10 lg:py-14"
       >
-        <LuxuryReveal className="flex flex-col justify-between gap-5 border-b border-[#201C1A]/10 pb-8 dark:border-[#F2E9DE]/10 lg:flex-row lg:items-end">
+        <LuxuryReveal className="flex flex-col justify-between gap-4 border-b border-[var(--loome-border)] pb-6 lg:flex-row lg:items-end">
           <div className="max-w-2xl">
             <div className="flex items-center gap-3">
-              <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
+              <LuxuryHairline className="h-px w-8 bg-[var(--brand-accent)]" />
               <EditableText
                 as="p"
                 data-preview-field-path="shippingReturnsPage.shippingEyebrow"
@@ -492,7 +492,7 @@ export default function ShippingReturnsView() {
                 size="0.6875rem"
                 weight={600}
                 transform="uppercase"
-                letterSpacing="0.26em"
+                letterSpacing="0.24em"
                 color="primary"
                 className="m-0"
               />
@@ -502,12 +502,12 @@ export default function ShippingReturnsView() {
               data-preview-field-path="shippingReturnsPage.shippingHeading"
               defaultValue={shippingHeading}
               fontFamily="heading"
-              size="clamp(2.15rem, 3.6vw, 3.2rem)"
-              weight={300}
-              lineHeight={1.08}
-              letterSpacing="-0.015em"
+              size="clamp(1.65rem, 2.6vw, 2.2rem)"
+              weight={800}
+              lineHeight={1.12}
+              letterSpacing="-0.02em"
               color="heading"
-              className="mt-3 mb-0"
+              className="mt-2 mb-0"
             />
           </div>
 
@@ -517,25 +517,25 @@ export default function ShippingReturnsView() {
               data-preview-field-path="shippingReturnsPage.shippingIntro"
               defaultValue={shippingIntro}
               fontFamily="body"
-              size="0.9125rem"
-              lineHeight={1.78}
+              size="0.9rem"
+              lineHeight={1.7}
               color="muted"
               className="m-0"
             />
           </div>
         </LuxuryReveal>
 
-        <div data-preview-list-path="shippingReturnsPage.deliveryMethods" className="mt-10">
+        <div data-preview-list-path="shippingReturnsPage.deliveryMethods" className="mt-8">
           {deliveryMethods.length === 0 ? (
-            <div className="border border-dashed border-[#201C1A]/20 px-6 py-14 text-center dark:border-[#F2E9DE]/20">
+            <div className="rounded-2xl border border-dashed border-[var(--loome-border)] bg-[var(--card-bg)] px-6 py-12 text-center">
               <p
                 data-preview-static="shipping-methods-empty"
-                className="m-0 text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
+                className="m-0 text-sm text-[var(--muted-color)]"
               >
                 Add delivery methods in your Fivora editor to display shipping timelines and charges.
               </p>
               {/* Keep shared column labels mounted in empty-state */}
-              <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em] text-[#8D7667] dark:text-[#C8A98B]">
+              <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-[10.5px] uppercase tracking-[0.2em] text-[var(--brand-accent)]">
                 <EditableText
                   as="span"
                   data-preview-field-path="shippingReturnsPage.methodTimelineLabel"
@@ -564,12 +564,12 @@ export default function ShippingReturnsView() {
               </div>
             </div>
           ) : (
-            <LuxuryStagger className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
+            <LuxuryStagger className="grid grid-cols-1 gap-5 lg:grid-cols-3 lg:gap-6">
               {deliveryMethods.map((method) => (
                 <LuxuryStaggerItem key={method.id}>
                   <article
                     data-preview-item-path={`shippingReturnsPage.deliveryMethods[${method.index}]`}
-                    className="flex h-full flex-col justify-between border border-[#201C1A]/10 bg-[#FAF5EE] p-7 shadow-[0_14px_40px_rgba(38,41,35,0.035)] dark:border-[#F2E9DE]/12 dark:bg-[#3B302B]"
+                    className="flex h-full flex-col justify-between rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-6 shadow-[0_3px_14px_rgba(73,56,44,0.04)] dark:shadow-none"
                   >
                     <div>
                       <EditableText
@@ -580,7 +580,7 @@ export default function ShippingReturnsView() {
                         size="0.625rem"
                         weight={600}
                         transform="uppercase"
-                        letterSpacing="0.24em"
+                        letterSpacing="0.22em"
                         color="primary"
                         className="m-0"
                       />
@@ -590,11 +590,11 @@ export default function ShippingReturnsView() {
                         data-preview-field-path={`shippingReturnsPage.deliveryMethods[${method.index}].name`}
                         defaultValue={method.name}
                         fontFamily="heading"
-                        size="1.65rem"
-                        weight={400}
-                        lineHeight={1.18}
+                        size="1.25rem"
+                        weight={700}
+                        lineHeight={1.25}
                         color="heading"
-                        className="mt-2.5 mb-0"
+                        className="mt-2 mb-0"
                       />
 
                       <EditableText
@@ -603,17 +603,17 @@ export default function ShippingReturnsView() {
                         defaultValue={method.details}
                         fontFamily="body"
                         size="0.8625rem"
-                        lineHeight={1.76}
+                        lineHeight={1.7}
                         color="muted"
-                        className="mt-3.5 mb-0"
+                        className="mt-2.5 mb-0"
                       />
                     </div>
 
-                    <div className="mt-7 space-y-4 border-t border-[#201C1A]/10 pt-5 dark:border-[#F2E9DE]/10">
+                    <div className="mt-6 space-y-3.5 border-t border-[var(--loome-border)] pt-4">
                       <div className="flex items-start gap-2.5">
                         <Clock
                           aria-hidden="true"
-                          className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#C8A98B]"
+                          className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[var(--brand-accent)]"
                         />
                         <div>
                           <EditableText
@@ -624,7 +624,7 @@ export default function ShippingReturnsView() {
                             size="0.625rem"
                             weight={600}
                             transform="uppercase"
-                            letterSpacing="0.2em"
+                            letterSpacing="0.18em"
                             color="muted"
                             className="block"
                           />
@@ -634,10 +634,10 @@ export default function ShippingReturnsView() {
                             defaultValue={method.timeline}
                             fontFamily="body"
                             size="0.875rem"
-                            weight={500}
-                            lineHeight={1.5}
+                            weight={600}
+                            lineHeight={1.45}
                             color="heading"
-                            className="mt-1 mb-0"
+                            className="mt-0.5 mb-0"
                           />
                         </div>
                       </div>
@@ -645,7 +645,7 @@ export default function ShippingReturnsView() {
                       <div className="flex items-start gap-2.5">
                         <CreditCard
                           aria-hidden="true"
-                          className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[#C8A98B]"
+                          className="mt-0.5 h-4 w-4 shrink-0 stroke-[1.5] text-[var(--brand-accent)]"
                         />
                         <div>
                           <EditableText
@@ -656,7 +656,7 @@ export default function ShippingReturnsView() {
                             size="0.625rem"
                             weight={600}
                             transform="uppercase"
-                            letterSpacing="0.2em"
+                            letterSpacing="0.18em"
                             color="muted"
                             className="block"
                           />
@@ -666,10 +666,10 @@ export default function ShippingReturnsView() {
                             defaultValue={method.charge}
                             fontFamily="body"
                             size="0.875rem"
-                            weight={500}
-                            lineHeight={1.5}
+                            weight={600}
+                            lineHeight={1.45}
                             color="heading"
-                            className="mt-1 mb-0"
+                            className="mt-0.5 mb-0"
                           />
                         </div>
                       </div>
@@ -681,14 +681,14 @@ export default function ShippingReturnsView() {
           )}
         </div>
 
-        <LuxuryReveal delay={0.08} className="mt-8 border-l-2 border-l-[#C8A98B] bg-[#FAF5EE] px-5 py-4 dark:bg-[#1D201A]">
+        <LuxuryReveal delay={0.08} className="mt-6 rounded-xl border border-[var(--loome-border)] border-l-2 border-l-[var(--brand-accent)] bg-[var(--card-bg)] px-5 py-4">
           <EditableText
             as="p"
             data-preview-field-path="shippingReturnsPage.shippingFootnote"
             defaultValue={shippingFootnote}
             fontFamily="body"
             size="0.8125rem"
-            lineHeight={1.72}
+            lineHeight={1.68}
             color="muted"
             className="m-0"
           />
@@ -698,14 +698,14 @@ export default function ShippingReturnsView() {
       {/* 4. Interactive Shipping FAQ Accordions */}
       <section
         data-design-section="shipping-faq"
-        className="border-t border-[#201C1A]/8 bg-[#FAF5EE] py-16 dark:border-[#F2E9DE]/10 dark:bg-[#191C17] sm:py-20 lg:py-24"
+        className="loome-surface-beige w-full border-t border-[var(--loome-border)] py-12 lg:py-16"
       >
-        <div className="mx-auto max-w-[1380px] px-4 sm:px-8 lg:px-14">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-8 lg:px-10">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
             {/* Left Sticky Editorial Header + Textile Imagery */}
             <LuxuryReveal className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
+                <LuxuryHairline className="h-px w-8 bg-[var(--brand-accent)]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="shippingReturnsPage.faqEyebrow"
@@ -714,7 +714,7 @@ export default function ShippingReturnsView() {
                   size="0.6875rem"
                   weight={600}
                   transform="uppercase"
-                  letterSpacing="0.26em"
+                  letterSpacing="0.24em"
                   color="primary"
                   className="m-0"
                 />
@@ -725,12 +725,12 @@ export default function ShippingReturnsView() {
                 data-preview-field-path="shippingReturnsPage.faqHeading"
                 defaultValue={faqHeading}
                 fontFamily="heading"
-                size="clamp(2.1rem, 3.3vw, 2.95rem)"
-                weight={300}
-                lineHeight={1.08}
-                letterSpacing="-0.015em"
+                size="clamp(1.65rem, 2.6vw, 2.2rem)"
+                weight={800}
+                lineHeight={1.12}
+                letterSpacing="-0.02em"
                 color="heading"
-                className="mt-3 mb-0"
+                className="mt-2.5 mb-0"
               />
 
               <EditableText
@@ -738,14 +738,14 @@ export default function ShippingReturnsView() {
                 data-preview-field-path="shippingReturnsPage.faqIntro"
                 defaultValue={faqIntro}
                 fontFamily="body"
-                size="0.9125rem"
-                lineHeight={1.8}
+                size="0.9rem"
+                lineHeight={1.72}
                 color="muted"
-                className="mt-4 mb-0"
+                className="mt-3 mb-0"
               />
 
-              <div className="mt-8">
-                <LuxuryImageReveal tone="ivory" className="aspect-[4/3] w-full bg-[#E6D9C9]/60">
+              <div className="mt-6">
+                <LuxuryImageReveal tone="ivory" className="aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--loome-ivory)]">
                   <img
                     src={withBasePath(faqImageUrl)}
                     alt={faqHeading}
@@ -755,7 +755,7 @@ export default function ShippingReturnsView() {
                   />
                 </LuxuryImageReveal>
                 <div className="mt-3 flex items-center gap-2.5">
-                  <span aria-hidden="true" className="h-px w-7 bg-[#C8A98B]" />
+                  <span aria-hidden="true" className="h-px w-7 bg-[var(--brand-accent)]" />
                   <EditableText
                     as="p"
                     data-preview-field-path="shippingReturnsPage.faqImageCaption"
@@ -764,7 +764,7 @@ export default function ShippingReturnsView() {
                     size="0.6875rem"
                     weight={500}
                     transform="uppercase"
-                    letterSpacing="0.18em"
+                    letterSpacing="0.16em"
                     color="muted"
                     className="m-0"
                   />
@@ -776,12 +776,12 @@ export default function ShippingReturnsView() {
             <div className="lg:col-span-7">
               <div
                 data-preview-list-path="shippingReturnsPage.shippingFaqs"
-                className="divide-y divide-[#201C1A]/12 border-y border-[#201C1A]/12 dark:divide-[#F2E9DE]/12 dark:border-[#F2E9DE]/12"
+                className="divide-y divide-[var(--loome-border)] rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] px-6"
               >
                 {shippingFaqs.length === 0 ? (
                   <p
                     data-preview-static="shipping-faqs-empty"
-                    className="py-12 text-center text-sm text-[#5E4E45] dark:text-[#C7B6A6]"
+                    className="py-12 text-center text-sm text-[var(--muted-color)]"
                   >
                     Add shipping FAQs in your Fivora editor.
                   </p>
@@ -794,7 +794,7 @@ export default function ShippingReturnsView() {
                       <div
                         key={faq.id}
                         data-preview-item-path={`shippingReturnsPage.shippingFaqs[${faq.index}]`}
-                        className="py-5 sm:py-6"
+                        className="py-5"
                       >
                         <button
                           id={triggerId}
@@ -804,7 +804,7 @@ export default function ShippingReturnsView() {
                           onClick={() => toggleFaq(faq)}
                           className="group flex w-full cursor-pointer items-start justify-between gap-4 border-0 bg-transparent p-0 text-left"
                         >
-                          <div className="space-y-1.5">
+                          <div className="space-y-1">
                             <EditableText
                               as="span"
                               data-preview-field-path={`shippingReturnsPage.shippingFaqs[${faq.index}].tag`}
@@ -813,7 +813,7 @@ export default function ShippingReturnsView() {
                               size="0.625rem"
                               weight={600}
                               transform="uppercase"
-                              letterSpacing="0.24em"
+                              letterSpacing="0.22em"
                               color="primary"
                               className="inline-block"
                             />
@@ -822,19 +822,19 @@ export default function ShippingReturnsView() {
                               data-preview-field-path={`shippingReturnsPage.shippingFaqs[${faq.index}].question`}
                               defaultValue={faq.question}
                               fontFamily="heading"
-                              size="clamp(1.28rem, 2vw, 1.6rem)"
-                              weight={400}
-                              lineHeight={1.25}
+                              size="1.1rem"
+                              weight={700}
+                              lineHeight={1.3}
                               color="heading"
-                              className="m-0 transition-colors group-hover:text-[#8D7667] dark:group-hover:text-[#C8A98B]"
+                              className="m-0 transition-colors group-hover:text-[var(--brand-accent)]"
                             />
                           </div>
 
                           <span
                             aria-hidden="true"
-                            className={`mt-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#201C1A]/15 text-[#201C1A] transition-all duration-300 motion-reduce:transition-none group-hover:border-[#C8A98B] dark:border-[#F2E9DE]/18 dark:text-[#F2E9DE] ${
+                            className={`mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--loome-border)] text-[var(--heading-color)] transition-all duration-300 motion-reduce:transition-none group-hover:border-[var(--brand-accent)] ${
                               open
-                                ? 'rotate-180 bg-[#201C1A] text-[#F2E9DE] dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                                ? 'rotate-180 bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)]'
                                 : ''
                             }`}
                           >
@@ -856,10 +856,10 @@ export default function ShippingReturnsView() {
                               data-preview-field-path={`shippingReturnsPage.shippingFaqs[${faq.index}].answer`}
                               defaultValue={faq.answer}
                               fontFamily="body"
-                              size="0.9375rem"
-                              lineHeight={1.82}
+                              size="0.9rem"
+                              lineHeight={1.74}
                               color="muted"
-                              className="mt-4 mb-0 max-w-2xl pb-1"
+                              className="mt-3 mb-0 max-w-2xl pb-1"
                             />
                           </div>
                         </div>
@@ -876,13 +876,13 @@ export default function ShippingReturnsView() {
       {/* 5. Returns & Exchanges Policy */}
       <section
         data-design-section="shipping-returns-policy"
-        className="border-t border-[#201C1A]/8 bg-[#E6D9C9]/68 py-16 dark:border-[#F2E9DE]/10 dark:bg-[#1C1F19] sm:py-20 lg:py-24"
+        className="loome-surface-ivory w-full border-t border-[var(--loome-border)] py-12 lg:py-16"
       >
-        <div className="mx-auto max-w-[1380px] px-4 sm:px-8 lg:px-14">
-          <LuxuryReveal className="flex flex-col justify-between gap-5 border-b border-[#201C1A]/12 pb-8 dark:border-[#F2E9DE]/12 lg:flex-row lg:items-end">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-8 lg:px-10">
+          <LuxuryReveal className="flex flex-col justify-between gap-4 border-b border-[var(--loome-border)] pb-6 lg:flex-row lg:items-end">
             <div className="max-w-2xl">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
+                <LuxuryHairline className="h-px w-8 bg-[var(--brand-accent)]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="shippingReturnsPage.returnsEyebrow"
@@ -891,7 +891,7 @@ export default function ShippingReturnsView() {
                   size="0.6875rem"
                   weight={600}
                   transform="uppercase"
-                  letterSpacing="0.26em"
+                  letterSpacing="0.24em"
                   color="primary"
                   className="m-0"
                 />
@@ -902,12 +902,12 @@ export default function ShippingReturnsView() {
                 data-preview-field-path="shippingReturnsPage.returnsHeading"
                 defaultValue={returnsHeading}
                 fontFamily="heading"
-                size="clamp(2.15rem, 3.6vw, 3.25rem)"
-                weight={300}
-                lineHeight={1.08}
-                letterSpacing="-0.015em"
+                size="clamp(1.65rem, 2.6vw, 2.2rem)"
+                weight={800}
+                lineHeight={1.12}
+                letterSpacing="-0.02em"
                 color="heading"
-                className="mt-3 mb-0"
+                className="mt-2.5 mb-0"
               />
             </div>
 
@@ -917,22 +917,22 @@ export default function ShippingReturnsView() {
                 data-preview-field-path="shippingReturnsPage.returnsIntro"
                 defaultValue={returnsIntro}
                 fontFamily="body"
-                size="0.9125rem"
-                lineHeight={1.78}
+                size="0.9rem"
+                lineHeight={1.7}
                 color="muted"
                 className="m-0"
               />
             </div>
           </LuxuryReveal>
 
-          <div data-preview-list-path="shippingReturnsPage.returnPillars" className="mt-10">
+          <div data-preview-list-path="shippingReturnsPage.returnPillars" className="mt-8">
             {returnPillars.length > 0 && (
-              <LuxuryStagger className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8">
+              <LuxuryStagger className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6">
                 {returnPillars.map((pillar) => (
                   <LuxuryStaggerItem key={pillar.id}>
                     <article
                       data-preview-item-path={`shippingReturnsPage.returnPillars[${pillar.index}]`}
-                      className="flex h-full flex-col border border-[#201C1A]/10 bg-[#FAF5EE] p-7 shadow-[0_14px_38px_rgba(38,41,35,0.03)] dark:border-[#F2E9DE]/12 dark:bg-[#3B302B] sm:p-8"
+                      className="flex h-full flex-col rounded-2xl border border-[var(--loome-border)] bg-[var(--card-bg)] p-6 shadow-[0_3px_14px_rgba(73,56,44,0.04)] dark:shadow-none sm:p-7"
                     >
                       <EditableText
                         as="span"
@@ -942,7 +942,7 @@ export default function ShippingReturnsView() {
                         size="0.65625rem"
                         weight={600}
                         transform="uppercase"
-                        letterSpacing="0.24em"
+                        letterSpacing="0.22em"
                         color="primary"
                         className="inline-block"
                       />
@@ -952,22 +952,22 @@ export default function ShippingReturnsView() {
                         data-preview-field-path={`shippingReturnsPage.returnPillars[${pillar.index}].title`}
                         defaultValue={pillar.title}
                         fontFamily="heading"
-                        size="1.65rem"
-                        weight={400}
-                        lineHeight={1.2}
+                        size="1.2rem"
+                        weight={700}
+                        lineHeight={1.25}
                         color="heading"
-                        className="mt-3 mb-0"
+                        className="mt-2.5 mb-0"
                       />
 
-                      <div className="my-4 h-px w-10 bg-[#C8A98B]/70" aria-hidden="true" />
+                      <div className="my-3.5 h-px w-10 bg-[var(--brand-accent)]/70" aria-hidden="true" />
 
                       <EditableText
                         as="p"
                         data-preview-field-path={`shippingReturnsPage.returnPillars[${pillar.index}].description`}
                         defaultValue={pillar.description}
                         fontFamily="body"
-                        size="0.9rem"
-                        lineHeight={1.8}
+                        size="0.875rem"
+                        lineHeight={1.72}
                         color="muted"
                         className="m-0"
                       />
@@ -983,13 +983,13 @@ export default function ShippingReturnsView() {
       {/* 6. Damaged or Incorrect Items Guidance */}
       <section
         data-design-section="shipping-damaged-items"
-        className="border-t border-[#201C1A]/8 bg-[#F2E9DE] py-16 dark:border-[#F2E9DE]/10 dark:bg-[#201C1A] sm:py-20 lg:py-24"
+        className="loome-surface-beige w-full border-t border-[var(--loome-border)] py-12 lg:py-16"
       >
-        <div className="mx-auto max-w-[1380px] px-4 sm:px-8 lg:px-14">
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-8 lg:px-10">
+          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12">
             <LuxuryReveal className="lg:col-span-7">
               <div className="flex items-center gap-3">
-                <LuxuryHairline className="h-px w-8 bg-[#C8A98B]" />
+                <LuxuryHairline className="h-px w-8 bg-[var(--brand-accent)]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="shippingReturnsPage.damagedEyebrow"
@@ -998,7 +998,7 @@ export default function ShippingReturnsView() {
                   size="0.6875rem"
                   weight={600}
                   transform="uppercase"
-                  letterSpacing="0.26em"
+                  letterSpacing="0.24em"
                   color="primary"
                   className="m-0"
                 />
@@ -1009,12 +1009,12 @@ export default function ShippingReturnsView() {
                 data-preview-field-path="shippingReturnsPage.damagedHeading"
                 defaultValue={damagedHeading}
                 fontFamily="heading"
-                size="clamp(2.15rem, 3.6vw, 3.15rem)"
-                weight={300}
-                lineHeight={1.08}
-                letterSpacing="-0.015em"
+                size="clamp(1.65rem, 2.6vw, 2.2rem)"
+                weight={800}
+                lineHeight={1.12}
+                letterSpacing="-0.02em"
                 color="heading"
-                className="mt-3 mb-0"
+                className="mt-2.5 mb-0"
               />
 
               <EditableText
@@ -1023,24 +1023,24 @@ export default function ShippingReturnsView() {
                 defaultValue={damagedIntro}
                 fontFamily="body"
                 size="0.9375rem"
-                lineHeight={1.82}
+                lineHeight={1.72}
                 color="muted"
-                className="mt-4 mb-0 max-w-2xl"
+                className="mt-3.5 mb-0 max-w-2xl"
               />
 
               <div
                 data-preview-list-path="shippingReturnsPage.damagedSteps"
-                className="mt-8 space-y-4"
+                className="mt-7 space-y-3.5"
               >
                 {damagedSteps.map((step) => (
                   <div
                     key={step.id}
                     data-preview-item-path={`shippingReturnsPage.damagedSteps[${step.index}]`}
-                    className="flex items-start gap-4 border border-[#201C1A]/10 border-l-2 border-l-[#C8A98B] bg-[#FAF5EE] p-5 dark:border-[#F2E9DE]/12 dark:border-l-[#C8A98B] dark:bg-[#3B302B]"
+                    className="flex items-start gap-4 rounded-xl border border-[var(--loome-border)] border-l-2 border-l-[var(--brand-accent)] bg-[var(--card-bg)] p-5"
                   >
                     <span
                       aria-hidden="true"
-                      className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center bg-[#E6D9C9] text-[#8D7667] dark:bg-[#201C1A] dark:text-[#C8A98B]"
+                      className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--loome-ivory)] text-[var(--brand-accent)]"
                     >
                       <PackageCheck className="h-4 w-4 stroke-[1.6]" />
                     </span>
@@ -1053,7 +1053,7 @@ export default function ShippingReturnsView() {
                         size="0.625rem"
                         weight={600}
                         transform="uppercase"
-                        letterSpacing="0.24em"
+                        letterSpacing="0.22em"
                         color="primary"
                         className="inline-block"
                       />
@@ -1062,8 +1062,8 @@ export default function ShippingReturnsView() {
                         data-preview-field-path={`shippingReturnsPage.damagedSteps[${step.index}].title`}
                         defaultValue={step.title}
                         fontFamily="heading"
-                        size="1.35rem"
-                        weight={400}
+                        size="1.1rem"
+                        weight={700}
                         lineHeight={1.25}
                         color="heading"
                         className="mt-1 mb-0"
@@ -1074,9 +1074,9 @@ export default function ShippingReturnsView() {
                         defaultValue={step.description}
                         fontFamily="body"
                         size="0.8625rem"
-                        lineHeight={1.74}
+                        lineHeight={1.68}
                         color="muted"
-                        className="mt-1.5 mb-0"
+                        className="mt-1 mb-0"
                       />
                     </div>
                   </div>
@@ -1085,7 +1085,7 @@ export default function ShippingReturnsView() {
             </LuxuryReveal>
 
             <div className="lg:col-span-5">
-              <LuxuryImageReveal tone="beige" className="aspect-[4/5] w-full bg-[#E6D9C9]/60">
+              <LuxuryImageReveal tone="beige" className="aspect-[4/4] w-full overflow-hidden rounded-2xl border border-[var(--loome-border)] bg-[var(--loome-ivory)]">
                 <img
                   src={withBasePath(damagedImageUrl)}
                   alt={damagedHeading}
@@ -1094,8 +1094,8 @@ export default function ShippingReturnsView() {
                   className="h-full w-full object-cover"
                 />
               </LuxuryImageReveal>
-              <div className="mt-3.5 flex items-center gap-3">
-                <span aria-hidden="true" className="h-px w-8 bg-[#C8A98B]" />
+              <div className="mt-3 flex items-center gap-3">
+                <span aria-hidden="true" className="h-px w-8 bg-[var(--brand-accent)]" />
                 <EditableText
                   as="p"
                   data-preview-field-path="shippingReturnsPage.damagedImageCaption"
@@ -1104,7 +1104,7 @@ export default function ShippingReturnsView() {
                   size="0.6875rem"
                   weight={500}
                   transform="uppercase"
-                  letterSpacing="0.2em"
+                  letterSpacing="0.18em"
                   color="muted"
                   className="m-0"
                 />
@@ -1117,7 +1117,7 @@ export default function ShippingReturnsView() {
       {/* 7. Full-Width Editorial Textile CTA Section with WhatsApp Concierge */}
       <section
         data-design-section="shipping-whatsapp-cta"
-        className="relative overflow-hidden bg-[#201C1A] text-[#F2E9DE]"
+        className="loome-surface-espresso relative overflow-hidden bg-[#2D2722] text-[#F7F4EF]"
       >
         <div className="absolute inset-0 h-full w-full">
           <img
@@ -1127,13 +1127,13 @@ export default function ShippingReturnsView() {
             data-preview-field-path="shippingReturnsPage.ctaImageUrl"
             className="h-full w-full object-cover object-center"
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#2A2320]/90 via-[#2A2320]/78 to-[#2A2320]/62" />
+          <div className="pointer-events-none absolute inset-0 bg-[#2D2722]/74" />
         </div>
 
-        <div className="relative z-10 mx-auto max-w-[1380px] px-4 py-20 sm:px-8 sm:py-24 lg:px-14 lg:py-28">
+        <div className="relative z-10 mx-auto max-w-[1280px] px-4 py-14 sm:px-8 lg:px-10 lg:py-16">
           <LuxuryReveal className="max-w-2xl">
             <div className="flex items-center gap-3">
-              <LuxuryHairline className="h-px w-9 bg-[#C8A98B]" />
+              <LuxuryHairline className="h-px w-8 bg-[#C7A684]" />
               <EditableText
                 as="p"
                 data-preview-field-path="shippingReturnsPage.ctaEyebrow"
@@ -1142,8 +1142,8 @@ export default function ShippingReturnsView() {
                 size="0.6875rem"
                 weight={600}
                 transform="uppercase"
-                letterSpacing="0.28em"
-                color="#C8A98B"
+                letterSpacing="0.24em"
+                color="#C7A684"
                 className="m-0"
               />
             </div>
@@ -1153,12 +1153,12 @@ export default function ShippingReturnsView() {
               data-preview-field-path="shippingReturnsPage.ctaHeading"
               defaultValue={ctaHeading}
               fontFamily="heading"
-              size="clamp(2.25rem, 4.2vw, 3.65rem)"
-              weight={300}
-              lineHeight={1.06}
-              letterSpacing="-0.02em"
-              color="#F2E9DE"
-              className="mt-4 mb-0"
+              size="clamp(1.85rem, 3vw, 2.55rem)"
+              weight={800}
+              lineHeight={1.1}
+              letterSpacing="-0.025em"
+              color="#F7F4EF"
+              className="mt-3 mb-0"
             />
 
             <EditableText
@@ -1166,17 +1166,17 @@ export default function ShippingReturnsView() {
               data-preview-field-path="shippingReturnsPage.ctaDescription"
               defaultValue={ctaDescription}
               fontFamily="body"
-              size="0.975rem"
-              lineHeight={1.82}
-              color="rgba(248, 246, 241, 0.88)"
-              className="mt-5 mb-0 max-w-xl"
+              size="0.9375rem"
+              lineHeight={1.74}
+              color="rgba(247, 244, 239, 0.9)"
+              className="mt-3.5 mb-0 max-w-xl"
             />
 
-            <div className="mt-9 flex flex-wrap items-center gap-4">
+            <div className="mt-7 flex flex-wrap items-center gap-3.5">
               <button
                 type="button"
                 onClick={handleWhatsAppClick}
-                className="group loome-btn-ivory h-[52px] cursor-pointer px-8"
+                className="group loome-btn-ivory h-12 cursor-pointer px-7"
               >
                 <MessageCircle aria-hidden="true" className="h-4 w-4 stroke-[1.6]" />
                 <EditableText
@@ -1185,15 +1185,15 @@ export default function ShippingReturnsView() {
                   defaultValue={ctaButtonLabel}
                   fontFamily="body"
                   size="0.75rem"
-                  weight={500}
+                  weight={600}
                   transform="uppercase"
-                  letterSpacing="0.2em"
+                  letterSpacing="0.16em"
                   color="inherit"
                   className="inline"
                 />
                 <ArrowRight
                   aria-hidden="true"
-                  className="h-3.5 w-3.5 stroke-[1.5] transition-transform duration-300 group-hover:translate-x-1"
+                  className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-1"
                 />
               </button>
 
@@ -1202,7 +1202,7 @@ export default function ShippingReturnsView() {
                   type="button"
                   onClick={() => window.location.assign(withBasePath('/contact/'))}
                   data-target-page="contact"
-                  className="inline-flex h-[52px] cursor-pointer items-center justify-center gap-2 border border-[#F2E9DE]/50 bg-[#201C1A]/35 px-7 text-[11.5px] font-medium uppercase tracking-[0.2em] text-[#F2E9DE] backdrop-blur-sm transition-all duration-300 hover:border-[#F2E9DE] hover:bg-[#F2E9DE]/16"
+                  className="inline-flex h-12 cursor-pointer items-center justify-center gap-2 rounded-[11px] border border-[#F7F4EF]/50 bg-[#2D2722]/40 px-6 text-[11.5px] font-semibold uppercase tracking-[0.16em] text-[#F7F4EF] backdrop-blur-sm transition-all duration-300 hover:border-[#F7F4EF] hover:bg-[#F7F4EF]/16"
                 >
                   <EditableText
                     as="span"
@@ -1210,9 +1210,9 @@ export default function ShippingReturnsView() {
                     defaultValue={ctaSecondaryLabel}
                     fontFamily="body"
                     size="0.71875rem"
-                    weight={500}
+                    weight={600}
                     transform="uppercase"
-                    letterSpacing="0.2em"
+                    letterSpacing="0.16em"
                     color="inherit"
                     className="inline"
                   />
@@ -1221,7 +1221,7 @@ export default function ShippingReturnsView() {
                 <span
                   data-target-page="contact"
                   data-preview-field-path="shippingReturnsPage.ctaSecondaryLabel"
-                  className="unavailable inline-flex h-[52px] items-center border border-[#F2E9DE]/30 px-7 text-[11.5px] uppercase tracking-[0.2em] text-[#F2E9DE]"
+                  className="unavailable inline-flex h-12 items-center rounded-[11px] border border-[#F7F4EF]/30 px-6 text-[11.5px] uppercase tracking-[0.16em] text-[#F7F4EF]"
                 >
                   {ctaSecondaryLabel}
                 </span>

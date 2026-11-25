@@ -250,14 +250,14 @@ export default function LoomeProductCard({
             disabled={!product.isAvailable}
             onClick={handleAddToBag}
             data-preview-static="product-quick-add"
-            className={`flex h-10 w-full items-center justify-center gap-2 rounded-[10px] text-xs font-semibold uppercase tracking-[0.14em] transition-colors duration-200 ${
+            className={`flex h-10 w-full items-center justify-center gap-2 rounded-[10px] border-0 text-xs font-bold uppercase tracking-[0.14em] transition-colors duration-200 ${
               !product.isAvailable
-                ? 'cursor-not-allowed border border-[#49382D]/15 bg-[#E8DDD0]/60 text-[#6E5B4E] dark:border-[#C8A98B]/20 dark:bg-[#3B302B]/50 dark:text-[#C9B9AA]/60'
+                ? 'cursor-not-allowed border border-[var(--loome-border)] bg-[var(--loome-beige)]/70 text-[var(--muted-text)]'
                 : justAdded
-                  ? 'bg-[#B28B65] text-white dark:bg-[#C8A98B] dark:text-[#201C1A]'
+                  ? 'bg-[var(--brand-accent)] text-white dark:text-[#201C1A]'
                   : isDark
                     ? 'bg-[#C8A98B] text-[#201C1A] hover:bg-[#D8BFA4]'
-                    : 'bg-[#49382D] text-[#F7F3ED] hover:bg-[#B28B65] hover:text-white dark:bg-[#C8A98B] dark:text-[#201C1A] dark:hover:bg-[#D8BFA4]'
+                    : 'bg-[var(--loome-btn-primary-bg)] text-[var(--loome-btn-primary-text)] hover:bg-[var(--loome-btn-primary-hover)] hover:text-white dark:hover:text-[#201C1A]'
             }`}
           >
             {justAdded ? (

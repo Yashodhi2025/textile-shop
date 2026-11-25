@@ -83,12 +83,12 @@ export default function HomePage() {
               data-preview-field-path="home.productsHeading"
               defaultValue={contentText(home.productsHeading) || 'New Arrivals'}
               fontFamily="heading"
-              size="clamp(2.25rem, 4vw, 3.4rem)"
+              size="clamp(1.85rem, 3vw, 2.45rem)"
               weight={800}
-              lineHeight={1.04}
-              letterSpacing="-0.03em"
+              lineHeight={1.08}
+              letterSpacing="-0.025em"
               color="heading"
-              className="mt-3 mb-0"
+              className="mt-2 mb-0"
             />
           </>
         }
@@ -99,7 +99,7 @@ export default function HomePage() {
             defaultValue={contentText(home.productsSummary)}
             fontFamily="body"
             size="0.9375rem"
-            lineHeight={1.75}
+            lineHeight={1.7}
             color="muted"
             className="m-0 max-w-md lg:text-right"
           />
@@ -107,7 +107,7 @@ export default function HomePage() {
         products={newArrivals}
         filterPool={allProducts}
         showCategoryFilter
-        surfaceClassName="loome-surface-beige border-y border-[#49382D]/10 dark:border-[#C8A98B]/16"
+        surfaceClassName="loome-surface-beige border-y border-[var(--loome-border)]"
       />
 
       <CraftsmanshipSection />
@@ -136,12 +136,12 @@ export default function HomePage() {
               data-preview-field-path="home.bestsellersHeading"
               defaultValue={contentText(home.bestsellersHeading) || 'Bestsellers'}
               fontFamily="heading"
-              size="clamp(2.2rem, 3.8vw, 3.25rem)"
+              size="clamp(1.85rem, 3vw, 2.45rem)"
               weight={800}
-              lineHeight={1.06}
-              letterSpacing="-0.03em"
+              lineHeight={1.08}
+              letterSpacing="-0.025em"
               color="heading"
-              className="mt-2.5 mb-0"
+              className="mt-2 mb-0"
             />
           </>
         }
@@ -152,7 +152,7 @@ export default function HomePage() {
             defaultValue={contentText(home.bestsellersSummary)}
             fontFamily="body"
             size="0.9375rem"
-            lineHeight={1.75}
+            lineHeight={1.7}
             color="muted"
             className="m-0 max-w-md lg:text-right"
           />
