@@ -23,8 +23,10 @@ import {
   useSiteData,
 } from '@/lib/siteDataContext';
 import {
+  formatAmountTemplate,
   formatLoomePrice,
   normalizeLoomeProduct,
+  resolveDeliveryBarConfig,
   resolveFreeDeliveryThreshold,
   resolveLoomeCurrency,
   useLoomeStore,
@@ -60,18 +62,28 @@ export default function LoomeOverlays() {
   const shopTheLook = contentObject(home.shopTheLook);
   const shopPage = contentObject(content.shopPage);
   const cartPage = contentObject(content.cartPage);
+  const checkoutPage = contentObject(content.checkoutPage);
   const productDetailPage = contentObject(content.productDetailPage);
   const accountDrawer = contentObject(common.accountDrawer);
   const storeName = contentText(common.websiteTitle) || 'LOOMÉ';
 
   const toneLabel = contentText(productDetailPage.toneLabel) || 'Tone';
   const sizeLabel = contentText(productDetailPage.sizeLabel) || 'Size';
+  const quantityLabel = contentText(productDetailPage.quantityLabel) || 'Quantity';
+  const outOfStockLabel = contentText(productDetailPage.outOfStockLabel) || 'Out of Stock';
   const addToBagLabel = contentText(productDetailPage.addToBagLabel) || 'Add to Bag';
   const quickViewSpecsLabel =
     contentText(productDetailPage.quickViewSpecsLabel) || 'View Full Specifications';
   const quickViewLabel = contentText(shopTheLook.quickViewLabel) || 'Quick View';
   const searchPlaceholder =
     contentText(shopPage.searchPlaceholder) || 'Search Belgian linen, curtains, duvet, velvet...';
+  const searchEmptyDescription =
+    contentText(shopPage.emptyDescription) ||
+    'Try widening your search or exploring another textile category.';
+  const priceOnRequestLabel = contentText(cartPage.priceOnRequestLabel) || 'Price on Request';
+  const estimatedSubtotalLabel =
+    contentText(checkoutPage.estimatedSubtotalLabel) || 'Estimated Subtotal';
+  const deliveryBar = resolveDeliveryBarConfig(siteData);
 
   const bagDrawerHeading = contentText(cartPage.heading) || 'Your Shopping Bag';
   const bagEmptyHeading = contentText(cartPage.emptyHeading) || 'Your bag is currently empty';
@@ -284,8 +296,11 @@ export default function LoomeOverlays() {
                       )}
                     </div>
                   ) : (
-                    <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#C8A98B]">
-                      Price Upon Atelier Inquiry
+                    <p
+                      data-preview-field-path="cartPage.priceOnRequestLabel"
+                      className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#C8A98B]"
+                    >
+                      {priceOnRequestLabel}
                     </p>
                   )}
 
@@ -376,8 +391,11 @@ export default function LoomeOverlays() {
 
                   {/* Quantity */}
                   <div className="mt-6 flex items-center gap-4">
-                    <span className="text-[11px] uppercase tracking-[0.18em] text-[#C7B6A6]">
-                      Quantity
+                    <span
+                      data-preview-field-path="productDetailPage.quantityLabel"
+                      className="text-[11px] uppercase tracking-[0.18em] text-[#C7B6A6]"
+                    >
+                      {quantityLabel}
                     </span>
                     <div className="inline-flex items-center overflow-hidden rounded-[10px] border border-[#C8A98B]/28 bg-[#3B302B]/45">
                       <button
@@ -423,7 +441,9 @@ export default function LoomeOverlays() {
                           </span>
                         </>
                       ) : (
-                        'Currently Unavailable'
+                        <span data-preview-field-path="productDetailPage.outOfStockLabel">
+                          {outOfStockLabel}
+                        </span>
                       )}
                     </button>
                     <button
@@ -507,23 +527,34 @@ export default function LoomeOverlays() {
                 <div className="border-b border-[#C8A98B]/14 bg-[#3B302B]/55 px-6 py-3.5">
                   <p className="text-xs text-[#F2E9DE]/88">
                     {deliveryRemaining === 0 ? (
-                      <span className="font-semibold text-[#C8A98B]">
-                        ✦ Complimentary white-glove delivery unlocked
+                      <span
+                        data-preview-field-path="cartPage.freeDeliveryUnlockedLabel"
+                        className="font-semibold text-[#C8A98B]"
+                      >
+                        {deliveryBar.unlockedLabel}
                       </span>
                     ) : (
-                      <>
-                        Add{' '}
-                        <strong className="text-[#C8A98B]">
-                          {formatLoomePrice(deliveryRemaining, storeCurrency)}
-                        </strong>{' '}
-                        more for complimentary white-glove delivery
-                      </>
+                      <span data-preview-field-path="cartPage.freeDeliveryRemainingTemplate">
+                        {formatAmountTemplate(
+                          deliveryBar.remainingTemplate,
+                          formatLoomePrice(deliveryRemaining, storeCurrency),
+                        )}
+                      </span>
                     )}
                   </p>
-                  <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-[#201C1A]">
+                  <div
+                    className="mt-2 h-1 w-full overflow-hidden rounded-full"
+                    style={{ backgroundColor: deliveryBar.trackColor }}
+                  >
                     <div
-                      className="h-full rounded-full bg-[#C8A98B] transition-all duration-500"
-                      style={{ width: `${deliveryProgress}%` }}
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${deliveryProgress}%`,
+                        backgroundColor:
+                          deliveryRemaining === 0
+                            ? deliveryBar.unlockedColor
+                            : deliveryBar.progressColor,
+                      }}
                     />
                   </div>
                 </div>
@@ -638,12 +669,15 @@ export default function LoomeOverlays() {
               {cart.items.length > 0 && (
                 <div className="border-t border-[#C8A98B]/18 bg-[#2B2320] px-6 py-5">
                   <div className="flex items-baseline justify-between">
-                    <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C7B6A6]">
-                      Estimated Subtotal
+                    <span
+                      data-preview-field-path="checkoutPage.estimatedSubtotalLabel"
+                      className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C7B6A6]"
+                    >
+                      {estimatedSubtotalLabel}
                     </span>
                     <span className="font-heading text-2xl font-extrabold tabular-nums text-[#F2E9DE]">
                       {allCartInquiryOnly
-                        ? 'Upon Inquiry'
+                        ? priceOnRequestLabel
                         : formatLoomePrice(cart.subtotal, storeCurrency)}
                     </span>
                   </div>
@@ -739,8 +773,11 @@ export default function LoomeOverlays() {
 
               <div className="mt-6 max-h-[55vh] overflow-y-auto">
                 {searchResults.length === 0 ? (
-                  <p className="py-10 text-center text-sm text-[#C7B6A6]">
-                    No textiles matched &ldquo;{searchQuery}&rdquo;. Try searching for linen, velvet, or drapery.
+                  <p
+                    data-preview-field-path="shopPage.emptyDescription"
+                    className="py-10 text-center text-sm text-[#C7B6A6]"
+                  >
+                    {searchEmptyDescription}
                   </p>
                 ) : (
                   <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">

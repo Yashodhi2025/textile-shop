@@ -37,8 +37,14 @@ export default function LoomeProductCard({
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [justAdded, setJustAdded] = useState(false);
 
-  const productDetailPage = contentObject(contentObject(siteData.content).productDetailPage);
+  const content = contentObject(siteData.content);
+  const productDetailPage = contentObject(content.productDetailPage);
+  const cartPage = contentObject(content.cartPage);
   const addToBagLabel = contentText(productDetailPage.addToBagLabel) || 'Add to Bag';
+  const addedToBagLabel = contentText(productDetailPage.addedToBagLabel) || 'Added to Bag';
+  const outOfStockLabel = contentText(productDetailPage.outOfStockLabel) || 'Out of Stock';
+  const removeItemLabel = contentText(cartPage.removeItemLabel) || 'Remove';
+  const priceOnRequestLabel = contentText(cartPage.priceOnRequestLabel) || 'Price on Request';
 
   const safeColorIndex =
     product.colors.length > 0 ? Math.min(selectedColorIndex, product.colors.length - 1) : 0;
@@ -205,7 +211,7 @@ export default function LoomeProductCard({
               isDark ? 'text-[#F5EEE6]' : 'text-[var(--heading-color)] dark:text-[#F5EEE6]'
             }`}
           >
-            {product.showPrice ? formatLoomePrice(product.price, storeCurrency) : 'Price on Request'}
+            {product.showPrice ? formatLoomePrice(product.price, storeCurrency) : priceOnRequestLabel}
           </span>
           <span
             data-preview-field-path={`products[${idx}].compareAtPrice`}
@@ -300,10 +306,14 @@ export default function LoomeProductCard({
             {justAdded ? (
               <>
                 <Check className="h-3.5 w-3.5 stroke-[2.2]" />
-                <span>Added to Bag</span>
+                <span data-preview-field-path="productDetailPage.addedToBagLabel">
+                  {addedToBagLabel}
+                </span>
               </>
             ) : !product.isAvailable ? (
-              <span>Out of Stock</span>
+              <span data-preview-field-path="productDetailPage.outOfStockLabel">
+                {outOfStockLabel}
+              </span>
             ) : (
               <>
                 <ShoppingBag className="h-3.5 w-3.5 stroke-[1.75]" />
@@ -318,11 +328,11 @@ export default function LoomeProductCard({
             <button
               type="button"
               onClick={() => toggleWishlist(product.id)}
-              data-preview-static="wishlist-card-remove"
+              data-testid="wishlist-card-remove"
               className="flex h-9 w-full items-center justify-center gap-1.5 rounded-[10px] border border-[#49382C]/16 bg-transparent text-xs font-semibold text-[#66584D] transition-colors hover:border-[#A63A2B]/40 hover:bg-[#A63A2B]/8 hover:text-[#A63A2B] dark:border-[#C8A98B]/22 dark:text-[#C9B9AA] dark:hover:border-[#F09A8B]/50 dark:hover:text-[#F09A8B]"
             >
               <Trash2 className="h-3.5 w-3.5 stroke-[1.6]" />
-              <span>Remove</span>
+              <span data-preview-field-path="cartPage.removeItemLabel">{removeItemLabel}</span>
             </button>
           )}
         </div>

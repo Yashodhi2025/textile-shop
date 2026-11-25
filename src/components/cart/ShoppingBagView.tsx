@@ -22,8 +22,10 @@ import {
   useSiteData,
 } from '@/lib/siteDataContext';
 import {
+  formatAmountTemplate,
   formatLoomePrice,
   normalizeLoomeProduct,
+  resolveDeliveryBarConfig,
   resolveFreeDeliveryThreshold,
   resolveLoomeCurrency,
 } from '@/lib/storeContext';
@@ -40,9 +42,12 @@ export default function ShoppingBagView() {
   const common = contentObject(content.common);
   const navLabels = contentObject(common.navLabels);
   const cartPage = contentObject(content.cartPage);
+  const productDetailPage = contentObject(content.productDetailPage);
   const homeNavLabel = contentText(navLabels.home) || 'Home';
   const shopNavLabel = contentText(navLabels.shop) || 'Shop';
   const cartNavLabel = contentText(navLabels.cart) || 'Cart';
+  const toneLabel = contentText(productDetailPage.toneLabel) || 'Color';
+  const sizeLabel = contentText(productDetailPage.sizeLabel) || 'Size';
 
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
@@ -68,6 +73,7 @@ export default function ShoppingBagView() {
   const storeCurrency = resolveLoomeCurrency(siteData, catalogProducts[0]?.currency);
   const freeDeliveryThreshold = resolveFreeDeliveryThreshold(siteData);
   const hasDeliveryThreshold = freeDeliveryThreshold > 0;
+  const deliveryBar = resolveDeliveryBarConfig(siteData);
 
   // Merchant-editable page copy
   const eyebrow = contentText(cartPage.eyebrow) || 'SHOPPING CART';
@@ -82,13 +88,25 @@ export default function ShoppingBagView() {
   const continueShoppingLabel =
     contentText(cartPage.continueShoppingLabel) || 'Continue Shopping';
   const itemsHeading = contentText(cartPage.itemsHeading) || 'Items in Your Bag';
+  const qtyColumnLabel = contentText(cartPage.qtyColumnLabel) || 'Qty';
+  const totalColumnLabel = contentText(cartPage.totalColumnLabel) || 'Total';
+  const removeItemLabel = contentText(cartPage.removeItemLabel) || 'Remove';
+  const priceOnRequestLabel = contentText(cartPage.priceOnRequestLabel) || 'Price on Request';
   const summaryHeading = contentText(cartPage.summaryHeading) || 'Order Summary';
+  const itemsRowLabel = contentText(cartPage.itemsRowLabel) || 'Items';
+  const deliveryRowLabel = contentText(cartPage.deliveryRowLabel) || 'Delivery';
+  const freeDeliveryStatusLabel = contentText(cartPage.freeDeliveryStatusLabel) || 'Free';
+  const calculatedDeliveryLabel =
+    contentText(cartPage.calculatedDeliveryLabel) || 'Calculated at checkout';
   const clearCartLabel = contentText(cartPage.clearCartLabel) || 'Clear Cart';
   const summaryFootnote =
     contentText(cartPage.summaryFootnote) ||
     'Delivery details and WhatsApp confirmation happen on the next step.';
   const assuranceEyebrow =
     contentText(cartPage.assuranceEyebrow) || 'Delivery & Order Assurance';
+  const currencyPrefixLabel = contentText(cartPage.currencyPrefixLabel) || 'Prices in';
+  const autoSaveNote =
+    contentText(cartPage.autoSaveNote) || 'Saved automatically in your browser';
   const emptyHeading =
     contentText(cartPage.emptyHeading) || 'Your shopping bag is empty';
   const emptyDescription =
@@ -98,7 +116,7 @@ export default function ShoppingBagView() {
   const hasItems = cart.items.length > 0;
   const allInquiryOnly = hasItems && cart.items.every((item) => item.showPrice === false);
   const subtotalDisplay = allInquiryOnly
-    ? 'Price on Request'
+    ? priceOnRequestLabel
     : formatLoomePrice(cart.subtotal, storeCurrency);
   const deliveryRemaining = hasDeliveryThreshold
     ? Math.max(0, freeDeliveryThreshold - cart.subtotal)
@@ -107,6 +125,10 @@ export default function ShoppingBagView() {
   const deliveryProgress = hasDeliveryThreshold
     ? Math.min(100, Math.round((cart.subtotal / freeDeliveryThreshold) * 100))
     : 0;
+  const deliveryRemainingMessage = formatAmountTemplate(
+    deliveryBar.remainingTemplate,
+    formatLoomePrice(deliveryRemaining, storeCurrency),
+  );
 
   const continueHref = withBasePath(hasShopPage ? '/shop/' : '/');
 
@@ -283,8 +305,18 @@ export default function ShoppingBagView() {
                     {itemsHeading}
                   </h2>
                   <div className="hidden items-center gap-8 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--muted-text)] sm:flex">
-                    <span className="w-[104px] text-center">Qty</span>
-                    <span className="min-w-[116px] text-right">Total</span>
+                    <span
+                      data-preview-field-path="cartPage.qtyColumnLabel"
+                      className="w-[104px] text-center"
+                    >
+                      {qtyColumnLabel}
+                    </span>
+                    <span
+                      data-preview-field-path="cartPage.totalColumnLabel"
+                      className="min-w-[116px] text-right"
+                    >
+                      {totalColumnLabel}
+                    </span>
                   </div>
                 </div>
 
@@ -333,22 +365,40 @@ export default function ShoppingBagView() {
                               {/* Selected Color & Size */}
                               {(item.color || item.size) && (
                                 <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-xs text-[var(--muted-text)]">
-                                  {item.color && <span>Color: {item.color}</span>}
+                                  {item.color && (
+                                    <span>
+                                      <span data-preview-field-path="productDetailPage.toneLabel">
+                                        {toneLabel}
+                                      </span>
+                                      : {item.color}
+                                    </span>
+                                  )}
                                   {item.color && item.size && (
                                     <span aria-hidden="true" className="text-[var(--brand-accent)]">
                                       ·
                                     </span>
                                   )}
-                                  {item.size && <span>Size: {item.size}</span>}
+                                  {item.size && (
+                                    <span>
+                                      <span data-preview-field-path="productDetailPage.sizeLabel">
+                                        {sizeLabel}
+                                      </span>
+                                      : {item.size}
+                                    </span>
+                                  )}
                                 </div>
                               )}
 
                               {/* Unit Price + Remove */}
                               <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
                                 <span className="whitespace-nowrap font-semibold tabular-nums text-[var(--page-text)]">
-                                  {item.showPrice === false
-                                    ? 'Price on Request'
-                                    : formatLoomePrice(item.price, storeCurrency)}
+                                  {item.showPrice === false ? (
+                                    <span data-preview-field-path="cartPage.priceOnRequestLabel">
+                                      {priceOnRequestLabel}
+                                    </span>
+                                  ) : (
+                                    formatLoomePrice(item.price, storeCurrency)
+                                  )}
                                 </span>
                                 {hasSavings && item.originalPrice && (
                                   <span className="whitespace-nowrap tabular-nums text-[var(--muted-text)]/80 line-through">
@@ -362,7 +412,9 @@ export default function ShoppingBagView() {
                                   className="inline-flex items-center gap-1 border-0 bg-transparent p-0 text-xs font-medium text-[var(--muted-text)] transition-colors hover:text-[var(--loome-danger-text)]"
                                 >
                                   <Trash2 className="h-3.5 w-3.5 stroke-[1.6]" />
-                                  Remove
+                                  <span data-preview-field-path="cartPage.removeItemLabel">
+                                    {removeItemLabel}
+                                  </span>
                                 </button>
                               </div>
                             </div>
@@ -412,7 +464,7 @@ export default function ShoppingBagView() {
                                 className="whitespace-nowrap font-heading text-[15px] font-extrabold tabular-nums text-[var(--heading-color)]"
                               >
                                 {item.showPrice === false
-                                  ? 'Price on Request'
+                                  ? priceOnRequestLabel
                                   : formatLoomePrice(item.price * item.quantity, storeCurrency)}
                               </span>
                             </div>
@@ -463,7 +515,7 @@ export default function ShoppingBagView() {
                   {summaryHeading}
                 </h2>
 
-                {/* Free Delivery Progress Bar — Subtle Sage Green when Unlocked */}
+                {/* Free Delivery Progress Bar — Editable Copy, Threshold & Progress Colors */}
                 {hasDeliveryThreshold && (
                   <div
                     data-testid="cart-delivery-banner"
@@ -480,37 +532,54 @@ export default function ShoppingBagView() {
                     >
                       <span className="inline-flex items-center gap-1.5">
                         {deliveryUnlocked ? (
-                          <CheckCircle2 className="h-3.5 w-3.5 shrink-0 stroke-[1.9] text-[var(--loome-sage-accent)]" />
+                          <CheckCircle2
+                            className="h-3.5 w-3.5 shrink-0 stroke-[1.9]"
+                            style={{ color: deliveryBar.unlockedColor }}
+                          />
                         ) : (
-                          <Truck className="h-3.5 w-3.5 shrink-0 stroke-[1.7] text-[var(--brand-accent)]" />
+                          <Truck
+                            className="h-3.5 w-3.5 shrink-0 stroke-[1.7]"
+                            style={{ color: deliveryBar.progressColor }}
+                          />
                         )}
-                        {deliveryUnlocked
-                          ? 'Free delivery unlocked'
-                          : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for free delivery`}
+                        {deliveryUnlocked ? (
+                          <span data-preview-field-path="cartPage.freeDeliveryUnlockedLabel">
+                            {deliveryBar.unlockedLabel}
+                          </span>
+                        ) : (
+                          <span data-preview-field-path="cartPage.freeDeliveryRemainingTemplate">
+                            {deliveryRemainingMessage}
+                          </span>
+                        )}
                       </span>
                       <span
-                        className={`shrink-0 tabular-nums font-bold ${deliveryUnlocked
-                          ? 'text-[var(--loome-sage-text)]'
-                          : 'text-[var(--brand-accent)]'
-                          }`}
+                        data-testid="cart-delivery-percent"
+                        className="shrink-0 tabular-nums font-bold"
+                        style={{
+                          color: deliveryUnlocked
+                            ? deliveryBar.unlockedColor
+                            : deliveryBar.progressColor,
+                        }}
                       >
                         {deliveryProgress}%
                       </span>
                     </div>
                     <div
-                      className={`mt-2 h-1.5 w-full overflow-hidden rounded-full ${deliveryUnlocked
-                        ? 'bg-[var(--loome-sage-accent)]/20'
-                        : 'bg-[var(--loome-border)]'
-                        }`}
+                      data-testid="cart-delivery-track"
+                      className="mt-2 h-1.5 w-full overflow-hidden rounded-full"
+                      style={{ backgroundColor: deliveryBar.trackColor }}
                     >
                       <motion.div
+                        data-testid="cart-delivery-fill"
                         initial={false}
                         animate={{ width: `${deliveryProgress}%` }}
                         transition={{ duration: 0.4, ease: LUXURY_EASE }}
-                        className={`h-full rounded-full ${deliveryUnlocked
-                          ? 'bg-[var(--loome-sage-accent)]'
-                          : 'bg-[var(--brand-accent)]'
-                          }`}
+                        className="h-full rounded-full"
+                        style={{
+                          backgroundColor: deliveryUnlocked
+                            ? deliveryBar.unlockedColor
+                            : deliveryBar.progressColor,
+                        }}
                       />
                     </div>
                   </div>
@@ -519,26 +588,44 @@ export default function ShoppingBagView() {
                 {/* Price Breakdown — Strictly Single-Line Totals */}
                 <div className="mt-4 space-y-2.5 text-sm">
                   <div className="flex items-center justify-between gap-3 text-[var(--muted-text)]">
-                    <span>Items ({cart.totalCount})</span>
+                    <span>
+                      <span data-preview-field-path="cartPage.itemsRowLabel">{itemsRowLabel}</span>{' '}
+                      ({cart.totalCount})
+                    </span>
                     <span className="whitespace-nowrap font-semibold tabular-nums text-[var(--heading-color)]">
                       {subtotalDisplay}
                     </span>
                   </div>
                   <div className="flex items-center justify-between gap-3 text-[var(--muted-text)]">
-                    <span>Delivery</span>
+                    <span data-preview-field-path="cartPage.deliveryRowLabel">
+                      {deliveryRowLabel}
+                    </span>
                     <span
                       className={`whitespace-nowrap font-semibold ${deliveryUnlocked
                         ? 'text-[var(--loome-sage-text)]'
                         : 'text-[var(--heading-color)]'
                         }`}
                     >
-                      {deliveryUnlocked ? 'Free' : 'Calculated at checkout'}
+                      {deliveryUnlocked ? (
+                        <span data-preview-field-path="cartPage.freeDeliveryStatusLabel">
+                          {freeDeliveryStatusLabel}
+                        </span>
+                      ) : (
+                        <span data-preview-field-path="cartPage.calculatedDeliveryLabel">
+                          {calculatedDeliveryLabel}
+                        </span>
+                      )}
                     </span>
                   </div>
                 </div>
 
                 <div className="mt-4 flex items-baseline justify-between gap-3 border-t border-[var(--loome-border)] pt-4">
-                  <span className="text-sm font-bold text-[var(--heading-color)]">Total</span>
+                  <span
+                    data-preview-field-path="cartPage.totalColumnLabel"
+                    className="text-sm font-bold text-[var(--heading-color)]"
+                  >
+                    {totalColumnLabel}
+                  </span>
                   <span
                     data-preview-static="cart-subtotal-total"
                     className="whitespace-nowrap font-heading text-2xl font-extrabold leading-none tabular-nums text-[var(--heading-color)]"
@@ -597,10 +684,17 @@ export default function ShoppingBagView() {
           </div>
 
           <p
-            data-preview-static="cart-handoff-note"
+            data-testid="cart-handoff-note"
             className="m-0 shrink-0 text-xs font-medium text-[var(--muted-text)]"
           >
-            Prices in {storeCurrency} · Saved automatically in your browser
+            <span data-preview-field-path="cartPage.currencyPrefixLabel">
+              {currencyPrefixLabel}
+            </span>{' '}
+            <span data-preview-field-path="common.currency">{storeCurrency}</span>
+            <span aria-hidden="true" data-preview-static="cart-handoff-sep">
+              {' · '}
+            </span>
+            <span data-preview-field-path="cartPage.autoSaveNote">{autoSaveNote}</span>
           </p>
         </div>
       </section>

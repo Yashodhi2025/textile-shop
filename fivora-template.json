@@ -129,13 +129,61 @@
       "shopPage.emptyHeading",
       "shopPage.emptyDescription",
       "shopPage.resetFiltersLabel",
+      "shopPage.collectionEyebrow",
+      "shopPage.viewAllProductsLabel",
+      "shopPage.materialFilterHeading",
+      "shopPage.colorFilterHeading",
+      "shopPage.priceFilterHeading",
+      "shopPage.availabilityFilterHeading",
+      "shopPage.inStockOnlyLabel",
+      "shopPage.mobileFiltersHeading",
+      "shopPage.clearAllFiltersLabel",
       "wishlistPage.clearAllLabel",
       "cartPage.itemsHeading",
+      "cartPage.qtyColumnLabel",
+      "cartPage.totalColumnLabel",
+      "cartPage.removeItemLabel",
+      "cartPage.priceOnRequestLabel",
       "cartPage.summaryHeading",
+      "cartPage.freeDeliveryRemainingTemplate",
+      "cartPage.freeDeliveryUnlockedLabel",
+      "cartPage.deliveryProgressColor",
+      "cartPage.deliveryUnlockedColor",
+      "cartPage.deliveryProgressTrackColor",
+      "cartPage.itemsRowLabel",
+      "cartPage.deliveryRowLabel",
+      "cartPage.freeDeliveryStatusLabel",
+      "cartPage.calculatedDeliveryLabel",
       "cartPage.clearCartLabel",
       "cartPage.viewBagLabel",
       "cartPage.summaryFootnote",
+      "checkoutPage.requiredLegend",
+      "checkoutPage.optionalHint",
+      "checkoutPage.fullNameLabel",
+      "checkoutPage.fullNamePlaceholder",
+      "checkoutPage.phoneLabel",
+      "checkoutPage.phonePlaceholder",
+      "checkoutPage.emailLabel",
+      "checkoutPage.emailPlaceholder",
+      "checkoutPage.addressLabel",
+      "checkoutPage.addressPlaceholder",
+      "checkoutPage.cityLabel",
+      "checkoutPage.cityPlaceholder",
+      "checkoutPage.postalCodeLabel",
+      "checkoutPage.postalCodePlaceholder",
+      "checkoutPage.notesLabel",
+      "checkoutPage.notesHint",
+      "checkoutPage.notesPlaceholder",
+      "checkoutPage.submitFootnote",
+      "checkoutPage.summaryEyebrow",
+      "checkoutPage.estimatedSubtotalLabel",
+      "checkoutPage.summaryPolicyNote",
       "checkoutPage.emptySecondaryCtaLabel",
+      "productDetailPage.quantityLabel",
+      "productDetailPage.inStockLabel",
+      "productDetailPage.outOfStockLabel",
+      "productDetailPage.addedToBagLabel",
+      "productDetailPage.freeDeliveryOverTemplate",
       "productDetailPage.detailsHeading",
       "productDetailPage.quickViewSpecsLabel"
     ]
@@ -1204,6 +1252,61 @@
             "label": "Search Input Placeholder"
           },
           {
+            "key": "collectionEyebrow",
+            "type": "text",
+            "label": "Active Collection Context Eyebrow"
+          },
+          {
+            "key": "viewAllProductsLabel",
+            "type": "text",
+            "label": "Clear Collection Button Label"
+          },
+          {
+            "key": "filtersLabel",
+            "type": "text",
+            "label": "Filters Toggle Button Label"
+          },
+          {
+            "key": "sortLabel",
+            "type": "text",
+            "label": "Sort Dropdown Label"
+          },
+          {
+            "key": "materialFilterHeading",
+            "type": "text",
+            "label": "Material Filter Heading"
+          },
+          {
+            "key": "colorFilterHeading",
+            "type": "text",
+            "label": "Color Filter Heading"
+          },
+          {
+            "key": "priceFilterHeading",
+            "type": "text",
+            "label": "Price Filter Heading"
+          },
+          {
+            "key": "availabilityFilterHeading",
+            "type": "text",
+            "label": "Availability Filter Heading"
+          },
+          {
+            "key": "inStockOnlyLabel",
+            "type": "text",
+            "label": "In-Stock Only Toggle Label"
+          },
+          {
+            "key": "mobileFiltersHeading",
+            "type": "text",
+            "label": "Mobile Filter Drawer Heading"
+          },
+          {
+            "key": "clearAllFiltersLabel",
+            "type": "text",
+            "label": "Clear All Filters Button Label"
+          },
+          {
             "key": "emptyEyebrow",
             "type": "text",
             "label": "No Results Eyebrow"
@@ -1407,9 +1510,78 @@
             "label": "Items Card Heading"
           },
           {
+            "key": "qtyColumnLabel",
+            "type": "text",
+            "label": "Quantity Column Heading (Qty)"
+          },
+          {
+            "key": "totalColumnLabel",
+            "type": "text",
+            "label": "Total Column Heading"
+          },
+          {
+            "key": "removeItemLabel",
+            "type": "text",
+            "label": "Remove Item Action Label"
+          },
+          {
+            "key": "priceOnRequestLabel",
+            "type": "text",
+            "label": "Price on Request Label"
+          },
+          {
             "key": "summaryHeading",
             "type": "text",
             "label": "Order Summary Heading"
+          },
+          {
+            "key": "freeDeliveryRemainingTemplate",
+            "type": "text",
+            "label": "Free Delivery Progress Message Template",
+            "description": "Use {amount} where the dynamically calculated remaining total should appear."
+          },
+          {
+            "key": "freeDeliveryUnlockedLabel",
+            "type": "text",
+            "label": "Free Delivery Unlocked Message"
+          },
+          {
+            "key": "deliveryProgressColor",
+            "type": "text",
+            "label": "Delivery Progress Bar Color (hex)",
+            "placeholder": "#B18D69"
+          },
+          {
+            "key": "deliveryUnlockedColor",
+            "type": "text",
+            "label": "Delivery Unlocked Bar Color (hex)",
+            "placeholder": "#3E6B4B"
+          },
+          {
+            "key": "deliveryProgressTrackColor",
+            "type": "text",
+            "label": "Delivery Progress Track Color (hex)",
+            "placeholder": "#D6CCBE"
+          },
+          {
+            "key": "itemsRowLabel",
+            "type": "text",
+            "label": "Summary Items Row Label"
+          },
+          {
+            "key": "deliveryRowLabel",
+            "type": "text",
+            "label": "Summary Delivery Row Label"
+          },
+          {
+            "key": "freeDeliveryStatusLabel",
+            "type": "text",
+            "label": "Summary Unlocked Delivery Value"
+          },
+          {
+            "key": "calculatedDeliveryLabel",
+            "type": "text",
+            "label": "Summary Pending Delivery Value"
           },
           {
             "key": "clearCartLabel",
@@ -1445,6 +1617,16 @@
             "key": "assuranceEyebrow",
             "type": "text",
             "label": "Assurance Band Eyebrow"
+          },
+          {
+            "key": "currencyPrefixLabel",
+            "type": "text",
+            "label": "Currency Display Prefix Label"
+          },
+          {
+            "key": "autoSaveNote",
+            "type": "text",
+            "label": "Browser Auto-Save Note"
           },
           {
             "key": "emptyHeading",
@@ -1495,6 +1677,121 @@
             "key": "step3Label",
             "type": "text",
             "label": "Step 3 Label"
+          },
+          {
+            "key": "requiredLegend",
+            "type": "text",
+            "label": "Required Fields Legend"
+          },
+          {
+            "key": "optionalHint",
+            "type": "text",
+            "label": "Optional Field Hint"
+          },
+          {
+            "key": "fullNameLabel",
+            "type": "text",
+            "label": "Full Name Field Label"
+          },
+          {
+            "key": "fullNamePlaceholder",
+            "type": "text",
+            "label": "Full Name Input Placeholder"
+          },
+          {
+            "key": "phoneLabel",
+            "type": "text",
+            "label": "Phone / WhatsApp Field Label"
+          },
+          {
+            "key": "phonePlaceholder",
+            "type": "text",
+            "label": "Phone Input Placeholder"
+          },
+          {
+            "key": "emailLabel",
+            "type": "text",
+            "label": "Email Field Label"
+          },
+          {
+            "key": "emailPlaceholder",
+            "type": "text",
+            "label": "Email Input Placeholder"
+          },
+          {
+            "key": "addressLabel",
+            "type": "text",
+            "label": "Delivery Address Field Label"
+          },
+          {
+            "key": "addressPlaceholder",
+            "type": "text",
+            "label": "Delivery Address Input Placeholder"
+          },
+          {
+            "key": "cityLabel",
+            "type": "text",
+            "label": "District / City Field Label"
+          },
+          {
+            "key": "cityPlaceholder",
+            "type": "text",
+            "label": "District / City Input Placeholder"
+          },
+          {
+            "key": "postalCodeLabel",
+            "type": "text",
+            "label": "Postal Code Field Label"
+          },
+          {
+            "key": "postalCodePlaceholder",
+            "type": "text",
+            "label": "Postal Code Input Placeholder"
+          },
+          {
+            "key": "notesLabel",
+            "type": "text",
+            "label": "Special Instructions Field Label"
+          },
+          {
+            "key": "notesHint",
+            "type": "text",
+            "label": "Special Instructions Hint"
+          },
+          {
+            "key": "notesPlaceholder",
+            "type": "text",
+            "label": "Special Instructions Input Placeholder"
+          },
+          {
+            "key": "submitFootnote",
+            "type": "textarea",
+            "label": "WhatsApp Submit Footnote"
+          },
+          {
+            "key": "summaryEyebrow",
+            "type": "text",
+            "label": "Order Summary Eyebrow"
+          },
+          {
+            "key": "estimatedSubtotalLabel",
+            "type": "text",
+            "label": "Estimated Subtotal Label"
+          },
+          {
+            "key": "summaryPolicyNote",
+            "type": "textarea",
+            "label": "Summary Payment & Sizing Note"
+          },
+          {
+            "key": "currencyLabel",
+            "type": "text",
+            "label": "Pricing Currency Label"
+          },
+          {
+            "key": "handoffNote",
+            "type": "text",
+            "label": "Assurance Handoff Note"
           },
           {
             "key": "deliveryNote",
@@ -2733,14 +3030,29 @@
             "label": "Name field label"
           },
           {
+            "key": "namePlaceholder",
+            "type": "text",
+            "label": "Name input placeholder"
+          },
+          {
             "key": "emailLabel",
             "type": "text",
             "label": "Email field label"
           },
           {
+            "key": "emailPlaceholder",
+            "type": "text",
+            "label": "Email input placeholder"
+          },
+          {
             "key": "messageLabel",
             "type": "text",
             "label": "Message field label"
+          },
+          {
+            "key": "messagePlaceholder",
+            "type": "text",
+            "label": "Message input placeholder"
           },
           {
             "key": "formTitle",
@@ -2782,6 +3094,26 @@
             "label": "Size & Measurement Label"
           },
           {
+            "key": "quantityLabel",
+            "type": "text",
+            "label": "Quantity Label"
+          },
+          {
+            "key": "inStockLabel",
+            "type": "text",
+            "label": "In Stock Badge Label"
+          },
+          {
+            "key": "outOfStockLabel",
+            "type": "text",
+            "label": "Out of Stock Label"
+          },
+          {
+            "key": "addedToBagLabel",
+            "type": "text",
+            "label": "Added to Bag Feedback Label"
+          },
+          {
             "key": "addToBagLabel",
             "type": "text",
             "label": "Add to Bag Button Label"
@@ -2800,6 +3132,12 @@
             "key": "deliveryTitle",
             "type": "text",
             "label": "Delivery Highlight Heading"
+          },
+          {
+            "key": "freeDeliveryOverTemplate",
+            "type": "text",
+            "label": "Free Delivery Over Threshold Template",
+            "description": "Use {amount} where the formatted free-delivery threshold should appear."
           },
           {
             "key": "deliveryNote",

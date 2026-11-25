@@ -220,8 +220,8 @@ export function resolveLoomeCurrency(siteData: unknown, fallbackCurrency?: strin
   const shop = contentObject(sd.shop);
   const merchant = contentObject(sd.merchant);
   return (
-    contentText(shop.currency) ||
     contentText(common.currency) ||
+    contentText(shop.currency) ||
     contentText(merchant.currency) ||
     contentText(fallbackCurrency) ||
     'LKR'
@@ -238,6 +238,40 @@ export function resolveFreeDeliveryThreshold(siteData: unknown): number {
   const parsed = typeof raw === 'number' ? raw : Number.parseFloat(String(raw));
   if (!Number.isFinite(parsed)) return 35000;
   return Math.max(0, parsed);
+}
+
+export interface DeliveryBarConfig {
+  remainingTemplate: string;
+  unlockedLabel: string;
+  progressColor: string;
+  unlockedColor: string;
+  trackColor: string;
+}
+
+export function resolveDeliveryBarConfig(siteData: unknown): DeliveryBarConfig {
+  const sd = contentObject(siteData);
+  const content = contentObject(sd.content);
+  const cartPage = contentObject(content.cartPage);
+  return {
+    remainingTemplate:
+      contentText(cartPage.freeDeliveryRemainingTemplate) ||
+      'Add {amount} for free delivery',
+    unlockedLabel:
+      contentText(cartPage.freeDeliveryUnlockedLabel) ||
+      'Free delivery unlocked',
+    progressColor: contentText(cartPage.deliveryProgressColor) || '#B18D69',
+    unlockedColor: contentText(cartPage.deliveryUnlockedColor) || '#3E6B4B',
+    trackColor: contentText(cartPage.deliveryProgressTrackColor) || '#D6CCBE',
+  };
+}
+
+export function formatAmountTemplate(template: string, formattedAmount: string): string {
+  const clean = (template || '').trim();
+  if (!clean) return formattedAmount;
+  if (/\{amount\}/i.test(clean)) {
+    return clean.replace(/\{amount\}/gi, formattedAmount);
+  }
+  return clean;
 }
 
 export function formatLoomePrice(amount: number, currency = 'LKR'): string {

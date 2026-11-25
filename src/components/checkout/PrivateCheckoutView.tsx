@@ -24,8 +24,10 @@ import {
   useSiteData,
 } from '@/lib/siteDataContext';
 import {
+  formatAmountTemplate,
   formatLoomePrice,
   normalizeLoomeProduct,
+  resolveDeliveryBarConfig,
   resolveFreeDeliveryThreshold,
   resolveLoomeCurrency,
   SRI_LANKAN_DISTRICTS,
@@ -148,6 +150,13 @@ export default function PrivateCheckoutView() {
   const storeCurrency = resolveLoomeCurrency(siteData, catalogProducts[0]?.currency);
   const freeDeliveryThreshold = resolveFreeDeliveryThreshold(siteData);
   const hasDeliveryThreshold = freeDeliveryThreshold > 0;
+  const deliveryBar = resolveDeliveryBarConfig(siteData);
+  const itemsRowLabel = contentText(cartPage.itemsRowLabel) || 'Items';
+  const deliveryRowLabel = contentText(cartPage.deliveryRowLabel) || 'Delivery';
+  const freeDeliveryStatusLabel = contentText(cartPage.freeDeliveryStatusLabel) || 'Free';
+  const calculatedDeliveryLabel =
+    contentText(cartPage.calculatedDeliveryLabel) || 'Calculated at checkout';
+  const priceOnRequestLabel = contentText(cartPage.priceOnRequestLabel) || 'Price on Request';
 
   const rawWhatsappNumber =
     contentText(contact.whatsapp) ||
@@ -182,12 +191,46 @@ export default function PrivateCheckoutView() {
   const emptyDescription =
     contentText(checkoutPage.emptyDescription) ||
     'Explore our Belgian flax drapery, stonewashed linen bedding, and heirloom fabrics to begin curating your order.';
+  const requiredLegend = contentText(checkoutPage.requiredLegend) || '* Required';
+  const optionalHint = contentText(checkoutPage.optionalHint) || '(Optional)';
+  const fullNameLabel = contentText(checkoutPage.fullNameLabel) || 'Full Name';
+  const fullNamePlaceholder = contentText(checkoutPage.fullNamePlaceholder) || 'Ananya Perera';
+  const phoneLabel = contentText(checkoutPage.phoneLabel) || 'Phone / WhatsApp';
+  const phonePlaceholder = contentText(checkoutPage.phonePlaceholder) || '+94 77 000 0194';
+  const emailLabel = contentText(checkoutPage.emailLabel) || 'Email';
+  const emailPlaceholder = contentText(checkoutPage.emailPlaceholder) || 'client@example.lk';
+  const addressLabel = contentText(checkoutPage.addressLabel) || 'Delivery Address';
+  const addressPlaceholder =
+    contentText(checkoutPage.addressPlaceholder) || '42 Barnes Place, Colombo 07';
+  const cityLabel = contentText(checkoutPage.cityLabel) || 'District / City';
+  const cityPlaceholder = contentText(checkoutPage.cityPlaceholder) || 'Colombo';
+  const postalCodeLabel = contentText(checkoutPage.postalCodeLabel) || 'Postal Code';
+  const postalCodePlaceholder = contentText(checkoutPage.postalCodePlaceholder) || '00700';
+  const notesLabel = contentText(checkoutPage.notesLabel) || 'Special Instructions';
+  const notesHint =
+    contentText(checkoutPage.notesHint) || '(Optional — custom drops, delivery window, notes)';
+  const notesPlaceholder =
+    contentText(checkoutPage.notesPlaceholder) ||
+    'e.g., Requesting pinch-pleat header confirmation or preferred weekday delivery window.';
+  const submitFootnote =
+    contentText(checkoutPage.submitFootnote) ||
+    `Opens WhatsApp directly with your itemized order for ${storeName}. Your bag and details remain saved here until finalized with our concierge.`;
+  const summaryEyebrow = contentText(checkoutPage.summaryEyebrow) || 'Curated Selection';
+  const estimatedSubtotalLabel =
+    contentText(checkoutPage.estimatedSubtotalLabel) || 'Estimated Subtotal';
+  const summaryPolicyNote =
+    contentText(checkoutPage.summaryPolicyNote) ||
+    'No online payment is charged here. Final availability, custom drapery sizing, and delivery timing are confirmed with our atelier concierge on WhatsApp.';
+  const currencyLabel = contentText(checkoutPage.currencyLabel) || 'Pricing Currency';
+  const handoffNote =
+    contentText(checkoutPage.handoffNote) ||
+    'Direct WhatsApp order handoff with personal sizing and dispatch confirmation.';
 
   const hasItems = cart.items.length > 0;
   const hasInquiryOnlyItem = cart.items.some((item) => item.showPrice === false);
   const allInquiryOnly = hasItems && cart.items.every((item) => item.showPrice === false);
   const subtotalDisplay = allInquiryOnly
-    ? 'Upon Inquiry'
+    ? priceOnRequestLabel
     : formatLoomePrice(cart.subtotal, storeCurrency);
   const deliveryRemaining = hasDeliveryThreshold
     ? Math.max(0, freeDeliveryThreshold - cart.subtotal)
@@ -195,6 +238,10 @@ export default function PrivateCheckoutView() {
   const deliveryProgress = hasDeliveryThreshold
     ? Math.min(100, Math.round((cart.subtotal / freeDeliveryThreshold) * 100))
     : 0;
+  const deliveryRemainingMessage = formatAmountTemplate(
+    deliveryBar.remainingTemplate,
+    formatLoomePrice(deliveryRemaining, storeCurrency),
+  );
 
   const updateField = (field: keyof CheckoutFormState, value: string) => {
     setForm((prev) => {
@@ -467,7 +514,7 @@ export default function PrivateCheckoutView() {
 
   const renderTotalsBlock = () => (
     <div className="mt-4 space-y-4 border-t border-[var(--loome-border)] pt-4">
-      {/* Merchant-Configurable White-Glove Delivery Progress */}
+      {/* Merchant-Configurable Delivery Progress */}
       {hasDeliveryThreshold && (
         <div
           className={`rounded-xl border px-3.5 py-3 ${deliveryRemaining === 0
@@ -478,27 +525,51 @@ export default function PrivateCheckoutView() {
           <div className="flex items-center justify-between gap-2 text-[11.5px] font-medium text-[var(--heading-color)]">
             <span className="inline-flex items-center gap-1.5">
               <Truck
-                className={`h-3.5 w-3.5 shrink-0 stroke-[1.6] ${deliveryRemaining === 0 ? 'text-[var(--loome-sage-text)]' : 'text-[var(--brand-accent)]'
-                  }`}
+                className="h-3.5 w-3.5 shrink-0 stroke-[1.6]"
+                style={{
+                  color:
+                    deliveryRemaining === 0
+                      ? deliveryBar.unlockedColor
+                      : deliveryBar.progressColor,
+                }}
               />
-              {deliveryRemaining === 0
-                ? 'Complimentary white-glove delivery unlocked'
-                : `Add ${formatLoomePrice(deliveryRemaining, storeCurrency)} for complimentary delivery`}
+              {deliveryRemaining === 0 ? (
+                <span data-preview-field-path="cartPage.freeDeliveryUnlockedLabel">
+                  {deliveryBar.unlockedLabel}
+                </span>
+              ) : (
+                <span data-preview-field-path="cartPage.freeDeliveryRemainingTemplate">
+                  {deliveryRemainingMessage}
+                </span>
+              )}
             </span>
             <span
-              className={`tabular-nums font-semibold ${deliveryRemaining === 0 ? 'text-[var(--loome-sage-text)]' : 'text-[var(--brand-accent)]'
-                }`}
+              className="tabular-nums font-semibold"
+              style={{
+                color:
+                  deliveryRemaining === 0
+                    ? deliveryBar.unlockedColor
+                    : deliveryBar.progressColor,
+              }}
             >
               {deliveryProgress}%
             </span>
           </div>
-          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[var(--loome-beige)]">
+          <div
+            className="mt-2 h-1.5 w-full overflow-hidden rounded-full"
+            style={{ backgroundColor: deliveryBar.trackColor }}
+          >
             <motion.div
               initial={false}
               animate={{ width: `${deliveryProgress}%` }}
               transition={{ duration: 0.45, ease: LUXURY_EASE }}
-              className={`h-full rounded-full ${deliveryRemaining === 0 ? 'bg-[var(--loome-sage-text)]' : 'bg-[var(--brand-accent)]'
-                }`}
+              className="h-full rounded-full"
+              style={{
+                backgroundColor:
+                  deliveryRemaining === 0
+                    ? deliveryBar.unlockedColor
+                    : deliveryBar.progressColor,
+              }}
             />
           </div>
         </div>
@@ -508,28 +579,41 @@ export default function PrivateCheckoutView() {
       <div className="rounded-xl border border-[var(--loome-border)] bg-[var(--loome-ivory)] px-4 py-4">
         <div className="space-y-2 text-[13px]">
           <div className="flex items-center justify-between text-[var(--muted-color)]">
-            <span>Items ({cart.totalCount})</span>
+            <span>
+              <span data-preview-field-path="cartPage.itemsRowLabel">{itemsRowLabel}</span> (
+              {cart.totalCount})
+            </span>
             <span className="whitespace-nowrap font-semibold tabular-nums text-[var(--heading-color)]">
               {subtotalDisplay}
             </span>
           </div>
           <div className="flex items-center justify-between text-[var(--muted-color)]">
-            <span>Delivery</span>
+            <span data-preview-field-path="cartPage.deliveryRowLabel">{deliveryRowLabel}</span>
             <span className="font-semibold text-[var(--heading-color)]">
-              {hasDeliveryThreshold && deliveryRemaining === 0
-                ? 'Complimentary'
-                : 'Confirmed via Concierge'}
+              {hasDeliveryThreshold && deliveryRemaining === 0 ? (
+                <span data-preview-field-path="cartPage.freeDeliveryStatusLabel">
+                  {freeDeliveryStatusLabel}
+                </span>
+              ) : (
+                <span data-preview-field-path="cartPage.calculatedDeliveryLabel">
+                  {calculatedDeliveryLabel}
+                </span>
+              )}
             </span>
           </div>
         </div>
 
         <div className="mt-3.5 flex items-baseline justify-between border-t border-[var(--loome-border)] pt-3.5">
           <div>
-            <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--heading-color)]">
-              Estimated Subtotal
+            <span
+              data-preview-field-path="checkoutPage.estimatedSubtotalLabel"
+              className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--heading-color)]"
+            >
+              {estimatedSubtotalLabel}
             </span>
             <span className="mt-0.5 block text-[11px] text-[var(--muted-color)]">
-              Currency: {storeCurrency}
+              <span data-preview-field-path="checkoutPage.currencyLabel">{currencyLabel}</span>:{' '}
+              <span data-preview-field-path="common.currency">{storeCurrency}</span>
             </span>
           </div>
           <span className="whitespace-nowrap font-heading text-2xl font-extrabold leading-none tabular-nums text-[var(--heading-color)]">
@@ -538,8 +622,11 @@ export default function PrivateCheckoutView() {
         </div>
       </div>
 
-      <p className="m-0 text-[12px] leading-relaxed text-[var(--muted-color)]">
-        No online payment is charged here. Final availability, custom drapery sizing, and delivery timing are confirmed with our atelier concierge on WhatsApp.
+      <p
+        data-preview-field-path="checkoutPage.summaryPolicyNote"
+        className="m-0 text-[12px] leading-relaxed text-[var(--muted-color)]"
+      >
+        {summaryPolicyNote}
       </p>
     </div>
   );
@@ -809,8 +896,11 @@ export default function PrivateCheckoutView() {
                         >
                           {clientSectionHeading}
                         </h2>
-                        <span className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-[var(--brand-accent)]">
-                          * Required
+                        <span
+                          data-preview-field-path="checkoutPage.requiredLegend"
+                          className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-[var(--brand-accent)]"
+                        >
+                          {requiredLegend}
                         </span>
                       </div>
 
@@ -820,7 +910,10 @@ export default function PrivateCheckoutView() {
                             htmlFor="checkout-fullName"
                             className="block text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--heading-color)]"
                           >
-                            Full Name *
+                            <span data-preview-field-path="checkoutPage.fullNameLabel">
+                              {fullNameLabel}
+                            </span>{' '}
+                            *
                           </label>
                           <input
                             id="checkout-fullName"
@@ -830,7 +923,8 @@ export default function PrivateCheckoutView() {
                             required
                             value={form.fullName}
                             onChange={(e) => updateField('fullName', e.target.value)}
-                            placeholder="Ananya Perera"
+                            placeholder={fullNamePlaceholder}
+                            data-preview-field-path="checkoutPage.fullNamePlaceholder"
                             aria-invalid={Boolean(errors.fullName)}
                             className={`${INPUT_BASE_CLASS} ${errors.fullName
                               ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
@@ -853,7 +947,10 @@ export default function PrivateCheckoutView() {
                             htmlFor="checkout-phone"
                             className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#3B302B] dark:text-[#F2E9DE]"
                           >
-                            Phone / WhatsApp *
+                            <span data-preview-field-path="checkoutPage.phoneLabel">
+                              {phoneLabel}
+                            </span>{' '}
+                            *
                           </label>
                           <input
                             id="checkout-phone"
@@ -863,7 +960,8 @@ export default function PrivateCheckoutView() {
                             required
                             value={form.phone}
                             onChange={(e) => updateField('phone', e.target.value)}
-                            placeholder="+94 77 000 0194"
+                            placeholder={phonePlaceholder}
+                            data-preview-field-path="checkoutPage.phonePlaceholder"
                             aria-invalid={Boolean(errors.phone)}
                             className={`${INPUT_BASE_CLASS} ${errors.phone
                               ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
@@ -886,9 +984,14 @@ export default function PrivateCheckoutView() {
                             htmlFor="checkout-email"
                             className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#3B302B] dark:text-[#F2E9DE]"
                           >
-                            Email{' '}
-                            <span className="font-normal normal-case tracking-normal text-[#6B5B51] dark:text-[#C7B6A6]">
-                              (Optional)
+                            <span data-preview-field-path="checkoutPage.emailLabel">
+                              {emailLabel}
+                            </span>{' '}
+                            <span
+                              data-preview-field-path="checkoutPage.optionalHint"
+                              className="font-normal normal-case tracking-normal text-[#6B5B51] dark:text-[#C7B6A6]"
+                            >
+                              {optionalHint}
                             </span>
                           </label>
                           <input
@@ -898,7 +1001,8 @@ export default function PrivateCheckoutView() {
                             autoComplete="email"
                             value={form.email}
                             onChange={(e) => updateField('email', e.target.value)}
-                            placeholder="client@example.lk"
+                            placeholder={emailPlaceholder}
+                            data-preview-field-path="checkoutPage.emailPlaceholder"
                             aria-invalid={Boolean(errors.email)}
                             className={`${INPUT_BASE_CLASS} ${errors.email
                               ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
@@ -935,7 +1039,10 @@ export default function PrivateCheckoutView() {
                             htmlFor="checkout-address"
                             className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#3B302B] dark:text-[#F2E9DE]"
                           >
-                            Delivery Address *
+                            <span data-preview-field-path="checkoutPage.addressLabel">
+                              {addressLabel}
+                            </span>{' '}
+                            *
                           </label>
                           <input
                             id="checkout-address"
@@ -945,7 +1052,8 @@ export default function PrivateCheckoutView() {
                             required
                             value={form.address}
                             onChange={(e) => updateField('address', e.target.value)}
-                            placeholder="42 Barnes Place, Colombo 07"
+                            placeholder={addressPlaceholder}
+                            data-preview-field-path="checkoutPage.addressPlaceholder"
                             aria-invalid={Boolean(errors.address)}
                             className={`${INPUT_BASE_CLASS} ${errors.address
                               ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
@@ -968,7 +1076,10 @@ export default function PrivateCheckoutView() {
                             htmlFor="checkout-city"
                             className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#3B302B] dark:text-[#F2E9DE]"
                           >
-                            District / City *
+                            <span data-preview-field-path="checkoutPage.cityLabel">
+                              {cityLabel}
+                            </span>{' '}
+                            *
                           </label>
                           <input
                             id="checkout-city"
@@ -979,7 +1090,8 @@ export default function PrivateCheckoutView() {
                             required
                             value={form.city}
                             onChange={(e) => updateField('city', e.target.value)}
-                            placeholder="Colombo"
+                            placeholder={cityPlaceholder}
+                            data-preview-field-path="checkoutPage.cityPlaceholder"
                             aria-invalid={Boolean(errors.city)}
                             className={`${INPUT_BASE_CLASS} ${errors.city
                               ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
@@ -1007,9 +1119,14 @@ export default function PrivateCheckoutView() {
                             htmlFor="checkout-postalCode"
                             className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#3B302B] dark:text-[#F2E9DE]"
                           >
-                            Postal Code{' '}
-                            <span className="font-normal normal-case tracking-normal text-[#6B5B51] dark:text-[#C7B6A6]">
-                              (Optional)
+                            <span data-preview-field-path="checkoutPage.postalCodeLabel">
+                              {postalCodeLabel}
+                            </span>{' '}
+                            <span
+                              data-preview-field-path="checkoutPage.optionalHint"
+                              className="font-normal normal-case tracking-normal text-[#6B5B51] dark:text-[#C7B6A6]"
+                            >
+                              {optionalHint}
                             </span>
                           </label>
                           <input
@@ -1019,7 +1136,8 @@ export default function PrivateCheckoutView() {
                             autoComplete="postal-code"
                             value={form.postalCode}
                             onChange={(e) => updateField('postalCode', e.target.value)}
-                            placeholder="00700"
+                            placeholder={postalCodePlaceholder}
+                            data-preview-field-path="checkoutPage.postalCodePlaceholder"
                             aria-invalid={Boolean(errors.postalCode)}
                             className={`${INPUT_BASE_CLASS} ${errors.postalCode
                               ? 'border-[#B04A38] bg-[#FDF7F5] focus:border-[#B04A38] focus:ring-[#B04A38]/20 dark:border-[#D98272]'
@@ -1042,9 +1160,14 @@ export default function PrivateCheckoutView() {
                             htmlFor="checkout-notes"
                             className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-[#3B302B] dark:text-[#F2E9DE]"
                           >
-                            Special Instructions{' '}
-                            <span className="font-normal normal-case tracking-normal text-[#6B5B51] dark:text-[#C7B6A6]">
-                              (Optional — custom drops, delivery window, notes)
+                            <span data-preview-field-path="checkoutPage.notesLabel">
+                              {notesLabel}
+                            </span>{' '}
+                            <span
+                              data-preview-field-path="checkoutPage.notesHint"
+                              className="font-normal normal-case tracking-normal text-[#6B5B51] dark:text-[#C7B6A6]"
+                            >
+                              {notesHint}
                             </span>
                           </label>
                           <textarea
@@ -1053,7 +1176,8 @@ export default function PrivateCheckoutView() {
                             rows={3}
                             value={form.notes}
                             onChange={(e) => updateField('notes', e.target.value)}
-                            placeholder="e.g., Requesting pinch-pleat header confirmation or preferred weekday delivery window."
+                            placeholder={notesPlaceholder}
+                            data-preview-field-path="checkoutPage.notesPlaceholder"
                             className={`${INPUT_BASE_CLASS} resize-y border-[#201C1A]/22 leading-relaxed dark:border-[#F2E9DE]/22`}
                           />
                         </div>
@@ -1114,8 +1238,11 @@ export default function PrivateCheckoutView() {
                         <ArrowRight className="h-3.5 w-3.5 stroke-[1.6] transition-transform duration-300 group-hover:translate-x-1" />
                       </motion.button>
 
-                      <p className="mt-3 mb-0 text-center text-[12px] leading-relaxed text-[var(--muted-color)]">
-                        Opens WhatsApp directly with your itemized order for {storeName}. Your bag and details remain saved here until finalized with our concierge.
+                      <p
+                        data-preview-field-path="checkoutPage.submitFootnote"
+                        className="mt-3 mb-0 text-center text-[12px] leading-relaxed text-[var(--muted-color)]"
+                      >
+                        {submitFootnote}
                       </p>
 
                       {/* Compact Fallback Link — shown ONLY if the browser blocked opening WhatsApp */}
@@ -1156,8 +1283,11 @@ export default function PrivateCheckoutView() {
                 >
                   <div className="flex items-baseline justify-between border-b border-[var(--loome-border)] pb-3.5">
                     <div>
-                      <p className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]">
-                        Curated Selection
+                      <p
+                        data-preview-field-path="checkoutPage.summaryEyebrow"
+                        className="m-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-[var(--brand-accent)]"
+                      >
+                        {summaryEyebrow}
                       </p>
                       <h2
                         data-preview-field-path="cartPage.summaryHeading"
@@ -1179,14 +1309,17 @@ export default function PrivateCheckoutView() {
 
                   {hasShopPage && (
                     <div className="mt-4 text-center">
-                      <a
-                        href={withBasePath('/shop')}
+                      <button
+                        type="button"
+                        onClick={() => window.location.assign(withBasePath('/shop/'))}
                         data-target-page="shop"
-                        className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--muted-color)] no-underline transition-colors hover:text-[var(--heading-color)]"
+                        className="inline-flex cursor-pointer items-center gap-1.5 border-0 bg-transparent p-0 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--muted-color)] transition-colors hover:text-[var(--heading-color)]"
                       >
-                        Continue Browsing Textiles
+                        <span data-preview-field-path="cartPage.continueShoppingLabel">
+                          {continueShoppingLabel}
+                        </span>
                         <ArrowRight className="h-3 w-3 stroke-[1.6]" />
-                      </a>
+                      </button>
                     </div>
                   )}
                 </LuxuryReveal>
@@ -1220,16 +1353,20 @@ export default function PrivateCheckoutView() {
 
           <div className="flex flex-col justify-center gap-1.5 border-t border-[var(--loome-border)] pt-4 md:border-l md:border-t-0 md:pl-7 md:pt-0">
             <p
-              data-preview-static="checkout-currency-label"
+              data-testid="checkout-currency-label"
               className="m-0 text-[10.5px] font-semibold uppercase tracking-[0.2em] text-[var(--heading-color)]"
             >
-              Pricing Currency · {storeCurrency}
+              <span data-preview-field-path="checkoutPage.currencyLabel">{currencyLabel}</span>
+              <span aria-hidden="true" data-preview-static="checkout-currency-sep">
+                {' · '}
+              </span>
+              <span data-preview-field-path="common.currency">{storeCurrency}</span>
             </p>
             <p
-              data-preview-static="checkout-handoff-note"
+              data-preview-field-path="checkoutPage.handoffNote"
               className="m-0 text-[12.5px] leading-relaxed text-[var(--muted-color)]"
             >
-              Direct WhatsApp order handoff with personal sizing and dispatch confirmation.
+              {handoffNote}
             </p>
           </div>
         </div>

@@ -36,6 +36,7 @@ import {
   slugifyCategoryId,
 } from '@/lib/categoryUtils';
 import {
+  formatAmountTemplate,
   formatLoomePrice,
   normalizeLoomeProduct,
   resolveFreeDeliveryThreshold,
@@ -88,6 +89,7 @@ export default function LoomeProductDetailView({
   const common = contentObject(content.common);
   const navLabels = contentObject(common.navLabels);
   const contact = contentObject(content.contact);
+  const cartPage = contentObject(content.cartPage);
   const detailCopy = contentObject(content.productDetailPage);
   const requiredPages = Array.isArray(siteData.requirements?.requiredPages)
     ? siteData.requirements.requiredPages
@@ -107,7 +109,13 @@ export default function LoomeProductDetailView({
   const shopNavLabel = contentText(navLabels.shop) || 'Shop';
   const colorLabel = contentText(detailCopy.toneLabel) || 'Color';
   const sizeLabel = contentText(detailCopy.sizeLabel) || 'Size';
+  const inStockLabel = contentText(detailCopy.inStockLabel) || 'In Stock';
+  const outOfStockLabel = contentText(detailCopy.outOfStockLabel) || 'Out of Stock';
+  const addedToBagLabel = contentText(detailCopy.addedToBagLabel) || 'Added to Bag';
   const addToBagLabel = contentText(detailCopy.addToBagLabel) || 'Add to Bag';
+  const priceOnRequestLabel = contentText(cartPage.priceOnRequestLabel) || 'Price on Request';
+  const freeDeliveryOverTemplate =
+    contentText(detailCopy.freeDeliveryOverTemplate) || 'Free over {amount}';
   const whatsappInquireLabel =
     contentText(detailCopy.whatsappInquireLabel) || 'Order or Ask via WhatsApp';
   const deliveryTitle = contentText(detailCopy.deliveryTitle) || 'Island-Wide Delivery';
@@ -579,7 +587,7 @@ export default function LoomeProductDetailView({
                 </span>
 
                 <div
-                  data-preview-static="product-availability-pill"
+                  data-testid="product-availability-pill"
                   className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-semibold ${
                     normalized.isAvailable
                       ? 'border-[var(--loome-sage-border)] bg-[var(--loome-sage-bg)] text-[var(--loome-sage-text)]'
@@ -593,7 +601,15 @@ export default function LoomeProductDetailView({
                         : 'bg-[var(--loome-danger-text)]'
                     }`}
                   />
-                  <span>{normalized.isAvailable ? 'In Stock' : 'Out of Stock'}</span>
+                  {normalized.isAvailable ? (
+                    <span data-preview-field-path="productDetailPage.inStockLabel">
+                      {inStockLabel}
+                    </span>
+                  ) : (
+                    <span data-preview-field-path="productDetailPage.outOfStockLabel">
+                      {outOfStockLabel}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -619,7 +635,7 @@ export default function LoomeProductDetailView({
                 >
                   {normalized.showPrice
                     ? formatLoomePrice(normalized.price, storeCurrency)
-                    : 'Price on Request'}
+                    : priceOnRequestLabel}
                 </span>
                 {normalized.showPrice && normalized.compareAtPrice && (
                   <span
@@ -801,7 +817,9 @@ export default function LoomeProductDetailView({
                   {addedFeedback ? (
                     <>
                       <Check className="h-4 w-4 stroke-[2.2]" />
-                      <span>Added to Bag</span>
+                      <span data-preview-field-path="productDetailPage.addedToBagLabel">
+                        {addedToBagLabel}
+                      </span>
                     </>
                   ) : normalized.isAvailable ? (
                     <>
@@ -811,7 +829,9 @@ export default function LoomeProductDetailView({
                       </span>
                     </>
                   ) : (
-                    <span>Out of Stock</span>
+                    <span data-preview-field-path="productDetailPage.outOfStockLabel">
+                      {outOfStockLabel}
+                    </span>
                   )}
                 </motion.button>
 
@@ -870,7 +890,12 @@ export default function LoomeProductDetailView({
                     />
                     <p className="m-0 mt-0.5 text-[11.5px] leading-snug text-[var(--loome-sage-text)]">
                       {freeDeliveryThreshold > 0 ? (
-                        `Free over ${formatLoomePrice(freeDeliveryThreshold, storeCurrency)}`
+                        <span data-preview-field-path="productDetailPage.freeDeliveryOverTemplate">
+                          {formatAmountTemplate(
+                            freeDeliveryOverTemplate,
+                            formatLoomePrice(freeDeliveryThreshold, storeCurrency),
+                          )}
+                        </span>
                       ) : (
                         <span data-preview-field-path="productDetailPage.deliveryNote">
                           {deliveryNoteFallback}

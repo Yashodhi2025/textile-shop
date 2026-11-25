@@ -265,7 +265,14 @@ export default function ContactPage() {
                       letterSpacing="0.18em"
                       color="muted"
                     />
-                    <input type="text" name="name" autoComplete="name" required />
+                    <input
+                      type="text"
+                      name="name"
+                      autoComplete="name"
+                      placeholder={contentText(contact.namePlaceholder) || 'Your full name'}
+                      data-preview-field-path="contact.namePlaceholder"
+                      required
+                    />
                   </label>
 
                   <label>
@@ -281,7 +288,14 @@ export default function ContactPage() {
                       letterSpacing="0.18em"
                       color="muted"
                     />
-                    <input type="email" name="email" autoComplete="email" required />
+                    <input
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      placeholder={contentText(contact.emailPlaceholder) || 'you@example.com'}
+                      data-preview-field-path="contact.emailPlaceholder"
+                      required
+                    />
                   </label>
                 </div>
 
@@ -298,7 +312,16 @@ export default function ContactPage() {
                     letterSpacing="0.18em"
                     color="muted"
                   />
-                  <textarea name="message" rows={4} required />
+                  <textarea
+                    name="message"
+                    rows={4}
+                    placeholder={
+                      contentText(contact.messagePlaceholder) ||
+                      'Share your room dimensions, drapery style, or swatch preferences...'
+                    }
+                    data-preview-field-path="contact.messagePlaceholder"
+                    required
+                  />
                 </label>
 
                 <div className="pt-2">
